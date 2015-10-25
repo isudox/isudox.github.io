@@ -1,10 +1,10 @@
 title: 小记JavaScript全局变量的一些思考
 date: 2015-10-25 19:37:47
-tags: 
+tags:
 - JavaScript
-Categories: 
+- Front
+categories:
 - Coding
-- FE
 ---
 毕业来JD后完成的第一个任务是写选号中心的前端。由于和PM没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用`JavaScript`全局变量，带来便利的同时也有意想不到的坑，更不应滥用，很多时候全局变量并不是一个好选择。
 
@@ -49,7 +49,7 @@ var NOT_BAD = {
         //...
     },
     change: function() {
-        //...  
+        //...
     },
     verify: function() {
         //...
