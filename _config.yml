@@ -70,7 +70,7 @@ theme: next
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: 
+  repo:
     github: git@github.com:isudox/isudox.github.io.git,master
     gitvps: git@45.33.47.109:isudox-hexo.git,master
 
@@ -81,7 +81,8 @@ disqus_shortname: isudox
 social:
   Github: https://github.com/isudox
   Twitter: https://twitter.com/isudox
-  Douban: http://www.douban.com/people/83781615
+  # Douban: http://www.douban.com/people/83781615
+  StackOverflow: http://stackoverflow.com/users/4305743/sudoz
   # weibo: http://weibo.com/your-user-name
   # zhihu: http://www.zhihu.com/people/your-user-name
 

@@ -10,7 +10,7 @@ iPhone 6S都发布，仍然用着刚上大学那会买的笔记本，cry...
 
 最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而言，这不啻一个新的玩点。
 
-在[V站](https://www.v2ex.com/)上混的时候，被多次安利[Arch Linux](https://www.archlinux.org)，传闻中的KISS风格，滚动升级，业界良心的Wiki，强大的社区支持，让常在Linux下搬砖的我心生向往。于是就在别人轻抚刚发货的iPhone 6S的夜晚，开始第N+1次折腾。
+在[V2EX](https://www.v2ex.com/)上混的时候，被多次安利[Arch Linux](https://www.archlinux.org)，传闻中的K.I.S.S风格，滚动升级，业界良心的Wiki，强大的社区支持，让常在Linux下搬砖的我心生向往。于是就在别人轻抚刚发货的iPhone 6S的夜晚，开始第N+1次折腾。
 
 故事就在这样一个夜晚发生了...
 
@@ -99,9 +99,9 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 哈哈，真真是个大道至简的黑屏白字世界，Arch于此开始，一如混沌之初。
 
-![](http://i.imgur.com/BBzfW3H.png)
+![](https://i.imgur.com/BBzfW3H.png)
 
-TODO: 后续再把图形化过程记下来,包括xorg->xfce->lightdm->video_driver, etc.
+TODO: 后续再把图形化过程记下来,包括 xorg -> xfce -> lightdm -> video-driver, etc.
 
-> KISS: Keep It Simple, Stupid.   
-> 化繁为简，返璞归真。   
+> K.I.S.S: Keep It Simple, Stupid.   
+> 大道至简，大智若愚。   
