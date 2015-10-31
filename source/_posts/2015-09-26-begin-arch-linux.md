@@ -52,7 +52,7 @@ $ mkfs.ext4 /dev/sda1
 $ mkfs.ext4 /dev/sda2
 $ mkswap    /dev/sda3
 $ mkfs.ext4 /dev/sda4
-$ 
+$
 $ mount /dev/sda2 /mnt
 $ mkdir -p /mnt/boot
 $ mkdir -p /mnt/home

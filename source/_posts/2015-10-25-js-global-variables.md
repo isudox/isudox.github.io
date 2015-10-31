@@ -1,3 +1,4 @@
+---
 title: 小记JavaScript全局变量的一些思考
 date: 2015-10-25 19:37:47
 tags:
