@@ -1,3 +1,4 @@
+---
 title: Begin Arch Linux
 date: 2015-09-26 18:02:05
 categories:

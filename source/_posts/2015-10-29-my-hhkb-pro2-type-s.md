@@ -26,7 +26,7 @@ HHKB，即`Happy Hacking Keyboard`，透着复古气息的Geek范儿。如此个
 日本亚马逊下单HHKB Pro2 Type-S，29800日元的售价也只有在我丧失理智的情况下才不再成为障碍。从发货到转运到EMS国际邮包寄到北京，只用了不到6天时间（海关诚不欺我）。但等待的心情总是让过程变得漫长，特别是在收到公司收发室取件通知邮件那天还要加班（双11的怨念啊）。感谢的是，还能有这么一个下午，能让人恍惚间回到了孩童时那些时光。
 > 等待的下课，等待着放学，等待游戏的童年。 —— 罗大佑
 
-### HHKB初体验
+### 初体验
 抱着日亚的大纸箱，在北京初冬的的寒风中穿梭，像只卑微的蝼蚁。
 
 But no one cares. 回到小屋里，拆开捆绑诱惑的纸箱，HHKB就静静躺在面前这个怎么看都低调到简陋的盒子里，一把键盘，一根连接线，两本说明书，仅此而已。没有任何多余的装饰，你所拥有的HHKB就是它的所有。
@@ -55,4 +55,11 @@ HHKB键位布局
 ![](http://i.imgur.com/VYAIXNS.png)
 我试着用Vim写这篇记录，HHKB独特的键位布局不再显得突兀，反而是贴心。小指可以很轻松按到左上角的`Esc`键和`Ctrl`键，通过`Fn`组合键，手掌不用移动就能控制光标移动。码字的过程变得异常舒心和连续，这是在之前使用过的键盘上从未体验过的。同样在终端命令行下，所有的快捷操作都变得轻松。
 
-不过老实讲，HHKB精简到苛刻的键位布局，对于重度使用IDE编程的程序员可能需要一个适应过程，因为很多IDE的快捷键都依赖`F1`～`F10`，而HHKB需要通过`Fn`+数字键实现上述键的功能，等于是每次都要多按一个`Fn`才能实现通用键盘的一些快捷操作。但自定义快捷操作对于爱折腾的程序员应该是基本技能，所以我的建议就是，勇敢地去尝试HHKB吧！
+不过老实讲，HHKB精简到苛刻的键位布局，对于重度使用IDE编程的程序员可能需要一个适应过程，因为很多IDE的快捷键都依赖`F1`～`F10`，而HHKB需要通过`Fn`+数字键实现上述键的功能，等于是每次都要多按一个`Fn`才能实现通用键盘的一些快捷操作。但自定义快捷操作对于爱折腾的程序员应该是基本技能，所以我的建议就是，Happy Hacking！
+
+受制于职业设定和个人官感，上述仅是非常个人化的体验。Youtube上已有歪果仁上传了非常细致的HHKB体验视频，选了两部视频，感受下HHKB与众不同的魅力，物有所值。
+
+HHKB Type S Overview and Review and Sound Comparison
+<iframe width="695" height="391" src="https://www.youtube.com/embed/HUThTv9GYbU" frameborder="0" allowfullscreen></iframe>
+HHKB Professional 2 Type-S Typing Sound Test
+<iframe width="695" height="391" src="https://www.youtube.com/embed/oCBF582h6F8" frameborder="0" allowfullscreen></iframe>
