@@ -58,8 +58,5 @@ HHKB键位布局
 不过老实讲，HHKB精简到苛刻的键位布局，对于重度使用IDE编程的程序员可能需要一个适应过程，因为很多IDE的快捷键都依赖`F1`～`F10`，而HHKB需要通过`Fn`+数字键实现上述键的功能，等于是每次都要多按一个`Fn`才能实现通用键盘的一些快捷操作。但自定义快捷操作对于爱折腾的程序员应该是基本技能，所以我的建议就是，Happy Hacking！
 
 受制于职业设定和个人官感，上述仅是非常个人化的体验。Youtube上已有歪果仁上传了非常细致的HHKB体验视频，选了两部视频，感受下HHKB与众不同的魅力，物有所值。
-
-HHKB Type S Overview and Review and Sound Comparison
-<iframe width="695" height="391" src="https://www.youtube.com/embed/HUThTv9GYbU" frameborder="0" allowfullscreen></iframe>
-HHKB Professional 2 Type-S Typing Sound Test
-<iframe width="695" height="391" src="https://www.youtube.com/embed/oCBF582h6F8" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/HUThTv9GYbU" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/oCBF582h6F8" frameborder="0" allowfullscreen></iframe>
