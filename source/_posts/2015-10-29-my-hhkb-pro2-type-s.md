@@ -1,11 +1,11 @@
 ---
-title: 神器有价，情怀无价——HHKB Pro2 Type-S
+title: 神器有价，情怀无价——HHKB
 date: 2015-10-29 22:37:14
 categories: 玩物誌
 tags: HHKB
 ---
 
-> It’s to keyboards what Leica is to cameras; what Rimowa is to luggage; what Moleskine is to notebooks; what Rolls Royce is to cars; what Grey Goose is to vodka. Or at least, that’s the reputation it carries. If someone is discussing the “best mechanical keyboard”, it will be mentioned right away.
+> It's to keyboards what Leica is to cameras; what Rimowa is to luggage; what Moleskine is to notebooks; what Rolls Royce is to cars; what Grey Goose is to vodka. Or at least, that’s the reputation it carries. If someone is discussing the “best mechanical keyboard”, it will be mentioned right away.
 
 ### 流水账
 上面这段引文里指的键盘究竟是什么？当然是本文的主角啦——HHKB。
@@ -33,7 +33,7 @@ But no one cares. 回到小屋里，拆开捆绑诱惑的纸箱，HHKB就静静�
 ![](http://i.imgur.com/F1EPOLl.jpg)
 ![](http://i.imgur.com/BYAOb8A.jpg)
 ![](http://i.imgur.com/C25NYvv.jpg?1)
-是的，这是把无刻键盘，逼格直接加满点！怀旧复古的设计让人想起Stallman，Linus这些大神们在上面忘我啪啪啪的岁月。
+是的，这是把无刻键盘，逼格直接加满点！怀旧复古的设计让人想起Stallman，Linus这些大神们在上面忘我啪啪啪的光荣岁月。
 ![](http://i.imgur.com/Lgi8BS1.jpg)
 HHKB Pro2 Type-S Logo
 ![](http://i.imgur.com/x9OFWfc.jpg)
