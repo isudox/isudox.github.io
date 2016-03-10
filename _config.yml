@@ -80,7 +80,7 @@ disqus_shortname: isudox
 # Social links
 social:
   Github: https://github.com/isudox
-  Twitter: https://twitter.com/isudox
+  # Twitter: https://twitter.com/isudox
   StackOverflow: http://stackoverflow.com/users/4305743/sudoz
   # Douban: http://www.douban.com/people/83781615
   # weibo: http://weibo.com/your-user-name
