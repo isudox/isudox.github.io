@@ -4,7 +4,7 @@ date: 2016-02-02 11:05:24
 tags: Python
 categories: Coding
 ---
-近期正在开发一个基于`Django`的RESTful Web Service，需要接入短信验证发送功能，比较之后选定[阿里大鱼](http://www.alidayu.com/)的解决方案。
+近期课余时间开发一个基于`Django`的RESTful Web Service，需要接入短信验证发送功能，比较之后选定[阿里大鱼](http://www.alidayu.com/)的解决方案。
 
 然而，选Python作为技术栈的悲催之处在于，虽然Python的第三方库和生态很强大，但是就国内的开发圈而言，Python是一个相对小众的流派，又由于Python 2.x和Python 3.x的分化，许多第三方库并没有跟进Python 3，导致很多时候用Python会有些捉襟见肘，尤其是像我这种野路子的Python开发。
 
