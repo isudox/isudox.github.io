@@ -44,8 +44,6 @@ tree .git
 ├── objects
 │   ├── 18
 │   │   └── f66c7ed1e9d6dadb9aa71836fdf58d5217fd26
-│   ├── 47
-│   │   └── b83379345f67ea80036dff7c8f01df3973cb6f
 │   ├── info
 │   └── pack
 │       ├── pack-137f36f2b48c9ee4fb17518f99ec9b9f842fcd81.idx
@@ -63,5 +61,15 @@ tree .git
 │   └── tags
 └── smartgit.config
 ```
-上面是本静态博客Git仓库的`.git/`目录结构。其中
+上面是本静态博客Git仓库的`.git/`目录结构。其中几个主要子目录和文件的基本作用如下——
+* `COMMIT_EDITMSG`: 该文件存放最新的commit message；
+* `config`: 该文件保存Git的配置；
+* `description`: Git仓库的描述信息；
+* `index`: Git本地暂存区，是二进制文件；
+* `HEAD`: 该文件为Git仓库当前分支的引用；
+* `hooks`: 该目录存放Git脚本钩子，用以触发Git自动执行某些操作，例如本人博客的Git钩子就自定义了文件更新后自动部署的操作；
+* `info`: 存放Git仓库信息；
+* `logs`: 存放Git log的信息；
+* `objects`: 存放所有Git Object，每次提交Git都会生成一个Git Object，其SHA1值的前2位是文件夹名称，后38位是Object名；
+* `refs`: 包含heads、remotes、tags三个子目录，分别存储当前head指针指向的commit，服务器端远程仓库的header指针及分支、Git tags标签；
 // TODO: 明天再写……
