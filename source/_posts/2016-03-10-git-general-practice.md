@@ -1,5 +1,5 @@
 ---
-title: Git实践经验
+title: Git一般实践
 date: 2016-03-10 18:01:32
 tags: Git
 categories: Coding
@@ -12,7 +12,9 @@ categories: Coding
 ### 常用操作
 
 #### 创建Git仓库
-创建Git仓库有几种不同的情况：创建空的Git仓库，很简单，一条命令
+创建Git仓库有几种不同的情况：
+
+创建空的Git仓库，很简单，一条命令
 ```bash
 git init repo-name
 ```
@@ -61,7 +63,7 @@ tree .git
 │   └── tags
 └── smartgit.config
 ```
-上面是本静态博客Git仓库的`.git/`目录结构。其中几个主要子目录和文件的基本作用如下——
+上面是我这个静态博客Git仓库下`.git/`目录结构。其中几个主要子目录和文件的基本作用如下——
 * `COMMIT_EDITMSG`: 该文件存放最新的commit message；
 * `config`: 该文件保存Git的配置；
 * `description`: Git仓库的描述信息；
@@ -72,4 +74,29 @@ tree .git
 * `logs`: 存放Git log的信息；
 * `objects`: 存放所有Git Object，每次提交Git都会生成一个Git Object，其SHA1值的前2位是文件夹名称，后38位是Object名；
 * `refs`: 包含heads、remotes、tags三个子目录，分别存储当前head指针指向的commit，服务器端远程仓库的header指针及分支、Git tags标签；
-// TODO: 明天再写……
+
+创建空的Git仓库是最常用的操作，还有比较常用操作的是把已有的工程加入Git
+```bash
+cd existing-dir
+git init
+git add .
+git commit -m 'first commit'
+```
+
+还有一种情况并不多见，就是创建裸仓库，有别于`git init`
+```bash
+git init --bare
+```
+Git仓库其实就是Git仓库下的`.git`目录，存储上面提到的那些子目录和文件，记录该Git仓库的所有记录。Git裸仓库一般用在远程服务器上的仓库初始化。
+
+#### 添加到远程仓库
+在本地创建Git仓库后，还需要推到远程仓库上，比如大名鼎鼎的GitHub，或者私有的Git服务器如GitLab。首先在服务器上新建远程仓库，取到Git远程仓库地址，然后就可以把本地仓库推到远程。
+```bash
+git remote add <origin remote repo URL>
+git push origin master
+```
+
+#### 提交改动
+当对Git仓库文件进行增删改操作后，需要把有必要提交的改动commit到本地，再push到远程仓库。想查看本地仓库有哪些改动可以执行`git status`命令。确认后执行`git add <filename or .>`把文件改动提交到Git仓库的__暂存区__，此时再通过`git status`就能看到提示信息与之前的变化。但暂存区顾名思义只是暂存改动，并未提交到本地仓库，因此还需要`git commit -m 'blabla'`将改动提交到本地仓库。这样就把改动提交上去了，至于是否需要再提交到远程仓库，视需要而定，`git push origin <branch-name>`就是提交到上面绑定的远程仓库。
+
+#### 回滚/撤销
