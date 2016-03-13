@@ -1,5 +1,5 @@
 ---
-title: Java中String，StringBuilder，StringBuffer，CharSequence区别
+title: String, StringBuilder, StringBuffer区别
 date: 2016-02-17 15:22:01
 tags: Java
 categories: Coding
