@@ -16,7 +16,7 @@ categories: Coding
 
 创建空的Git仓库，很简单，一条命令
 ```bash
-git init repo-name
+git init <repo-name>
 ```
 该目录就是一个Git本地仓库了，目录下会有一个隐藏文件夹`.git/`，看看它的目录结构
 ```bash
@@ -228,12 +228,10 @@ $ git push origin <tag-name>
 *.jar
 *.war
 *.class
-
 target/
 .idea/
 .project
 .classpath
-
 ```
 
 #### 协作细节
