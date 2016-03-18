@@ -5,7 +5,7 @@
 # Site
 title: I sudo X
 subtitle: sudoz's blog
-description:
+description: Welcome here.
 author: sudoz
 avatar: /images/avatar.jpg
 language: en
@@ -77,10 +77,13 @@ deploy:
 # Disqus
 disqus_shortname: isudox
 
+# duosho
+# duoshuo_shortname: isudox
+
 # Social links
 social:
   Github: https://github.com/isudox
-  # Twitter: https://twitter.com/isudox
+  Twitter: https://twitter.com/isudox
   StackOverflow: http://stackoverflow.com/users/4305743/sudoz
   # Douban: http://www.douban.com/people/83781615
   # weibo: http://weibo.com/your-user-name
@@ -93,4 +96,7 @@ jiathis: false
 swiftype_key: bDJ1BXjgkwVZSrnkzynx
 
 # Google analytics
-google_analytics: 67443010-1
+# google_analytics: 67443010-1
+
+# Baidu analytics
+baidu_analytics: 416f859610dfc2db62c90f5d33de2fdd
