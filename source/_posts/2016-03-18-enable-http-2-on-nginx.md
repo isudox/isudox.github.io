@@ -7,7 +7,7 @@ tags:
 categories: Web
 ---
 今天上班偷闲逛v站时感受到了一阵强烈的安利风，好像所有个人站都已经从HTTP/1.1升级到了HTTP/2。呵呵，跟风也要讲基本法！立即着手升级工作。
-上Google搜索关键字，才知道自己已经滞后了6个月，Nginx从1.9.5版本开始已经加入了对HTTP/2的官方支持[NGINX Open Source 1.9.5 Released with HTTP/2 Support](https://www.nginx.com/blog/nginx-1-9-5/)。这篇文章里也提到了Nginx从1.9.5开始，会停止对SPDY的支持，同时移除Nginx的SPDY模块。OK，看明白了之后，剩下的工作就简单了，升级Nginx，开启HTTP/2。
+上Google搜索关键字，才知道自己已经滞后了6个月，Nginx从1.9.5版本开始已经加入了对HTTP/2的官方支持[Nginx Open Source 1.9.5 Released with HTTP/2 Support](https://www.nginx.com/blog/nginx-1-9-5/)。这篇文章里也提到了Nginx从1.9.5开始，会停止对SPDY的支持，同时移除Nginx的SPDY模块。OK，看明白了之后，剩下的工作就简单了，升级Nginx，开启HTTP/2。
 
 挂着小站的服务器上跑着的Nginx一直是Nginx1.8.x，看了一眼conf文件，没有SPDY的参数设置，可以平滑升级到1.9.x了。由于Nginx1.9发布在mainline上，如果想采用`apt`升级，还需要配置下source源。先安装Nginx的apt源的签名[key](http://nginx.org/keys/nginx_signing.key)，把key添加进apt源。
 ```bash
@@ -87,7 +87,7 @@ ERR_SPDY_INADEQUATE_TRANSPORT_SECURITY
 ssl_ciphers 'kEECDH+ECDSA+AES128 kEECDH+ECDSA+AES256 kEECDH+AES128 kEECDH+AES256 kEDH+AES128 kEDH+AES256 DES-CBC3-SHA +SHA !aNULL !eNULL !LOW !kECDH !DSS !MD5 !EXP !PSK !SRP !CAMELLIA !SEED';
 ```
 好了，小站顺利打开，检查下是否走的HTTP/2
-![](http://7xs161.com1.z0.glb.clouddn.com/isudox-enable-http-2-on-nginx-1.png)
+![](https://i.imgur.com/U8yLEgH.png)
 在protocol栏看到协议已经是h2了，表明开启HTTP/2成功。
 
 对本站的小幅改进就到这里完工了。计划下周在工作之余，一锅乱炖HTTP/1.1和HTTP/2，一直以来对HTTP协议这块的认识很欠缺，论一个Web开发者的自我修养……

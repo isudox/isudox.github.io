@@ -8,7 +8,7 @@ subtitle: sudoz's blog
 description: 快去搬砖啦
 author: sudoz
 avatar: /images/avatar.jpg
-language: zh-Hans
+language: en
 timezone: Asia/Shanghai
 
 # URL
@@ -99,4 +99,4 @@ swiftype_key: bDJ1BXjgkwVZSrnkzynx
 # google_analytics: 67443010-1
 
 # Baidu analytics
-baidu_analytics: 416f859610dfc2db62c90f5d33de2fdd
+# baidu_analytics: 416f859610dfc2db62c90f5d33de2fdd
