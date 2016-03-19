@@ -5,10 +5,10 @@
 # Site
 title: I sudo X
 subtitle: sudoz's blog
-description: Welcome here.
+description: 快去搬砖啦
 author: sudoz
 avatar: /images/avatar.jpg
-language: en
+language: zh-Hans
 timezone: Asia/Shanghai
 
 # URL
@@ -26,7 +26,7 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render:
+skip_render: README.md
 
 # Writing
 new_post_name: :year-:month-:day-:title.md # File name of new posts
