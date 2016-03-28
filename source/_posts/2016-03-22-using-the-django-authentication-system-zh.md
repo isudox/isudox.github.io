@@ -1,5 +1,5 @@
 ---
-title: 【译】使用 Django 认证系统
+title: '[译] 使用 Django 认证系统'
 date: 2016-03-22 22:31:20
 tags:
 - Django
