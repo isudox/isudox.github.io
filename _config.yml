@@ -61,6 +61,18 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
+# record count
+index_generator:
+  per_page: 10
+
+archive_generator:
+  per_page: 20
+  yearly: true
+  monthly: true
+
+tag_generator:
+  per_page: 10
+
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/

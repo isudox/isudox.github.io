@@ -7,6 +7,8 @@ tags: HHKB
 
 > It's to keyboards what Leica is to cameras; what Rimowa is to luggage; what Moleskine is to notebooks; what Rolls Royce is to cars; what Grey Goose is to vodka. Or at least, that’s the reputation it carries. If someone is discussing the “best mechanical keyboard”, it will be mentioned right away.
 
+<!-- more -->
+
 ### 流水账
 上面这段引文里指的键盘究竟是什么？当然是本文的主角啦——HHKB。
 
