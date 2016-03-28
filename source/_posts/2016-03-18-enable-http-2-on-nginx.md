@@ -1,15 +1,15 @@
 ---
-title: Nginx启用HTTP/2
+title: Nginx 启用 HTTP/2
 date: 2016-03-18 16:53:47
 tags:
 - HTTP
 - Nginx
 categories: Web
 ---
-今天上班偷闲逛v站时感受到了一阵强烈的安利风，好像所有个人站都已经从HTTP/1.1升级到了HTTP/2。呵呵，跟风也要讲基本法！立即着手升级工作。
-上Google搜索关键字，才知道自己已经滞后了6个月，Nginx从1.9.5版本开始已经加入了对HTTP/2的官方支持[Nginx Open Source 1.9.5 Released with HTTP/2 Support](https://www.nginx.com/blog/nginx-1-9-5/)。这篇文章里也提到了Nginx从1.9.5开始，会停止对SPDY的支持，同时移除Nginx的SPDY模块。OK，看明白了之后，剩下的工作就简单了，升级Nginx，开启HTTP/2。
+今天上班偷闲逛v站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。
+上Google搜索关键字，才知道自己已经滞后了6个月，Nginx从1.9.5版本开始已经加入了对HTTP/2的官方支持[Nginx Open Source 1.9.5 Released with HTTP/2 Support](https://www.nginx.com/blog/nginx-1-9-5/)。这篇文章里也提到了Nginx从1.9.5开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级Nginx，开启HTTP/2。
 
-挂着小站的服务器上跑着的Nginx一直是Nginx1.8.x，看了一眼conf文件，没有SPDY的参数设置，可以平滑升级到1.9.x了。由于Nginx1.9发布在mainline上，如果想采用`apt`升级，还需要配置下source源。先安装Nginx的apt源的签名[key](http://nginx.org/keys/nginx_signing.key)，把key添加进apt源。
+挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼conf文件，没有SPDY的参数设置，可以平滑升级到1.9.x了。由于Nginx1.9发布在mainline上，如果想采用`apt`升级，还需要配置下source源。先安装Nginx的apt源的签名[key](http://nginx.org/keys/nginx_signing.key)，把key添加进apt源。
 ```bash
 sudo apt-key add nginx_signing.key
 ```
