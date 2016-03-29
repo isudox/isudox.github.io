@@ -79,7 +79,7 @@ server {
     }
 }
 ```
-改造的同时，我顺便把SSL证书换成StartSSL。重新载入Nginx配置`sudo service nginx reload`。迫不及待的打开小站测试，然后呵呵哒，Chrome返回not available的错误信息
+改造的同时，我顺便把SSL证书换成Comodo PositiveSSL。重新载入Nginx配置`sudo service nginx reload`。迫不及待的打开小站测试，然后呵呵哒，Chrome返回not available的错误信息
 ```
 This webpage is not available
 ERR_SPDY_INADEQUATE_TRANSPORT_SECURITY

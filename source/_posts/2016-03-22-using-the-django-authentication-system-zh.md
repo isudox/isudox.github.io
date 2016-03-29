@@ -25,7 +25,7 @@ Django 认证系统提供认证和授权功能，由于两部分功能有耦合�
 - [first_name](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User.first_name)
 - [last_name](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User.last_name)
 
-全面的参考请阅读[完整 API 文档](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User)，下文更偏向业务导向。
+全面的参考请阅读[完整 API 文档](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User)，下文更偏业务导向。
 
 ### 创建 users
 
