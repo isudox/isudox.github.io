@@ -120,3 +120,21 @@ myuser.user_permissions.clear()
 **********************************************
 ### 组
 **[django.contrib.auth.models.Group](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.Group)** model 是用户分类的通用方式，通过它可以应用权限或其他标签到用户上。一个用户可以归属于任意数量的组。
+组内的用户会自动获得组的权限。比如说，网站编辑组拥有编辑首页的权限，那么该组所有用户都有这个权限。
+除了权限外，组还提供了便利的方法去给用户贴标签和扩展功能。比如，你可以创建 Special users 用户组，然后编写代码赋予他们站点会员权限，或者发送会员专属邮件。
+**********************************************
+### 编程创建权限
+尽管在模型的 **Meta** 类里可以自定义权限，你也可以直接定义权限。比如在 **myapp** 的 **BlogPost** 模型里创建 **can_publish** 权限：
+``` python
+from myapp.models import BlogPost
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+
+content_type = ContentType.objects.get_for_model(BlogPost)
+permission = Permission.objects.create(codename='can_publish',
+                                       name='Can Publish Posts',
+                                       content_type=content_type)
+```
+这个权限可以通过 **user_permissions** 属性分配给一个 **User** 或通过 **permissions** 属性分配给组。
+**********************************************
+### 权限缓存
