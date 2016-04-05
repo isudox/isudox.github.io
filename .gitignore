@@ -83,3 +83,4 @@ public/
 .deploy*/
 # themes
 themes/
+.vscode/
