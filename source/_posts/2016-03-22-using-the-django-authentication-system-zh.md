@@ -138,3 +138,43 @@ permission = Permission.objects.create(codename='can_publish',
 这个权限可以通过 **user_permissions** 属性分配给一个 **User** 或通过 **permissions** 属性分配给组。
 **********************************************
 ### 权限缓存
+**[ModelBackend](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.backends.ModelBackend)** 在首次访问 User 对象以检查权限时，缓存了它们的权限。这对于“请求-响应”循环中权限并不是在添加后立即被检查的情况是比较合适的。如果你正在添加权限，而且随即要在测试或视图里进行检查，，最简单的方法就是从数据库中重新获取 **User** 对象，举例如下：
+``` python
+from django.contrib.auth.models import Permission, User
+from django.shortcuts import get_object_or_404
+
+def user_gains_perms(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    # any permission check will cache the current set of permissions
+    user.has_perm('myapp.change_bar')
+
+    permission = Permission.objects.get(codename='change_bar')
+    user.user_permissions.add(permission)
+
+    # Checking the cached permission set
+    user.has_perm('myapp.change_bar')  # False
+
+    # Request new instance of User
+    user = get_object_or_404(User, pk=user_id)
+
+    # Permission cache is repopulated from the database
+    user.has_perm('myapp.change_bar')  # True
+
+    # ......
+```
+
+## 在 Web 请求中认证
+
+Django 使用 [sessions](https://docs.djangoproject.com/en/1.9/topics/http/sessions/) 和 middleware 使认证系统拦截 **[request 对象](https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest)**。
+每个 request 请求都内置一个代表当前 user 的 [request.user](https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest.user) 属性。如果当前 user 并未登录，该属性就会被设为 [AnonymousUser](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.AnonymousUser) 实例，反之则设置为 [User](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User) 实例。
+可以通过 [is_authenticated](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User.is_authenticated) 对两者进行区分：
+``` Python
+if request.user.is_authenticated():
+    # Do something for authenticated users.
+    # ...
+else:
+    # Do something for anonymous users.
+    # ...
+```
+
+### 如何登录用户
