@@ -7,7 +7,7 @@ categories:
 - Translation
 ---
 
-> 译自 [Django Documentation](https://docs.djangoproject.com/en/1.9/topics/auth/default/)，版本1.9。没有逐字逐句翻译，啰嗦的内容都省去了。
+> 译自 [Django Documentation](https://docs.djangoproject.com/en/1.9/topics/auth/default/)，版本1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译无侵权。
 
 <!-- more -->
 
