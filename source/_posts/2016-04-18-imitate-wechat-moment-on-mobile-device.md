@@ -14,7 +14,7 @@ categories: Coding
 
 ### 前端
 
-在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 (WebUploader)[http://fex.baidu.com/webuploader/mv] 组件，或者 [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload)，再久远些还有一些 Flash 的文件上传工具，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像微信一次上传多张
+在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 [WebUploader](http://fex.baidu.com/webuploader/mv) 组件，或者 [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload)，再久远些还有一些 Flash 的文件上传工具，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像微信一次上传多张
 
 ### 后端
 
