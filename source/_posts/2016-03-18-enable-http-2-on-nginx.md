@@ -7,20 +7,20 @@ tags:
 categories: Web
 ---
 今天上班偷闲逛v站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。
-上Google搜索关键字，才知道自己已经滞后了6个月，Nginx从1.9.5版本开始已经加入了对HTTP/2的官方支持[Nginx Open Source 1.9.5 Released with HTTP/2 Support](https://www.nginx.com/blog/nginx-1-9-5/)。这篇文章里也提到了Nginx从1.9.5开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级Nginx，开启HTTP/2。
+上 Google 搜索关键字，才知道自己已经滞后了6个月，Nginx 从1.9.5版本开始已经加入了对 HTTP/2 的官方支持[Nginx Open Source 1.9.5 Released with HTTP/2 Support](https://www.nginx.com/blog/nginx-1-9-5/)。这篇文章里也提到了Nginx从1.9.5开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级 Nginx，开启 HTTP/2。
 
 <!-- more -->
 
-挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼conf文件，没有SPDY的参数设置，可以平滑升级到1.9.x了。由于Nginx1.9发布在mainline上，如果想采用`apt`升级，还需要配置下source源。先安装Nginx的apt源的签名[key](http://nginx.org/keys/nginx_signing.key)，把key添加进apt源。
+挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼conf文件，没有 SPDY 的参数设置，可以平滑升级到1.9.x了。由于 Nginx1.9 发布在 mainline 上，如果想采用 `apt` 方式升级，还需要配置下 source 源。先安装Nginx的apt源的签名[key](http://nginx.org/keys/nginx_signing.key)，把 key 添加进 apt 源。
 ```bash
 sudo apt-key add nginx_signing.key
 ```
-修改`/etc/apt/sources.list`，在文件后追加nginx mainline的deb包源和deb-src源
+修改`/etc/apt/sources.list`，在文件后追加 nginx mainline 的 deb 包源和 deb-src 源
 ```bash
 deb http://nginx.org/packages/mainline/ubuntu/ codename nginx
 deb-src http://nginx.org/packages/mainline/ubuntu/ codename nginx
 ```
-此处的`codename`是系统版本的别称，比如我的服务器系统版本是Ubuntu 14.04 LTS，别名是`trusty`，`codename`即为`trusty`。更新系统，Nginx顺利升级到1.9.12
+此处的 `codename` 是系统版本的别称，比如我的服务器系统版本是 Ubuntu 14.04 LTS，别名是 `trusty`，`codename` 即为 `trusty`。更新系统，Nginx 顺利升级到1.9.12
 ```bash
 nginx -V
 nginx version: nginx/1.9.12
