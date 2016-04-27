@@ -25,6 +25,44 @@ categories: Coding
 但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道在 input 标签里加入 multiple 参数是可以控制多选文件的，这在 PC 和 iOS上都兼容，但 Android 却不支持，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。
 
 关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。
+``` html
+<!-- 图片添加按钮 -->
+<ul id="previewer" class="upload-list">
+    <li id="select-image" class="add-pic-btn"><a href="javascript:;" onclick="clickBrowse();">+</a></li>
+    <!-- 预览列表 -->
+</ul>
+<!-- 隐藏的 input -->
+<input type="file" id="browsefile" name="imageselect" style="visibility: hidden" accept="image/*" capture="camera">
+```
+其中 clickBrowse() 方法为监听 input 标签 change 事件的函数。
+```javascript
+// footprint-add.js
+$(function () {
+    if (window.File && window.FileReader && window.FormData) {
+        log("支持File对象");
+        var inputFiled = $('#browsefile');
+        inputFiled.on('change', function (e) {
+            log("有添加动作");
+            if (imageIndex == 9) {
+                // 如果已经预选了9张，则不再添加
+                mTips.show('最多添加9张图片哦', 2000);
+                return;
+            }
+            var images = e.target.files;
+            var count = images.length;  // 图片数量
+            for (var i = 0; i < count; i++) {
+                var image = e.target.files[i];
+                if (image) {
+                    if (!/\/(?:jpeg|jpg|png)/i.test(image.type)) {
+                        return;
+                    }
+                    readFile(image);  // 读取图片
+                }
+            }
+        })
+    }
+})
+```
 
 #### FileReader
 

@@ -1,5 +1,5 @@
 ---
-title: Hexo Your Blog
+title: 搭建 Hexo 站点
 date: 2015-09-03 00:19:38
 categories:
 - Coding
@@ -42,7 +42,7 @@ Google一下关键字Hexo+Blog，或者直接查看Hexo官方[文档](http://hex
 我在VPS上测试过两种方案，其一为在VPS上也搭建Hexo环境，同时创建一个Git裸仓库作为私有Git服务器，本地提交Hexo的源文件，然后VPS生成Hexo静态文件并部署发布Web路径下；其二是创建的Git裸仓库提交Hexo生成文件，VPS直接将其部署到Web路径下。前者徒增VPS的压力，后者弄脏Git日志，各有长短。两种方案我都测试通过，目前选用的方案二。
 GitHub提供`GitHub Pages`服务，原意是用来给开发者发布器在GitHub上项目的文档及说明，当然也可以作为开发者的个人站点使用。如果是创建`<username>.github.io`仓库，GitHub会将其`master`分支下的内容作为站点文件发布；如果是创建其他自定义名称的仓库，GitHub将以`gh-page`分支作为站点文件。
 
-创建新用户git
+创建新用户 git，在服务器上创建 git server 请参考 git [官方文档](https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server)
 ```bash
 $ sudo adduser git
 $ git init --bare <your_repo>.git
@@ -54,12 +54,16 @@ $ git clone <your_repo>.git
 
 其中`post-receive`为Git Hook，Git通过该脚本实现本地提交改动后自动发布更新
 ```bash
-    #!/bin/bash -l
+#!/bin/bash -l
 
-    PUBLIC_WWW=<path_to_your_blog>
-    cd $PUBLIC_WWW
-    env -i git reset --hard
-    env -i git pull
+GIT_REPO=/home/git/isudox-hexo.git
+GIT_TEMP=/home/git/repo/isudox-hexo
+WWW_HEXO=/home/git/www/isudox-hexo
+
+rm -rf ${GIT_TEMP}
+git clone $GIT_REPO $GIT_TEMP
+rm -rf ${WWW_HEXO}/*
+cp -rf ${GIT_TEMP}/* ${WWW_HEXO}
 ```
 
 原理很简单，VPS上的Git仓库一旦接收到`push`，便会触发`post-receive`脚本，进入Blog根目录，执行更新发布任务。
