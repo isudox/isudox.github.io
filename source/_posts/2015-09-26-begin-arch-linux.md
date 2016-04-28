@@ -1,5 +1,5 @@
 ---
-title: Begin Arch Linux
+title: 开启 Arch 之旅
 date: 2015-09-26 18:02:05
 categories:
 - Linux
