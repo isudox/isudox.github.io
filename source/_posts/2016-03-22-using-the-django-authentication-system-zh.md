@@ -178,3 +178,9 @@ else:
 ```
 
 ### 如何登录用户
+
+如果想把已授权的用户绑定进当前会话中，[login()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.login) 方法可以实现。
+
+login（request, user）[[source](https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/#login)]
+使用 [login()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.login) 从 view 中登录用户。它接收一个 [HttpRequest](https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest) 对象和一个 [User](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User) 对象。login() 方法会通过 Django 的 session 框架在当前 session 里保存该登录用户的 id。
+注意，任何在匿名会话中设置的数据都会保留在用户登入后的会话中。

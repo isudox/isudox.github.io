@@ -61,6 +61,14 @@ class Solution(object):
 OJ 结果：
 
 | Status | Run Time | Language |
-| ------ |:--------:|:--------:|
+|:--------:|:--------:|:--------:|
 | Accepted |  62 ms | java |
 | Accepted |  44 ms | python |
+
+### Add Two Numbers
+
+第二题 [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+
+> 给定两个链表(linked list)，以倒序表示正整数。将两数求和并返回该和的链表形式。
+> **Input:** (2 -> 4 -> 3) + (5 -> 6 -> 4)
+> **Output:** 7 -> 0 -> 8
