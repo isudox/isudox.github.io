@@ -1,11 +1,11 @@
 ---
 title: 移动端仿微信朋友圈发布图文
 date: 2016-04-18 19:55:14
-tags: Canvas
+tags: [Canvas,HTML5]
 categories: Coding
 ---
 
-最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都遇到了一些坑，其中有些经过还是很值得记录下来。
+最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。
 
 <!-- more -->
 
@@ -22,10 +22,10 @@ categories: Coding
 ``` html
 <input type="file" name="file" accept="image/*" capture="camera">
 ```
-但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道在 input 标签里加入 multiple 参数是可以控制多选文件的，这在 PC 和 iOS上都兼容，但 Android 却不支持，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。
+但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。
 
 关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。
-``` html
+```html
 <!-- 图片添加按钮 -->
 <ul id="previewer" class="upload-list">
     <li id="select-image" class="add-pic-btn"><a href="javascript:;" onclick="clickBrowse();">+</a></li>
@@ -34,9 +34,16 @@ categories: Coding
 <!-- 隐藏的 input -->
 <input type="file" id="browsefile" name="imageselect" style="visibility: hidden" accept="image/*" capture="camera">
 ```
-其中 clickBrowse() 方法为监听 input 标签 change 事件的函数。
+
 ```javascript
-// footprint-add.js
+/* footprint-add.js */
+
+// 自定义图片添加按钮的click事件
+function clickBrowse() {
+    log("点击添加");
+    $('#browsefile').click();
+}
+
 $(function () {
     if (window.File && window.FileReader && window.FormData) {
         log("支持File对象");
@@ -63,8 +70,63 @@ $(function () {
     }
 })
 ```
+其中 clickBrowse() 方法为监听 input 标签 change 事件的方法。另外参照了微信朋友圈的做法，图片数量限制为 9 张。上面代码里最终的一步就是 readFile() 方法，它实现了对相册和摄像头图片的读取和处理。ReadFile() 调用了 HTML5 的 [FileReader API](https://developer.mozilla.org/en-US/docs/Web/API/FileReader)，接下来的小节就具体说说 HTML5 的 FileReader。
 
 #### FileReader
+
+在具体展开讲 FileReader 之前，得先了解在 Web 中使用 [File](https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications) 接口，MDN 的这篇文章详细介绍了如何在 Web 应用中使用 File 接口。简言之，File API 提供了在 Web 应用中对文件对象的抽象功能，对于 type="file" 的 input 标签，所选的文件被抽象为 [FileList](https://developer.mozilla.org/en-US/docs/Web/API/FileList) 对象，可以像数组一样去调用 FileList 中的 File 对象。其中，File 对象中的属性主要有：
+
+- name: 当前File对象所引用文件的文件名，不包含任何路径信息，只读
+- size: 当前File对象所引用文件的文件大小，单位为字节，只读
+- type: 当前File对象所引用文件的文件类型(MIME类型)，如果类型未知,则返回空字符串，只读
+
+对照上一节贴出来的代码，程序里调用了 File 接口获取 File 对象，并将 File 对象传递给 readFile() 方法，由 FileReader 读取 File 对象。
+参考 MDN 的权威解释，FileReader 可以异步的读取存储在用户计算机上的文件（或原始数据缓存）内容。创建 FileReader 对象的方法就是 new 一个对象出来：
+
+```javascript
+var reader = new FileReader();
+```
+
+FileReader 读取文件内容的方法有：
+
+- abort(): 中止该读取操作。在返回时，eadyState 属性的值为 DONE
+- readAsArrayBuffer(): 开始读取指定的 Blob 对象或 File 对象中的内容。当读取操作完成时，readyState 属性的值会成为 DONE，如果设置了 onloadend 事件处理程序，则调用之。同时，result 属性中将包含一个 ArrayBuffer 对象以表示所读取文件的内容
+- readAsBinaryString(): 当读取操作完成时，readyState 属性的值会成为 DONE。同时，result 属性中将包含所读取文件的原始二进制数据
+- readAsDataURL(): 当读取操作完成时，readyState 属性的值会成为 DONE。同时，result 属性中将包含一个data: URL格式的字符串以表示所读取文件的内容
+- readAsText(): 当读取操作完成时,readyState 属性的值会成为 DONE。同时，result属性中将包含一个字符串以表示所读取的文件内容
+
+FileReader 有如下事件处理标识：
+- onabort: 当读取操作被中止时调用
+- onerror: 当读取操作发生错误时调用
+- onload: 当读取操作成功完成时调用
+- onloadend: 当读取操作完成时调用,不管是成功还是失败.该处理程序在onload或者onerror之后调用
+- onloadstart: 当读取操作将要开始之前调用
+- onprogress: 在读取数据过程中周期性调用
+
+```javascript
+function readFile(image) {
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        var previewer = $('#previewer');
+        var src = this.result;  // base64
+        previewer.append('<li><img src="' + src + '" alt=""><i class="remove"></i></li>');
+        // 清除图片上传input的值
+        $('#browsefile').val("");
+        // 对图片进行本地Canvas处理
+        processFile(reader.result, image.type);
+    };
+    reader.onerror = function () {
+        log('读取图片异常');
+    };
+    reader.readAsDataURL(image);
+}
+```
+
+上面贴出的 readFile() 方法中，创建了 FileReader 对象对入参 File 对象（图片文件）进行处理，调用 readAsDataUrl() 方法获取 File 的 base64 字符串。在读取操作完成时，执行自定义的操作，我的程序里做了图片预览和Canvas处理。
+
+#### Canvas
+
+#### FormData
 
 ### 后端
 
