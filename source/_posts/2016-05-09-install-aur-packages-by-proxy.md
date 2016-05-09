@@ -1,7 +1,7 @@
 ---
 title: 通过代理安装 AUR 软件包
 date: 2016-05-09 23:27:07
-tags: [Arch, Proxy]
+tags: [Arch,Proxy]
 categories: [Linux]
 ---
 
