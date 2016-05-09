@@ -72,3 +72,48 @@ OJ 结果：
 > 给定两个链表(linked list)，以倒序表示正整数。将两数求和并返回该和的链表形式。
 > **Input:** (2 -> 4 -> 3) + (5 -> 6 -> 4)
 > **Output:** 7 -> 0 -> 8
+
+这道题有点拗口，简单解释下题意：用链表表示非负整数，整数的每一位用倒序存储在链表的节点中，例如 342 用链表形式存储则为 2 -> 4 -> 3，给出两个链表表示的正整数，求两数加和的链表形式。
+
+这道题有坑！刚开始解题时并没有把各种可能的情况考虑到，提交两次都被驳回。下面我把我的解法从最开始被拒绝的草稿到最后被接受的过程完整写下来。先抛开诡异的情况，只考虑最主干的思路，把算法的骨架码出来。
+涉及到链表，其实下意识的就能联想到链式反应，这在算法里对应的就是递归。我的思路是尝试把链表递归还原成整数，然后再把求和的整数转化成链表。
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int num1 = listNode2Num(l1);
+        int num2 = listNode2Num(l2);
+        int sum = num1 + num2;
+
+        return num2ListNode(sum);
+    }
+
+    public int listNode2Num(ListNode listNode) {
+        if (listNode == null) {
+            return 0;
+        }
+
+        return listNode.val + listNode2Num(listNode.next) * 10;
+    }
+
+    public ListNode num2ListNode(int num) {
+        ListNode listNode = new ListNode(0);
+        if (num == 0) {
+            return null;
+        }
+
+        listNode.val = num % 10;
+        listNode.next = num2ListNode(num / 10);
+
+        return listNode;
+    }
+}
+```
