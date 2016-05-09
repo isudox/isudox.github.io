@@ -1,8 +1,8 @@
 ---
 title: String, StringBuilder, StringBuffer 区别
 date: 2016-02-17 15:22:01
-tags: Java
-categories: Coding
+tags: [Java]
+categories: [Coding]
 ---
 今天下午浏览代码时看到 IDEA 给出了一段提示：
 StringBuffer variables may be declared as StringBuilder.

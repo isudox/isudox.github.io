@@ -40,7 +40,7 @@ sha256sums=('5074b59ddaca5525eb48098dee6fe63013799cbc77749add314b9e1bc894b8f4'
 
 prepare() {
   cd "atom-$pkgver"
-  
+
   patch -Np0 -i "$srcdir/package.patch"
 
   sed -i -e "/exception-reporting/d" \
@@ -106,6 +106,8 @@ curl -h
 ![Imgur](https://i.imgur.com/lnnrhqt.png)
 
 大功告成！
+
+![Imgur](https://i.imgur.com/1tI4gsX.png)
 
 当然，如果想自定义下载工具也是没问题的，比如 axel 就是很好的替代选择，可以制定多线程下载，速度非常快。
 

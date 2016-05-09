@@ -1,8 +1,8 @@
 ---
 title: 阿里大鱼短信 SDK 迁移到 Python 3.x
 date: 2016-02-02 11:05:24
-tags: Python
-categories: Coding
+tags: [Python]
+categories: [Coding]
 ---
 近期课余时间开发一个基于`Django`的RESTful Web Service，需要接入短信验证发送功能，比较之后选定[阿里大鱼](http://www.alidayu.com/)的解决方案。
 

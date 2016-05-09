@@ -1,8 +1,8 @@
 ---
 title: LeetCode 第一周
 date: 2015-11-23 20:50:27
-tags: LeetCode
-categories: Coding
+tags: [LeetCode]
+categories: [Coding, Algorithm]
 ---
 
 上学时零零碎碎上 [LeetCode](https://leetcode.com/) 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。

@@ -1,17 +1,14 @@
 ---
 title: 开启 Arch 之旅
 date: 2015-09-26 18:02:05
-categories:
-- Linux
-tags:
-- Linux
-- Arch
+categories: [Linux]
+tags: [Linux,Arch]
 ---
-iPhone 6S都发布，仍然用着刚上大学那会买的笔记本，cry...
+iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry...
 
 最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而言，这不啻一个新的玩点。
 
-在[V2EX](https://www.v2ex.com/)上混的时候，被多次安利[Arch Linux](https://www.archlinux.org)，传闻中的K.I.S.S风格，滚动升级，业界良心的Wiki，强大的社区支持，让常在Linux下搬砖的我心生向往。于是就在别人轻抚刚发货的iPhone 6S的夜晚，开始第N+1次折腾。
+在 [V2EX](https://www.v2ex.com/) 上混的时候，被多次安利 [Arch Linux](https://www.archlinux.org)，传闻中的 K.I.S.S 风格，滚动升级，业界良心的 Wiki，强大的社区支持，让常在 Linux 下搬砖的我心生向往。于是就在别人轻抚刚发货的 iPhone 6S 的夜晚，开始第 N + 1 次折腾。
 
 故事就在这样一个夜晚发生了...
 
@@ -19,11 +16,11 @@ iPhone 6S都发布，仍然用着刚上大学那会买的笔记本，cry...
 
 ### 准备工作
 
-Arch的镜像很小，仅不到700M，由于光驱已经退役，因此就用了U盘做启动。在Linux下用`dd`命令就可以将iso镜像烧写进U盘：
+Arch 的镜像很小，仅不到 700M，由于光驱已经退役，因此就用了 U 盘做启动。在 Linux 下用 `dd` 命令就可以将镜像文件烧写进 U 盘：
 ```sh
 $ dd bs=4M if=/path_archlinux.iso of=/dev/sdx && sync
 ```
-其中`sdx`为`/dev`下挂载的U盘文件符。几页书的时间，烧写完毕，准备工作就绪！
+其中`sdx`为`/dev`下挂载的 U 盘文件符。几页书的时间，烧写完毕，准备工作就绪！
 
 ### 躁起来吧，骚年
 

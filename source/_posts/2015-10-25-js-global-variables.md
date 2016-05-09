@@ -1,11 +1,8 @@
 ---
 title: 小记 JavaScript 全局变量的一些思考
 date: 2015-10-25 19:37:47
-tags:
-- JavaScript
-- Front
-categories:
-- Coding
+tags: [JavaScript, FE]
+categories: [Coding]
 ---
 毕业来 JD 后完成的第一个任务是写选号中心的前端。由于和 PM 没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用 `JavaScript` 全局变量，带来便利的同时也有意想不到的坑，更不应滥用，很多时候全局变量并不是一个好选择。
 
