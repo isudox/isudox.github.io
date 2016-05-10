@@ -4,17 +4,17 @@ date: 2016-02-02 11:05:24
 tags: [Python]
 categories: [Coding]
 ---
-近期课余时间开发一个基于`Django`的RESTful Web Service，需要接入短信验证发送功能，比较之后选定[阿里大鱼](http://www.alidayu.com/)的解决方案。
+近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定[阿里大鱼](http://www.alidayu.com/)的解决方案。
 
-然而，选Python作为技术栈的悲催之处在于，虽然Python的第三方库和生态很强大，但是就国内的开发圈而言，Python是一个相对小众的流派，又由于Python 2.x和Python 3.x的分化，许多第三方库并没有跟进Python 3，导致很多时候用Python会有些捉襟见肘，尤其是像我这种野路子的Python开发。
+然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python 3，导致很多时候用 Python 会有些捉襟见肘，尤其是像我这种野路子的 Python 开发。
 
 <!-- more -->
 
-比如阿里大鱼的短信方案，虽然相比其他厂商很良心的在`PHP`、`Java`版SDK之外，友情附赠了`Python`版，但集成进`Django`工程并debug后，真是握了棵草，它是基于Python 2.x开发的，翻了下开发包源码文件，署名为“lihao”的这位阿里同学是在2012年更新的源码，这竟是一份蒙尘多年的代码啊，当时我的内心是奔溃的……
+比如阿里大鱼的短信方案，虽然相比其他厂商很良心的在 PHP 、 Java 版 SDK 之外，友情附赠了 Python 版，但集成进 Django 工程并 debug 后，真是握了棵草，它是基于 Python 2.x 开发的，翻了下开发包源码文件，署名为 “lihao” 的这位阿里同学是在 2012 年更新的源码，这竟是一份蒙尘多年的代码啊，当时我的内心是奔溃的……
 
 > 自己动手，丰衣足食。——《毛选》
 
-阿里大鱼短信开发包的源码并不复杂，来来去去无非一些request，response和string的处理，底层都是在阿里服务端api里实现的，短信包只是提供api调用、处理功能，因此迁移工作倒也不是很令人拙计。下面就把我填的坑一一道来（难免有遗忘和疏漏，见谅）——
+阿里大鱼短信开发包的源码并不复杂，来来去去无非一些 request，response 和 string 的处理，底层都是在阿里服务端 api 里实现的，短信包只是提供 api 调用、处理功能，因此迁移工作倒也不是很令人拙计。下面就把我填的坑一一道来（难免有遗忘和疏漏，见谅）——
 
 #### 一号坑
 
@@ -24,12 +24,12 @@ keys = parameters.keys()
 ```
 不出所料的话，控制台会输出
 `>>>TypeError: 'dict_keys' object does not support indexing`
-这是一大坑，在Python 3.x里，`dict.keys()`, `dict.values()`和`dict.items()`是返回一个`dict_keys`对象（dict_keys不支持indexing），而不是Python 2.x那样返回一个`list`。因此最简单的迁移方法就是显式调用list()处理，
+这是一大坑，在 Python 3.x 里，`dict.keys()`, `dict.values()` 和 `dict.items()` 是返回一个 `dict_keys` 对象（dict_keys 不支持 indexing），而不是 Python 2.x 那样返回一个 `list`。因此最简单的迁移方法就是显式调用 `list()` 处理，
 ```python
 # 如果parameters是字典类
 keys = list(parameters.keys())
 ```
-但实际上，这种处理办法并不是最优解，可参考[Watch out for list(dict.keys()) in Python 3](http://blog.labix.org/2008/06/27/watch-out-for-listdictkeys-in-python-3)
+但实际上，这种处理办法并不是最优解，可参考 [Watch out for list(dict.keys()) in Python 3](http://blog.labix.org/2008/06/27/watch-out-for-listdictkeys-in-python-3)
 
 #### 二号坑
 
@@ -38,11 +38,11 @@ sign = hashlib.md5(parameters).hexdigest().upper()
 ```
 哈哈，控制台会报如下错
 `>>>Python hashlib problem “TypeError: Unicode-objects must be encoded before hashing”`
-言简意赅，debug信息已经给出了解决方案，上述代码中的parameters参数必须先encoded后才能hash。So easy!
+言简意赅，debug 信息已经给出了解决方案，上述代码中的 parameters 参数必须先 encoded 后才能 hash。So easy!
 ```python
 sign = hashlib.md5(parameters.encode('utf8')).hexdigest().upper()
 ```
-utf-8转码后就没问题了，一个赛艇！
+utf-8 转码后就没问题了，一个赛艇！
 
 #### 三号坑
 
@@ -54,7 +54,7 @@ elif (isinstance(pstr, unicode)):
 ```
 运行后的错误信息：
 `>>>NameError: global name 'unicode' is not defined`
-Python 3.x把`unicode`类型改名为`str`，而原来Python 2.x下的`str`类型被`bytes`替代。所以解决办法就是按Python 3.x的定义来
+Python 3.x 把 `unicode` 类型改名为 `str`，而原来 Python 2.x 下的 `str` 类型被 `bytes` 替代。所以解决办法就是按 Python 3.x 的定义来
 ```python
 if (isinstance(pstr, bytes)):
     return pstr
@@ -67,16 +67,16 @@ elif (isinstance(pstr, str)):
 ```python
 connection = httplib.HTTPConnection(self.__domain, self.__port, False, timeout)
 ```
-这里需要注意的地方有两处，Python 2.x的httplib包的import路径为
+这里需要注意的地方有两处，Python 2.x 的 httplib 包的 import 路径为
 `import httplib`
-在Python 3.x里的import路径则是：
+在 Python 3.x 里的 import 路径则是：
 `import http.client as httplib`
-还有一处注意点是，在更改了包路径后，httplib.HTTPConnection(httplib.HTTPConnection()的参数也发生了变化，
-Python 2.x中该接口为
+还有一处注意点是，在更改了包路径后，httplib.HTTPConnection(httplib.HTTPConnection() 的参数也发生了变化，
+Python 2.x 中该接口为
 `httplib.HTTPConnection(host[, port[, strict[, timeout[, source_address]]]])`
-其中，strict默认为False，而Python 3.x里该接口则修改成
+其中，strict 默认为 False，而 Python 3.x 里该接口则修改成
 `httplib.HTTPConnection(self, host, port=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, source_address=None）`
-很显然，阿里源码里的传参是参照Python 2.x的写法，对照Python 3.x接口改过来便是
+很显然，阿里源码里的传参是按照 Python 2.x 的写法，对照 Python 3.x 接口改过来便是
 ```python
 connection = httplib.HTTPConnection(self.__domain, self.__port, timeout)
 ```
@@ -87,7 +87,7 @@ connection = httplib.HTTPConnection(self.__domain, self.__port, timeout)
 P_TIMESTAMP: str(long(time.time() * 1000))
 ```
 `>>>NameError: name 'long' is not defined`
-Python 3.x已经将Python 2.x中的`int`和`long`型合并为`int`，因此在Python 3.x下，已经不存在`long`类型了。修改成int()即可
+Python 3.x 已经将 Python 2.x 中的 `int` 和 `long` 型合并为 `int`，因此在 Python 3.x 下，已经不存在 `long` 类型了。修改成`int()`即可
 ```python
 P_TIMESTAMP: str(int(time.time() * 1000))
 ```
@@ -97,7 +97,7 @@ P_TIMESTAMP: str(int(time.time() * 1000))
 from urllib import urlencode
 body = urllib.urlencode(application_parameter)
 ```
-Python 3.x把Python 2.x下urlencode()函数转移到了`urllib.parse`里。修改为
+Python 3.x 把 Python 2.x 下 `urlencode()` 函数转移到了 `urllib.parse` 里。修改为
 ```python
 from urllib.parse import urlencode
 body = urllib.parse.urlencode(application_parameter)
@@ -108,7 +108,7 @@ body = urllib.parse.urlencode(application_parameter)
 result = response.read()
 jsonobj = json.loads(result)
 ```
-Python 3.x里JSON只接收unicode，因此result需要转码为unicode
+Python 3.x 里 JSON 只接收 unicode，因此 result 需要转码为 unicode
 ```python
 result = response.read().decode('utf-8')
 jsonobj = json.loads(result)
@@ -121,8 +121,8 @@ for key, value in application_parameter.iteritems():
 ```
 控制台报错：
 `>>>AttributeError: 'dict' object has no attribute 'iteritems'`
-字典没有iteritems属性？原来是Python 3.x已经把`iteritems()`给移除掉了，因此不能再调用该方法。
-参考[Python Wiki](https://wiki.python.org/moin/Python3.0):
+字典没有 iteritems 属性？原来是 Python 3.x 已经把 `iteritems()` 给移除掉了，因此不能再调用该方法。
+参考 [Python Wiki](https://wiki.python.org/moin/Python3.0):
 > Remove dict.iteritems(), dict.iterkeys(), and dict.itervalues().
     Instead: use dict.items(), dict.keys(), and dict.values() respectively.
 
@@ -133,7 +133,7 @@ for key, value in application_parameter.items():
 
 Done!
 
-#### Python 3.x版本的base.py
+#### Python 3.x 版本的 base.py
 
 ```python
 # base.py

@@ -25,18 +25,18 @@ Jekyll、Hexo 和 Pelican 各有拥趸，各执一词。我不辩优劣，选 He
 
 ### How
 
-Google 一下关键字 Hexo + Blog，或者直接查看 Hexo 官方[文档](http://hexo.io/docs)，都可以对 Hexo 的搭建过程有较为清晰的认知。我设想的方案是搭建一个由 GitHub 托管，并且能在 VPS 上实时部署发布的 Blog 程序，因此整体骨架就是 Hexo + GitHub + VPS。
+Google 一下关键字 Hexo + Blog，或者直接查看 Hexo 官方[文档](http://hexo.io/docs)，都可以对 Hexo 的搭建过程有较为清晰的认知。我设想的方案是搭建一个由 GitHub 托管，并且能在 VPS 上实时发布部署的 Blog 程序，因此基本框架就是 Hexo + GitHub + VPS。
 
 ### Let's Hexo
 
 #### GitHub
 
-网上已有的 Hexo 方案基本都是将 Hexo 生成的静态文件提交至 GitHub Pages，通过 GitHub Pages 实现 Blog 的撰写及更新。但有一不足，如果换一台电脑写，难道还要将 Hexo 源文件拷贝出来？对此我的建议很简单：在 GitHub 上的以 <username>.github.io仓库里建立两个分支：一是 master 分支，保存 Hexo 生成的静态文件；另一是 source 分支，保存 Hexo 的源文件。
+网上已有的 Hexo 方案基本都是将 Hexo 生成的静态文件提交至 GitHub Pages，通过 GitHub Pages 实现 Blog 的撰写及更新。但有一不足，如果换一台电脑写，难道还要将 Hexo 源文件拷贝过来再生成静态博客？肯定不能这么做，对此我的建议很简单：在 GitHub 上的以 {username}.github.io 命名的仓库里建立两个分支：一是 master 分支，保存 Hexo 生成的静态文件；另一是 source 分支，保存 Hexo 的源文件。
 
 #### VPS
 
-我在 VPS 上测试过两种方案，其一为在 VPS 上也搭建 Hexo 环境，同时创建一个 Git 裸仓库作为私有 Git 服务器，本地提交 Hexo 的源文件，然后 VPS 生成 Hexo 静态文件并部署发布 Web 目录下；其二是创建的 Git 裸仓库提交 Hexo 生成文件，VPS 直接将其部署到 Web 目录下。前者徒增 VPS 的压力，后者使得 Git log 冗余，各有长短。两种方案我都测试通过，目前选用的方案二。
-GitHub 提供 GitHub Pages 服务，原意是用来给开发者发布器在 GitHub 上项目的文档及说明，当然也可以作为开发者的个人站点使用。如果是创建`<username>.github.io` 仓库，GitHub 会将其 master 分支下的内容作为站点文件发布；如果是创建其他自定义名称的仓库，GitHub 将以 gh-page 分支作为站点文件。
+我在 VPS 上测试过两种方案，方案一是在 VPS 上也创建 Hexo 环境，同时新建一个 Git 裸仓库作为私有 Git 服务器，本地提交 Hexo 的源文件至 VPS 上的 Git 服务器，然后 VPS 上的 Hexo 程序生成静态文件并发布部署到 Web 目录下；方案二则是本地提交 Hexo 生成文件到 Git 裸仓库，VPS 直接将其部署到 Web 目录下。前者徒增 VPS 的压力，后者使得 Git 日志冗余，各有长短。两种方案我都测试通过，最后采用方案二。
+GitHub 提供 GitHub Pages 服务，原意是用来给开发者发布器在 GitHub 上项目的文档及说明，当然也可以作为开发者的个人站点使用。如果是创建 {username}.github.io 仓库，GitHub 会将其 master 分支下的内容作为站点文件发布；如果是创建其他自定义名称的仓库，GitHub 将以 gh-page 分支作为站点文件。
 
 创建新用户 git，在服务器上创建 git server 请参考 git [官方文档](https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server)
 ```bash
@@ -68,19 +68,19 @@ cp -rf ${GIT_TEMP}/* ${WWW_HEXO}
 
 #### Local
 
-本地环境需要 Node.js 和 git，系统可以是 Win、Linux、Mac 任一，Node.js与Git 和这些操作系统都能友好相处。我的本地环境是Ubuntu 14.04，因此配置起来可谓轻松愉快——
+本地环境需要 Node.js 和 git，系统可以是 Linux | Mac | Win 任一，Node.js与Git 和这些操作系统都能友好相处。我的本地环境是 Arch Linux，因此配置起来可谓轻松愉快——
 
-安装Node.js、git
+安装 Node.js、git
 ```bash
-$ sudo apt-get install git nodejs
+$ sudo pacman -S git nodejs
 ```
 
-安装Hexo
+安装 Hexo
 ```bash
 $ sudo npm install -g hexo-cli
 ```
 
-创建本地Git仓库并提交至远端master分支
+创建本地 Git 仓库并提交至远端 Git 仓库的 master 分支
 ```bash
 echo # isudox.github.io >> README.md
 git init
@@ -91,12 +91,13 @@ git push -u origin master
 ```
 
 新建 Hexo 源文件分支 `source`
+
 ```bash
-git branch source
-git checkout source
+git checkout -b source
 ```
 
-在本地 Gitc 仓库下创建 Hexo
+在本地 Git 仓库下创建 Hexo Blog，并安装必要的 npm 包
+
 ```bash
 $ hexo init
 $ npm install
@@ -111,6 +112,7 @@ $ npm install hexo-deployer-git --save
 3. VPS 上的私有 Git 仓库 master 分支；
 
 因此需要更改 `_config` 文件中 `deploy` 字段的属性
+
 ```
 deploy:
     type: git
@@ -129,6 +131,6 @@ deploy:
 $ hexo generate --deploy
 ```
 
-打开 `http://<username>.github.io` 或者你自己绑定的域名……
+打开 http://{username}.github.io 或者你自己绑定的域名……
 
 Duang    ^______^
