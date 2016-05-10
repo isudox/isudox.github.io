@@ -1,5 +1,5 @@
 ---
-title: donors
+title: 感谢
 date: 2016-05-10 18:55:37
 type: "donors"
 comments: false
