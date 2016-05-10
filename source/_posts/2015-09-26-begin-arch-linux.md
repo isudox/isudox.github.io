@@ -24,17 +24,17 @@ $ dd bs=4M if=/path_archlinux.iso of=/dev/sdx && sync
 
 ### 躁起来吧，骚年
 
-重启选择U盘启动，U盘里的镜像文件释放展开，屏幕上显现启动列表，选择第一个x86-64进入Arch配置安装。前方没有任何图形，黑白两色的屏幕像极了窗外的夜。
+重启选择U盘启动，U盘里的镜像文件释放展开，屏幕上显现启动列表，选择第一个 x86-64 进入 Arch 配置安装。前方没有任何图形，黑白两色的屏幕像极了窗外的夜。
 
 #### 联网
-相比Debian、CentOS这些动辄3,4G的安装镜像，Arch有着诱人的小而美，也意味这很多包都需要联网下载。所以安装过程中，必须要联网。
+相比 Debian、CentOS 这些动辄 3,4G 的安装镜像，Arch 有着诱人的小而美，也意味这很多包都需要联网下载。所以安装过程中，必须要联网。
 ```sh
 $ wifi-mune
 ```
-输入wifi密码，ping测试。
+输入 wifi 密码，ping 测试。
 
 #### 磁盘
-执行`lsblk`查看当前磁盘挂载情况，本地磁盘的话都是`sdx`。我准备删掉Win7+ubuntu的双系统全新安装Arch，对磁盘来一次彻底的革命。
+执行`lsblk`查看当前磁盘挂载情况，本地磁盘的话都是`sdx`。我准备删掉 Win7 + Ubuntu 的双系统全新安装 Arch，对磁盘来一次彻底的革命。
 ```sh
 $ parted /dev/sda
 (parted) mklabel msdos
@@ -44,7 +44,7 @@ $ parted /dev/sda
 (parted) mkpart primary linux-swap 50G 54G
 (parted) mkpart primary ext4 54G 100%
 ```
-上面的操作是对本地磁盘进行分区，分别为`/boot`分区、`/`分区、`swap`交换分区和`/home`分区。分区完成后，exit退出parted状态返回安装界面。
+上面的操作是对本地磁盘进行分区，分别为 `/boot` 分区、`/` 分区、`swap` 交换分区和 `/home` 分区。分区完成后，exit 退出 parted 状态返回安装界面。
 
 再次`lsblk`查看磁盘情况，可以看到`sda`生成了`sda1`～`sda4`4个分区，接下来就是对这些分区进行格式化和挂载。
 ```sh
@@ -65,13 +65,13 @@ $ swapon /dev/sda3
 
 #### 安装进行时
 
-修改安装源，中科大的mirror很靠谱，修改`/etc/pacman.d/mirrorlist`，找到中科大mirror地址，粘贴到第一行即为最高下载优先级。
+修改安装源，中科大的镜像站很靠谱，修改 `/etc/pacman.d/mirrorlist`，找到中科大镜像站地址，粘贴到第一行即为最高下载优先级。
 
 下面就是安装进行时：
 ```sh
 $ pacstrap -i /mnt base base-devel
 ```
-几分钟的胡思乱想之后，Arch成功安装到挂载空间中。`arch-chroot`进入挂载空间中的Arch，进行必要的初始配置：
+几分钟的胡思乱想之后，Arch 成功安装到挂载空间中。`arch-chroot`进入挂载空间中的 Arch，进行必要的初始配置：
 ```sh
 $ genfstab -U /mnt > /mnt/etc/fstab
 $ arch-chroot /mnt /bin/bash
@@ -86,18 +86,18 @@ $ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 $ hwclock --systohc --utc
 ```
 
-安装grub引导并生成配置文件
+安装 grub 引导并生成配置文件
 ```sh
 $ pacman -S grub os-prober
 $ grub-install --recheck /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-给自己的第一台Arch起个响亮的名字吧，`echo hello-world > /etc/hostname`。exit退出chroot环境，`mount -R /mnt`结束挂载，`reboot`进入Arch的世界。
+给自己的第一台 Arch 起个响亮的名字吧，`echo hello-world > /etc/hostname`。exit 退出 chroot 环境，`mount -R /mnt` 结束挂载，`reboot` 进入Arch的世界。
 
 ### Done!
 
-哈哈，真真是个大道至简的黑屏白字世界，Arch于此开始，一如混沌之初。
+哈哈，真真是个大道至简的黑屏白字世界，Arch 于此开始，一如混沌之初。
 
 ![](https://i.imgur.com/BBzfW3H.png)
 

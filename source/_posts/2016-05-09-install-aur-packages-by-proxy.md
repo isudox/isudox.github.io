@@ -71,12 +71,12 @@ package() {
 }
 ```
 
-脚本内容很清晰，注明了软件包的说明，下载路径，依赖关系和安装命令。很显然，安装失败的原因就是因为国内网络无法连接上 atom 的安装包下载地址 https://github.com/atom/atom/archive/v${pkgver}.tar.gz。
-AUR 包的安装只需要在包目录下执行
+脚本内容很清晰，注明了软件包的说明，下载路径，依赖/冲突关系和安装命令。很显然，安装失败的原因就是因为国内网络无法连接上 atom 的安装包下载地址 https://github.com/atom/atom/archive/v1.7.3.tar.gz。
+AUR 包的安装需要在包目录下执行
 ```bash
 makepkg -sri
 ```
-因此需要修改 makepkg 的配置，使得 makepkg 在调用下载程序时能通过 Proxy 翻过防火墙的阻碍。makepkg 的配置文件位于 `/etc/makepkg.conf`，找到 DLAGENT 字段
+因此得修改 makepkg 的配置，使得 makepkg 在调用下载程序时能通过 Proxy 翻过防火墙的阻碍。makepkg 的配置文件位于 `/etc/makepkg.conf`，找到 DLAGENT 字段
 
 ```
 #-- The download utilities that makepkg should use to acquire sources
@@ -91,8 +91,7 @@ DLAGENTS=('ftp::/usr/bin/curl -fC - --ftp-pasv --retry 3 --retry-delay 3 -o %o %
 DLAGENT 顾名思义就是 Download Agent 的意思，这个字段指定了不同网络协议的下载工具和下载参数，默认是调用 curl 下载。现在只需要让 curl 通过 Proxy 而非直连的方式去下载 PKGBUILD 里设置的软件包即可。查看 curl 命令的参数用法
 
 ```bash
-curl -h
--s, --silent        Silent mode (don't output anything)
+curl -h | grep socks
      --socks4 HOST[:PORT]  SOCKS4 proxy on given host + port
      --socks4a HOST[:PORT]  SOCKS4a proxy on given host + port
      --socks5 HOST[:PORT]  SOCKS5 proxy on given host + port
@@ -101,14 +100,14 @@ curl -h
      --socks5-gssapi-nec  Compatibility with NEC SOCKS5 server
 ```
 
-因为我搭的 Proxy 是通过 socks5，所以在 makepkg.conf 配置文件里的 DLAGENT 字段中加上 `--socks5 127.0.0.1:1080` 即可。
+因为我搭的 Proxy 是通过 socks5，所以在 makepkg.conf 配置文件里的 DLAGENT 字段中加上 `--socks5 127.0.0.1:1080` 参数就行了。最后测试一把：
 
 ![Imgur](https://i.imgur.com/lnnrhqt.png)
 
-大功告成！
-
 ![Imgur](https://i.imgur.com/1tI4gsX.png)
 
-当然，如果想自定义下载工具也是没问题的，比如 axel 就是很好的替代选择，可以制定多线程下载，速度非常快。
+大功告成，喜大普奔！
+
+另外，也可以自定义下载工具，比如 axel 就是很好的替代选择，可以设置多线程下载，速度非常快。
 
 没有自由，何谈快乐！
