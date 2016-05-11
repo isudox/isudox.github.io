@@ -101,7 +101,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 哈哈，真真是个大道至简的黑屏白字世界，Arch 于此开始，一如混沌之初。
 
-![](https://i.imgur.com/BBzfW3H.png)
+![](https://o70e8d1kb.qnssl.com/begin-arch-linux-1.png)
 
 TODO: 后续再把图形化过程记下来,包括 xorg -> xfce -> lightdm -> video-driver, etc.
 

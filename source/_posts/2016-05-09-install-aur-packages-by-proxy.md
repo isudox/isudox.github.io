@@ -102,9 +102,9 @@ curl -h | grep socks
 
 因为我搭的 Proxy 是通过 socks5，所以在 makepkg.conf 配置文件里的 DLAGENT 字段中加上 `--socks5 127.0.0.1:1080` 参数就行了。最后测试一把：
 
-![Imgur](https://i.imgur.com/lnnrhqt.png)
+![Imgur](https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-1.png)
 
-![Imgur](https://i.imgur.com/1tI4gsX.png)
+![Imgur](https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-2.png)
 
 大功告成，喜大普奔！
 

@@ -86,7 +86,7 @@ ERR_SPDY_INADEQUATE_TRANSPORT_SECURITY
 ssl_ciphers 'kEECDH+ECDSA+AES128 kEECDH+ECDSA+AES256 kEECDH+AES128 kEECDH+AES256 kEDH+AES128 kEDH+AES256 DES-CBC3-SHA +SHA !aNULL !eNULL !LOW !kECDH !DSS !MD5 !EXP !PSK !SRP !CAMELLIA !SEED';
 ```
 好了，小站顺利打开，检查下是否走的 HTTP/2
-![](https://i.imgur.com/U8yLEgH.png)
+![](https://o70e8d1kb.qnssl.com/enable-http-2-on-nginx-1.png)
 在 protocol 栏看到协议已经是 h2 了，表明开启 HTTP/2 成功。
 
 对本站的小幅改进就到这里完工了。计划下周在工作之余，一锅乱炖 HTTP/1.1 和 HTTP/2，一直以来对HTTP协议这块的认识很欠缺，论一个 Web 开发者的自我修养……
