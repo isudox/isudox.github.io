@@ -1,7 +1,7 @@
 ---
 title: 移动端仿微信朋友圈发布图文
 date: 2016-04-18 19:55:14
-tags: [Canvas,HTML5]
+tags: [Canvas,HTML5,FE]
 categories: [Coding]
 ---
 
@@ -122,9 +122,71 @@ function readFile(image) {
 }
 ```
 
-上面贴出的 readFile() 方法中，创建了 FileReader 对象对入参 File 对象（图片文件）进行处理，调用 readAsDataUrl() 方法获取 File 的 base64 字符串。在读取操作完成时，执行自定义的操作，我的程序里做了图片预览和Canvas处理。
+上面贴出的 readFile() 方法中，创建了 FileReader 对象对入参 File 对象进行处理，调用 readAsDataUrl() 方法获取 File 的 base64 字符串。在读取操作完成时，执行自定义的操作，在我的程序里做了图片预览和 Canvas 处理。在进行 Canvas 操作时有个坑，编码时并不知道，到测试时才发现的，因此放到后面再展开。
+在图片文件读取到后，紧接着要做的就是调用 Canvas API 对图片进行前端压缩处理。
 
 #### Canvas
+
+Canvas 对图片的处理放在了 processFile() 方法中，我的做法略粗暴，对图片的高宽设定了固定的限值，只对超过高宽限值的图片做压缩处理。其实应该采取更合理的压缩策略，比如根据图片文件的大小，后期迭代时再完善吧。先把这部分的代码贴出来。
+
+```javascript
+// Canvas处理
+function processFile(dataURL, fileType) {
+    var maxWidth = 800;
+    var maxHeight = 800;
+    var image = new Image();
+    image.src = dataURL;
+    image.onload = function () {
+        var width = image.width;
+        var height = image.height;
+        var shouldResize = (width > maxWidth) || (height > maxHeight);
+        if (!shouldResize) {
+            // 无需压缩
+            imageIndex++;
+            imageData['imageData' + imageIndex] = dataURL;
+            return;
+        }
+        var newWidth;
+        var newHeight;
+        // 等比压缩
+        if (width > height) {
+            newHeight = height * (maxWidth / width);
+            newWidth = maxWidth;
+        } else {
+            newWidth = width * (maxHeight / height);
+            newHeight = maxHeight;
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        var context = canvas.getContext('2d');
+        context.drawImage(this, 0, 0, newWidth, newHeight);
+        dataURL = canvas.toDataURL(fileType);   // base64
+        imageIndex++;
+        imageData['imageData' + imageIndex] = dataURL;
+        return;
+    };
+    image.onerror = function () {
+        log('图片处理时异常！');
+    }
+}
+```
+
+重点看 Canvas API 部分。MDN 上有相当完善的 [tutorial](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial)。首先通过 createElement() 创建 canvas 元素，并设置 canvas 的高宽。
+
+```html
+<canvas id="tutorial" width="150" height="150"></canvas>
+```
+
+canvas 元素创建了一个固定大小的画布，在这个上下文 context 中可以绘制和处理要展示的内容。初始的 canvas 元素是空白的，要在上面绘制内容，需要先获取它的上下文。上面的代码里通过 getContext() 方法获取 canvas 元素的上下文。
+
+```javascript
+var context = canvas.getContext('2d');
+```
+
+再取得 canvas 上下文后，就能通过 drawImage() 方法将图片绘制到 canvas 元素里。
+
+
 
 #### FormData
 
