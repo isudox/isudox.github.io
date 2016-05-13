@@ -132,8 +132,7 @@ Canvas 对图片的处理放在了 processFile() 方法中，我的做法略粗�
 ```javascript
 // Canvas处理
 function processFile(dataURL, fileType) {
-    var maxWidth = 800;
-    var maxHeight = 800;
+    var maxWidth = 800, maxHeight = 800;
     var image = new Image();
     image.src = dataURL;
     image.onload = function () {
@@ -146,8 +145,7 @@ function processFile(dataURL, fileType) {
             imageData['imageData' + imageIndex] = dataURL;
             return;
         }
-        var newWidth;
-        var newHeight;
+        var newWidth, newHeight;
         // 等比压缩
         if (width > height) {
             newHeight = height * (maxWidth / width);
@@ -184,11 +182,121 @@ canvas 元素创建了一个固定大小的画布，在这个上下文 context �
 var context = canvas.getContext('2d');
 ```
 
-再取得 canvas 上下文后，就能通过 drawImage() 方法将图片绘制到 canvas 元素里。
+在取得 canvas 上下文后，就能通过 drawImage() 方法将图片绘制到 canvas 元素里。
 
+```javascript
+context.drawImage(image, x, y, width, height);
+```
 
+其中参数 image 是 image 或者 canvas 对象，x 和 y 是其在目标 canvas 里的其实坐标，width 和 height 控制 canvas 绘制时的缩放宽高。drawImage() 函数支持更多传参，具体可参考 MDN 上的文档。
+
+在 canvas 元素上绘出图像后，再调用 canvas.toDataURL() 方法，就能获取到该 canvas 对象中所包含图片编码后的 data: URL 字符串。到此，canvas 的处理流程就完成了，接下来的步骤就是将处理后的图片数据发送到后端。
 
 #### FormData
+
+HTML5 新增加了 [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) 接口，FormData 类似 HashMap，通过 append() 方法插入键值对，模拟待提交的表单元素，FormData 相比普通 ajax 提交的优势在于，它可以异步上传二进制文件。
+
+```javascript
+// 发布按钮事件
+function submit() {
+    var tag = $('#tag').val();
+    var content = $('#feeling').val();
+    formData.append("tag", tag);
+    formData.append("content", content);
+    formData.append("profileId", window.localStorage.getItem("profileId"));
+    var i = 0;
+    for (var key in imageData) {
+        formData.append("imageData_" + i, imageData[key]);
+        i++;
+    }
+    formData.append("count", i);    // 图片数量
+    $.ajax({
+        type: 'POST',
+        url: '/footprint/upload',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            log(data);
+            if (data.success) {
+                // handler
+            } else {
+                // handler
+            }
+        },
+        error: function (data) {
+            // handler
+        }
+    });
+}
+```
+
+FormData 的 api 里有一需要注意的地方，我一开始也没有留心。因为产品的设计是仿 (chao) 照 (xi) 微信的，对于图文的发布限制了最多上传 9 张图片，同时支持删除待提交图片，所以需要动态的监控待提交的图片数量，FormData 有一个删除键值对的方法 formdata.delete(key)，我当时想既然有这个方法就可以即时删除待提交的图片数据，然而我错了，delete() 方法在浏览器里支持可以说很糟糕，参考 MDN 给出的兼容列表：
+
+![](https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-1.png)
+
+只能另寻他途。
+
+```javascript
+// 监听图片删除按钮点击
+$(document).on('click', '.remove', function (e) {
+    var i = $(this).index();
+    log('remove index ' + i);
+    // 删除FormData和页面上的图片
+    $(this).parent().remove();
+    delete imageData['imageData' + i];
+    imageIndex--;
+});
+```
+
+#### iOS 调试兼容性
+
+前面在讲 canvas 处理时提到一个坑，再功能测试时才发现，就是经过 canvas 处理后的图片上传服务器后读取出来会发生旋转的问题。多次测试后发现，只有当调用摄像头竖拍上传时才会发生这个错误，横拍或者调用相册选图上传就正常。通常这种不知道从哪冒出来的 bug 找谷歌就行了，关键字 canvas upload image ios rotation 搜索到 stackoverflow 上有同样的[问题](http://stackoverflow.com/questions/19463126/how-to-draw-photo-with-correct-orientation-in-canvas-after-capture-photo-by-usin)，道出了问题发生的根源，就是摄像头竖拍照片的 EXIF 的信息发生了变化。读取 EXIF 并修正照片的旋转。
+
+Github 上有一个读取照片 EXIF 信息的 [exif.js](https://github.com/exif-js/exif-js) 库，提供了读取 API，在上面的 readFile() 方法中加入 EXIF 读取：
+
+```javascript
+// 读取图片
+function readFile(image) {
+    // 省略...
+    reader.onloadend = function () {
+        EXIF.getData(image, function () {
+            EXIF.getAllTags(this);
+            orientation = EXIF.getTag(this, 'Orientation');
+        });
+        processFile(reader.result, image.type, orientation);
+    };
+}
+
+// Canvas处理图片
+function processFile(dataURL, fileType, orientation) {
+    var device = "";
+    if (navigator.userAgent.match(/iphone/i)) {
+        device = 'iphone';
+    } else if (navigator.userAgent.match(/android/i)) {
+        device = 'android';
+    } else {
+        device = 'other';
+    }
+    // 省略...
+    // bugfix: 解决iOS设备上传竖拍照片后被逆时针旋转90°的问题
+    if (device === 'iphone') {
+        switch (orientation) {
+            case 8:
+                context.rotate(90*Math.PI/180);
+                break;
+            case 3:
+                context.rotate(180*Math.PI/180);
+                break;
+            case 6:
+                context.rotate(-90*Math.PI/180);
+                break;
+        }
+    }
+}
+```
+
+调整 orientation 属性后，iOS 设备测试正常。
 
 ### 后端
 

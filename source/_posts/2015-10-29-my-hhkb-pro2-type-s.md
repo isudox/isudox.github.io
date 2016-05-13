@@ -1,8 +1,8 @@
 ---
 title: 神器有价，情怀无价 —— HHKB
 date: 2015-10-29 22:37:14
-tags: [HHKB]
-categories: [玩物誌]
+tags: [Keyboard]
+categories: [Toy]
 ---
 
 > It's to keyboards what Leica is to cameras; what Rimowa is to luggage; what Moleskine is to notebooks; what Rolls Royce is to cars; what Grey Goose is to vodka. Or at least, that’s the reputation it carries. If someone is discussing the “best mechanical keyboard”, it will be mentioned right away.
