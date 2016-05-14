@@ -89,9 +89,7 @@ OJ 结果：
  */
 public class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int num1 = listNode2Num(l1);
-        int num2 = listNode2Num(l2);
-        int sum = num1 + num2;
+        int sum = listNode2Num(l1) + listNode2Num;
 
         return num2ListNode(sum);
     }
@@ -117,3 +115,47 @@ public class Solution {
     }
 }
 ```
+
+肉眼 debug 了下似乎没有问题，leetcode 的测试用例也通过了，提交代码被 OJ 否决了，问题出在哪了呢？看下面的用例
+
+```
+# input
+[0], [0]
+```
+
+找到出错的点了，在把数值转换为链表的方法 num2ListNode() 里发生了错误，因为传参是 0 直接返回了 null。那么就打补丁吧，在调用 num2ListNode() 前对参数进行判断，修改代码如下：
+
+```java
+// v1.1
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int sum = listNode2Num(l1) + listNode2Num;
+        if (sum == 0) {
+            return new ListNode(0);
+        }
+
+        return num2ListNode(sum);
+    }
+
+    public int listNode2Num(ListNode listNode) {
+        if (listNode == null) {
+            return 0;
+        }
+
+        return listNode.val + listNode2Num(listNode.next) * 10;
+    }
+
+    public ListNode num2ListNode(int num) {
+        ListNode listNode = new ListNode(0);
+        if (num == 0) {
+            return null;
+        }
+
+        listNode.val = num % 10;
+        listNode.next = num2ListNode(num / 10);
+
+        return listNode;
+    }
+}
+
+上面的补丁解决了当数值为 0 时的异常情况，再次提交，然后……再次被 OJ 婉拒。

@@ -235,7 +235,7 @@ FormData 的 api 里有一需要注意的地方，我一开始也没有留心。
 
 ![](https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-1.png)
 
-只能另寻他途。
+只能另觅它途。我采取的方案比较基础，因为提交到后端的图片数据是 dataURL，即 base64 编码的一组字符串，因此可以创建两个变量，一个记录待传图片的数量，另一个变量保存图片的 base64 编码，即时处理图片的添加和删除，在提交按钮点击时将 base64 的 dataURL 数组 append 进 FormData 对象里并异步提交到后端处理。代码如下：
 
 ```javascript
 // 监听图片删除按钮点击
@@ -297,6 +297,8 @@ function processFile(dataURL, fileType, orientation) {
 ```
 
 调整 orientation 属性后，iOS 设备测试正常。
+
+到此，前端部分的工作就大体上介绍完了，下面继续将后端部分的业务处理，因为 JD 交易平台的项目绝大多数是采用 Spring MVC，因此后端方案采用的还是 Spring MVC，当然 PHP、Python 的处理思路都是一样的，就当抛砖引玉了。
 
 ### 后端
 
