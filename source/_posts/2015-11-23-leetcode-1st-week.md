@@ -126,7 +126,7 @@ public class Solution {
 找到出错的点了，在把数值转换为链表的方法 num2ListNode() 里发生了错误，因为传参是 0 直接返回了 null。那么就打补丁吧，在调用 num2ListNode() 前对参数进行判断，修改代码如下：
 
 ```java
-// v1.1
+// addTwoNumbers.java v1.1
 public class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         int sum = listNode2Num(l1) + listNode2Num;
@@ -168,6 +168,35 @@ public class Solution {
 看到这个用例其实就很明白代码疏漏点在什么地方，就是没有考虑到对大数的处理。当链表表示的大整数数值超过 int 型的范围时，在链表转换整数的过程中就已经发生错误了。好在 Java 处理大整数比 C/C++ 方便了很多，不需要先转换成 String 类，Java 的 Math 包里内置了 [BigInteger](https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html) 类，只要内存够大，就可以表示任意大整数。
 
 ```java
-// v1.2
+// addTwoNumbers.java v1.2
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        BigInteger sum = listNode2Num(l1) + listNode2Num;
+        if (sum == 0) {
+            return new ListNode(0);
+        }
 
+        return num2ListNode(sum);
+    }
+
+    public BigInteger listNode2Num(ListNode listNode) {
+        if (listNode == null) {
+            return BigInteger(0);
+        }
+
+        return BigInteger.valueOf(listNode.val).add(listNode2Num(listNode.next).multiply(10));
+    }
+
+    public ListNode num2ListNode(BigInteger num) {
+        ListNode listNode = new ListNode(0);
+        if (BigInteger.ZERO.compareTo(num)) {
+            return null;
+        }
+
+        listNode.val = num % 10;
+        listNode.next = num2ListNode(num / 10);
+
+        return listNode;
+    }
+}
 ```
