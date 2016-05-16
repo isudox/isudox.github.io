@@ -10,7 +10,7 @@ categories: [Coding]
 
 <!-- more -->
 
-### Two Sum
+### 1. Two Sum
 
 第一题 [Two Sum](https://leetcode.com/problems/two-sum/) 算是简单题，题意大致为：
 > 给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。
@@ -65,7 +65,7 @@ OJ 结果：
 | Accepted |  62 ms | java |
 | Accepted |  44 ms | python |
 
-### Add Two Numbers
+### 2. Add Two Numbers
 
 第二题 [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
 
@@ -165,14 +165,15 @@ public class Solution {
 [1], [9,9,9,9,9,9,9,9,9,9,9,9,9]
 ```
 
-看到这个用例其实就很明白代码疏漏点在什么地方，就是没有考虑到对大数的处理。当链表表示的大整数数值超过 int 型的范围时，在链表转换整数的过程中就已经发生错误了。好在 Java 处理大整数比 C/C++ 方便了很多，不需要先转换成 String 类，Java 的 Math 包里内置了 [BigInteger](https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html) 类，只要内存够大，就可以表示任意大整数。
+看到这个用例其实就知道代码疏漏点在什么地方，就是没有考虑到对大数的处理。当链表表示的大整数数值超过 int 型的范围时，在链表转换整数的过程中就已经发生错误了。好在 Java 处理大整数比 C/C++ 方便了很多，不需要先转换成 String 类，Java 的 Math 包里内置了 [BigInteger](https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html) 类，只要内存够大，就可以表示任意大整数。
 
 ```java
 // addTwoNumbers.java v1.2
+import java.math.BigInteger;
 public class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        BigInteger sum = listNode2Num(l1) + listNode2Num;
-        if (sum == 0) {
+        BigInteger sum = listNode2Num(l1).add(listNode2Num(l2));
+        if (BigInteger.ZERO.compareTo(sum) == 0) {
             return new ListNode(0);
         }
 
@@ -181,22 +182,84 @@ public class Solution {
 
     public BigInteger listNode2Num(ListNode listNode) {
         if (listNode == null) {
-            return BigInteger(0);
+            return BigInteger.valueOf(0);
         }
 
-        return BigInteger.valueOf(listNode.val).add(listNode2Num(listNode.next).multiply(10));
+        return BigInteger.valueOf(listNode.val).add(listNode2Num(listNode.next)
+                                                    .multiply(BigInteger.valueOf(10)));
     }
 
     public ListNode num2ListNode(BigInteger num) {
         ListNode listNode = new ListNode(0);
-        if (BigInteger.ZERO.compareTo(num)) {
+        if (BigInteger.ZERO.compareTo(num) == 0) {
             return null;
         }
 
-        listNode.val = num % 10;
-        listNode.next = num2ListNode(num / 10);
+        listNode.val = num.mod(BigInteger.valueOf(10)).intValue();
+        listNode.next = num2ListNode(num.divide(BigInteger.valueOf(10)));
 
         return listNode;
     }
 }
 ```
+
+BigInteger 类的方法需要参考 JDK 文档，这里不赘述了。代码提交，OJ 通过，一个赛艇！
+
+| Status | Run Time | Language |
+|:--------:|:--------:|:--------:|
+| Accepted |  24 ms | java |
+
+解法的时间复杂度堪忧啊，暂时还没想到优化的解法，后续待完善。
+
+
+### 3. Longest Substring Without Repeating Characters
+
+第三题 [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
+> 给出一个字符串，求其最长的无重复字符的子字符串的长度。
+> e.g.
+> "abcabcbb" => "abc" => 3;
+> "bbbbb" => "b" => 1;
+> "pwwkew" => "wke" => 3;
+
+这道题的题意很明确，也没有什么隐藏的坑，思路理清就能写出来。
+
+- 首先一定是遍历字符串；
+- 从第一个字符开始遍历，在遍历过程中，记录当前字符出现的次数，如果字符是第一次出现，则把当前记录的子串长度加一；如果字符已经出现过，说明该字串已经出现重复字符，则终止遍历，并从上一次遍历的起始位置的下一字符，重新上述步骤；
+
+解法如下：
+
+```java
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int maxLen = 0;
+        int sLen = s.length();
+        if (sLen == 0) {
+            return 0;
+        }
+        
+        for (int i = 0; i < sLen; i++) {
+            int curLen = 0;
+            Map<String, Integer> map = new HashMap<String, Integer>();
+            for (int j = i; j < sLen; j++) {
+                String key = String.valueOf(s.charAt(j));
+                if (map.get(key) == null) {
+                    map.put(key, 1);
+                    curLen += 1;
+                    maxLen = curLen > maxLen ? curLen : maxLen;
+                } else {
+                    curLen = 0;
+                    break;
+                }
+            }
+        }
+        return maxLen;
+    }
+}
+```
+
+OJ 测试结果：
+
+| Status | Run Time | Language |
+|:--------:|:--------:|:--------:|
+| Accepted |  138 ms | java |
