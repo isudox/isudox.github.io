@@ -1,16 +1,16 @@
 ---
-title: LeetCode 第一周
+title: LeetCode 探险第一弹
 date: 2015-11-23 20:50:27
 tags: [Algorithm,LeetCode]
 categories: [Coding]
 ---
 
 上学时零零碎碎上 [LeetCode](https://leetcode.com/) 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。
-按 LeetCode 题目的顺序从头开始刷，每篇 7 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录，尽力而为。
+LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。
 
 <!-- more -->
 
-### 1. Two Sum
+### Two Sum
 
 第一题 [Two Sum](https://leetcode.com/problems/two-sum/) 算是简单题，题意大致为：
 > 给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。
@@ -65,7 +65,7 @@ OJ 结果：
 | Accepted |  62 ms | java |
 | Accepted |  44 ms | python |
 
-### 2. Add Two Numbers
+### Add Two Numbers
 
 第二题 [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
 
@@ -212,7 +212,7 @@ BigInteger 类的方法需要参考 JDK 文档，这里不赘述了。代码提�
 解法的时间复杂度堪忧啊，暂时还没想到优化的解法，后续待完善。
 
 
-### 3. Longest Substring Without Repeating Characters
+### Longest Substring Without Repeating Characters
 
 第三题 [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
@@ -240,7 +240,7 @@ public class Solution {
         
         for (int i = 0; i < sLen; i++) {
             int curLen = 0;
-            Map<String, Integer> map = new HashMap<String, Integer>();
+            Map<String, Integer> map = new HashMap<>();
             for (int j = i; j < sLen; j++) {
                 String key = String.valueOf(s.charAt(j));
                 if (map.get(key) == null) {
@@ -248,7 +248,6 @@ public class Solution {
                     curLen += 1;
                     maxLen = curLen > maxLen ? curLen : maxLen;
                 } else {
-                    curLen = 0;
                     break;
                 }
             }
