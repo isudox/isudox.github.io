@@ -22,7 +22,7 @@ LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记�
 
 这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答
 ```java
-// twoSum.java
+// TwoSum.java
 public class Solution {
     public int[] twoSum(int[] nums, int target) {
         int len = nums.length;
@@ -48,7 +48,7 @@ public class Solution {
 ```
 
 ```python
-# twoSum.py
+# two_sum.py
 class Solution(object):
     def twoSum(self, nums, target):
         d = {}
@@ -126,7 +126,7 @@ public class Solution {
 找到出错的点了，在把数值转换为链表的方法 num2ListNode() 里发生了错误，因为传参是 0 直接返回了 null。那么就打补丁吧，在调用 num2ListNode() 前对参数进行判断，修改代码如下：
 
 ```java
-// addTwoNumbers.java v1.1
+// AddTwoNumbers.java v1.1
 public class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         int sum = listNode2Num(l1) + listNode2Num;
@@ -168,7 +168,7 @@ public class Solution {
 看到这个用例其实就知道代码疏漏点在什么地方，就是没有考虑到对大数的处理。当链表表示的大整数数值超过 int 型的范围时，在链表转换整数的过程中就已经发生错误了。好在 Java 处理大整数比 C/C++ 方便了很多，不需要先转换成 String 类，Java 的 Math 包里内置了 [BigInteger](https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html) 类，只要内存够大，就可以表示任意大整数。
 
 ```java
-// addTwoNumbers.java v1.2
+// AddTwoNumbers.java v1.2
 import java.math.BigInteger;
 public class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
@@ -230,6 +230,7 @@ BigInteger 类的方法需要参考 JDK 文档，这里不赘述了。代码提�
 解法如下：
 
 ```java
+// LongestSubstringWithoutRepeatingCharacters.java
 public class Solution {
     public int lengthOfLongestSubstring(String s) {
         int maxLen = 0;
@@ -262,3 +263,5 @@ OJ 测试结果：
 | Status | Run Time | Language |
 |:--------:|:--------:|:--------:|
 | Accepted |  138 ms | java |
+
+[LeetCode 探险第二弹](/2016/05/17/leetcode-tour-2/)
