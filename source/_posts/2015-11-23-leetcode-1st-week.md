@@ -61,9 +61,9 @@ class Solution(object):
 OJ 结果：
 
 | Status | Run Time | Language |
-|:--------:|:--------:|:--------:|
-| Accepted |  62 ms | java |
-| Accepted |  44 ms | python |
+|:------:|:--------:|:--------:|
+| Accepted | 62 ms | Java |
+| Accepted | 44 ms | Python |
 
 ### Add Two Numbers
 
@@ -206,8 +206,8 @@ public class Solution {
 BigInteger 类的方法需要参考 JDK 文档，这里不赘述了。代码提交，OJ 通过，一个赛艇！
 
 | Status | Run Time | Language |
-|:--------:|:--------:|:--------:|
-| Accepted |  24 ms | java |
+|:------:|:--------:|:--------:|
+| Accepted | 24 ms | Java |
 
 解法的时间复杂度堪忧啊，暂时还没想到优化的解法，后续待完善。
 
@@ -261,7 +261,7 @@ public class Solution {
 OJ 测试结果：
 
 | Status | Run Time | Language |
-|:--------:|:--------:|:--------:|
-| Accepted |  138 ms | java |
+|:------:|:--------:|:--------:|
+| Accepted | 138 ms | Java |
 
 [LeetCode 探险第二弹](/2016/05/17/leetcode-tour-2/)
