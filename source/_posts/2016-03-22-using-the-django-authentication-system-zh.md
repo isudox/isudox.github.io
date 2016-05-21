@@ -182,3 +182,30 @@ else:
 login（request, user）[[source](https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/#login)]
 使用 [login()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.login) 从 view 中登录用户。它接收一个 [HttpRequest](https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest) 对象和一个 [User](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User) 对象。login() 方法会通过 Django 的 session 框架在当前 session 里保存该登录用户的 id。
 注意，任何在匿名会话中设置的数据都会保留在用户登入后的会话中。
+下面这个例子展示了如何使用 authenticate() 和 login() 方法。
+
+```python
+from django.contrib.auth import authenticate, login
+
+def my_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            # Redirect to a success page.
+        else:
+            # Return a 'disabled account' error message
+            ...
+    else:
+        # Return an 'invalid login' error message.
+        ...
+```
+
+> 先调用 authenticate() 方法：
+> 当手动登录一个用户时，必须要在调用 login() 之前先调用 authenticate() 方法成功认证用户。authenticate() 在 User 对象里设置一个标识了哪种认证后台成功认证的属性（具体细节参考 [backends documentation](https://docs.djangoproject.com/en/1.9/topics/auth/customizing/#authentication-backends)），这个属性信息在之后的 login 过程中会被用到。如果试图登录直接从数据库中取出的用户对象则会被抛出错误。
+
+#### 选择 authentication backend
+
+当用户登录时，用户 ID 和 backend 会在认证中被使用，并且保存进 session 里。
