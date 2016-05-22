@@ -208,4 +208,9 @@ def my_view(request):
 
 #### 选择 authentication backend
 
-当用户登录时，用户 ID 和 backend 会在认证中被使用，并且保存进 session 里。
+当用户登录时，用户 ID 和 backend 会在认证中被使用，并且保存进 session 里。它允许同一个 [authentication backend](https://docs.djangoproject.com/en/1.9/topics/auth/customizing/#authentication-backends) 在以后的的请求中获取用户信息。保存 session 的 authentication backend 通过以下方式确定：
+
+1. 如果可选的话，使用 backend 变量
+2. 如果存在的话，使用 user.backend 属性。它允许
+
+**********************************************
