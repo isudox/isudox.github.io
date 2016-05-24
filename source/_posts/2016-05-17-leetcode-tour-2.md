@@ -46,6 +46,8 @@ public class Solution {
 }
 ```
 
+**************************************
+
 ### Longest Palindromic Substring
 
 第五题 [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
@@ -100,3 +102,142 @@ OJ 测试结果：
 | Status | Run Time | Language |
 |:------:|:--------:|:--------:|
 | Accepted | 35 ms | Java |
+
+**************************************
+
+### ZigZag Conversion
+
+第六题 [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/)
+
+> 字符串 `"PAYPALISHIRING"` 是由如下排列的字符串通过 zigzag 形式读取所得。
+> ```
+P   A   H   N
+A P L S I I G
+Y   I   R
+```
+> 如果以行的形式读取则为 `"PAHNAPLSIIGYIR"`
+> 请编写代码将给定行数的 zigzag 形式字符串转换为行形式的字符串：
+> ```
+string convert(string text, int nRows);
+```
+> 比如 `convert("PAYPALISHIRING", 3)` 会返回 `"PAHNAPLSIIGYIR"`
+
+这道 zigzag 题很好玩，让我想起小时候做过的奥数题。
+
+```java
+// ZigZagConversion.java
+public class Solution {
+    public String convert(String s, int numRows) {
+        
+    }
+}
+```
+
+OJ 测试结果：
+
+| Status | Run Time | Language |
+|:------:|:--------:|:--------:|
+| Accepted | 35 ms | Java |
+
+**************************************
+
+### Reverse Integer
+
+第七题 [Reverse Integer](https://leetcode.com/problems/reverse-integer/)
+
+> 翻转整型数的数位，例如：
+> x = 123，返回 321；x = -123，返回 -321；
+
+题目解法很简单，但是有几个注意点要留心：
+
+- 如果数字末尾为 0，则翻转过来后的数字应该去掉头部的 0。比如 100 -> 1；
+- 如果数字是负数，则翻转后的结果也得是负数；
+- 入参肯定是在 int 范围内，但翻转后得到的数字就不一定了。所以要考虑到溢出的情况，比如 1999999999 -> 9999999991；
+
+假定如果翻转后的结果超出范围，则返回 0。先单细胞的思考下，不考虑优化，简单粗暴的先把问题解开。
+
+```java
+// ReverseInteger.java v1.0
+public class Solution {
+    public int reverse(int x) {
+        boolean isNeg = false;
+        long result = 0L;
+        if (x < 0) {
+            isNeg = true;
+            x = 0 - x;
+        }
+        while (x != 0) {
+            result = result * 10 + x % 10;
+            x /= 10;
+        }
+        if (result > Integer.MAX_VALUE) {
+            return 0;
+        }
+        if (isNeg) {
+            result = -result;
+        }
+
+        return Math.toIntExact(result);
+    }
+}
+```
+
+自测了几个用例后自信满满的提交了代码，LeetCode 抛出了运行时错误，出现错误的用例为 `-2147483648`，然后我就发现了自己愚蠢的错误：不止是在翻转结束时会发生溢出，在负数转正数的时候也会发生，当且仅当入参为 `-2147483648` 时！打个补丁吧，这方法真是太蠢了！
+
+```java
+// ReverseInteger.java v1.1
+public class Solution {
+    public static int reverse(int x) {
+        boolean isNeg = false;
+        long result = 0L;
+        if (x == -2147483648) {
+            return 0;
+        }
+        if (x < 0) {
+            isNeg = true;
+            x = -x;
+        }
+        while (x != 0) {
+            result = result * 10 + x % 10;
+            x /= 10;
+        }
+        if (result > Integer.MAX_VALUE) {
+            return 0;
+        }
+        if (isNeg) {
+            result = -result;
+        }
+
+        return Math.toIntExact(result);
+    }
+}
+```
+
+OJ 测试结果：
+
+| Status | Run Time | Language |
+|:------:|:--------:|:--------:|
+| Accepted | 2 ms | Java |
+
+**************************************
+
+### String to Integer (atoi)
+
+第八题是经典到无以复加的[字符串数转整型数](https://leetcode.com/problems/string-to-integer-atoi/)！也就是实现 C 语言里经典的 atoi 函数。
+
+> 提示：仔细考虑所有可能的传参，题目没有指定输入类型。
+
+提示说的很明白了，把所有可能出现异常情况的传参都想到，我现在能想到的有如下情况：
+
+- 正常的 int 范围内的字符串数；
+- 超出 int 范围的大数字符串；
+- 字符串中包含非数字字符；
+- 首个字符是 `"+"`, `"-"`;
+
+```java
+public class Solution {
+    public int myAtoi(String str) {
+        
+    }
+}
+```
