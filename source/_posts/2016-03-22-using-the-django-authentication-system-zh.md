@@ -5,7 +5,7 @@ tags: [Django]
 categories: [Translation]
 ---
 
-> 译自 [Django Documentation](https://docs.djangoproject.com/en/1.9/topics/auth/default/)，版本1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译无侵权。
+> 译自 [Django Documentation](https://docs.djangoproject.com/en/1.9/topics/auth/default/)，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。
 
 <!-- more -->
 
@@ -208,9 +208,98 @@ def my_view(request):
 
 #### 选择 authentication backend
 
-当用户登录时，用户 ID 和 backend 会在认证中被使用，并且保存进 session 里。它允许同一个 [authentication backend](https://docs.djangoproject.com/en/1.9/topics/auth/customizing/#authentication-backends) 在以后的的请求中获取用户信息。保存 session 的 authentication backend 通过以下方式确定：
+当用户登录时，认证过程中会用到用户 ID 和 backend，并且保存进用户 session 里。它允许同一个 [authentication backend](https://docs.djangoproject.com/en/1.9/topics/auth/customizing/#authentication-backends) 在以后的的请求中获取用户信息。保存 session 的 authentication backend 由以下情况确定：
 
-1. 如果可选的话，使用 backend 变量
-2. 如果存在的话，使用 user.backend 属性。它允许
+1. 如果已提供可选的 backend 参数，则使用该参数指定的 backend；
+2. 如果存在 user.backend 属性，则使用该属性指定的 backend；
+3. 使用 [AUTHENTICATION_BACKENDS](https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-AUTHENTICATION_BACKENDS) 内的 backend；
+4. 以上情况之外，则抛出异常；
+
+在情况 1 和 2 中，backend 参数值或 user.backend 属性应该是一个 "." 开头的引入路径字符串(类似 [AUTHENTICATION_BACKENDS](https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-AUTHENTICATION_BACKENDS))，而不是一个实际的 backend 类。
 
 **********************************************
+
+### 如何登出用户
+
+logout(request)[[source](https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/#logout)]
+
+要登出一个已通过 [django.contrib.auth.login()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.login) 方法登录的用户，在 view 中调用 [django.contrib.auth.logout()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.logout)。logoout() 方法需要传入一个 [HttpRequest](https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest) 对象，没有返回值。示例：
+```python
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
+```
+
+注意，[logout()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.logout) 即使在用户没有登录的情况下调用也不会抛出任何错误。
+
+当调用 [logout()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.logout) 时，当前请求的 ession 数据会被彻底清除。这是为了防止其他人使用这台浏览器登录并获取前一用户 session 数据。如果你想在登出用户后立即访问存入 session 的数据，请在调用 [django.contrib.auth.logout()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.logout) 之后存入。
+
+**********************************************
+
+### 登录用户访问限制
+
+#### 原始的方法
+
+简单的、原始的限制访问页面的方法是检查 [request.user.is_authenticated()](https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User.is_authenticated)，验证不通过的话重定向到登录页。
+```python
+from django.conf import settings
+from django.shortcuts import redirect
+
+def my_view(request):
+    if not request.user.is_authenticated():
+        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+    # ...
+```
+
+……或者显示一个错误页：
+```python
+from django.shortcuts import render
+
+def my_view(request):
+    if not request.user.is_authenticated():
+        return render(request, 'myapp/login_error.html')
+    # ...
+```
+
+#### login_required 装饰器
+
+login_required(redirect_field_name='next', login_url=None)[[source](https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/decorators/#login_required)]
+
+可以使用 [login_required()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.decorators.login_required) 装饰器作为便捷方式：
+```python
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def my_view(request):
+    ...
+```
+
+[login_required()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.decorators.login_required)
+做了下面这些事：
+- 如果用户未登录，跳转到 [settings.LOGIN_URL](https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-LOGIN_URL) 指定的页面，并传递当前请求的绝对路径。例如：/accounts/login/?next=/polls/3/
+- 如果用户已登录，正常执行 view。view 代码可以安全的假定用户是登录状态。
+
+默认情况下，在用户成功认证后应该被重定向的路径存储在"next"参数中。如果你希望自定义参数名，[login_required()](https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.decorators.login_required) 接收一个可选参数 redirect_field_name：
+```python
+from django.contrib.auth.decorators import login_required
+
+@login_required(redirect_field_name='my_redirect_field')
+def my_view(request):
+    ...
+```
+
+注意，如果不指定 login_url 参数，则需要确保在 settings.LOGIN_URL 已经跟登录视图正确关联。例如，采用默认配置，在 URLConf 路由里添加以下内容：
+```python
+from django.contrib.auth import views as auth_views
+
+url(r'^accounts/login/$', auth_views.login),
+```
+
+[settings.LOGIN_URL](https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-LOGIN_URL) 也接收视图函数名和 URL 命名模式。这使得你可以自由地重映射 URLconf 中的登录视图而不用更新设置。
+
+> 注意，login_required 装饰器并不会检查用户的 is_active 标识。
+> 另外，如果你要给 Django's admin 编写自定义的视图（或者是需要内置视图使用的认证检查），可以采用 [django.contrib.admin.views.decorators.staff_member_required()](https://docs.djangoproject.com/en/1.9/ref/contrib/admin/#django.contrib.admin.views.decorators.staff_member_required) 装饰器取代 login_required()。
+
+#### LoginRequired Mixin

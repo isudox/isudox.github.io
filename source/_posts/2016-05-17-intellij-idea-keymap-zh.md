@@ -1,7 +1,7 @@
 ---
 title: '[译] IntelliJ IDEA 快捷键操作'
 date: 2016-05-17 16:02:15
-tags: [IntelliJ,Java]
+tags: [Java,JetBrains]
 categories: [Translation]
 ---
 

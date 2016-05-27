@@ -249,6 +249,10 @@ $(document).on('click', '.remove', function (e) {
 });
 ```
 
+update20160525: 在 Chromium 更新到 50.0 后，测试已支持 FormData.delete() 方法。
+
+![](https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-2.png)
+
 #### iOS 调试兼容性
 
 前面在讲 canvas 处理时提到一个坑，再功能测试时才发现，就是经过 canvas 处理后的图片上传服务器后读取出来会发生旋转的问题。多次测试后发现，只有当调用摄像头竖拍上传时才会发生这个错误，横拍或者调用相册选图上传就正常。通常这种不知道从哪冒出来的 bug 找谷歌就行了，关键字 canvas upload image ios rotation 搜索到 stackoverflow 上有同样的[问题](http://stackoverflow.com/questions/19463126/how-to-draw-photo-with-correct-orientation-in-canvas-after-capture-photo-by-usin)，道出了问题发生的根源，就是摄像头竖拍照片的 EXIF 的信息发生了变化。读取 EXIF 并修正照片的旋转。
@@ -301,5 +305,60 @@ function processFile(dataURL, fileType, orientation) {
 到此，前端部分的工作就大体上介绍完了，下面继续将后端部分的业务处理，因为 JD 交易平台的项目绝大多数是采用 Spring MVC，因此后端方案采用的还是 Spring MVC，当然 PHP、Python 的处理思路都是一样的，就当抛砖引玉了。
 
 ### 后端
+
+#### 接收 FormData
+
+服务器端接收客户端发送过来的 FormData 数据，最主要的工作就是将 base64 编码串提取出来并根据需要转换成所需的格式（在我的代码里转成了 byte 类型）。这部分工作很简单，需要注意的点是 base64 编码串的标准格式形如：
+
+```
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABoYAAAJJCA
+```
+
+需要将其头部的标识位截去，即保留 `","` 后面的编码串。
+
+```java
+@RequestMapping(value = "upload", method = RequestMethod.POST)
+@ResponseBody
+public SimpleResponse upload(HttpServletRequest request, @RequestParam Map<String, String> formData) {
+    SimpleResponse response = new SimpleResponse();
+    Footprint footprint = new Footprint();
+    String pin = (String) request.getAttribute("pin");
+    Long profileId = Long.parseLong(formData.get("profileId"));
+    footprint.setPin(pin);
+    footprint.setProfileId(profileId);
+    try {
+        int count = Integer.parseInt(formData.get("count")); // 图片数量
+        String tag = formData.get("tag") == null ? "" : formData.get("tag"); // 足迹标签
+        String content = formData.get("content") == null ? "" : formData.get("content"); // 足迹正文
+        footprint.setTag(tag);
+        footprint.setContent(content);
+        logger.error("Tag: {}, Content: {}, Count: {}", tag, content, count);
+        byte[][] imageByte = null;
+        if (count > 0) {
+            imageByte = new byte[count][];
+            // base64转byte[]
+            for (int i = 0; i < count; i++) {
+                String base64Str = formData.get("imageData_" + i).split(",")[1]; // 截掉base64的头部
+                byte[] bytes = EncodeUtil.base64ToByte(base64Str);
+                imageByte[i] = bytes;
+            }
+        }
+
+        Footprint saveResult = footprintDBService.save(footprint, imageByte); // 传给后台处理并存储到云存储
+
+        if (saveResult == null) {
+            response.setSuccess(false);
+            response.setMessage("很抱歉服务器响应缓慢，请稍后再试");
+        } else {
+            response.setSuccess(true);
+            response.setData(saveResult);
+        }
+    } catch (Exception e) {
+        logger.error("发生异常: ", e);
+    }
+
+    return response;
+}
+```
 
 ### 优化

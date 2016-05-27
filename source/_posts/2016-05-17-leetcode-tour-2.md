@@ -8,7 +8,7 @@ categories:
   - Coding
 ---
 
-接着之前的[第一弹](/2015/11/23/leetcode-1st-week/)，第二弹从第四题开始。
+接着上篇 [LeetCode 探险第一弹](/2015/11/23/leetcode-1st-week/)，本篇从第四题开始写。
 
 <!-- more -->
 
@@ -99,9 +99,9 @@ public class Solution {
 
 OJ 测试结果：
 
-| Status | Run Time | Language |
-|:------:|:--------:|:--------:|
-| Accepted | 35 ms | Java |
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 88 / 88 | 35 ms | Java |
 
 **************************************
 
@@ -109,35 +109,49 @@ OJ 测试结果：
 
 第六题 [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/)
 
-> 字符串 `"PAYPALISHIRING"` 是由如下排列的字符串通过 zigzag 形式读取所得。
+> 字符串 `"PAYPALISHIRING"` 是由如下排列的字符串通过 ZigZag 形式读取所得。
 > ```
 P   A   H   N
 A P L S I I G
 Y   I   R
 ```
-> 如果以行的形式读取则为 `"PAHNAPLSIIGYIR"`
+> 如果按行读取则为 `"PAHNAPLSIIGYIR"`
 > 请编写代码将给定行数的 zigzag 形式字符串转换为行形式的字符串：
 > ```
 string convert(string text, int nRows);
 ```
-> 比如 `convert("PAYPALISHIRING", 3)` 会返回 `"PAHNAPLSIIGYIR"`
+> 比如 `convert("PAYPALISHIRING", 3)` 得到 `"PAHNAPLSIIGYIR"`
 
-这道 zigzag 题很好玩，让我想起小时候做过的奥数题。
+这道 ZigZag 题很好玩，让我想起小时候做过的奥数题。从 ZigZag 型字符串中找规律，可以看到第一行和最后一行很容易挑出来，因为其字符的步进是固定的，即 2\*(nRows-1)。然而中间的行的规律就不那么规则了，其步进间距是跳跃的，如果继续按 2\*(nRows-1) 步进查找的话，会漏掉步进间距小于该值的字符。但是仔细观察除掉首行和末行的 ZigZag 排列字符串，可以发现它仍然是 ZigZag 字符串，只不过行数再减小，与之相应的步进间距也在变化，但始终符合 2\*(nRows-1) 的规律。找到这个特性后，在步进查找时把中间行组成的 ZigZag 字符串的步进间距也作查询，就不会漏掉了。
 
 ```java
 // ZigZagConversion.java
 public class Solution {
     public String convert(String s, int numRows) {
-        
+        int len = s.length();
+        if (len <= 2 || numRows == 1) {
+            return s;
+        }
+        String result = "";
+        int step = 2 * (numRows - 1);
+        for (int currRow = 0; currRow < numRows; currRow++) {
+            for (int currIndex = currRow; currIndex < len; currIndex += 2 * (numRows - 1)) {
+                result += s.charAt(currIndex);
+                if (currRow != 0 && currRow != numRows - 1 && currIndex + 2 * (numRows - currRow - 1) < len) {
+                    result += s.charAt(currIndex + 2 * (numRows - currRow - 1));
+                }
+            }
+        }
+        return result;
     }
 }
 ```
 
 OJ 测试结果：
 
-| Status | Run Time | Language |
-|:------:|:--------:|:--------:|
-| Accepted | 35 ms | Java |
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 1158 / 1158 | 42 ms | Java |
 
 **************************************
 
@@ -215,9 +229,9 @@ public class Solution {
 
 OJ 测试结果：
 
-| Status | Run Time | Language |
-|:------:|:--------:|:--------:|
-| Accepted | 2 ms | Java |
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 1032 / 1032 | 2 ms | Java |
 
 **************************************
 
