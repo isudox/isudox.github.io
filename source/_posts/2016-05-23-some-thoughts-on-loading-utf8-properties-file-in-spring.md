@@ -1,5 +1,5 @@
 ---
-title: 由 Spring 读取带中文 properties 文件引发的思考
+title: 关于 Spring 读取含中文 properties 文件的思考
 date: 2016-05-23 15:17:18
 tags:
   - Java
