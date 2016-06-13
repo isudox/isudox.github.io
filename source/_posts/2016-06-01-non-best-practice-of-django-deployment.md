@@ -9,7 +9,7 @@ tags:
   - Python
   - BestPractice
 categories:
-  - Code
+  - Coding
 ---
 
 
