@@ -237,7 +237,7 @@ OJ 测试结果：
 
 ### String to Integer (atoi)
 
-第八题是经典到无以复加的[字符串数转整型数](https://leetcode.com/problems/string-to-integer-atoi/)！也就是实现 C 语言里经典的 atoi 函数。
+第八题是经典到无以复加的[字符串数转整型数](https://leetcode.com/problems/string-to-integer-atoi/)！也就是实现 C 语言里的 atoi 函数。
 
 > 提示：仔细考虑所有可能的传参，题目没有指定输入类型。
 
@@ -245,13 +245,69 @@ OJ 测试结果：
 
 - 正常的 int 范围内的字符串数；
 - 超出 int 范围的大数字符串；
-- 字符串中包含非数字字符；
-- 首个字符是 `"+"`, `"-"`;
+- 字符串中包含非数字字符，包括空格符，字母、标点等；
+- 首字符是 `"+"`, `"-"`;
+
+仔细考虑可能出现的情况：
+1) 正常的 int 型数值字符串，很好处理，依次取字符转换为 int 型并做数值相加；
+2) 首字符为 `"+"`, `"-"` 时，截取去掉正负号的子字符串，再进行如上处理；
+3) 若首字符为空格，则去掉该空格，比如 "   123" 转换结果应该为 123；
+4) 若字符串中出现非数字，则舍弃该位以及后面的字符；
+5) 弱字符串转换结果超出了整型数值范围，则取整型数的边界值，比如 "-999999999" 转换结果是 -2147483648
+
+再充分考虑到可能情况后，递归调用可以简化处理步骤，下面是我的解法，多说一句，LeetCode 上这道题的描述实在是太简略了，不少特殊情况的处理规则都是我提交代码试错的出来的，比如上面罗列出来的规则 3, 4 和 5。
 
 ```java
 public class Solution {
     public int myAtoi(String str) {
-        
+        if (str == null || Objects.equals(str, ""))
+            return 0;
+        if (str.charAt(0) == '-')
+            return subAtoi(str.substring(1), true);
+        if (str.charAt(0) == '+')
+            return subAtoi(str.substring(1), false);
+        if (str.charAt(0) == ' ')
+            return myAtoi(str.substring(1));
+        return subAtoi(str, false);
+    }
+
+    private int subAtoi(String str, boolean neg) {
+        if (str == null || str.equals("")) {
+            System.out.println("a");
+            return 0;
+        }
+        int res = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i)))
+                return res;
+            int digit = Character.getNumericValue(str.charAt(i));
+            if (neg) {
+                if (i == 9) {
+                    int diff = res - Integer.MIN_VALUE / 10;
+                    if (diff < 0 || (diff == 0 && digit > 8))
+                        return Integer.MIN_VALUE;
+                }
+                if (i >= 10)
+                    return Integer.MIN_VALUE;
+                res = 10 * res - digit;
+            } else {
+                if (i == 9) {
+                    int diff = res - Integer.MAX_VALUE / 10;
+                    if (diff > 0 || (diff == 0 && digit > 7))
+                        return Integer.MAX_VALUE;
+                }
+                if (i >= 10)
+                    return Integer.MAX_VALUE;
+                res = digit + 10 * res;
+            }
+        }
+        return res;
     }
 }
 ```
+
+OJ 测试结果：
+
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 1047 / 1047 | 8 ms | Java |
