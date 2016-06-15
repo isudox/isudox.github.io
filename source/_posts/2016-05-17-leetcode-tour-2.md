@@ -8,102 +8,9 @@ categories:
   - Coding
 ---
 
-接着上篇 [LeetCode 探险第一弹](/2015/11/23/leetcode-1st-week/)，本篇从第四题开始写。
+接着上篇 [LeetCode 探险第一弹](/2015/11/23/leetcode-1st-week/)，本篇记录第 6 到 10 题。
 
 <!-- more -->
-
-### Median of Two Sorted Arrays
-
-第四题 [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
-
-> 长度分别为 m, n 的有序数组 nums1 和 nums2，找出这两个数组的中位数。要求时间复杂度为 O(log(m+n))
-
-这题是 Hard 难度，但题目本身并不复杂，主要是对时间复杂度有要求，因此需要细细思考下。
-
-要找两个有序数组的中位数，最直接的想法就是将两个数组合并排序，中位数自然而然就找到了。
-
-```java
-// MedianOfTwoSortedArrays.java
-public class Solution {
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int m = nums1.length;
-        int n = nums2.length;
-        int mid = (m + n) / 2;
-        int curr = 0;
-        for (int i = 0, j = 0; i < (m < n ? m : n) && j < (m < n ? m : n);;) {
-            if (num1[i] < num2[i]) {
-                i++;
-                curr++;
-                if (curr == mid) {
-                    return num1[i];
-                }
-            } else {
-                j++;
-                curr++;
-            }
-        }
-    }
-}
-```
-
-**************************************
-
-### Longest Palindromic Substring
-
-第五题 [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
-
-> 给出一个字符串 S，从 S 中找出其最长的回文子串。可以假定 S 的最大长度为 1000，并且存在唯一的最长回文子串。
-
-回文字符串就是正序和反序相同，也就是说回文以中心点对称，如 "abcba"。所以可以考虑从中心点向两侧扩展枚举，如果两侧相等，则记录下当前回文长度，并即时更新最大回文长度；否则，则移动中心点，重复枚举操作。这个思路有一个需要注意的地方，就是回文长度的奇偶，这两种枚举的处理有所不同。
-
-```java
-// LongestPalindromicSubstring.java
-public class Solution {
-    public String longestPalindrome(String s) {
-        int len = s.length();
-        if (len <= 1) {
-            return s;
-        }
-        int maxLen = 0;
-        String palindrome = "";
-
-        for (int i = 0; i < len - 1; i++) {
-            // odd
-            String oddStr = check(s, i, i, len);
-            int oddLen = oddStr.length();
-            if (oddLen > maxLen) {
-                maxLen = oddLen;
-                palindrome = oddStr;
-            }
-            // even
-            String evenStr = check(s, i, i + 1, len);
-            int evenLen = evenStr.length();
-            if (evenLen > maxLen) {
-                maxLen = evenLen;
-                palindrome = evenStr;
-            }
-        }
-
-        return palindrome;
-    }
-
-    private String check(String s, int start, int end, int len) {
-        while (start >= 0  &&  end <= len - 1 && s.charAt(start) == s.charAt(end)) {
-            start--;
-            end++;
-        }
-        return s.substring(start + 1, end);
-    }
-}
-```
-
-OJ 测试结果：
-
-| Status | Tests | Run Time | Language |
-|:------:|:------:|:--------:|:--------:|
-| Accepted | 88 / 88 | 35 ms | Java |
-
-**************************************
 
 ### ZigZag Conversion
 
@@ -311,3 +218,123 @@ OJ 测试结果：
 | Status | Tests | Run Time | Language |
 |:------:|:------:|:--------:|:--------:|
 | Accepted | 1047 / 1047 | 8 ms | Java |
+
+**************************************
+
+### Palindrome Number
+
+第九题 [Palindrome Number](https://leetcode.com/problems/palindrome-number/)
+> 判断一个整型数是否为回文数，不要使用额外的存储空间。
+
+题目不难，无非就是判断该整数是否是轴对称，因为负整数有符号，所以不是回文数。因此主流程只需要对正整数的情况进行处理。
+那么现在的问题就简化成，如何判断一个正整数是否轴对称。如果把正整数转换为字符串，通过栈 FILO 的特性翻转字符串肯定是可以判断其是否对称，但是这样做的话，申请了额外的存储空间。那如果直接翻转正整数呢，会存在两种特殊情况，一是超出整型数的范围，二是末位是 0 的数。但实际上，这两种情况都无需考虑，这里有一个关于假设的小伎俩：假定整数是回文数，那么翻转该整数得到的数就是相同的整数，就必然不存在超出整型数范围或末位为 0 的情况；反之，如果不是回文，那翻转过来的结果无论是溢出整型范围还是位数减少，都和原整数不相同，也就不是回文。所以这道题可以直接通过除十取余的方法来解决。Java 代码如下：
+
+```java
+// PalindromeNumber.java v1.0
+public class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        int y = 0;
+        int bak = x;
+        while (x > 0) {
+            int temp = x;
+            x = temp / 10;
+            y = y * 10 + temp % 10;
+        }
+        return y == bak;
+    }
+}
+```
+
+OJ 测试结果：
+
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 11506 / 11506 | 11 ms | Java |
+
+但这种耍小聪明的方法并不优雅，因为它没有直接处理上面提到的两种特殊情况。校验是否轴对称，其实本质上就是校验首位数和末位数是否相等，那么可以依次比较整数的首位和末位，如果校验通过，则将整数去掉首位和末位，再次比较。
+
+```java
+// PalindromeNumber.java v1.1
+public class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        if (x == 0) return true;
+        int count = 0;
+        int temp = x;
+        while (temp > 0) {
+            temp /= 10;
+            count++;
+        }
+        for (int i = count; i > 0; i -= 2) {
+            if (x / this.pow(10, i - 1) != x % 10) return false;
+            x = (x % this.pow(10, i - 1)) / 10;
+        }
+        return true;
+    }
+    private int pow(int x, int y) {
+        int z = 1;
+        for (; y > 0; y--) z *= x;
+        return z;
+    }
+}
+```
+
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 11506 / 11506 | 14 ms | Java |
+
+```java
+// PalindromeNumber.java v1.2
+public class Solution {
+    public boolean isPalindrome(int x) {
+if (x < 0) return false;
+        int digits = 0;
+        int temp = x;
+        while (temp > 0) {
+            temp /= 10;
+            digits++;
+        }
+        int j = digits;
+        for (int i = 1; j > i; i++, j--) {
+            if (digit(x, digits, j) != digit(x, digits, i)) return false;
+        }
+        return true;
+    }
+    private int pow(int x, int y) {
+        int z = 1;
+        for (; y > 0; y--) z *= x;
+        return z;
+    }
+    private int digit(int x, int i, int j) {
+        return x / pow(10, j - 1) % 10;
+    }
+}
+```
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 11506 / 11506 | 15 ms | Java |
+
+哎，越来越慢，讲道理，还是把整数转换为字符串去处理是最简单的……
+
+所以，用 Python 来做的话，代码简直不能更简洁，因为 Python 直接支持翻转
+
+```python
+# palindrome_number.py
+class Solution(object):
+    def isPalindrome(self, x):
+        """
+        :type x: int
+        :rtype: bool
+        """
+        return x >=0 and str(x) == str(x)[::-1]
+ ```
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 11506 / 11506 | 272 ms | Java |
+
+Python 处理速度虽然比 Java 有数量级的差距，但是，编程的过程真是轻松太多了，真的就只用了一行代码解决战斗！
+
+**************************************
+
+下一篇：[LeetCode 探险第三弹](/2016/06/15/leetcode-tour-3/)
