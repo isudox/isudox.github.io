@@ -333,8 +333,15 @@ class Solution(object):
 |:------:|:------:|:--------:|:--------:|
 | Accepted | 11506 / 11506 | 272 ms | Java |
 
-Python 处理速度虽然比 Java 有数量级的差距，但是，编程的过程真是轻松太多了，真的就只用了一行代码解决战斗！
+Python 处理速度虽然比 Java 有数量级的差距，但是，编程的过程真是轻松太多了，真的就只用了一行代码解决战斗！在这里有必要喊一句口号——
+> **人生苦短，我用 Python！**
 
 **************************************
+
+### Regular Expression Matching
+
+第十题 [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
+
+> 实现正则表达式，使得支持 `'.'` 和 `'*'` 符。其中，`'.'` 匹配任意单个字符，'*'匹配该符号前之前的零个或任意多个字符。
 
 下一篇：[LeetCode 探险第三弹](/2016/06/15/leetcode-tour-3/)
