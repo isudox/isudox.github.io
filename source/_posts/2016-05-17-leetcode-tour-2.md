@@ -346,6 +346,7 @@ Python 处理速度虽然比 Java 有数量级的差距，但是，编程的过�
 
 这道题难道不是很简单吗，就算是用笨重的 Java 写，一行代码也能解决，你看——
 ```java
+// RegularExpressionMatching.java v1.0
 public class Solution {
     public boolean isMatch(String s, String p) {
         return java.util.regex.Pattern.compile(p).matcher(s).matches();
@@ -360,14 +361,34 @@ public class Solution {
 - 正则式 p 同时包含 `'.'` 和 `'*'` 符，复杂度最高，同时考虑情况 2 和 3；
 
 ```java
+// RegularExpressionMatching.java v1.1
 public class Solution {
     public boolean isMatch(String s, String p) {
-
+        int lenS = s.length(), lenP = p.length();
+        if (lenP == 0) return lenS == 0;
+        if (lenP == 1) {
+            if (p.charAt(0) == '.') return lenS == 1;
+            return lenS == 1 && s.charAt(0) == p.charAt(0);
+        }
+        if (p.charAt(1) == '*') {
+            if (isMatch(s, p.substring(2))) return true;
+            if(s.length() > 0 && (p.charAt(0) == '.' || s.charAt(0) == p.charAt(0))) {
+                return isMatch(s.substring(1), p);
+            }
+            return false;
+        } else {
+            if(lenS > 0 && (p.charAt(0) == '.' || s.charAt(0) == p.charAt(0))) {
+                return isMatch(s.substring(1), p.substring(1));
+            }
+            return false;
+        }
     }
 }
 ```
 | Status | Tests | Run Time | Language |
 |:------:|:------:|:--------:|:--------:|
-| Accepted | 11506 / 11506 | 272 ms | Java |
+| Accepted | 445 / 445 | 116 ms | Java |
+
+自己的实现不如 Java 内置的正则匹配算法效率高，类 Pattern 的完成上述匹配的时间是 87 ms。
 
 下一篇：[LeetCode 探险第三弹](/2016/06/15/leetcode-tour-3/)
