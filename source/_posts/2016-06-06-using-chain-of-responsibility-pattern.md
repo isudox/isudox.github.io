@@ -56,7 +56,7 @@ public class BullshitCode {
 } 
 ```
 上面的代码没有什么实际意义，只是一种很具有代表性的写法，通过一长串的 `if-else` 逻辑去处理业务，导致所有可能的处理缓解都堆积杂糅在一块，设想一下如果新增了业务需求，是不是再往里面插一个 `if-else` 了事？总是用这种方式去写代码会让程序越来越臃肿，难以维护和扩展，尤其是当你接手别人的代码发现以百行计的 `if-else` 语句块时，你一定会一脸懵逼看不下去，沃泽法克什么鬼？！
-![](https://o70e8d1kb.qnssl.com/nick-young-confused-face.png)
+![](https://o70e8d1kb.qnssl.com/confused-face.png)
 
 升职加薪对码农而言，就像是马儿眼前的草，给不给草啊，难道又要马儿跑又要马儿不吃草，互联网公司好像还真这么想……说多了就是两行泪，上头的 Boss 和 HR 们层层把关，不是想加就能加。
 ```java
@@ -131,7 +131,7 @@ public static void main(String[] args) {
 
 前面提到了京东陪伴计划对优惠券部分的业务的处理，比如客户端的优惠券展示，不同用户看到的可领优惠券是不同的，另外，后台配置的优惠券也是差异化的。因此优惠券的展示可能涉及到的维度有：业务类型，用户 ID，宝贝档案信息，券卡类型，用户等级，展示期，有效期，风控级别等，而且要有可扩展性，保不定哪天就要增加新维度。同样，优惠券的发放领取也涉及到类似的条件筛查。那重构前的代码是怎么处理的呢，其实就跟上一小节给出的那段又臭又长的代码一个样，就是不断的通过 `if-else` 去判断条件，如果符合了就予以展示或发放，不符合就舍去，这就是过程编程不好的地方，代码冗余，可重用性差，难以扩展。
 
-不难发现，上面的优惠券场景是适用于责任链模式的，因为优惠券展示 / 发放所涉及到的各个筛查条件都可以作为责任链上的节点，只是在这里，不能做原教旨主义者，需要对教科书上的责任链模式略作改动，在配置用于优惠券展示 / 发放的责任链后，优惠券信息经过责任链的处理时，当前的责任节点必须对请求进行处理，而不是原始的责任链模式中提到的只有一个节点作为处理者。换个说法，每张可能的优惠券从责任链的起始节点开始被筛查，如果结果是真则往下一节点继续筛查，否则中断筛查，抛弃该潜在优惠券。
+不难发现，上面的优惠券场景是适用于责任链模式的，因为优惠券展示/发放所涉及到的各个筛查条件都可以作为责任链上的节点，只是在这里，不能做原教旨主义者，需要对教科书上的责任链模式略作改动，在配置用于优惠券展示/发放的责任链后，优惠券信息经过责任链的处理时，当前的责任节点必须对请求进行处理，而不是原始的责任链模式中提到的只有一个节点作为处理者。换个说法，每张可能的优惠券从责任链的起始节点开始被筛查，如果结果是真则往下一节点继续筛查，否则中断筛查，抛弃该潜在优惠券。
 
 责任链节点对象，内有优惠券筛查处理器接口方法
 ```java
@@ -230,7 +230,7 @@ Spring 配置优惠券筛查的责任链，注入检查链对象
        default-autowire="byName">
 
   <!-- 优惠券展示链 -->
-  <bean id="displayCouponCheckChain" class="com.jd.gp.sdk.service2.coupon.CheckChain">
+  <bean id="displayCouponCheckChain" class="com.isudox.service.coupon.CheckChain">
     <property name="checkList">
       <list>
         <ref bean="timeCheckHandlerNode"/>
@@ -241,7 +241,7 @@ Spring 配置优惠券筛查的责任链，注入检查链对象
     </property>
   </bean>
   <!-- 优惠券发放链 -->
-  <bean id="sendCouponCheckChain" class="com.jd.gp.sdk.service2.coupon.CheckChain">
+  <bean id="sendCouponCheckChain" class="com.isudox.service.coupon.CheckChain">
     <property name="checkList">
       <list>
         <ref bean="receivedCheckHandlerNode"/>

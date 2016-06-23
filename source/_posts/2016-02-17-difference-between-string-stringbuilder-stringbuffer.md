@@ -71,7 +71,9 @@ public static void main(String[] args) {
 
 `==` 比较了对象所引用的内存地址，地址相同则返回 true；`Objects.equals()` 方法则只是比较了对象的值。因此上面代码中字符串 a 和 c 虽然值相同，但是引用的地址不一样，所以在比较 `==` 时返回了 false。
 
-#### StringBuilder 和 StringBuilder
+关于上面的涉及到的 String 对象在内存中的分配，我在后边的一篇[博客](/2016/06/22/memory-model-of-string-in-java/)中做了更新。
+
+#### StringBuilder 和 StringBuffer
 
 StringBuilder 和 StringBuffer 比较类似，就放在一起比较。二者都是继承了类 AbstractStringBuilder，和 String 不同，它们都是 mutable 的，随时可以改变值。StringBuffer 拥有和 StringBuilder 部分相同的方法，下面截取了 JDK 的源码：
 
@@ -89,7 +91,7 @@ public final class StringBuilder extends AbstractStringBuilder
         implements java.io.Serializable, CharSequence {
     public StringBuilder insert(int offset, char c) {
         super.insert(offset, c);
-	    return this;
+        return this;
     }
 ```
 可以看到在 StringBuffer 的方法里加入了关键字 synchronized 修饰，表明 StringBuffer 是线程安全的，相反的，StringBuilder 就是非线程安全。也正因此，StringBuffer 的处理效率不如 StringBuilder。到这，就算是理解了为什么 IDEA 会给出建议性的提示，把 StringBuffer 变量声明为 StringBuilder 变量。
