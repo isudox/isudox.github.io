@@ -1,5 +1,5 @@
 ---
-title: Java String 在内存中的存储
+title: Java String 的内存模型
 date: 2016-06-22 13:00:53
 tags:
   - Java
@@ -8,7 +8,7 @@ categories:
   - Coding
 ---
 
-在之前写的一篇博客中（[String, StringBuilder, StringBuffer 区别](/2016/02/17/difference-between-string-stringbuilder-stringbuffer/)），提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。
+在之前写的一篇博客中([String, StringBuilder, StringBuffer 区别](/2016/02/17/difference-between-string-stringbuilder-stringbuffer/))，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。
 
 <!-- more -->
 
