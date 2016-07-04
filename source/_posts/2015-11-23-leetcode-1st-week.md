@@ -12,7 +12,7 @@ LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记�
 
 ### Two Sum
 
-第一题 [Two Sum](https://leetcode.com/problems/two-sum/) 算是简单题，题意大致为：
+第 1 题 [Two Sum](https://leetcode.com/problems/two-sum/) 算是简单题，题意大致为：
 > 给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。
 > 伪代码：
 > nums = [2, 7, 11, 15], target = 9
@@ -69,7 +69,7 @@ OJ 结果：
 
 ### Add Two Numbers
 
-第二题 [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+第 2 题 [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
 
 > 给定两个链表(linked list)，以倒序表示正整数。将两数求和并返回该和的链表形式。
 > **Input:** (2 -> 4 -> 3) + (5 -> 6 -> 4)
@@ -217,7 +217,7 @@ BigInteger 类的方法需要参考 JDK 文档，这里不赘述了。代码提�
 
 ### Longest Substring Without Repeating Characters
 
-第三题 [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+第 3 题 [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
 > 给出一个字符串，求其最长的无重复字符的子字符串的长度。
 > e.g.
@@ -271,7 +271,7 @@ OJ 测试结果：
 
 ### Median of Two Sorted Arrays
 
-第四题 [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
+第 4 题 [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 
 > 长度分别为 m, n 的有序数组 nums1 和 nums2，找出这两个数组的中位数。要求时间复杂度为 O(log(m+n))
 
@@ -307,7 +307,7 @@ public class Solution {
 
 ### Longest Palindromic Substring
 
-第五题 [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+第 5 题 [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
 
 > 给出一个字符串 S，从 S 中找出其最长的回文子串。可以假定 S 的最大长度为 1000，并且存在唯一的最长回文子串。
 

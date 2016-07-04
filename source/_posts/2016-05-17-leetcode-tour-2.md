@@ -14,7 +14,7 @@ categories:
 
 ### ZigZag Conversion
 
-第六题 [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/)
+第 6 题 [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/)
 
 > 字符串 `"PAYPALISHIRING"` 是由如下排列的字符串通过 ZigZag 形式读取所得。
 > ```
@@ -64,7 +64,7 @@ OJ 测试结果：
 
 ### Reverse Integer
 
-第七题 [Reverse Integer](https://leetcode.com/problems/reverse-integer/)
+第 7 题 [Reverse Integer](https://leetcode.com/problems/reverse-integer/)
 
 > 翻转整型数的数位，例如：
 > x = 123，返回 321；x = -123，返回 -321；
@@ -144,7 +144,7 @@ OJ 测试结果：
 
 ### String to Integer (atoi)
 
-第八题是经典到无以复加的[字符串数转整型数](https://leetcode.com/problems/string-to-integer-atoi/)！也就是实现 C 语言里的 atoi 函数。
+第 8 题是经典到无以复加的[字符串数转整型数](https://leetcode.com/problems/string-to-integer-atoi/)！也就是实现 C 语言里的 atoi 函数。
 
 > 提示：仔细考虑所有可能的传参，题目没有指定输入类型。
 
@@ -223,7 +223,7 @@ OJ 测试结果：
 
 ### Palindrome Number
 
-第九题 [Palindrome Number](https://leetcode.com/problems/palindrome-number/)
+第 9 题 [Palindrome Number](https://leetcode.com/problems/palindrome-number/)
 > 判断一个整型数是否为回文数，不要使用额外的存储空间。
 
 题目不难，无非就是判断该整数是否是轴对称，因为负整数有符号，所以不是回文数。因此主流程只需要对正整数的情况进行处理。
@@ -340,7 +340,7 @@ Python 处理速度虽然比 Java 有数量级的差距，但是，编程的过�
 
 ### Regular Expression Matching
 
-第十题 [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
+第 10 题 [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
 
 > 实现正则表达式，使得支持 `'.'` 和 `'*'` 符。其中，`'.'` 匹配任意单个字符，`'*'` 匹配该符号前之前的零个或任意多个字符。
 

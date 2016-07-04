@@ -14,7 +14,7 @@ categories:
 
 ### Container With Most Water
 
-第十一题 [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+第 11 题 [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
 
 > 给出 n 个非负整数 a1, a2, ..., an，每个数指向一个坐标点 (i, ai)。该 n 个坐标点画出了 n 条纵线，即从 (i, ai) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。
 
@@ -39,8 +39,8 @@ public class Solution {
 }
 ```
 
-提交后被 Lee他Code 婉拒，因为 Time Limit Exceeded，这种解法时间复杂度是 O(n^2)，当 n 很大时，运行时间随指数增长会非常可怕。只能想办法精简处理过程，是不是所有 0.5(n*(n-1)) 中组合都要计算一遍，必须不是。涉及两个变量长和高，因为长的最大值是已知的，从长度取最大开始比较：
-先取首末两个点 1 和 n，容积是 V=(n-1)*Math.min(a1,an)。除此之外的选点，长度不可能比这种情况大，要使长度变小的前提下，容积更大，必要条件就是 Math.min(ai,aj) 要大于 Math.min(a1,an)。所以可以从首末两端往中间移动，求取容积并存储当前最大容积后，放弃两侧高度较小的那个点，并向中心移动，这样处理可以省去很多不必要的计算，时间复杂度降低到 O(n)。
+提交后被 Lee他Code 婉拒，因为 Time Limit Exceeded，这种解法时间复杂度是 O(n^2)，当 n 很大时，运行时间随指数增长会非常可怕。只能想办法精简处理过程，是不是所有 0.5(n\*(n-1)) 中组合都要计算一遍，必须不是。涉及两个变量长和高，因为长的最大值是已知的，从长度取最大开始比较：
+先取首末两个点 1 和 n，容积是 V=(n-1)\*Math.min(a1,an)。除此之外的选点，长度不可能比这种情况大，要使长度变小的前提下，容积更大，必要条件就是 Math.min(ai,aj) 要大于 Math.min(a1,an)。所以可以从首末两端往中间移动，求取容积并存储当前最大容积后，放弃两侧高度较小的那个点，并向中心移动，这样处理可以省去很多不必要的计算，时间复杂度降低到 O(n)。
 
 ```java
 // ContainerWithMostWater.java v1.1
@@ -72,7 +72,7 @@ public class Solution {
 
 ### Integer to Roman
 
-第十二题 [Integer to Roman](https://leetcode.com/problems/integer-to-roman/)
+第 12 题 [Integer to Roman](https://leetcode.com/problems/integer-to-roman/)
 
 > 给出一个整型数，将其转换为罗马数字。输入的整数在 1-3999 之间。
 
@@ -172,7 +172,7 @@ public class Solution {
 
 ### Roman to Integer
 
-第十三题 [Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
+第 13 题 [Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
 
 > 给出一个罗马数字，将其转换为整型数。范围在 1-3999 之间。
 
@@ -247,7 +247,7 @@ public class Solution {
 
 ### Longest Common Prefix
 
-第十四题 [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
+第 14 题 [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
 
 > 编写一个函数，找出给定的字符串数组中最长的公共前缀字符串。
 
@@ -285,10 +285,10 @@ public class Solution {
 
 ### 3Sum
 
-第十五题 [3Sum](https://leetcode.com/problems/3sum/)
+第 15 题 [3Sum](https://leetcode.com/problems/3sum/)
 
 > 有 n 个整型数组成的数组 S，其中是否存在 a, b, c 三个数，使得 a + b + c = 0？找出所有的组合。
-> 比如给出数组 S = [-1, 0, 1, 2, -1, -4]，结果就是：[ [-1, 0, 1], [-1, -1, 2] ]
+> 比如给出数组 S = [ -1, 0, 1, 2, -1, -4 ]，结果就是：[ [-1, 0, 1], [-1, -1, 2] ]
 > 注，需要去重。
 
 首先排除数组元素小于 3 的异常情况。因为三者求和为 0，因此必然包含正数和负数，所以把数组排序后如果首个元素大于 0，或者最后一个元素小于 0 都可以直接终止算法。另外，由于最终的结果不能有重复的组合，所以有必要对数组进行排序，这样方便去掉重复的数字组合。
@@ -330,3 +330,5 @@ public class Solution {
 | Status | Tests | Run Time | Language |
 |:------:|:------:|:--------:|:--------:|
 | Accepted | 311 / 311 | 9 ms | Java |
+
+下一篇：[LeetCode 探险第四弹](/2016/07/04/leetcode-tour-4/)
