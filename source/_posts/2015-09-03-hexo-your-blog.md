@@ -35,7 +35,7 @@ Google 一下关键字 Hexo + Blog，或者直接查看 Hexo 官方[文档](http
 
 #### VPS
 
-我在 VPS 上测试过两种方案，方案一是在 VPS 上也创建 Hexo 环境，同时新建一个 Git 裸仓库作为私有 Git 服务器，本地提交 Hexo 的源文件至 VPS 上的 Git 服务器，然后 VPS 上的 Hexo 程序生成静态文件并发布部署到 Web 目录下；方案二则是本地提交 Hexo 生成文件到 Git 裸仓库，VPS 直接将其部署到 Web 目录下。前者徒增 VPS 的压力，后者使得 Git 日志冗余，各有长短。两种方案我都测试通过，最后采用方案二。
+首先得买一台可靠的 VPS，我选用的美帝 [Linode](https://www.linode.com/?r=285e75ec2001be00899a5a81796260d2e5962a5b)。我在 VPS 上测试过两种方案，方案一是在 VPS 上也创建 Hexo 环境，同时新建一个 Git 裸仓库作为私有 Git 服务器，本地提交 Hexo 的源文件至 VPS 上的 Git 服务器，然后 VPS 上的 Hexo 程序生成静态文件并发布部署到 Web 目录下；方案二则是本地提交 Hexo 生成文件到 Git 裸仓库，VPS 直接将其部署到 Web 目录下。前者徒增 VPS 的压力，后者使得 Git 日志冗余，各有长短。两种方案我都测试通过，最后采用方案二。
 GitHub 提供 GitHub Pages 服务，原意是用来给开发者发布器在 GitHub 上项目的文档及说明，当然也可以作为开发者的个人站点使用。如果是创建 {username}.github.io 仓库，GitHub 会将其 master 分支下的内容作为站点文件发布；如果是创建其他自定义名称的仓库，GitHub 将以 gh-page 分支作为站点文件。
 
 创建新用户 git，在服务器上创建 git server 请参考 git [官方文档](https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server)

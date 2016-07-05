@@ -84,7 +84,7 @@ deploy:
   type: git
   repo:
     github: git@github.com:isudox/isudox.github.io.git,master
-    gitvps: git@45.33.47.109:isudox-hexo.git,master
+    gitvps: git@45.33.47.109:isudox.github.io.git,master
 
 # Disqus
 disqus_shortname: isudox
