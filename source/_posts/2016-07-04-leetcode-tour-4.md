@@ -244,10 +244,73 @@ public class Solution {
 
 第 19 题 [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
-> 
+> 给定一个链表，移除倒数第 n 个节点，返回该链表的首节点。
+> 例如链表  **1 -> 2 -> 3 -> 4 -> 5**，**n = 2**，移除倒数第 2 节点后的链表为 **1 -> 2 -> 3 -> 5**
+> 假定 n 是有效的。
+
+普通链表是单向，假如是正向的移除第 n 个节点，很好做，但是反向的移除就需要动下脑筋。最直接的办法就是先遍历链表求其长度，减去 n 就是正向的节点位置，然后再做依次顺序遍历，找到要移除的节点。这种方法需要两次遍历。还有一种略微机智的方法，只需要做一次遍历，先让早起步的头指针移动 n 次，再让另一个慢起步的头指针开始移动，这样等早起步头指针到达最后一个节点的时候，后一个指针正好到达要移除的节点。
+
+```java
+// RemoveNthNodeFromEndOfList.java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode res = new ListNode(0);
+        res.next = head;
+        ListNode node1 = res, node2 = res;
+        for (int i = 0; i < n; i++) node1 = node1.next;
+        while (node1.next != null) {
+            node1 = node1.next;
+            node2 = node2.next;
+        }
+        node2.next = node2.next.next;
+        return res.next;
+    }
+}
+```
+
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 207 / 207 | 1 ms | Java |
 
 ### Valid Parentheses
 
 第 20 题 [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
 
-> 
+> 给出一个仅包含字符 `'('`, `')'`, `'{'`, `'}'`, `'['` 和 `']'` 的字符串，判断它是否有效。
+> 有效的字符串必须是闭合的，如 `"()"` `{[()]}` 和 `"()[]{}"` 是有效的，而 `"(]"` 和 `"([)]"` 是无效的。
+
+从有效字符串的形式 `"()"` `{[()]}` 和 `"()[]{}"` 中可以看出，这很像是四则运算的中缀表达式。而四则运算的中缀表达式可以通过栈这种数据结构来存储。因为左半括号必定再其对应右半括号的前面，所以遍历到当前字符为左半括号时，将其入栈。遍历到右半括号时，将栈顶字符出栈，比较是否匹配。直到栈元素为空。
+
+```java
+// ValidParentheses.java
+public class Solution {
+    public boolean isValid(String s) {
+        char[] stack = new char[s.length()];
+        int index = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(' || s.charAt(i) == '[' || s.charAt(i) == '{') {
+                stack[index++] = s.charAt(i);
+            } else if (s.charAt(i) == ')') {
+                if (index == 0 || stack[--index] != '(') return false;
+            } else if (s.charAt(i) == ']') {
+                if (index == 0 || stack[--index] != '[') return false;
+            } else {
+                if (index == 0 || stack[--index] != '{') return false;
+            }
+        }
+        return index == 0;
+    }
+}
+```
+
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 65 / 65 | 0 ms | Java |
