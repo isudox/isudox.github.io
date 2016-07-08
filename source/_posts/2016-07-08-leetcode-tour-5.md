@@ -5,6 +5,7 @@ tags:
   - LeetCode
 categories:
   - Coding
+date: 2016-07-08 21:25:43
 ---
 
 本篇记录 LeetCode 算法部分第 21 至 25 题。
@@ -111,12 +112,35 @@ n + 1 对括号的组合，可以发现，其实就是将新增的一对括号�
 > 给定一个 Linked list，两两交换相邻节点，返回该链表。
 > 例如，给定的链表为 `1 ->2 -> 3 -> 4`，返回结果为 `2 -> 1 -> 4 -> 3`。
 
-
+首先需要新建一个 ListNode 保存给定 ListNode 的头指针,这样在交换相邻节点时,该指针位置能保持固定不动。此外还需要另一个 ListNode 作为移动的指针来交换相邻节点，因此还需要创建两个临时的 ListNode，一左一右作交换。
 
 ```java
 // SwapNodesinPairs.java
-
+public class Solution {
+    public class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) { val = x; }
+    }
+    public ListNode swapPairs(ListNode head) {
+        ListNode res = new ListNode(0);
+        ListNode curNode = res;
+        res.next = head;
+        while (curNode.next != null && curNode.next.next != null) {
+            ListNode l = curNode.next, r = curNode.next.next;
+            curNode.next = r;
+            l.next = r.next;
+            r.next = l;
+            curNode = l;
+        }
+        return res.next;
+    }
+}
 ```
+
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 55 / 55 | 0 ms | Java |
 
 **************************************
 
