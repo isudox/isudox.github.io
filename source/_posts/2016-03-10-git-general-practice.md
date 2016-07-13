@@ -21,7 +21,7 @@ categories: [Coding]
 git init <repo-name>
 ```
 该目录就是一个 Git 本地仓库了，目录下会有一个隐藏文件夹 `.git/`，看看它的目录结构
-```bash
+```txt
 tree .git
 .git
 ├── branches
@@ -66,16 +66,16 @@ tree .git
 └── smartgit.config
 ```
 上面是我这个静态博客 Git 仓库下 `.git/` 目录结构。其中几个主要子目录和文件的基本作用如下——
-* `COMMIT_EDITMSG`: 该文件存放最新的commit message；
-* `config`: 该文件保存Git的配置；
-* `description`: Git仓库的描述信息；
-* `index`: Git本地暂存区，是二进制文件；
-* `HEAD`: 该文件为Git仓库当前分支的引用；
-* `hooks`: 该目录存放Git脚本钩子，用以触发Git自动执行某些操作，例如本人博客的Git钩子就自定义了文件更新后自动部署的操作；
-* `info`: 存放Git仓库信息；
-* `logs`: 存放Git log的信息；
-* `objects`: 存放所有Git Object，每次提交Git都会生成一个Git Object，其SHA1值的前2位是文件夹名称，后38位是Object名；
-* `refs`: 包含 heads、remotes、tags 三个子目录，分别存储当前head指针指向的 commit，服务器端远程仓库的header指针及分支、Git tags 标签；
+* `COMMIT_EDITMSG`: 该文件存放最新的 commit message；
+* `config`: 该文件保存 Git 的配置；
+* `description`: Git 仓库的描述信息；
+* `index`: Git 本地暂存区，是二进制文件；
+* `HEAD`: 该文件为 Git 仓库当前分支的引用；
+* `hooks`: 该目录存放 Git 脚本钩子，用以触发 Git 自动执行某些操作，例如本人博客的 Git 钩子就自定义了文件更新后自动部署的操作；
+* `info`: 存放 Git 仓库信息；
+* `logs`: 存放 Git log 的信息；
+* `objects`: 存放所有 Git Object，每次提交 Git 都会生成一个 Git Object，其SHA1值的前2位是文件夹名称，后 38 位是 Object 名；
+* `refs`: 包含 heads、remotes、tags 三个子目录，分别存储当前 head 指针指向的 commit，服务器端远程仓库的 header 指针及分支、Git tags 标签；
 
 创建空的 Git 仓库是最常用的操作，还有比较常用操作的是把已有的工程加入 Git
 ```bash
@@ -131,10 +131,11 @@ HEAD is now at 061888eece36843cb14d9eb56c7979379aacd530 成长推荐添加购物
 ```
 其中 `commit id` 不需要写全，只要能让 git 识别到唯一的 id 就行。如果不想通过 id 去回滚，还有另外一种方式，仓库指针 HEAD 表示当前版本，上一 commit 版本为 `HEAD^`，上上版本为 `HEAD^^`，往前推第N个版本为 `HEAD~N`。回滚版本实际上就是移动 Git 指针的指向，因此回滚操作是向前向后都支持的，无非移动指针的方向不同而已。如果我想再回退到最新的提交版本上，只需要指定最新一次的 `commit id`。
 
-下面接着说撤销操作。当本地仓库的文件被修改后，需要执行 `git add {filename}` 讲文件改动提交到本地暂存区。如果本地修改没有被add进暂存区，则不会被commit提交到仓库中。加入现在需要讲改动撤销掉，有两种可能的情形：
-- 修改尚未被add到暂存区: 执行 `git checkout -- filename` 可以撤销修改，视情况恢复到上一次 `git add` 或 `git commit` 的文件；
-- 修改已经被add进暂存区: 这种情况下撤销本地工作区的改动实际上就是回滚到HEAD指针指向的版本。因此执行 `git reset HEAD {filename}...` 完成对暂存区的撤销操作。
+下面接着说撤销操作。当本地仓库的文件被修改后，需要执行 `git add {filename}` 讲文件改动提交到本地暂存区。如果本地修改没有被 add 进暂存区，则不会被 commit 提交到仓库中。加入现在需要讲改动撤销掉，有两种可能的情形：
+- 修改尚未被 add 到暂存区: 执行 `git checkout -- filename` 可以撤销修改，视情况恢复到上一次 `git add` 或 `git commit` 的文件；
+- 修改已经被 add 进暂存区: 这种情况下撤销本地工作区的改动实际上就是回滚到HEAD指针指向的版本。因此执行 `git reset HEAD {filename}...` 完成对暂存区的撤销操作。
 另外，`git checkout -- {filename}` 还可以恢复被删除的文件。
+- 如果是 untracked files，使用 `git clean -fn` 查看会被清除的文件，确认无误后执行 `git clean -f`。如果要清除 untracked directories 则执行 `git clean -fd`。
 
 #### 推送/更新
 很简单，两条很形象的命令

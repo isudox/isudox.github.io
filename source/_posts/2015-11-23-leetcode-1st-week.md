@@ -1,8 +1,11 @@
 ---
 title: LeetCode 探险第一弹
 date: 2015-11-23 20:50:27
-tags: [Algorithm,LeetCode]
-categories: [Coding]
+tags:
+  - Algorithm
+  - LeetCode
+categories:
+  - Coding
 ---
 
 上学时零零碎碎上 [LeetCode](https://leetcode.com/) 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。
@@ -16,11 +19,12 @@ LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记�
 > 给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。
 > 伪代码：
 > nums = [2, 7, 11, 15], target = 9
- nums[0] + nums[1] = 2 + 7 = 9
- return [0, 1]
+> nums[0] + nums[1] = 2 + 7 = 9
+> return [0, 1]
 
 
 这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答
+
 ```java
 // TwoSum.java
 public class Solution {
@@ -58,6 +62,7 @@ class Solution(object):
                 return d[target - x], i
             d[x] = i
 ```
+
 OJ 结果：
 
 | Status | Tests | Run Time | Language |
@@ -274,34 +279,50 @@ OJ 测试结果：
 第 4 题 [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 
 > 长度分别为 m, n 的有序数组 nums1 和 nums2，找出这两个数组的中位数。要求时间复杂度为 O(log(m+n))
+> nums1 = [1, 3], nums2 = [2] 中位数为 2.0
+> nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5
 
 这题是 Hard 难度，但题目本身并不复杂，主要是对时间复杂度有要求，因此需要细细思考下。
 
-要找两个有序数组的中位数，最直接的想法就是将两个数组合并排序，中位数自然而然就找到了。
+要找两个有序数组的中位数，最直接的想法就是将两个数组合并排序，中位数自然而然就找到了。依次遍历两个有序数组，直到将其合并为一个有序数组，从而找到中位数。
 
 ```java
-// MedianOfTwoSortedArrays.java
+// MedianOfTwoSortedArrays.java v1.0
 public class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int m = nums1.length;
-        int n = nums2.length;
-        int mid = (m + n) / 2;
-        int curr = 0;
-        for (int i = 0, j = 0; i < (m < n ? m : n) && j < (m < n ? m : n);;) {
-            if (num1[i] < num2[i]) {
-                i++;
-                curr++;
-                if (curr == mid) {
-                    return num1[i];
+        int m = nums1.length, n = nums2.length;
+        if (m == 0 && n == 0) return 0;
+        int len = m + n;
+        int[] ints = new int[len];
+        int i = 0, j = 0;
+        for (int index = 0; index < len; index++) {
+            if (i < m && j < n) {
+                if (nums1[i] < nums2[j]) {
+                    ints[index] = nums1[i++];
+                } else {
+                    ints[index] = nums2[j++];
                 }
             } else {
-                j++;
-                curr++;
+                if (i < m) {
+                    ints[index] = nums1[i++];
+                }
+                if (j < n) {
+                    ints[index] = nums2[j++];
+                }
             }
+        }
+        if (len % 2 == 0) {
+            return (ints[len / 2 - 1] + ints[len / 2]) / 2.0;
+        } else {
+            return ints[len / 2];
         }
     }
 }
 ```
+
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 2080 / 2080 | 6 ms | Java |
 
 **************************************
 

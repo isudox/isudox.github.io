@@ -89,17 +89,41 @@ public class Solution {
 
 这题很容易想起之前做过的第 20 题 [Valid Parentheses](/2016/07/04/leetcode-tour-4/#Valid-Parentheses)，当时利用了栈的 FILO 特性去检验括号组合的有效性。一个很直接的想法就是枚举全部的组合，然后传给 Valid Parentheses 方法去做有效性检验。但是这种方法平方级的时间复杂度太高，因为要判断所有组合。
 n + 1 对括号的组合，可以发现，其实就是将新增的一对括号和之前的 n 对括号的组合拼起来。因此这里就可以利用递归的思想。
+n 对括号组合，就需要把 n 个 `"("` 和 n 个 `")"` 插入进字符串中。而且从左往右，`"("` 的数量一定不少于 `")"` 才能使得组合有效，换句话说，就是只有在待插入的 `")"`的数量大于待插入的 `"("` 数量时，才需要往字符串中插入 `")"`。当待插入的括号数量为零时，结束递归，将所得括号字符串添加进列表里。
 
 ```java
 // GenerateParentheses.java
-
+public class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> list = new ArrayList<>();
+        if (n <= 0) return list;
+        recursive(list, "", n, n);
+        return list;
+    }
+    private void recursive(List<String> result, String paren, int left, int right) {
+        if (left == 0 && right == 0) {
+            result.add(paren);
+            return;
+        }
+        if (left > 0) {
+            recursive(result, paren + "(", left - 1, right);
+        }
+        if (right > 0 && left < right) {
+            recursive(result, paren + ")", left, right - 1);
+        }
+    }
+}
 ```
+
+| Status | Tests | Run Time | Language |
+|:------:|:------:|:--------:|:--------:|
+| Accepted | 8 / 8 | 2 ms | Java |
 
 **************************************
 
-### Merge Two Sorted Lists
+### Merge k Sorted Lists
 
-第 23 题 [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+第 23 题 [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
 
 > 
 
@@ -144,8 +168,8 @@ public class Solution {
 
 **************************************
 
-### Merge Two Sorted Lists
+### Merge Reverse Nodes in k-Group
 
-第 25 题 [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+第 25 题 [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
 
 > 
