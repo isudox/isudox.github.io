@@ -1,8 +1,10 @@
 ---
 title: '[译] 使用 Django 认证系统'
 date: 2016-03-22 22:31:20
-tags: [Django]
-categories: [Translation]
+tags:
+  - Django
+categories:
+  - Translation
 ---
 
 > 译自 [Django Documentation](https://docs.djangoproject.com/en/1.9/topics/auth/default/)，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。

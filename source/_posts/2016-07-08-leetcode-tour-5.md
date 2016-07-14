@@ -20,6 +20,7 @@ date: 2016-07-08 21:25:43
 
 题目不复杂，取两个指针分别往下遍历两个链表的每个节点，逐次指向节点的值，取其较小值，并移动该指针，另一指针不动。继续往下比较，知道其中有一个指针到达末端为止。
 循环解法：
+
 ```java
 // MergeTwoSortedLists.java v1.0
 // Definition for singly-linked list.
@@ -48,7 +49,9 @@ public class Solution {
     }
 }
 ```
+
 递归解法：
+
 ```java
 // MergeTwoSortedLists.java v1.1
 public class Solution {
@@ -139,7 +142,7 @@ public class Solution {
 首先需要新建一个 ListNode 保存给定 ListNode 的头指针,这样在交换相邻节点时,该指针位置能保持固定不动。此外还需要另一个 ListNode 作为移动的指针来交换相邻节点，因此还需要创建两个临时的 ListNode，一左一右作交换。
 
 ```java
-// SwapNodesinPairs.java
+// SwapNodesInPairs.java
 public class Solution {
     public class ListNode {
         int val;
@@ -173,3 +176,8 @@ public class Solution {
 第 25 题 [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
 
 > 
+
+```java
+// MergeReverseNodesInKGroup.java
+
+```

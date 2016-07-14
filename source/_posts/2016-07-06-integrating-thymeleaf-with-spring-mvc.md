@@ -4,6 +4,7 @@ date: 2016-07-06 15:25:45
 tags:
   - Spring
   - Thymeleaf
+  - Frontend
   - Java
 categories:
   - Coding

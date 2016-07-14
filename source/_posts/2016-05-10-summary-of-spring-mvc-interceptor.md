@@ -1,8 +1,12 @@
 ---
 title: Spring MVC 拦截器使用小结
 date: 2016-05-10 16:38:39
-tags: [Ajax,Java,Spring]
-categories: Coding
+tags:
+  - Ajax
+  - Java
+  - Spring
+categories:
+  - Coding
 ---
 
 之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。拦截器普遍用在用户登录验证上，也应用在其他需要对一些信息进行验证的场景下。

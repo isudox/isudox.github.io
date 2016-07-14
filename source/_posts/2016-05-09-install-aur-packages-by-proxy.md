@@ -1,8 +1,11 @@
 ---
 title: 通过代理安装 AUR 软件包
 date: 2016-05-09 23:27:07
-tags: [Arch,Proxy]
-categories: [Linux]
+tags:
+  - Arch
+  - Proxy
+categories:
+  - Linux
 ---
 
 Arch 最迷人的地方莫过于完善的 Wiki 和强大的 [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository)(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。

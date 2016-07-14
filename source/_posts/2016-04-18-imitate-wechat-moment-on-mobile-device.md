@@ -1,8 +1,12 @@
 ---
 title: 移动端仿微信朋友圈发布图文
 date: 2016-04-18 19:55:14
-tags: [Canvas,HTML5,FE]
-categories: [Coding]
+tags:
+  - Canvas
+  - HTML5
+  - Frontend
+categories:
+  - Coding
 ---
 
 最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。

@@ -1,8 +1,12 @@
 ---
 title: 搭建 Hexo 站点
 date: 2015-09-03 00:19:38
-tags: [Hexo,VPS,Git]
-categories: [Coding]
+tags:
+  - Hexo
+  - VPS
+  - Git
+categories:
+  - Coding
 ---
 进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。
 
