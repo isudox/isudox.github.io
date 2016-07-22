@@ -19,12 +19,12 @@ categories:
 
 ```css
 .site-author-image {
-  display: block;
-  margin: 0 auto;
-  padding: $site-author-image-padding;
-  max-width: $site-author-image-width;
-  height: $site-author-image-height;
-  border: $site-author-image-border-width solid $site-author-image-border-color;
+    display: block;
+    margin: 0 auto;
+    padding: $site-author-image-padding;
+    max-width: $site-author-image-width;
+    height: $site-author-image-height;
+    border: $site-author-image-border-width solid $site-author-image-border-color;
 }
 ```
 
@@ -32,10 +32,10 @@ categories:
 
 ```css
 .site-author-image {
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  transition: 1.4s all;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    transition: 1.4s all;
 }
 ```
 
@@ -43,10 +43,10 @@ categories:
 
 ```css
 .site-author-image:hover {
-  -webkit-transform: rotate(360deg);
-  -moz-transform: rotate(360deg);
-  -ms-transform: rotate(360deg);
-  -transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -transform: rotate(360deg);
 }
 ```
 
@@ -128,14 +128,14 @@ OK，成就达成。
 
 ```css
 .top-scroll-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  display: none;
-  width: 0;
-  height: 2px;
-  background: #6d6d6d;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	display: none;
+	width: 0;
+    height: 2px;
+    background: #6d6d6d;
 }
 ```
 
@@ -196,11 +196,11 @@ $(document).ready(function () {
 
 ```javascript
 $(document).ready(function () {
-  // 页面加载进度条
-  NProgress.start();
-  window.onload = function () {
-    NProgress.done();
-  };
+    // 页面加载进度条
+    NProgress.start();
+    window.onload = function () {
+        NProgress.done();
+    };
 });
 ```
 
