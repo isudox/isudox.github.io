@@ -7,18 +7,18 @@ categories:
   - Database
 ---
 
-最近开始做的一个业余项目用 Flask + PostgreSQL + Bootstrap 快速开发。之前无论是开发还是生产部署都是用 [MySQL](https://www.mysql.com/)，而 [PostgreSQL](https://www.postgresql.org/) 是关系型数据库里另一大高手。MySQL 和 PostgreSQL 的口号放在一起看相当有趣。
+最近开始做的一个课余项目用 Flask + PostgreSQL + Bootstrap 快速开发。之前本地开发和生产部署都用 [MySQL](https://www.mysql.com/)，而 [PostgreSQL](https://www.postgresql.org/) 是关系型数据库阵营中的另一大高手。这俩的口号放在一起看相当好玩。
 
 <!-- more -->
 
 ![](https://o70e8d1kb.qnssl.com/mysql-vs-postgresql.png)
 
-亮点就是一个自称 "The world's most popular open source database"，另一个自称 "The world's most advanced open source database"。论针锋相对，我就服这俩 →_→
+一个自称 "The world's most popular open source database"，另一个自称 "The world's most advanced open source database"。论针锋相对，我就服这俩。→_→
 
-至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细。
+至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细，顺便还拉上了 SQLite。
 [SQLite vs MySQL vs PostgreSQL: A Comparison Of Relational Database Management Systems](https://www.digitalocean.com/community/tutorials/sqlite-vs-mysql-vs-postgresql-a-comparison-of-relational-database-management-systems)
 
-菜鸟入门三板斧，安装、配置、使用——
+菜鸟入门三板斧，安装、配置和使用——
 
 ### 安装
 

@@ -314,3 +314,5 @@ public class Solution {
 | Status | Tests | Run Time | Language |
 |:------:|:------:|:--------:|:--------:|
 | Accepted | 65 / 65 | 0 ms | Java |
+
+下一篇：[LeetCode 探险第五弹](/2016/07/08/leetcode-tour-5/)
