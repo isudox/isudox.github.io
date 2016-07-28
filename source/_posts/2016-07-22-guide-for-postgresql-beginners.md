@@ -13,7 +13,7 @@ categories:
 
 ![](https://o70e8d1kb.qnssl.com/mysql-vs-postgresql.png)
 
-一个自称 "The world's most popular open source database"，另一个自称 "The world's most advanced open source database"。论针锋相对，我就服这俩。→_→
+一个自称 "The world's most popular open source database"，另一个自称 "The world's most advanced open source database"。论针锋相对，我就服这俩。→\_→
 
 至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细，顺便还拉上了 SQLite。
 [SQLite vs MySQL vs PostgreSQL: A Comparison Of Relational Database Management Systems](https://www.digitalocean.com/community/tutorials/sqlite-vs-mysql-vs-postgresql-a-comparison-of-relational-database-management-systems)
@@ -24,9 +24,10 @@ categories:
 
 服务器端我习惯用 Debian 系统。Debian/Ubuntu 内置的 APT 源已经包含了 PostgreSQL，但版本上会稍滞后于 PostgreSQL 最新版本。如果像我一样激进的，可以把 PostgreSQL 官方维护的 APT 源加进 Debian/Ubuntu 的 APT 列表中。比如在 Debian 系统下，新建文件 `/etc/apt/sources.list.d/pgdg.list`，添加源地址和版本，再导入该源的签名。
 
-```text
+```
 deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main
 ```
+
 ```bash
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt update && sudo apt install postgresql postgresql-client postgresql-contrib postgresql-server-dev
@@ -72,7 +73,8 @@ postgres@Dev:~$ createuser --interactive
 
 #### 创建数据库
 
-创建 PostgreSQL 数据库的操作很简单，`createdb mytestdb`；连接到指定数据库，`psql mytestdb`，就进入到 PostgreSQL 客户端控制台
+创建 PostgreSQL 数据库的操作很简单，`createdb mytestdb`；连接到指定数据库，`psql mytestdb`，就进入到 PostgreSQL 客户端控制台，大致罗列几个常用命令：
+
 ```bash
 psql (9.5.3)
 Type "help" for help.
@@ -94,12 +96,13 @@ GRANT ALL ON mytestdb.* TO dbuser;
 
 先切换到 Linux 用户 `postgres`，修改配置文件 `/etc/postgresql/9.x/main/pg_hba.conf`，在 `# "local" is for Unix domain socket connections only` 这行可以见到如下配置：
 
-```text
+```
 # "local" is for Unix domain socket connections only
 local    all        all             peer
 ```
 
 将认证方式 `peer` 替换为 `md5`。切换回自己的系统用户，重启 PostgreSQL 服务。现在，如果想在 `postgres` 用户下，尝试用数据库用户 `${USER}` 连接测试数据库 `testdb`，就需要输入密码了。
+
 ```bash
 postgres@Dev:~$ psql -U sudoz -W testdb 
 Password for user sudoz:
@@ -121,6 +124,7 @@ listen_addresses = '*'    # what IP address(es) to listen on;
 #### 常用控制台命令
 
 由 `psql` 进入到 PostgreSQL 客户端控制台，大致罗列几个常用命令：
+
 - `\?` 查看全部 psql 命令
 - `\h` 查看全部 SQL 命令或指定的 SQL 命令
 - `\q` 退出 psql 控制台，退回到 Linux shell（Ctrl + d 作用相同）
