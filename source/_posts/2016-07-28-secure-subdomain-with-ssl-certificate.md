@@ -8,8 +8,8 @@ categories:
   - DevOps
 ---
 
-今天把小站所在 Linode 服务器升级到了 4G 2CPUs 的套餐，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们合作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。
-Docker 部署 GitLab 的事下期再写，先记下给子域名安装证书的事。
+今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。
+Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。
 
 <!-- more -->
 

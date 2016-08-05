@@ -2,14 +2,13 @@
 title: Django 部署的非最佳实践
 date: 2016-06-01 17:24:27
 tags:
-  - DevOps
   - Django
   - Nginx
   - uWSGI
   - Python
   - BestPractice
 categories:
-  - Coding
+  - DevOps
 ---
 
 
