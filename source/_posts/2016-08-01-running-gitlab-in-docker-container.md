@@ -9,7 +9,7 @@ date: 2016-08-01 17:15:08
 ---
 
 
-前几天给自己的域名添加了子域名 git，用来访问自己搭建的 [GitLab](https://about.gitlab.com/)。顺便实践了一把 Docker 部署。
+前几天给自己的域名添加了子域名 git，用来访问自己搭建的 [GitLab](https://about.gitlab.com/)。顺便实践了一把 Docker 的应用部署。
 
 <!-- more -->
 
@@ -250,3 +250,96 @@ curl -H "X-Forwarded-Proto: https" http://45.33.47.109:10080/user/sign_in
 ```
 
 验收下最终的成果，[GitLab](http://git.isudox.com)
+
+最后，贴上我的 `docker-composer.yml` 配置，仅作备忘。
+
+```yml
+version: '2'
+
+services:
+  redis:
+    restart: always
+    image: sameersbn/redis:latest
+    command:
+    - --loglevel warning
+    volumes:
+    - /srv/docker/gitlab/redis:/var/lib/redis:Z
+
+  postgresql:
+    restart: always
+    image: sameersbn/postgresql:9.4-24
+    volumes:
+    - /srv/docker/gitlab/postgresql:/var/lib/postgresql:Z
+    environment:
+    - DB_USER=gitlab
+    - DB_PASS=helloworld
+    - DB_NAME=gitlabhq_production
+    - DB_EXTENSION=pg_trgm
+
+  gitlab:
+    restart: always
+    image: sameersbn/gitlab:8.10.3
+    depends_on:
+    - redis
+    - postgresql
+    ports:
+    - "10080:80"
+    - "10022:22"
+    volumes:
+    - /srv/docker/gitlab/gitlab:/home/git/data:Z
+    environment:
+    - DEBUG=false
+
+    - DB_ADAPTER=postgresql
+    - DB_HOST=postgresql
+    - DB_PORT=5432
+    - DB_USER=gitlab
+    - DB_PASS=helloworld
+    - DB_NAME=gitlabhq_production
+
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+
+    - TZ=Asia/Shanghai
+    - GITLAB_TIMEZONE=Beijing
+
+    - GITLAB_HTTPS=true
+    - SSL_SELF_SIGNED=false
+
+    - GITLAB_HOST=git.isudox.com
+    - GITLAB_PORT=443
+    - GITLAB_SSH_PORT=10022
+    - GITLAB_RELATIVE_URL_ROOT=
+    - GITLAB_SECRETS_DB_KEY_BASE=qwertyuiopasdfghjklzxcvbnm
+
+    - GITLAB_ROOT_PASSWORD=
+    - GITLAB_ROOT_EMAIL=
+
+    - GITLAB_NOTIFY_ON_BROKEN_BUILDS=true
+    - GITLAB_NOTIFY_PUSHER=false
+
+    - GITLAB_EMAIL=hi@gmail.com
+    - GITLAB_EMAIL_DISPLAY_NAME=GitLab
+    - GITLAB_EMAIL_REPLY_TO=hi@gmail.com
+    - GITLAB_EMAIL_ENABLED=true
+
+    - GITLAB_BACKUP_SCHEDULE=daily
+    - GITLAB_BACKUP_TIME=05:00
+
+    - SMTP_ENABLED=enable
+    - SMTP_DOMAIN=www.gmail.com
+    - SMTP_HOST=smtp.gmail.com
+    - SMTP_PORT=587
+    - SMTP_USER=hi@gmail.com
+    - SMTP_PASS=helloworld
+    - SMTP_STARTTLS=true
+    - SMTP_AUTHENTICATION=login
+
+    - IMAP_ENABLED=false
+    - IMAP_HOST=imap.gmail.com
+    - IMAP_PORT=993
+    - IMAP_USER=hi@gmail.com
+    - IMAP_PASS=helloworld
+    - IMAP_SSL=true
+    - IMAP_STARTTLS=false
+```
