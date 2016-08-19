@@ -12,7 +12,7 @@ Java 容器类中，`HashMap` 是一个绕不开的重点，无论是实际开�
 
 <!-- more -->
 
-> 以下 Java 代码均基于 **JDK 8**
+> 文中 Java 代码均基于 **JDK 8**
 
 ### 引入
 
@@ -138,7 +138,9 @@ static class Node<K,V> implements Map.Entry<K,V> {
 }
 ```
 
+`Node` 包含的域有 `hash`，`key`，`value` 和 `next`，其中 `next` 指向下一 `Node` 节点。`hashCode()` 方法通过求 `key` 和 `value` 的哈希值的异或计算 `hash`;
 
+![](https://upload.wikimedia.org/wikipedia/commons/d/d0/Hash_table_5_0_1_1_1_1_1_LL.svg)
 
 ### put() / get()
 
