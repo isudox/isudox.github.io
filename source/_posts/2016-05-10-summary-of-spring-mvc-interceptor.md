@@ -2,7 +2,6 @@
 title: Spring MVC 拦截器使用小结
 date: 2016-05-10 16:38:39
 tags:
-  - Ajax
   - Java
   - Spring
 categories:
@@ -71,7 +70,7 @@ Spring MVC 配置文件通过 `mvc:interceptors` 标签声明并配置拦截器�
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-        
+
     <mvc:interceptors>
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
         <mvc:interceptor>

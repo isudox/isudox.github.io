@@ -55,7 +55,7 @@ PostgreSQL 会自动创建名为 `postgres` 的 Linux 用户，用来操作 Post
 psql (9.5.3)
 Type "help" for help.
 
-postgres=# 
+postgres=#
 ```
 
 PostgreSQL 除了创建新的 Linux 用户 `postgres`，还创建了同样名为 `postgres` 数据库用户和同名数据库。在 PostgreSQL 控制台里为数据库用户 `postgres` 创建密码，`\password postgres`。
@@ -103,8 +103,15 @@ local    all        all             peer
 
 将认证方式 `peer` 替换为 `md5`。切换回自己的系统用户，重启 PostgreSQL 服务。现在，如果想在 `postgres` 用户下，尝试用数据库用户 `${USER}` 连接测试数据库 `testdb`，就需要输入密码了。
 
+或者可以在 "# IPv4 local connections:# IPv4 local connections:" 处，将访问 IP 白名单从 127.0.0.1/32 改为授权所有访问
+
+```
+# IPv4 local connections:
+host    all             all              0.0.0.0/0              md5
+```
+
 ```bash
-postgres@Dev:~$ psql -U sudoz -W testdb 
+postgres@Dev:~$ psql -U sudoz -W testdb
 Password for user sudoz:
 ```
 
@@ -128,7 +135,7 @@ listen_addresses = '*'    # what IP address(es) to listen on;
 - `\?` 查看全部 psql 命令
 - `\h` 查看全部 SQL 命令或指定的 SQL 命令
 - `\q` 退出 psql 控制台，退回到 Linux shell（Ctrl + d 作用相同）
-- `\l` 列出全部数据库 
+- `\l` 列出全部数据库
 - `\c` 连接到其他数据库，命令后跟数据库名
 - `\d` 列出当前数据库下所有数据表
 - `\dp` 列出所有访问权限
@@ -142,7 +149,7 @@ listen_addresses = '*'    # what IP address(es) to listen on;
 和 MySQL 支持扩展的 SQL 标准不同，PostgreSQL 严格遵循完备的 ANSI-SQL 标准，因此 PostgreSQL 的数据库操作规范且通用。下面就写几条常用的 SQL 语句。
 
 ```sql
-# 创建新表 
+# 创建新表
 CREATE TABLE playground (
     equip_id serial PRIMARY KEY,
     type varchar (50) NOT NULL,
@@ -150,25 +157,25 @@ CREATE TABLE playground (
     location varchar(25) check (location in ('north', 'south', 'west', 'east', 'northeast', 'southeast', 'southwest', 'northwest')),
     install_date date
 );
-# 插入数据 
+# 插入数据
 INSERT INTO playground (type, color, location, install_date) VALUES ('slide', 'blue', 'south', '2014-04-28');
-# 选择记录 
+# 选择记录
 SELECT * FROM playground;
-# 更新数据 
+# 更新数据
 UPDATE playground set color = 'blue' WHERE equip_id = 1;
-# 删除记录 
+# 删除记录
 DELETE FROM playground WHERE type = 'slide';
-# 添加栏位 
+# 添加栏位
 ALTER TABLE playground ADD email VARCHAR(40);
-# 更新结构 
+# 更新结构
 ALTER TABLE playground ALTER COLUMN email SET NOT NULL;
-# 更名栏位 
+# 更名栏位
 ALTER TABLE playground RENAME COLUMN email TO mail;
-# 删除栏位 
+# 删除栏位
 ALTER TABLE playground DROP COLUMN email;
-# 表格更名 
+# 表格更名
 ALTER TABLE playground RENAME TO ground;
-# 删除表格 
+# 删除表格
 DROP TABLE IF EXISTS ground;
 ```
 

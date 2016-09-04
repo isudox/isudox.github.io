@@ -3,7 +3,6 @@ title: 开启 Arch 之旅
 date: 2015-09-26 18:02:05
 tags:
   - Linux
-  - Arch
 categories:
   - Linux
 ---

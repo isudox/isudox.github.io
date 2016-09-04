@@ -78,7 +78,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 }
 ```
 
-从截取的部分源码里可以明白断电执行的截图中 `map` 各属性具体的含义：
+从截取的源码里，可以理解上面断点执行的 `map` 各属性具体的含义：
 
 - `table`： 即 hash bucket 数组，存储 Node 单向链表。
 - `entrySet`： 存储 Entry 的 Set；
@@ -144,6 +144,8 @@ static class Node<K,V> implements Map.Entry<K,V> {
 
 ### put() / get()
 
+HashMap 最主要的操作就是 `put()` 和 `get()`，先来看 `put()` 方法：
+
 ```java
 public V put(K key, V value) {
     return putVal(hash(key), key, value, false, true);
@@ -190,7 +192,57 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
     afterNodeInsertion(evict);
     return null;
 }
+
+static final int hash(Object key) {
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+}
 ```
+
+拆解上面的 `putVal()` 方法，该方法有 5 个入参，主要的入参是 key 的哈希值，key 和 value，onlyIfAbsent 标识是否改变已存在的 value（默认 false，改变已存在的 value），evict 标识 hash bucket 数组是否为 creation mode（默认 true，非 creation mode）。`putVal()` 用了几个 `if-else` 对插入 key-value 时可能出现的情况做了不同的处理：
+
+- 通过 key 的哈希值计算 hash bucket 数组的 index 位置，如果该 index 位置的 Node 对象为空，则新建 Node 并写入 bucket 数组的 index 位置；
+- 如果 index 位置上已存在 Node 对象，即发生碰撞时，也存在多种情况：
+  - 如果该 Node 对象的 hash 和 key 都和入参 hash 和 key 一致，说明节点已存在；
+  - 如果该 Node 对象是红黑树节点，则把待插入的 Node 节点对象转换为红黑树节点对象 TreeNode；
+  - 否则，迭代 index 位置上存储的 Node 链表，直到最后一个 Node 节点，创建新的 Node 节点并接在末尾。如果 Node 链表长度超过 TREEIFY_THRESHOLD，就把 Node 链表转换为红黑树 TreeNode；
+- 如果节点已存在，就将节点的 value 替换为入参 value，并返回原 value 值。
+
+再看 `get()` 方法：
+
+```java
+public V get(Object key) {
+    Node<K,V> e;
+    return (e = getNode(hash(key), key)) == null ? null : e.value;
+}
+
+final Node<K,V> getNode(int hash, Object key) {
+    Node<K,V>[] tab; Node<K,V> first, e; int n; K k;
+    if ((tab = table) != null && (n = tab.length) > 0 &&
+        (first = tab[(n - 1) & hash]) != null) {
+        if (first.hash == hash && // always check first node
+            ((k = first.key) == key || (key != null && key.equals(k))))
+            return first;
+        if ((e = first.next) != null) {
+            if (first instanceof TreeNode)
+                return ((TreeNode<K,V>)first).getTreeNode(hash, key);
+            do {
+                if (e.hash == hash &&
+                    ((k = e.key) == key || (key != null && key.equals(k))))
+                    return e;
+            } while ((e = e.next) != null);
+        }
+    }
+    return null;
+}
+```
+
+`get()` 方法简明易懂，通过 key 的哈希值来定位 bucket 数组的 index，找到 Node 节点，从而找到所匹配的 value 值。
+
+- 从 index 上的 Node 链表的头节点开始，如果头节点的 hash 和 key 域都匹配，则命中，直接返回 value；
+- 头节点没命中，意味着存在冲撞，就继续向下迭代，每次迭代一个 Node 节点时都判断当前节点是否为红黑树节点
+  - 如果当前节点是红黑树节点，则获取从红黑树的 root 节点处开始遍历寻找匹配的 key 和 hash；
+  - 如果当前节点非红黑树节点，则检查节点的 hash 和 key 域，若匹配则返回 value 值；
 
 ### 红黑树
 

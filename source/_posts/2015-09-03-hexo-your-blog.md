@@ -1,5 +1,5 @@
 ---
-title: 搭建 Hexo 站点
+title: Hexo 小站轻松部署方案
 date: 2015-09-03 00:19:38
 tags:
   - Hexo

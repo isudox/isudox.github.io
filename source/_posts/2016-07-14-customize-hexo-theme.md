@@ -1,7 +1,7 @@
 ---
 title: Hexo 主题美化
 date: 2016-07-14 16:01:06
-tags: 
+tags:
   - Frontend
   - Hexo
 categories:
@@ -128,12 +128,12 @@ OK，成就达成。
 
 ```css
 .top-scroll-bar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 9999;
-	display: none;
-	width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    width: 0;
     height: 2px;
     background: #6d6d6d;
 }

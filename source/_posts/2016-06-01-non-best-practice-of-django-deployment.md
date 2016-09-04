@@ -6,7 +6,6 @@ tags:
   - Nginx
   - uWSGI
   - Python
-  - BestPractice
 categories:
   - DevOps
 ---
