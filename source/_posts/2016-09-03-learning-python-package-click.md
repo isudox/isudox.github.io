@@ -7,7 +7,7 @@ categories:
   - Coding
 ---
 
-[Click](https://pypi.python.org/pypi/click) 是 Flask 的团队 pallets 开发的优秀开源项目，它对命令行工具的开发封装了大量方法，使开发者只需要专注于功能实现。恰好我最近在开发的一个小工具需要在命令行环境下操作，就写个学习笔记。
+[Click](https://pypi.python.org/pypi/click) 是 Flask 的团队 pallets 开发的优秀开源项目，它为命令行工具的开发封装了大量方法，使开发者只需要专注于功能实现。恰好我最近在开发的一个小工具需要在命令行环境下操作，就写个学习笔记。
 
 <!-- more -->
 
@@ -147,4 +147,59 @@ setup(
 
 而 argument 参数可以接受可变个数的参数值，而 option 参数只能接收固定个数的参数值（默认是 1 个）。
 
-Click 可以设置不同的参数类型，简单类型如 `click.STRING`，`click.INT`，`click.FLOAT`，`click.BOOL`
+Click 可以设置不同的参数类型，简单类型如 `click.STRING`，`click.INT`，`click.FLOAT`，`click.BOOL`。
+
+命令行的参数名由 "-short_name" 和 "--long_name" 声明，如果参数名既没有以 "-" 开头，也没有以 "--" 开头，那么这边变量名会成为被装饰方法的内部变量，而非方法参数。
+
+#### Option 参数
+
+option 最基础的用法就是简单值变量，option 接收一个变量值，下面是一段示例代码：
+
+```python
+@click.command()
+@click.option('--n', default=1)
+def dots(n):
+    click.echo('.' * n)
+```
+
+如果在命令行后面跟随参数 `--n=2` 就会输出两个点，如果传参数，默认输出一个点。上面的代码中，参数类型没有显示给出，但解释器会认为是 `INT` 型，因为默认值 1 是 int 值。
+有些时候需要传入多个值，可以理解为一个 list，option 只支持固定长度的参数值，即设置后必须传入，个数由 `nargs` 确定。
+
+```python
+@click.command()
+@click.option('--pos', nargs=2, type=float)
+def findme(pos):
+    click.echo('%s / %s' % pos)
+```
+
+`findme --pos 2.0 3.0` 输出结果就是 2.0 / 3.0
+
+既然可以传入 list，那么 tuple 呢？Click 也是支持的：
+
+```python
+@click.command()
+@click.option('--item', type=(unicode, int))
+def putitem(item):
+    click.echo('name=%s id=%d' % item)
+```
+
+这样就传入了一个 tuple 变量，`putitem --item peter 1338` 得到的输出就是 name=peter id=1338
+上面没有设置 nargs，因为 nargs 会自动取 tuple 的长度。因此上面的代码实际上等同于：
+
+```python
+@click.command()
+@click.option('--item', nargs=2, type=click.Tuple([unicode, int]))
+def putitem(item):
+    click.echo('name=%s id=%d' % item)
+```
+
+option 还支持同一个参数多次使用，类似 `git commit -m aa -m bb` 中 `-m` 参数就传入了 2 次。option 通过 `multiple` 标识位来支持这一特性：
+
+```python
+@click.command()
+@click.option('--message', '-m', multiple=True)
+def commit(message):
+    click.echo('\n'.join(message))
+```
+
+#### Argument 参数
