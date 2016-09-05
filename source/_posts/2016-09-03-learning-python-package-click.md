@@ -7,7 +7,7 @@ categories:
   - Coding
 ---
 
-[Click](https://pypi.python.org/pypi/click) 是 Flask 的团队 pallets 开发的优秀开源项目，它对命令行工具的开发封装了大量方法，使开发者只需要专注于功能实现。恰好我最近在开发的一个小工具需要在命令行环境下操作，就做个学习笔记。
+[Click](https://pypi.python.org/pypi/click) 是 Flask 的团队 pallets 开发的优秀开源项目，它对命令行工具的开发封装了大量方法，使开发者只需要专注于功能实现。恰好我最近在开发的一个小工具需要在命令行环境下操作，就写个学习笔记。
 
 <!-- more -->
 
@@ -105,11 +105,46 @@ def hello(count, name):
         click.echo('Hello %s!' % name)
 ```
 
-通过 Click 编写了简单的命令行方法后，还需要把 .py 文件转换成可以在控制台里运行的命令行工具。最简单的办法就是在文件末尾加上如下代码：
+### 打包跨平台可执行程序
+
+通过 Click 编写了简单的命令行方法后，还需要把 `.py` 文件转换成可以在控制台里运行的命令行程序。最简单的办法就是在文件末尾加上如下代码：
 
 ```python
 if __name__ == '__main__':
     command()
 ```
 
-Click 支持使用 `setuptools` 来更好的实现命令行打包。
+Click 支持使用 `setuptools` 来更好的实现命令行程序打包，把源码文件打包成系统中的可执行程序，并且不限平台。一般我们会在源码根目录下创建 `setup.py` 脚本，先看一段简单的打包代码：
+
+```python
+from setuptools import setup
+
+setup(
+    name='hello',
+    version='0.1',
+    py_modules=['hello'],
+    install_requires=[
+        'Click',
+    ],
+    entry_points='''
+        [console_scripts]
+        hello=hello:cli
+    ''',
+)
+```
+
+留意 `entry_points` 字段，在 `console_scripts` 下，每一行都是一个控制台脚本，等号左边的的是脚本的名称，右边的是 Click 命令的导入路径。
+
+### 详解命令行参数
+
+上面提到了自定义命令行参数的两个装饰器：`@click.option()` 和 `@click.argument()`，两者有些许区别，使用场景也有所不同。
+
+总体而言，`argument()` 装饰器比 `option()` 功能简单些，后者支持下面的特性：
+
+- 自动提示缺失的输入；
+- option 参数可以从环境变量中获取，argument 参数则不行；
+- option 参数在 help 输出中有完整的文档，argument 则没有；
+
+而 argument 参数可以接受可变个数的参数值，而 option 参数只能接收固定个数的参数值（默认是 1 个）。
+
+Click 可以设置不同的参数类型，简单类型如 `click.STRING`，`click.INT`，`click.FLOAT`，`click.BOOL`
