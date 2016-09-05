@@ -160,7 +160,7 @@ def show(page):
         abort(404)
 ```
 
-在实现基本的工厂模式后，再回过头对 Gunicorn 和 Nginx 进行配置。上面用的是 Server Port，接下来就改为 socket。
+在实现基本的工厂模式后，再回来对 Gunicorn 和 Nginx 进行配置。上面用的是 Server Port，接下来就改为 socket。
 Nginx conf 配置：
 
 ```conf
