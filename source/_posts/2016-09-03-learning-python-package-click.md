@@ -184,7 +184,7 @@ def putitem(item):
 ```
 
 这样就传入了一个 tuple 变量，`putitem --item peter 1338` 得到的输出就是 name=peter id=1338
-上面没有设置 nargs，因为 nargs 会自动取 tuple 的长度。因此上面的代码实际上等同于：
+上面没有设置 nargs，因为 nargs 会自动取 tuple 的长度值。因此上面的代码实际上等同于：
 
 ```python
 @click.command()
@@ -202,4 +202,161 @@ def commit(message):
     click.echo('\n'.join(message))
 ```
 
+有时候，命令行参数是固定的几个值，这时就可以用到 `Click.choice` 类型来限定传参的潜在值：
+
+```python
+# choice
+@click.command()
+@click.option('--hash-type', type=click.Choice(['md5', 'sha1']))
+def digest(hash_type):
+    click.echo(hash_type)
+```
+
+当上面的命令行程序参数 `--hash-type` 不是 md5 或 sha1，就会输出错误提示，并且在 `--help` 提示中也会对 choice 选项有显示。
+
+如果希望命令行程序能在我们错误输入或漏掉输入的情况下，友好的提示用户，就需要用到 Click 的 prompt 功能，看代码：
+
+```python
+# prompt
+@click.command()
+@click.option('--name', prompt=True)
+def hello(name):
+    click.echo('Hello %s!' % name)
+```
+
+如果在执行 hello 时没有提供 --name 参数，控制台会提示用户输入该参数。也可以自定义控制台的提示输出，把 `prompt` 改为自定义内容即可。
+
+对于类似账户密码等参数的输入，就要进行隐藏显示。`option` 的 `hide_input` 和 `confirmation_promt` 标识就是用来控制密码参数的输入：
+
+```python
+# password
+@click.command()
+@click.option('--password', prompt=True, hide_input=True,
+              confirmation_prompt=True)
+def encrypt(password):
+    click.echo('Encrypting password to %s' % password.encode('rot13'))
+```
+
+Click 把上面的操作进一步封装成装饰器 `click.password_option()`，因此上面的代码也可以简化成：
+
+```python
+# password
+@click.command()
+@click.password_option()
+def encrypt(password):
+    click.echo('Encrypting password to %s' % password.encode('rot13'))
+```
+
+有的参数会改变命令行程序的执行，比如 `node` 是进入 Node 控制台，而 `node --verion` 是输出 node 的版本号。Click 提供 eager 标识对参数名进行标记，拦截既定的命令行执行流程，而是调用一个回调方法，执行后直接退出。下面模拟 `click.version_option()` 的功能，实现 `--version` 参数名输出版本号：
+
+```python
+# eager
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo('Version 1.0')
+    ctx.exit()
+
+@click.command()
+@click.option('--version', is_flag=True, callback=print_version,
+              expose_value=False, is_eager=True)
+def hello():
+    click.echo('Hello World!')
+```
+
+对于类似删除数据库表这样的危险操作，Click 支持弹出确认提示，`--yes` 标识位置为 True 时会让用户再次确认：
+
+```python
+# yes parameters
+def abort_if_false(ctx, param, value):
+    if not value:
+        ctx.abort()
+
+@click.command()
+@click.option('--yes', is_flag=True, callback=abort_if_false,
+              expose_value=False,
+              prompt='Are you sure you want to drop the db?')
+def dropdb():
+    click.echo('Dropped all tables!')
+```
+
+测试运行下：
+
+```shell
+$ dropdb
+Are you sure you want to drop the db? [y/N]: n
+Aborted!
+$ dropdb --yes
+Dropped all tables!
+```
+
+同样的，Click 对次进行了封装，`click.confirmation_option()` 装饰器实现了上述功能：
+
+```python
+@click.command()
+@click.confirmation_option(prompt='Are you sure you want to drop the db?')
+def dropdb():
+    click.echo('Dropped all tables!')
+```
+
+前面只讲了默认的参数前缀 `--` 和 `-`，Click 允许开发者自定义参数前缀（虽然严重不推荐）。
+
+```python
+# other prefix
+@click.command()
+@click.option('+w/-w')
+def chmod(w):
+    click.echo('writable=%s' % w)
+
+if __name__ == '__main__':
+    chmod()
+```
+
+如果想要用 `/` 作为前缀，而且要像上面一样采用布尔标识，会产生冲突，因为布尔标识也是用 `/`，这种情况下可以用 `;` 代替布尔标识的 `/`：
+
+```python
+@click.command()
+@click.option('/debug;/no-debug')
+def log(debug):
+    click.echo('debug=%s' % debug)
+
+if __name__ == '__main__':
+    log()
+```
+
+既然支持 Choice，不难联想到 Range，先看代码：
+
+```python
+# range
+@click.command()
+@click.option('--count', type=click.IntRange(0, 20, clamp=True))
+@click.option('--digit', type=click.IntRange(0, 10))
+def repeat(count, digit):
+    click.echo(str(digit) * count)
+
+if __name__ == '__main__':
+    repeat()
+```
+
 #### Argument 参数
+
+Argument 的作用类似 Option，但没有 Option 那么全面的功能。
+
+和 Option 一样，Argument 最基础的应用就是传递一个简单变量值：
+
+```python
+@click.command()
+@click.argument('filename')
+def touch(filename):
+    click.echo(filename)
+```
+
+命令行后跟的参数值被赋值给参数名 `filename`。
+
+另一个用的比较广泛的是可变参数，也是由 `nargs` 来确定参数个数，
+
+### 示例程序
+
+```python
+# demo.py
+```
