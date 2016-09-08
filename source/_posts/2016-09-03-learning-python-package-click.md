@@ -353,7 +353,72 @@ def touch(filename):
 
 命令行后跟的参数值被赋值给参数名 `filename`。
 
-另一个用的比较广泛的是可变参数，也是由 `nargs` 来确定参数个数，
+另一个用的比较广泛的是可变参数，也是由 `nargs` 来确定参数个数，变量值会以 tuple 的形式传入函数：
+
+```python
+@click.command()
+@click.argument('src', nargs=-1)
+@click.argument('dst', nargs=1)
+def copy(src, dst):
+    for fn in src:
+        click.echo('move %s to folder %s' % (fn, dst))
+```
+
+运行程序：
+
+```shell
+$ copy foo.txt bar.txt my_folder
+move foo.txt to folder my_folder
+move bar.txt to folder my_folder
+```
+
+Click 支持通过文件名参数对文件进行操作，`click.File()` 装饰器就是处理这种操作的，尤其是在类 Unix 系统下，它支持以 `-` 符号作为标准输入/输出。
+
+```python
+# File
+@click.command()
+@click.argument('input', type=click.File('rb'))
+@click.argument('output', type=click.File('wb'))
+def inout(input, output):
+    while True:
+        chunk = input.read(1024)
+        if not chunk:
+            break
+        output.write(chunk)
+```
+
+运行程序，先将文本写进文件，再读取
+
+```shell
+$ inout - hello.txt
+hello
+^D
+$ inout hello.txt -
+hello
+```
+
+如果参数值只是想做为文件名而已呢，很简单，将 `type` 指定为 `click.Path()`：
+
+```python
+@click.command()
+@click.argument('f', type=click.Path(exists=True))
+def touch(f):
+    click.echo(click.format_filename(f))
+```
+
+```shell
+$ touch hello.txt
+hello.txt
+
+$ touch missing.txt
+Usage: touch [OPTIONS] F
+
+Error: Invalid value for "f": Path "missing.txt" does not exist.
+```
+
+### 命令组
+
+
 
 ### 示例程序
 
