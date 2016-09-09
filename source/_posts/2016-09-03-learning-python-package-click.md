@@ -420,8 +420,8 @@ Error: Invalid value for "f": Path "missing.txt" does not exist.
 
 
 
-### 示例程序
+### 仿 Hexo 示例程序
 
 ```python
-# demo.py
+# hexo.py
 ```
