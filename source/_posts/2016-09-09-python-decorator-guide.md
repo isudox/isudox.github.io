@@ -80,7 +80,7 @@ def call():
 call()
 ```
 
-可以看出，`@mark_time` 的作用等同于 `call = mark_time(call)`，得到一个刻调用的函数名。
+可以看出，`@mark_time` 的作用等同于 `call = mark_time(call)`，得到一个可调用的函数名。
 
 如果需要多个装饰器来实现功能，只需要按顺序对方法进行装饰，装饰的顺序是从下到上：
 
