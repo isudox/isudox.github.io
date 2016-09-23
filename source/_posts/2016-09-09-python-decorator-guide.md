@@ -168,6 +168,58 @@ def call():
 call()
 ```
 
+### 内置装饰器
+
+Python 类有 3 个内置的装饰器：`@staticmethod`，`@classmethod`，`property`——
+  - `@staticmethod` 装饰的方法是类的静态方法，即无需通过类的实例去调用，因此方法的参数中没有类实例 `self`；
+  - `@classmethod` 装饰的方法是类方法，方法的第一个参数是类对象 `cls`，可以在方法内调用类对象本身；
+  - `@property` 装饰的方法是类的属性，装饰器内部定义了 `getter` 和 `setter` 方法，这种方式和 Java 里的 `getXXX`、`setXXX` 非常相像；
+
+代码演示下：
+
+```python
+class Demo:
+    def __init__(self, name, city):
+        self._name = name
+        self._city = city
+
+    @staticmethod
+    def test_static_method():
+        print('nothing to do.')
+
+    @classmethod
+    def test_class_method(cls):
+        print(cls.__name__)
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
+
+    @property
+    def city(self):
+        return self._city
+
+
+demo = Demo('sudoz', 'beijing')
+Demo.test_static_method()  # nothing to do
+demo.test_static_method()  # nothing to do
+demo.test_class_method()   # Demo
+print(demo.name)           # sudoz beijing
+demo.name = 'anonymous'
+print(demo.name)           # anonymous
+try:
+    demo.city = 'hangzhou'
+    print(demo.city)
+except Exception as e:
+    print(e)              # can't set attribute
+```
+
+注意上面的代码，如果被 `@property` 装饰的属性没有设置 `setter` 方法，那么该属性就是类的只读属性，不能被修改，因此上面试图修改 city 属性，抛出异常。
+
 ### functools 进阶
 
 装饰器在执行时，有一个隐蔽的小动作可能会被忽略：它把被装饰的函数的 `__name__` 属性给置换成回调函数的属性了。测试下上面代码里被装饰后的 `call` 的 `__name__` 属性，不再是 "call" 而是 "wrapper_2"。Python 2.5 版本新增的 `functools.wraps()` 解决了这个问题，它会把被装饰方法的名称，模块复制到装饰器内。而`functools.wraps()` 本身也是一个装饰器。

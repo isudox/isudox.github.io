@@ -219,12 +219,12 @@ TreeMap 是基于红黑树的 NavigableMap（父类 SortedMap）实现，是有�
 | Collection class | Base class | Base interfaces | Duplicate elements? | Ordered? | Sorted? | Thread-safe? |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|
 | ArrayList<E> | AbstractList<E> | List<E> | Y | Y | N | N |
-|LinkedList<E>|AbstractSequentialList<E>|List<E>; Deque<E>|Y|Y|N|N|
-|Vector<E>|AbstractList<E>|List<E>|Y|Y|N|Y|
-|HashSet<E>|AbstractSet<E>|Set<E>|N|N|N|N|
-|LinkedHashSet<E>|HashSet<E>|Set<E>|N|Y|N|N|
-|TreeSet<E>|AbstractSet<E>|NavigableSet<E>|N|Y|Y|N|
-|HashMap<K, V>|AbstractMap<K, V>|Map<K, V>|N|N|N|N|
-|LinkedHashMap<K, V>|HashMap<K, V>|Map<K, V>|N|Y|N|N|
-|Hashtable<K, V>|Dictionary<K, V>|Map<K, V>|N|N|N|Y|
-|TreeMap<K, V>|AbstractMap<K, V>|NavigableMap<K, V>|N|Y|Y|N|
+| LinkedList<E> | AbstractSequentialList<E> | List<E>; Deque<E> | Y | Y | N | N |
+| Vector<E> | AbstractList<E> | List<E> | Y | Y | N | Y |
+| HashSet<E> | AbstractSet<E> | Set<E> | N | N | N | N |
+| LinkedHashSet<E> | HashSet<E> | Set<E> | N | Y | N | N |
+| TreeSet<E> | AbstractSet<E> | NavigableSet<E> | N | Y | Y | N |
+| HashMap<K, V> | AbstractMap<K, V> | Map<K, V> | N | N | N | N |
+| LinkedHashMap<K, V> | HashMap<K, V> | Map<K, V> | N | Y | N | N |
+| Hashtable<K, V> | Dictionary<K, V> | Map<K, V> | N | N | N | Y |
+| TreeMap<K, V> | AbstractMap<K, V> | NavigableMap<K, V> | N | Y | Y | N |
