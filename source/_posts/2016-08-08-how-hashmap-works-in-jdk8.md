@@ -246,6 +246,8 @@ final Node<K,V> getNode(int hash, Object key) {
 
 ### 红黑树
 
+红黑树部分需要单独写一篇。
+
 ### 优化方法
 
 `loadFactor` 属性可以控制 HashMap 的空间/时间使用：增大 `loadFactor` 则减小内存占用，但查找效率减慢；反之则内存占用变大，查找效率提升。
