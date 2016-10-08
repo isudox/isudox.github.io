@@ -28,6 +28,6 @@ if __name__ == '__main__':
 
 **************************************
 
-参考：
+参考资料：
   - [Flask Docs](http://flask.pocoo.org/docs/0.11/)
   - [Web Server Gateway Interface](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface)
