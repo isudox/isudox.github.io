@@ -1,5 +1,5 @@
 ---
-title: Mockito + JUnit 单元测试的风云汇
+title: JUnit + Mockito 单元测试的风云汇
 tags:
   - Java
 categories:
@@ -63,7 +63,9 @@ test-demo
 ```java
 // App.java
 public class Calculator {
-    public int evaluate(String expression) {
+    public int evaluate(String expression) throws Exception {
+        if (expression == null)
+            throw new Exception("null value");
         int sum = 0;
         for (String summand: expression.split("\\+"))
             sum += Integer.valueOf(summand);
@@ -89,7 +91,7 @@ public class CalculatorTest {
 }
 ```
 
-在 IDE 下运行这个单元测试，反馈接口运行结果正确。
+执行 `mvn test`，反馈得接口运行正确。
 在上面这段简单的代码里，引入了 JUnit 的 `@Test` 注解和 `Assert` 下的系列静态断言方法。其中 `@Test` 注解把方法包装为测试方法，`assertEquals` 方法用来断言两个入参是否一致。通过这个简单的例子就实现了对待测方法的测试。
 
 JUnit 支持丰富的测试规则，除了 `@Test` 注解外，还有下面这些注解——
@@ -152,35 +154,97 @@ public class CalculatorTest {
 }
 ```
 
-测试结果如下：
+测试结果如下，从输出结果可以印证不同注解对执行顺序的影响：
 
 ```
+BeforeClass
+Constructor
 Before
 Test idiot
 After
+Constructor
 Before
 Test evaluate
 After
-BeforeClass
-Constructor
-Constructor
 AfterClass
 ```
 
 另外，每个测试方法执行时都会实例化一次测试类，JUnit 这样处理的原因是保证每个测试方法彼此独立互不干扰。
 
+对于 `@Test` 注解标记的方法，`@Test` 支持两个参数的设置：`timeout` 和 `expected`。前者是设置待测方法的执行超时时间，后者是设置对待测方法期望的抛出异常。修改 `evaluate` 测试方法的注解：
+
+```java
+@Test(timeout = 100, expected = Exception.class)
+public void evaluate() throws Exception {
+    Calculator calculator = new Calculator();
+    int sum = calculator.evaluate(null);
+    assertEquals(6, sum);
+    i++;
+    System.out.println("Test evaluate " + i);
+}
+```
+
+Maven 运行测试，从结果可以看到，方法抛出了异常，测试通过。
+
 ### Mockito
+
+相对于 JUnit，Mockito 则是 Mock 数据的测试框架，它简化了对有外部依赖的类的单元测试。Mockito 的工作流程如下图示（[图片来源](http://www.vogella.com/tutorials/Mockito/article.html)）：
+
+![](https://o70e8d1kb.qnssl.com/mockito.webp)
+
+首先在 pom.xml 中导入 mockito 依赖，
+
 pom.xml 依赖中添加 Mockito：
 ```xml
 <dependency>
     <groupId>org.mockito</groupId>
     <artifactId>mockito-core</artifactId>
-    <version>1.10.19</version>
+    <version>2.2.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
+再静态导入 `org.mockito.Mockito.*;` 里的静态方法，这样就能在测试方法进行对象的 Mock。Mockito 支持通过静态方法 `mock()` 来 Mock 对象，或者通过 `@Mock` 注解，来创建 Mock 对象，但必须将其实例化。先演示下如何 Mock 对象：
+
+```java
+import static org.mockito.Mockito.*;
+
+@Test
+public void mockIterator() {
+    Iterator i = mock(Iterator.class);
+    when(i.next()).thenReturn("hello").thenReturn("world");
+    String result = i.next() + " " + i.next();
+    assertEquals("hello world", result);
+}
+```
+
+mock 出来的对象拥有和源对象同样的方法和属性，`when()` 和 `thenReturn()` 方法是对源对象的配置，怎么理解，就是说在第一步 `mock()` 时，mock 出来的对象还不具备被 Mock 对象实例的行为特征，而 `when(...).thenReturn(...)` 就是根据条件去配置源对象的预期行为，即：当执行 `when()` 中的操作时，返回 `thenReturn()` 中的结果。比如上面的代码中，mock 出来的 `i` 实例在被遍历时会依次输出 "hello" 和 "world"，`assertEquals()` 就是对预期结果和实际结果的判断。
+
+同理，也可以 Mock 网络请求，比如 `HttpServletRequest` 里的参数，也可以通过上面的方式来设定被 Mock 的源对象的表现行为。
+
+对于 `when()` 不定条件，Mockito 定义了 `any()`、 `anyInt()`、`anyString()`、`anySet()` 等方法来匹配指定类型的不定输入，`anyInt()` 匹配 int 参数，`anyString()` 匹配 String 参数, `any()` 匹配 任意类型的参数。如果需要匹配自定义的类型，可以通过 `any(CustomedClass.class)` 来配置。
+
+`when()` 中可以设置不定条件，但如果想获得不定的返回值呢，比如返回一个方法的执行结果，而不是像上面那样返回一个确定值，Mockito 可以通过 `thenAnswer()` 方法来返回自定义方法的执行结果。参考 StackOverflow 上的这篇问答 [Mockito : thenAnswer Vs thenReturn](http://stackoverflow.com/questions/36615330/mockito-thenanswer-vs-thenreturn)
+
+```java
+@Test
+public void testAnswer() throws Exception {
+    Dummy dummy = mock(Dummy.class);
+    Answer<Integer> answer = new Answer<Integer>() {
+        public Integer answer(InvocationOnMock invocation) throws Throwable {
+            String string = invocation.getArgumentAt(0, String.class);
+            return string.length() * 2;
+        }
+    };
+    when(dummy.stringLength("dummy")).thenAnswer(answer);
+    doAnswer(answer).when(dummy).stringLength("dummy");
+}
+```
+
+**********************************
 
 参考资料：
   - [JUnit4 Wiki](https://github.com/junit-team/junit4/wiki)
+  - [Mockito Wiki](https://github.com/mockito/mockito/wiki)
   - [Getting Started with Mocking in Java using Mockit](https://dzone.com/articles/getting-started-mocking-java)
+  - [Unit tests with Mockito - Tutorial](http://www.vogella.com/tutorials/Mockito/article.html)
