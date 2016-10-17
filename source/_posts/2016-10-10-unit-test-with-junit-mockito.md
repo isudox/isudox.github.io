@@ -1,5 +1,5 @@
 ---
-title: JUnit + Mockito 单元测试的风云汇
+title: JUnit + Mockito 单元测试的风云际会
 tags:
   - Java
 categories:
@@ -224,20 +224,153 @@ mock 出来的对象拥有和源对象同样的方法和属性，`when()` 和 `t
 
 对于 `when()` 不定条件，Mockito 定义了 `any()`、 `anyInt()`、`anyString()`、`anySet()` 等方法来匹配指定类型的不定输入，`anyInt()` 匹配 int 参数，`anyString()` 匹配 String 参数, `any()` 匹配 任意类型的参数。如果需要匹配自定义的类型，可以通过 `any(CustomedClass.class)` 来配置。
 
-`when()` 中可以设置不定条件，但如果想获得不定的返回值呢，比如返回一个方法的执行结果，而不是像上面那样返回一个确定值，Mockito 可以通过 `thenAnswer()` 方法来返回自定义方法的执行结果。参考 StackOverflow 上的这篇问答 [Mockito : thenAnswer Vs thenReturn](http://stackoverflow.com/questions/36615330/mockito-thenanswer-vs-thenreturn)
+`thenReturn()` 返回的是一个确定值，这在模拟可见的行为时是没问题的，但有时候，我们需要得到一个复杂的不定输出的行为，比如返回一个回调方法，或者返回一个类实例，Mockito 可以通过 `thenAnswer()` 来实现。参考 StackOverflow 上的这篇问答 [Mockito : thenAnswer Vs thenReturn](http://stackoverflow.com/questions/36615330/mockito-thenanswer-vs-thenreturn)。
+
+```java
+    @Test
+public void count() throws Exception {
+    Duplicator counter = mock(Counter.class);
+    Answer<Integer> answer = new Answer<Integer>() {
+        public Integer answer(InvocationOnMock invocationOnMock) throws Throwable {
+            return ((String) invocationOnMock.getArguments()[0]).length();
+        }
+    };
+    when(counter.count(anyString())).thenAnswer(answer);
+}
+```
+
+`InvocationOnMock` 接口提供了获取被测试方法的调用信息的几个重要方法：
+
+  - `getMock()` 接口返回 mock 对象；
+  - `getMethod()` 接口返回被调用方法的 Method 对象；
+  - `getArguments()` 接口返回被测试方法的入参列表；
+  - `getArgument()` 接口返回北侧方法指定位置的入参；
+  - `callRealMethod()` 接口返回实际的调用方法；
+
+上面的例子已经说明了 Mockito 能跟踪被 Mock 对象所有的方法调用和它们的入参。除了对方法调用结果是否正确的测试，有时还需要验证一些方法的行为，比如验证方法被调用的次数，验证方法的入参等，Mockito 通过 `verify()` 方法实现这些场景的测试需求。这被称为“行为测试”。
 
 ```java
 @Test
-public void testAnswer() throws Exception {
-    Dummy dummy = mock(Dummy.class);
-    Answer<Integer> answer = new Answer<Integer>() {
-        public Integer answer(InvocationOnMock invocation) throws Throwable {
-            String string = invocation.getArgumentAt(0, String.class);
-            return string.length() * 2;
-        }
-    };
-    when(dummy.stringLength("dummy")).thenAnswer(answer);
-    doAnswer(answer).when(dummy).stringLength("dummy");
+public void testVerify() {
+    Duplicator mock = mock(Duplicator.class);
+    when(mock.getUniqueId()).thenReturn(43);
+
+    mock.duplicate("Halo");
+    mock.getUniqueId();
+    mock.getUniqueId();
+
+    verify(mock).duplicate(Matchers.eq("Halo"));
+    verify(mock, times(2)).getUniqueId();
+    verify(mock, never()).someMethod();
+    verify(mock, atLeastOnce()).someMethod();
+    verify(mock, atLeast(2)).someMethod();
+    verify(mock, atMost(3)).someMethod();;
+}
+```
+
+`verify()` 内的条件设置简洁明了，第一个参数是 mock 对象，第二个参数可选，作为状语描述，从方法的名称上就能知道具体的用法，不多赘述了。
+
+Mockito 支持通过 `@Spy` 注解或 `spy()` 方法包裹实际对象，除非明确指定对象，否则都会调用包裹后的对象。这种方式实现了对实际对象的部分自定义修改。
+
+```java
+@Test
+public void testSpy() {
+    List<String> spyList = spy(new ArrayList<String>());
+
+    assertEquals(0, spyList.size());
+
+    doReturn(100).when(spyList).size();
+    assertEquals(100, spyList.size());
+}
+```
+
+上面的测试代码中，`spy()` 修改了 `ArrayList` 对象的 `size()`。但是如果只是在执行某个操作是返回一个期望值，用之前的 `mock()` 也能实现，`spy()` 存在的理由是什么，看下面的代码能解释二者之间的差异：
+
+```java
+@Test
+public void differMockSpy() {
+    List mock = mock(ArrayList.class);
+    mock.add("one");
+    verify(mock).add("one");
+    assertEquals(0, mock.size());
+
+    List spy = spy(new ArrayList());
+    spy.add("one");
+    verify(spy).add("one");
+    assertEquals(1, spy.size());
+}
+```
+
+从上面的运行结果可以看出，`mock()` 传入的是类，创建出来的是一个裸的实例，只是为了跟踪该实例下的方法调用，而不会对实例有其他副作用产生；而 `spy()` 传入的是类实例，它会对该实例进行包裹，创建出来的实例和源实例相同，唯一的不同在于，`spy()` 包裹后的实例可以对实例内部进行自定义的改动。
+
+对于依赖注入，Mockito 支持通过 `@InjectMocks` 注解将被标记的对象自动注入，其依赖会由 mock 出来的对象实例来填充。Mockito 会依次尝试通过 constructor injection、 property injection 和 filed injection，注意，如果其中任一注入策略失败，Mockito 也不会报告错误，就必须自行解决依赖。
+
+- **Constructor injection**：`@InjectMocks` 优先选择的注入策略，如果对象通过构造函数成功 mock 出来，则不会再进行后面的注入策略。
+- **Property setter injection**：会首先根据属性的类型（如果类型匹配则忽略变量名），如果有多个匹配项，则选择 mock 名和属性名相同的变量进行注入。
+- **Field injection**：同样首先根据域的类型（如果类型匹配则忽略变量名），如果有多个匹配项，则选择 mock 名和域名相同的变量进行注入。
+
+参考下面的样例代码：
+
+```java
+public class ArticleManagerTest extends SampleBaseTestCase {
+    @Mock
+    private ArticleCalculator calculator;
+    @Mock(name = "database")
+    private ArticleDatabase dbMock; // note the mock name attribute
+    @Spy
+    private UserProvider userProvider = new ConsumerUserProvider();
+
+    @InjectMocks
+    private ArticleManager manager;
+
+    @Test
+    public void shouldDoSomething() {
+        manager.initiateArticle();
+        verify(database).addListener(any(ArticleListener.class));
+    }
+}
+
+public class SampleBaseTestCase {
+    @Before
+    public void initMocks() {
+        MockitoAnnotations.initMocks(this);
+    }
+}
+```
+
+上面代码中，`@InjectMocks` 注解会把 mock 出来的 `dbMock` 和 `calculator` 注入进 `manager` 中。`ArticleManager` 可以只有一个有参构造函数，或者只有无参构造器，或者都有。需要注意的是，Mockito 无法实例化 inner class、local class、abstract class 和 interface。
+
+对需要注入的域，Constructor injection 会发生在下面的代码中：
+
+```java
+public class ArticleManager {
+    ArticleManager(ArticleCalculator calculator, ArticleDatabase database) {
+        // parameterized constructor
+    }
+}
+```
+
+Property setter injection 在下面的代码中完成：
+
+```java
+public class ArticleManager {
+    // no-arg constructor
+    ArticleManager() {  }
+
+    // setter
+    void setDatabase(ArticleDatabase database) { }
+
+    // setter
+    void setCalculator(ArticleCalculator calculator) { }
+}
+```
+
+Field injection：
+
+```java
+public class ArticleManager {
+    private ArticleDatabase database;
+    private ArticleCalculator calculator;
 }
 ```
 
