@@ -1,5 +1,5 @@
 ---
-title: LeetCode 探险第二弹
+title: LeetCode 6-10
 date: 2016-05-17 21:14:04
 tags:
   - Algorithm

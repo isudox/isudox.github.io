@@ -1,5 +1,5 @@
 ---
-title: LeetCode 探险第一弹
+title: LeetCode 1-5
 date: 2015-11-23 20:50:27
 tags:
   - Algorithm
