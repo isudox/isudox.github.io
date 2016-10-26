@@ -1,5 +1,5 @@
 ---
-title: 深入理解 Python 装饰器
+title: 理解 Python 装饰器
 tags:
   - Python
 categories:
