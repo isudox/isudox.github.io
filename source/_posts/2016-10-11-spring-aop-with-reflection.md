@@ -1,5 +1,5 @@
 ---
-title: 敏捷开发实战：Spring AOP + 反射
+title: 敏捷开发实战：AOP + 反射
 tags:
   - Java
   - Spring
