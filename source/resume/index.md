@@ -63,7 +63,7 @@ comments: false
 
  - 开发语言：Java / Python / JavaScript
  - 开发框架：Spring / SpringMVC / Django / Flask
- - SQL/NoSQL：MySQL / PostgreSQL / SQLite / Redis / ElasticSearch
+ - SQL/NoSQL：MySQL / PostgreSQL / SQLite / Redis / Elasticsearch
  - 后端工具：ZooKeeper / RabbitMQ / gRPC / Celery / Ansible
  - 前端组件：Bootstrap / Thymeleaf / Jinja2 / jQuery
  - 单测工具：JUnit / Mockito

@@ -2,7 +2,7 @@
 title: 为子域名安装 SSL 证书
 date: 2016-07-28 17:07:42
 tags:
-  - HTTPS
+  - HTTP
   - Nginx
 categories:
   - DevOps
