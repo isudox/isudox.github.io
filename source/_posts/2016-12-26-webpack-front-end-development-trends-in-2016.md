@@ -1,5 +1,5 @@
 ---
-title: 2016 年前端补习篇一：Webpack
+title: 2016 前端补习 Webpack 篇
 date: 2016-12-26 10:40:41
 tags:
   - Frontend
