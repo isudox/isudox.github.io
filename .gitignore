@@ -1,14 +1,6 @@
-*.log
-npm-debug.log*
-node_modules/
-
-.idea/
-
-# hexo ignore
-.DS_Store
-Thumbs.db
-db.json
-public/
 .deploy*/
-themes/
+node_modules
+public
+db.json
+*.log
 .vscode/
