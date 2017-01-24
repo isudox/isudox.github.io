@@ -1,8 +1,3 @@
-# Hexo Configuration
-## Docs: http://hexo.io/docs/configuration.html
-## Source: https://github.com/hexojs/hexo/
-
-# Site
 title: I sudo X
 subtitle:
 description:
@@ -11,14 +6,11 @@ avatar: https://o70e8d1kb.qnssl.com/avatar_125.jpg
 language: zh-Hans
 timezone: Asia/Shanghai
 
-# URL
-## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://isudox.com
+url: https://isudox.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
-# Directory
 source_dir: source
 public_dir: public
 tag_dir: tags
@@ -28,21 +20,23 @@ code_dir: downloads/code
 i18n_dir: :lang
 skip_render: README.md
 
-# Writing
 new_post_name: :year-:month-:day-:title.md # File name of new posts
+auto_spacing: true
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
+
 highlight:
   enable: true
+  backtick_code_block: true
   line_number: true
   auto_detect: false
-  tab_replace:
+  tab_replace: '  '
 
 # Category & Tag
 default_category: uncategorized
