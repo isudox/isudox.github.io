@@ -1,0 +1,42 @@
+language: node_js
+
+node_js:
+  - '6'
+  - '7'
+
+sudo: false
+
+cache:
+  directories:
+    - node_modules
+
+branches:
+  only:
+    - source
+
+before_script:
+  - git clone --branch master https://github.com/isudox/isudox.github.io.git public
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_xxxxxxxxxxxx_key -iv $encrypted_xxxxxxxxxxxx_iv -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+- eval $(ssh-agent)
+- ssh-add ~/.ssh/id_rsa
+- cp .travis/ssh_config ~/.ssh/config
+- git config --global user.name 'sudoz@travis'
+- git config --global user.email 'me@isudox.com'
+
+install:
+- npm install hexo-cli -g
+- npm install
+
+script:
+- npm run build
+
+after_success:
+  - cd public
+  - git config --global user.name 'sudoz'
+  - git config --global user.email 'me@isudox.com'
+  - git add -A .
+  - git commit -m "Travis-CI Auto Builde"
+  - git push https://$GITHUB_TOKEN@github.com/isudox/isudox.github.io.git master
