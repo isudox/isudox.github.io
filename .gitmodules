@@ -1,3 +1,3 @@
 [submodule "themes/zext"]
 	path = themes/zext
-	url = git@github.com:isudox/zext.git
+	url = https://github.com/isudox/zext.git
