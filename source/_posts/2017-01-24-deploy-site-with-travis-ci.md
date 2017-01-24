@@ -136,3 +136,33 @@ deploy:
   on:
     branch: source
 ```
+
+Travis deploy script 参考如下——
+
+```shell
+#!/bin/bash
+
+# Decrypt the private key
+openssl aes-256-cbc -K $encrypted_xxx_key -iv $encrypted_xxx_iv -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+# Set the permission of the key
+chmod 600 ~/.ssh/id_rsa
+# Start SSH agent
+eval $(ssh-agent)
+# Add the private key to the system
+ssh-add ~/.ssh/id_rsa
+# Copy SSH config
+cp .travis/ssh_config ~/.ssh/config
+# Set Git config
+git config --global user.name 'sudoz'
+git config --global user.email 'me@isudox.com'
+# Clone the repository
+git clone --branch master git@github.com:isudox/isudox.github.io.git .deploy_git
+# Deploy to GitHub
+npm run deploy
+```
+
+> 需要注意，上面的 deploy.sh 需要有执行权限，`chmod +x deploy.sh`
+
+踩了好几个坑，足足 Push 了 7 次才调试成功
+
+![](https://o70e8d1kb.qnssl.com/travis-build-success.png)
