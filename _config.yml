@@ -67,13 +67,8 @@ archive_generator:
 tag_generator:
   per_page: 10
 
-# Extensions
-## Plugins: http://hexo.io/plugins/
-## Themes: http://hexo.io/themes/
 theme: zext
 
-# Deployment
-## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
   repo: git@github.com:isudox/isudox.github.io.git
@@ -82,13 +77,6 @@ deploy:
   #   github: git@github.com:isudox/isudox.github.io.git,master
   #   gitvps: git@45.33.47.109:isudox.github.io.git,master
 
-# Disqus
-disqus_shortname: isudox
-
-# duosho
-# duoshuo_shortname: isudox
-
-# Social links
 social:
   Github: https://github.com/isudox
   # Twitter: https://twitter.com/isudox
@@ -98,14 +86,9 @@ social:
   # weibo: http://weibo.com/your-user-name
   # zhihu: http://www.zhihu.com/people/your-user-name
 
-# JiaThis share
+disqus_shortname: isudox
 jiathis: false
-
-# Swiftype Search Key
 swiftype_key: bDJ1BXjgkwVZSrnkzynx
-
-# Google analytics
 google_analytics: UA-67443010-1
-
-# Baidu analytics
 baidu_analytics: 416f859610dfc2db62c90f5d33de2fdd
+# duoshuo_shortname: isudox
