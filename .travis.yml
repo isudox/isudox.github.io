@@ -13,6 +13,9 @@ cache:
 addons:
   ssh_known_hosts: github.com
 
+before_script:
+- export TZ='Asia/Shanghai'
+
 script:
   - npm run build
 
