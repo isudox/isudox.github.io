@@ -1,12 +1,31 @@
 # isudox.github.io
 
-## Getting Started
+[![Build Status](https://travis-ci.org/isudox/isudox.github.io.svg?branch=source)](https://travis-ci.org/isudox/isudox.github.io)
 
-- init: hexo init [folder]
-- new: hexo new [layout] 'title'
-- generate: hexo generate
-- publish: hexo publish [layout] 'filename'
-- server: hexo server
-- deploy: hexo deploy
-- render: hexo render 'file1' ...
-- clean: hexo clean
+
+Powered by [Hexo](https://github.com/hexojs/hexo).
+
+## Usage
+
+**install hexo**
+
+```bash
+npm install -g hexo-cli
+```
+
+**Install dependencies**
+```bash
+cd path/to/repo
+git checkout source
+npm install
+```
+
+**Generate static files**
+
+```bash
+hexo g
+```
+
+## License
+
+MIT
