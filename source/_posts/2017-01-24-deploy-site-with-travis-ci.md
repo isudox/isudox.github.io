@@ -19,7 +19,8 @@ categories:
 
 1. 源码文件 Push 到 GitHub Page `source` 分支;
 2. Travis-CI 在 GitHub Page `source` 分支更新后，自动构建生成站点文件；
-3. Travis-CI 将站点文件推送到 GtiHub Page `master` 分支，同时推送到 VPS；
+3. Travis-CI 将站点文件推送到 GtiHub Page `master` 分支，使得 username.github.io 更新；
+4. VPS 从 GitHub Page `master` 分支拉取更新；
 
 
 也就是说，整个部署过程只需要将写好源码文件 Push 到 GitHub 相应分支，后面的操作全部交给 Travis-CI 处理。
@@ -166,3 +167,16 @@ npm run deploy
 踩了好几个坑，足足 Push 了 7 次才调试成功
 
 ![](https://o70e8d1kb.qnssl.com/travis-build-success.png)
+
+### VPS 定时更新静态站内容
+
+Travis CI 完成集成工作后，VPS 就能从 GitHub 上拉取更新了。之前我的方案是在 VPS 上也搭建一个 Git Repo，本地将改动同时 commit 到 GitHub 和 VPS 上的 Repo，触发 VPS Git Repo 的 Hook 事件，将更新拉取并复制静态站全部内容到 Nginx 站点路径下。这次改版不打算沿用之前的方案了，虽然这种 Hook 触发事件很及时高效。我打算使用 Linux 自带的 Crontab 定时任务功能。
+
+Crontab 的使用很简单，将可执行的脚本或命令通过 `crontab -e` 写入系统用户的定时任务中即可。我设置的是每小时执行一次 `git pull` 操作。写法如下：
+
+```
+# m h  dom mon dow   command
+0 * * * * su -s /bin/sh root -c 'cd /usr/share/nginx/html/isudox.github.io && /usr/bin/git pull -q origin master'
+```
+
+如果不确定命令行是否生效，可以在控制台里执行下上面的 shell 脚本。
