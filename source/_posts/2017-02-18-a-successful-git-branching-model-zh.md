@@ -1,5 +1,5 @@
 ---
-title: '[译] Git 分支开发模型'
+title: '[译] 一个行之有效的 Git 分支模型'
 date: 2017-02-18 14:51:10
 tags:
   - Git
@@ -7,11 +7,11 @@ categories:
   - Translation
 ---
 
-原文 [A successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/) 是 [gitflow](https://github.com/nvie/gitflow) 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。
+原文 [A successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/) 是 [gitflow](https://github.com/nvie/gitflow) 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。
 
 <!-- more -->
 
-> 下面是原文的译文。
+> 上面是废话，下面是译文。
 
 ***
 
@@ -146,6 +146,8 @@ $ git commit -a -m "Bumped version number to 1.2"
 
 <center>**完成 release 分支**</center>
 
+当 release 分支的开发状态到了真正可以发布的时候，就需要采取一些行动了。首先， release 分支得 merge 到 `master` 分支（记住，`master` 上的每个 commit 都是一个新的 release）。然后，提交到 `master` 上的 commit 必须被标记上 Tag，以便将来参考该历史版本。最后，release 分支上的改动还需要 merge 回 `develop` 分支，以便将来的 release 也能包含这些 bug fixes。
+
 开始的两步操作：
 
 ```bash
@@ -157,6 +159,94 @@ Merge made by recursive.
 $ git tag -a 1.2
 ```
 
+到此，release 已经完成，并且标记了 Tag。（你可能还想使用 `-s` 或 `-u` 参数来对 Tag 进行加密）
+
+为了让 release 分支上的改动能保留下来，继续将改动 merge 回 `develop` 分支，Git 操作如下：
+
+```bash
+$ git checkout develop
+Switched to branch 'develop'
+$ git merge --no-ff release-1.2
+Merge made by recursive.
+(Summary of changes)
+```
+
+这些操作可能会导致代码冲突，尝试解决冲突后再提交。
+现在，我们已经彻底完成工作并且 release 分支已经可以被移除了：
+
+```bash
+$ git branch -d release-1.2
+Deleted branch release-1.2 (was ff452fe).
+```
+
 ### Hotfix 分支
 
+<img align="right" src="https://o70e8d1kb.qnssl.com/hotfix-branches@2x.png" width="316">
+从 `master` 分支派生；
+必须 merge 回 `develop` 分支和 `master` 分支；
+分支命名惯例：hotfix-\*
+
+Hotfix 分支和 release 分支很类似，都是为发布新的生产版本而准备，虽然是计划外的。其存在的必要性是由于当前生产版本处于需要紧急修复的状态。当生产版本发生严重 bug 时，就必须立即修复，hotfix 分支可以从生产版本的 `master` 分支上的相应 Tag 派生出来。
+
+实质上，在 `develop` 分支上开发的人员可以继续，另一边，其他人员则可以快速的进行生产版本的修复工作。
+
+<center>**创建 release 分支**</center>
+
+Hotfix 分支从 `master` 派生。比如，当前线上运行的生产版本是 1.2 版，遇到严重 bug，但是 `develop` 分支上的版本还不到稳定版，就可以派生 hotfix 分支来修复线上发现的 bug：
+
+```bash
+$ git checkout -b hotfix-1.2.1 master
+Switched to a new branch "hotfix-1.2.1"
+$ ./bump-version.sh 1.2.1
+Files modified successfully, version bumped to 1.2.1.
+$ git commit -a -m "Bumped version number to 1.2.1"
+[hotfix-1.2.1 41e61bb] Bumped version number to 1.2.1
+1 files changed, 1 insertions(+), 1 deletions(-)
+```
+
+别忘了在派生新分支后 bump 了版本号。
+然后，修复 bug 并提交上去：
+
+```bash
+$ git commit -m "Fixed severe production problem"
+[hotfix-1.2.1 abbe5d6] Fixed severe production problem
+5 files changed, 32 insertions(+), 17 deletions(-)
+```
+
+<center>**完成 release 分支**</center>
+
+当 bug 修复完成，修复代码需要合并到 `master` 分支上，同时还得 merge 到 `develop` 分支，以保证下一个 release 版本不会出现此 bug。这和 release 分支的结束过程是非常类似的。
+
+首先，`master` 分支合并修复代码，然后为新的 release 标记 Tag：
+
+```bash
+$ git checkout master
+Switched to branch 'master'
+$ git merge --no-ff hotfix-1.2.1
+Merge made by recursive.
+(Summary of changes)
+$ git tag -a 1.2.1
+```
+
+然后，轮到 `develop` 分支合并修复代码：
+
+```bash
+$ git checkout develop
+Switched to branch 'develop'
+$ git merge --no-ff hotfix-1.2.1
+Merge made by recursive.
+(Summary of changes)
+```
+
+有一个例外的原则是，如果当前有一个 release 分支存在，那么 hotfix 分支上的改动需要 merge 到 release 分支，而不是 `develop` 分支。当 release 分支结束时，merge 到 release 分支上的修复代码最终还是会 merge 到 `develop` 上。
+
+最后，移除已经完成历史使命的分支：
+
+```bash
+$ git branch -d hotfix-1.2.1
+Deleted branch hotfix-1.2.1 (was abbe5d6).
+```
+
 ## 总结
+
+这个分支模型虽然没什么令人耳目一新的东西，不过文章一开始给出的那张大图已经呈现了它对我们项目的裨益。它构造了一个优雅的模型，易于理解，并允许团队成员对分支的派生和发布有共同的认识。

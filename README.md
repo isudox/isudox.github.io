@@ -17,6 +17,7 @@ npm install -g hexo-cli
 ```bash
 cd path/to/repo
 git checkout source
+git submodule update --init --recursive
 npm install
 ```
 
