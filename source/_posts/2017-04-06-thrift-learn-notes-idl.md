@@ -61,7 +61,7 @@ public class Student {
 
 Thrift 容器是强类型的，可以映射成大多数编程语言的容器。Thrift 包含 3 种容器——
 - list：元素可重复的有序列表，对应 C++ STL 的 vector、Java 的 ArrayList、脚本语言中的原生数组；
-- set：元素不可重复的无需列表，对应 STL 的 set、Java 的 HashSet、Python 的 set；
+- set：元素不可重复的无序列表，对应 STL 的 set、Java 的 HashSet、Python 的 set；
 - map：key 严格唯一的 key-value 字典，对应 STL 的 map、Java 的 HashMap、Python/Ruby 的 字典；
 
 容器元素可能是任意 Thrift 类型。
@@ -114,6 +114,26 @@ include "test.thrift"
 service MyService extends test.FacebookService{
 }
 ```
+
+## 小结
+
+Thrift IDL 和 Java 的类型对应关系如下表所示：
+
+| Thrift    | Java |
+| :-------- | :---- |
+| bool      | 布尔值 |
+| byte      | 8 位有符号整型 |
+| i16       | 16 位有符号整型 |
+| i32       | 32 位有符号整型 |
+| i64       | 64 位有符号整型 |
+| double    | 64 位浮点数 |
+| string    | UTF-8 编码的字符串 |
+| struct    | 公共的对象 |
+| list      | 元素可重复的有序列表，ArrayList |
+| set       | 元素不可重复的无序列表，HashSet |
+| map       | key 唯一的字典，HashMap |
+| exception | Exception |
+| service   | 服务的接口 |
 
 *************************************************
 

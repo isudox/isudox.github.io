@@ -17,7 +17,7 @@ categories:
 
 本文里，我会介绍一个在一年前就引入进多个项目（包括工作和个人项目）中的开发模型，实践表明该模型很成功。为此专门写篇文章的想法由来已久，但始终没挤出时间来做，直到现在。我不会细究项目的具体细节，仅仅是项目开发的分支策略和发布管理。
 
-<img align="center" src="https://o70e8d1kb.qnssl.com/git-model@2x.png" width="575">
+<p align="center"><img src="https://o70e8d1kb.qnssl.com/git-model@2x.png" width="575"></p>
 
 该模型专注于使用 [Git](https://git-scm.com/) 作为代码版本管理工具。（另外，如果你对 Git 感兴趣，我司的 GitPrime 提供了一些很棒的软件性能实时数据分析功能）
 
@@ -108,7 +108,7 @@ $ git push origin develop
 
 `--no-ff` 标识使得 merge 操作总是创建一个新的 commit，即使 merge 可以使用 fast-forward。这避免了 feature 分支历史信息的丢失，而且把所有 commit 归并在一起。比较下图的两个案例：
 
-<img align="center" src="https://o70e8d1kb.qnssl.com/merge-without-ff@2x.png" width="478">
+<p align="center"><img src="https://o70e8d1kb.qnssl.com/merge-without-ff@2x.png" width="478"></p>
 
 右边的案例中，无法从 Git 历史中找到是哪些 commit 实现了 feature，你必须要手工的去检查所有的 log 信息。撤销一个 feature 对后一案例而言简直是头疼，而如果使用了 --no-ff 标志，则很容易完成。
 
