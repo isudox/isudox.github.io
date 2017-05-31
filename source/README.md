@@ -1,7 +1,32 @@
-# This is sudoz's site.
+# isudox.github.io
 
-Share something about coding and fun.
+[![Build Status](https://travis-ci.org/isudox/isudox.github.io.svg?branch=source)](https://travis-ci.org/isudox/isudox.github.io)
 
-Check out my site [isudox.com](https://isudox.com)
 
-Hosted on Linode and Powered by [Hexo](https://github.com/hexojs/hexo).
+Powered by [Hexo](https://github.com/hexojs/hexo).
+
+## Usage
+
+**install hexo**
+
+```bash
+npm install -g hexo-cli
+```
+
+**Install dependencies**
+```bash
+cd path/to/repo
+git checkout source
+git submodule update --init --recursive
+npm install
+```
+
+**Generate static files**
+
+```bash
+hexo g
+```
+
+## License
+
+MIT

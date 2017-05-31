@@ -138,3 +138,8 @@ $ hexo generate --deploy
 打开 http://{username}.github.io 或者你自己绑定的域名……
 
 Duang    ^______^
+
+************
+
+后续优化：我现在的小站采用了 Github + Travis CI 的自动部署方案，参考
+[Travis CI 持续部署静态站方案](/2017/01/24/deploy-site-with-travis-ci/)

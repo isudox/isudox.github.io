@@ -62,7 +62,7 @@ public class Student {
 Thrift 容器是强类型的，可以映射成大多数编程语言的容器。Thrift 包含 3 种容器——
 - list：元素可重复的有序列表，对应 C++ STL 的 vector、Java 的 ArrayList、脚本语言中的原生数组；
 - set：元素不可重复的无序列表，对应 STL 的 set、Java 的 HashSet、Python 的 set；
-- map：key 严格唯一的 key-value 字典，对应 STL 的 map、Java 的 HashMap、Python/Ruby 的 字典；
+- map：key 严格唯一的 key-value 字典，对应 STL 的 map、Java 的 HashMap、Python/Ruby 的字典；
 
 容器元素可能是任意 Thrift 类型。
 

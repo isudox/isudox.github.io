@@ -86,7 +86,7 @@ public class CustomService {
 在编写 RPC Server 和 Client 代码前，得先把 Thrift 定义的接口实现。编写 `CustomServiceHandler.java`：
 
 ```java
-// CustomServiceImpl.java
+// CustomServiceHandler.java
 package com.isudox.thrift.tutorial
 
 import org.apache.thrift.*
@@ -165,7 +165,7 @@ public class CustomClient {
             TTransport transport = new TSocket("localhost", 9090);
             transport.open();
 
-            TProtocol protocol = new  TBinaryProtocol(transport);
+            TProtocol protocol = new TBinaryProtocol(transport);  // 二进制格式
             CustomService.Client client = new CustomService.Client(protocol);
 
             System.out.print(client.add(1, 2));
