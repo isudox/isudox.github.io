@@ -24,7 +24,7 @@ AOP 即 Aspect-Oriented Programming，**面向切面编程**，是对 OOP 编程
 
 一般像上图去实现代码就能应付大多数场景了。但随着软件规模的升级，有些问题就开始凸显了。首先共同功能的实现需要在各个方法中显示的去调用；其次，共同功能的控制权分散在代码各处；再次，对共同功能的依赖加重了类之间的耦合，降低了可重用性，如果共同功能并非各个方法的核心功能，那么就不应该耦合进各个对象中。AOP 则可以解决这些问题。
 
-AOP 把系统功能分为两部分：**核心关注点**，**横切关注点**。核心关注点是代码的主要逻辑，横切进多个模块，但不是模块主要逻辑的就是横切关注点。不是简单的把公共模块抽离出来，而是把那些与具体业务无关的，却为业务模块所共同调用的逻辑或责任封装起来，减少冗余代码，降低模块间耦合度，提升可维护性。
+AOP 把系统功能分为两部分：**核心关注点**，**横切关注点**。核心关注点是代码的主要逻辑；横切进多个模块，但不是模块主要逻辑的就是横切关注点。不是简单的把公共模块抽离出来，而是把那些与具体业务无关的，却为业务模块所共同调用的逻辑或责任封装起来，减少冗余代码，降低模块间耦合度，提升可维护性。
 
 ## 基本概念
 
@@ -111,7 +111,7 @@ public class App {
 
 ## 代理模式
 
-AOP 有多种实现方案，比如 [AspectJ](http://www.eclipse.org/aspectj/) 和 Spring AOP。前者需要安装 AspectJ 扩展包，在编译器生成 AOP 代理类，后者则是在运行时动态生成代理类。总之，AOP 的实现是基于代理模式，所以先介绍下代理模式这种经典的设计模式。
+AOP 有多种实现方案，比如 [AspectJ](http://www.eclipse.org/aspectj/) 和 Spring AOP。前者需要安装 AspectJ 扩展库，在编译器生成 AOP 代理类，后者则是在运行时动态生成代理类。总之，AOP 的实现是基于代理模式，所以先简单介绍下这种经典的设计模式。
 
 > 通过在代理类中包裹切面，Spring 在运行期把切面织入到 Spring 管理的 bean 中。如下图所示，代理类封装了目标类，并拦截被通知方法的调用，再把调用转发给真正的目标 bean。当代理拦截到方法调用时，在调用目标 bean 方法之前，会执行切面逻辑。
 
@@ -121,9 +121,9 @@ Spring AOP 的实现本质上是采用了代理模式。
 
 > 为其他对象提供一种代理以控制对这个对象的访问。──GoF《设计模式》
 
-通俗的解释下代理模式，比如以前玩魔兽世界，如果南方玩家直接玩华北的服务器延迟会很高，于是有了各种游戏代理服务器，通过走代理直连游戏服务器可以有效缓解高延迟问题，还有 FQ 代理也是同样的道理。运用代理模式的目的是**对其他对象提供一种代理以控制对这个对象引用的访问**，这样设计的好处是，可以在目标对象实现的基础上，增强额外的功能操作，即扩展目标对象的功能。
+通俗的解释下代理模式，比如以前玩魔兽世界，如果华南区玩家直接玩华北区的服务器延迟会很高，于是就有了各种游戏代理服务器，通过走代理直连游戏服务器可以有效缓解高延迟问题，还有 FQ 代理也是同样的道理。运用代理模式的目的是**对其他对象提供一种代理以控制对这个对象引用的访问**，这样设计的好处是，可以在目标对象实现的基础上，增强额外的功能操作，即扩展目标对象的功能。
 
-代理模式包含 4 中角色，参考如下 UML 图：
+代理模式包含 4 种角色，参考如下 UML 图：
 
 * 主题接口：代理类和真实对象所实现的共同接口；
 * 真实对象：被代理的对象，即实际引用的对象；
@@ -225,7 +225,7 @@ public class ManagerProxy implements Manager {
 
 ### 动态代理
 
-创建动态代理的方式有多种，可以通过 JDK 自带的 `java.lang.reflect` 包、[CGLIB](https://github.com/cglib/cglib) 实现。JDK 实现动态处理相对简单，核心是利用反射，先介绍 JDK 的动态代理实现。
+创建动态代理的方式有多种，可以通过 JDK 内置的 `java.lang.reflect` 包、[CGLIB](https://github.com/cglib/cglib) 实现。JDK 实现动态处理相对简单，核心是利用反射，先介绍 JDK 的动态代理实现。
 
 #### JDK 动态代理
 
@@ -233,7 +233,7 @@ JDK 实现动态代理的过程如下：
 
 1. 在运行期通过反射创建实现主题接口的代理类；
 2. 代理类的字节码将在运行时生成并载入当前代理的 ClassLoader，运行时生成的 class，需要提供真实对象的一组接口，然后该 class 就标示已实现这一组接口，但此时创建的代理类还只是空壳，没有代理的实际作用，因为只是对外声称实现了接口，实际并没有；
-3. 接口所声明的所有方法都会委托给调用处理器 `InvocationHandler` 作统一的处理，每个方法的调用都会经过 `InvocationHandler.invoke()` 方法，实现了对真实对象方法的调用，而无需对每一个方法都做一个实现；
+3. 接口所声明的方法都会委托给调用处理器 `InvocationHandler` 作统一处理，每个方法的调用都会经过 `InvocationHandler.invoke()` 方法，实现了对真实对象方法的调用，而无需对每一个方法都做一个实现；
 
 这个过程主要涉及下面两个类：
 
@@ -266,11 +266,11 @@ public Object invoke(Object proxy, Method method, Object[] args) throws Throwabl
 
 ```java
 // 动态代理类
-public class DynamicProxy {
+public class JdkDynamicProxyy {
 
     private Manager manager;
 
-    public DynamicProxy(Manager manager) {
+    public JdkDynamicProxyy(Manager manager) {
         this.manager = manager;
     }
 
@@ -303,13 +303,13 @@ public class DynamicProxy {
 
 ```java
 // 动态代理测试
-public class DynamicProxyTest {
+public class JdkDynamicProxyTest {
     @Test
     public void getProxyInstant() throws Exception {
         Manager manager = new DepartmentManager();
         System.out.println(manager.getClass());
 
-        Manager proxy = (Manager) new DynamicProxy(manager).getProxyInstant();
+        Manager proxy = (Manager) new JdkDynamicProxyy(manager).getProxyInstant();
         System.out.println(proxy.getClass());
 
         proxy.handle("Monthly Review");
