@@ -78,7 +78,7 @@ deploy:
   #   gitvps: git@45.33.47.109:isudox.github.io.git,master
 
 social:
-  Github: https://github.com/isudox
+  GitHub: https://github.com/isudox
   # Twitter: https://twitter.com/isudox
   StackOverflow: http://stackoverflow.com/users/4305743/sudoz
   # LeetCode: https://leetcode.com/sudoz/
