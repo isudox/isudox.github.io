@@ -7,7 +7,7 @@ categories:
   - Coding
 ---
 
-流的操作在很多地方我们都使用过，比如 Linux Shell 操作时经常用到的 `ps aux | grep xxx`、Python 中的 `mapreduce` 方法等。
+流式操作我们在很多地方都使用过，比如 Shell 操作时经常用到的 `ps aux | grep xxx`、Python 中的 `mapreduce` 方法。Java 8 也引入了 Stream API，并且加入 Lambda 表达式，使得函数也可以成为像类一样的一等公民。
 
 <!-- more -->
 
@@ -207,11 +207,336 @@ Java 8 为集合处理提供了新的 API──Stream API，Oracle 对 Stream �
 - 管道操作：很多流操作本身就返回流，因此多个操作可以组合成链式调用。
 - 内部迭代：和集合的外部迭代不同，流的迭代操作是在内部完成的。
 
+先来看下 Java 7 和 Java 8 实现同一个功能的两种写法。有一组 Person 信息，要从中筛选出所有成年人的名字，并按年龄排序：
+
+```java
+// Java 7
+public static List<String> getAdultNamesInJava7(List<Person> persons) {
+    List<Person> adults = Lists.newArrayList();
+    for (Person p : persons) {
+        if (p.getAge() >= 18) {
+            adults.add(p);
+        }
+    }
+    List<String> adultName = Lists.newArrayList();
+    Collections.sort(adults, new Comparator<Person>() {
+        @Override
+        public int compare(Person o1, Person o2) {
+            return Integer.compare(o1.getAge(), o2.getAge());
+        }
+    });
+    for (Person p : adults) {
+        adultName.add(p.getName());
+    }
+    return adultName;
+}
+
+// Java 8
+public static List<String> getAdultNamesInJava8(List<Person> persons) {
+    return persons.stream()
+            .filter(p -> p.getAge() >= 18)
+            .sorted(comparing(Person::getAge))
+            .map(Person::getName)
+            .collect(toList());
+}
+```
+
+比较上面的代码，使用 Stream API 实现的代码无论是代码简洁程度和可读性上，都比 Java 7 的实现好很多。Stream API 的特点就是：
+- 声明性──说明想完成什么，而不是说明如何实现，结合通过 Lambda 表达式传入的行为参数，代码简洁易读；
+- 可复合──可以将多个基础操作连接成管道，来表达复杂的数据处理流水线；
+- 可并行──流可以被并行处理，提升了性能；
+
+分析上面 Java 8 的代码，首先对集合（即源）调用 `stream()` 方法获得流，filter、sorted、map、collect 都是对流的数据处理操作。其中，filter、sorted、map 是返回 `Stream` 对象，因此这几个操作复合为一个管道。最后调用 collect 处理流水线，并返回处理结果。整个处理流程就是：
+- filter──通过 Lambda 表达式描述的行为，对 Stream 进行筛选，选择年龄大于 18 的 Person 实例；
+- sorted──接受 Lambda 表达式对 Stream 进行排序；
+- map──由 Lambda 表达式将 Person 转换为其他类型；
+- collect──将流转换为其他形式；
+
+## Stream 和 Collection
+
+在使用 Java Collection 接口时，是开发者去实现迭代逻辑，比如 for-each 遍历：
+
+```java
+List<String> adultName = Lists.newArrayList();
+for (Person p : adults) {
+    adultName.add(p.getName());
+}
+```
+
+for-each 显式迭代，并执行逻辑。而 Stream 是通过内部逻辑自行完成了迭代，只需要开发者提供声明性的语句告诉 Stream 该做什么：
+
+```java
+List<String> adultName = adults.stream()
+                               .map(Person::getName)
+                               .collect(toList());
+```
+
+Stream API 内置了很多数据处理操作来实现复杂的查询处理，这些强大的 API 是的迭代的逻辑隐藏进了 Stream 内部。这是 Stream 和 Collection 显著的区别。
+
+## Stream API 的使用
+
+前面的代码中，用到了一些 Stream API，可以将其分为两类：
+- 中间操作（Intermediate）：类似 filter、sorted、map、limit 等都是返回流，可以将复合成流水线；
+- 终端操作（Terminal）：类似 collect 等真正执行流水线任务；
+
+中间操作只是把数据操作组合成一个查询，但并没有执行。数据处理的执行是在调用终端操作时开始。因此，流的使用包含三个部分：
+- 数据源，提供元素序列；
+- 中间操作，复合成流水线；
+- 终端操作，执行流水线，并生成结果；
+
+下表列出了常用的中间操作和终端操作。
+
 ![](https://o70e8d1kb.qnssl.com/java8_operations.png)
+
+### 筛选
+
+```java
+List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5);
+nums.stream().fitler(n -> n % 2 == 0)
+             .distinct()
+             .forEach(System.out::println);
+```
+
+`filter` 方法接受函数描述符为 T -> boolean 的行为参数作为谓词，通过该行为参数来返回符合条件的元素的流。配合 `distinct` 筛选元素唯一的流，`limit` 方法则是截断流，`skip` 方法是跳过元素。
+
+### 映射
+
+```java
+List<String> names = adults.stream()
+        .map(Person::getName)
+        .collect(toList());
+```
+
+`map` 方法接受函数描述符为 T -> R 的 `Function` 实例作为行为参数，该行为参数会作用到流里的每个元素上，并映射成 R 类型的新元素。
+
+### 查找和匹配
+
+Stream API 提供了 `allMatch`、`anyMatch`、`noneMatch`、`findFirst` 和 `findAny` 来实现对元素序列查找匹配的查询。`*Match` 方法接受返回布尔值的行为参数，查找结果为布尔值。
+
+```java
+if (persons.stream().anyMatch(Person::isAdult)) {
+    System.out.println("This person is an adult.");
+}
+```
+
+`find*` 方法可能从流中查找到复合条件的元素，也可能查找不到，它返回 `Optional`，`Optional<T>` 是一个容器类，用来盛装存在或者不存在的值。
+
+```java
+Optional<Person> adult = persons.stream()
+                                .filter(Person::isAdult)
+                                .findAny();
+```
+
+### Optional
+
+`Optional` 可以让开发者避免 `NullPointerException` 的尴尬。在很多代码里，我们为了避免 NPE，会用防御性的检查 null 引用，如果一个对象的结构比较复杂，需要处理的属性嵌套比较深，null 检查会一层套一层……
+
+```java
+if (person != null) {
+    Car car = person.getCar();
+    if (car != null) {
+        // ...
+    }
+}
+```
+
+任何一个可能为 null 的属性，都有检查的必要，这样的代码很强壮，但也很难看。`Optional` 的使用方式是，当变量可能存在也可能不存在时，就不应该声明为具体的类型，而是应该直接将其声明为 Optional<Object> 类型。
+当这个变量实际存在时，Optional<Object> 会返回其值，当这个变量不存在时，则是返回 Optional.empty()，可以把它理解为 null，但它是真实有效的对象，不会产生 NPE。参考下面的实例：
+
+```java
+public class Person {
+    private Optional<Car> car;
+    public Optional<Car> getCar() {
+        return car;
+    }
+}
+public class Car {
+    private Optional<Insurance> insurance;
+    public Optional<Insurance> getInsurance() {
+        return insurance;
+    }
+}
+public class Insurance {
+    private String name;
+    public String getName() {
+        return name;
+    }
+}
+```
+
+对于既有的代码，比如从 Map<String, Object> 中获取 value，随时可能会得到 null，使用 `Optional` 封装 value，就可以避免 if-else 代码块。
+
+```java
+Optional<Object> value = Optional.ofNullable(map.get("key"));
+```
+
+对代码中潜在值为 null 的对象，都可以通过 `Optional.ofNullable` 将其安全的转换为 Optional 对象。
+
+对于执行方法过程中可能发生失败而捕获异常的 try-catch 代码块，也可以通过 Optional 让执行失败的方法返回 Optional 对象。
+
+```java
+try {
+    return Optional.of(Integer.parseInt(str));
+} catch(NumberFormatException e) {
+    return Optional.empty();
+}
+```
+
+结合 Java 8 和 Optional 可以让代码更加简洁可读，而且 Optional 是在编译期就处理了 null 问题，避免问题留到运行时发现和解决。
+
+```java
+Optional.ofNullable(text).ifPresent(System.out::println);
+
+if (test != null) {
+    System.out.print(test);
+}
+
+Optional.ofNullable(text).map(String::length).orElse(-1);
+
+return text != null ? text.length() : -1;
+```
+
+### 归约
+
+`reduce` 方法可以把流中的元素组合起来，给定一个初始值，然后依次对流中各个元素进行组合。例如元素求和、求均值、求 max/min 值等，实际上都是 `reduce` 操作。对于没有给定初始值的 `reduce` 操作，因为可能没有足够的元素，因此是返回 Optional 对象。
+
+
+```java
+numbers.stream().reduce(0, (a, b) -> a + b);
+
+numbers.stream().reduce(0, (a, b) -> Integer.max(a, b));
+
+Optional<Integer> min = numbers.stream().reduce(Integer::min);
+min.ifPresent(System.out::println);
+```
+
+### 生成流
+
+上面已经提到的方法中，都是从对集合调用 `stream` 方法得到流。还可以从值序列、数组、文件来创建流。
+`Stream.of()` 方法可以显式的创建一个流：
+
+```java
+Stream<String> stream = Stream.of("Java 8 ", "Lambdas ", "In ", "Action");
+stream.map(String::toUpperCase).forEach(System.out::println);
+```
+
+实际上，`Stream.of` 本身是调用了 `Arrays.stream` 方法创建流，也就是可以用过数组创建流：
+
+```java
+int[] numbers = {1, 2, 3, 4, 5};
+int sum = Arrays.stream(numbers).sum();
+```
+
+对于文件操作，`java.nio.file.Files` 内置很多静态方法都会返回流。比如 `Files.lines` 方法将文件的各行转换成 String 流。
+
+```java
+// 查询文件中出现了多少个不同的单词
+try {
+    Files.lines(Paths.get("data.txt"), Charset.defaultCharset())
+                                 .flatMap(line -> Arrays.stream(line.split(" ")))
+                                 .distinct()
+                                 .count();
+}
+```
+
+还有一些场景，在数学概念上流是无限的，比如质数、勾股数对、斐波拿契数列等。它们不像从集合、文件创建流那样有固定的大小，Stream API 内置了 `iterate` 和 `generate` 方法来生成无限流。
+
+`iterate` 方法接受一个初始值和 Lambda 表达式，Lambda 表达式是作用在初始值和每次作用后的结果值上的一个函数，可以理解为 f(x)、 f(f(x))...比如创建一个偶数流：
+
+```java
+Stream.iterate(0, n -> n + 2)
+      .limit(10)
+      .forEach(System.out::println);
+```
+
+`generate` 方法接受函数式接口 `Supplier` 实例作为参数，由 `Supplier.get` 方法生成新的值。比如创建一个随机数流
+
+```java
+Random r = new Random();
+Stream.generate(r::nextInt)
+        .limit(5)
+        .forEach(System.out::println);
+```
 
 ## 基准测试
 
+Stream API 相比传统的写法，除了在灵活性和可读性上的提升，还可以在对集合执行流水线操作时，充分利用多核性能，而不用去人为的去拆分数据，分配多线程，还要避免可能的对同一个资源的竞争。`parallelStream` 方法可以把数据源转化为并行流，或者调用 `Stream.parallel` 方法也可以创建并行流。反过来，并行流可以通过 `Stream.sequential` 方法转化为顺序流。
+
+引入 JMH 对 Stream 和 Collection 进行基准测试。
+对集合采用传统的迭代写法，和用 Stream API 的写法，在
+
+```java
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@State(Scope.Benchmark)
+public class Benchmarks {
+
+    private static int SIZE = 1000000;
+
+    private static List<Integer> NUM = Lists.newArrayList();
+    static {
+        Random r = new Random();
+        NUM = Stream.generate(r::nextInt)
+                .limit(SIZE)
+                .collect(toList());
+    }
+
+    @Benchmark
+    public List<Double> loop() {
+        List<Double> res = Lists.newArrayList();
+        for (Integer i : NUM) {
+            if (i % 2 == 0) {
+                res.add(Math.sqrt(i));
+            }
+        }
+        return res;
+    }
+
+    @Benchmark
+    public List<Double> stream() {
+        return NUM.stream()
+                .filter(i -> i % 2 == 0)
+                .map(Math::sqrt)
+                .collect(toList());
+    }
+
+    @Benchmark
+    public List<Double> pstream() {
+        return NUM.parallelStream()
+                .filter(i -> i % 2 == 0)
+                .map(Math::sqrt)
+                .collect(toList());
+    }
+
+    public static void main(String[] args) throws RunnerException {
+        Options options = new OptionsBuilder()
+                .include(Benchmarks.class.getSimpleName())
+                .forks(1)
+                .warmupIterations(5)
+                .measurementIterations(5)
+                .build();
+        new Runner(options).run();
+    }
+}
+```
+
+```
+# Run complete. Total time: 00:00:48
+
+Benchmark           Mode  Cnt   Score    Error  Units
+Benchmarks.loop     avgt    5  19.292 ± 13.102  ms/op
+Benchmarks.pstream  avgt    5   8.188 ±  0.337  ms/op
+Benchmarks.stream   avgt    5  21.923 ± 13.496  ms/op
+```
+
+从上面这个简单的基准测试结果中，大概能推断出，对于基本类型，在大数据量的操作时，Stream API 并行处理比传统的外部迭代在性能上有所提升。
+
 ## 调试
+
+对 Stream API 的调试，IDEA 官方开发了一个 Plugin──[Java Stream Debugger](https://plugins.jetbrains.com/plugin/9696-java-stream-debugger) 来扩展 IDEA 中的 debug 工具。在 debug 的工具栏上增加了 Trace Current Stream Chain 按钮──
+![](https://blog.jetbrains.com/idea/files/2017/05/Screen-Shot-2017-05-11-at-15.06.58.png)
+打开跟踪调试窗口，IDEA 用图像化的方式把数据源整个执行过程展示出来。
+![](https://blog.jetbrains.com/idea/files/2017/05/Screen-Shot-2017-05-11-at-15.06.18.png)
 
 *************
 
