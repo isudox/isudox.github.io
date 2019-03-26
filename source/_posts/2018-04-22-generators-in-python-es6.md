@@ -124,14 +124,14 @@ function* gen2() {
 
 JavaScript 内置的支持 `iterable` 的对象有 `String`，`Array`，`TypedArray`，`Map`，`Set`。所以这些内置对象也支持 `yield*` 表达式，`for-of` 表达式和 `...` 表达式，非常“灵活”。
 
-理解了 JavaScript ES6 里的 `generator`，就能进入 redux-saga 状态管理的学习了，后面有时间了再写关于 saga 的内容。
+理解了 JavaScript ES6 里的 `generator`，对 redux-saga 状态管理的理解就比较轻松了，后面有时间了再写关于 redux-saga 的内容。
 
 ## Python
 
 Python 中的 `generator` 和 JavaScript 的实现基本是相同的。还是用 Fibonacci 举例。
 
 ```python
-def genFib(n):
+def gen_fib(n):
     yield 0
     a, b = 0, 1
 
@@ -140,14 +140,14 @@ def genFib(n):
         b = b + a
         a = b - a
 
-for value in genFib(100):
+for value in gen_fib(100):
     print(value)
 ```
 
 Python 版本只是增加了 `yield` 关键字，并没有在函数声明的地方设计 `*` 来表征 `generator`。
 之前的博客[理解 Python 生成器](/2016/10/26/python-generator-guide/) 写的很浅，这里试着从 Magic Method 着手更深入的写写。
 
-写过 Python 的同学都知道它内置了一些由双下划线包裹、被称为 Magic Method 的方法，像常用的 `__init__`，`__new__`，`__str__`。这些 Magic Method 设计的初衷是为了描述对象的内在行为，而无需外部显性调用。比如我们声明一个对象，并编写它的 `__init__` 方法：
+Python 内置了一些由双下划线包裹、被称为 Magic Method 的特殊方法，像常用的 `__init__`，`__new__`，`__str__`。这些 Magic Method 设计的初衷是为了描述对象的内在行为，而无需外部显性调用。比如我们声明一个对象，并编写它的 `__init__` 方法：
 
 ```python
 class Book:
@@ -162,4 +162,4 @@ book.__getattribute__('name')
 book.__getattribute__('author')
 ```
 
-我们并没有直接调用 `__init__` 方法，但 Python 能理解并调用 `__init__` 初始化对象。
+我们并没有直接调用 `__init__` 方法，但 Python 解释能理解并调用 `__init__` 初始化对象。
