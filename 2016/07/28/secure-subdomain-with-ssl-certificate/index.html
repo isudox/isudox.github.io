@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。">
+<meta name="keywords" content="HTTP,Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为子域名安装 SSL 证书">
+<meta property="og:url" content="https://isudox.com/2016/07/28/secure-subdomain-with-ssl-certificate/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/url-with-green-lock.png">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为子域名安装 SSL 证书">
+<meta name="twitter:description" content="今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。">
+<meta name="twitter:image" content="https://o70e8d1kb.qnssl.com/url-with-green-lock.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/07/28/secure-subdomain-with-ssl-certificate/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>为子域名安装 SSL 证书 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/07/28/secure-subdomain-with-ssl-certificate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">为子域名安装 SSL 证书
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-07-28 17:07:42" itemprop="dateCreated datePublished" datetime="2016-07-28T17:07:42+08:00">2016-07-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。<br>Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。</p>
+<a id="more"></a>
+<h3 id="解析子域名"><a href="#解析子域名" class="headerlink" title="解析子域名"></a>解析子域名</h3><p>从域名提供商买到域名后，可以用在多个不同的网站上。比如经常可以看到类似这样的域名，<code>bss.example.com</code>，<code>blog.example.com</code>，其实这俩是彼此独立的网站，但是都访问到 <code>sample.com</code> 域名下，这就是在同一域名下部署多个网站的范例。</p>
+<p>域名和 IP 通过 DNS 关联在一起，所以无论常见多少个子域名，都是要通过 DNS 解析到关联 IP 的服务器上。如果要新增子域名，需要在提供 DNS 解析服务的提供商处建立一条解析，将子域名关联到根域名的 IP 上。</p>
+<p>本人小站的域名是从 Godaddy 上购买，但域名解析服务是并没有用 Godaddy 默认提供的服务，而是用了 Linode 提供的免费解析服务。但操作都是相同的，在 DNS 的 <code>zone file</code> 中添加一条 A/AAAA 记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git        A        45.33.47.109</span><br><span class="line">git        AAAA     2600:3c01::f03c:91ff:fe18:68b6</span><br></pre></td></tr></table></figure>
+<p>添加完后等待 DNS 服务更新，大概 15 分钟后就能 ping 通这条新建的子域名。这就意味着对子域名的访问已经通过 DNS 解析指向了我的 Linode 服务器上。</p>
+<p>现在要完成的就是通过 HTTP Server 将访问请求打到网站的目录下，我是用 Nginx，在 Nginx conf 里添加子域名解析的针对性配置或者泛子域名解析的通用配置。较新版本的 Nginx 的多站点配置默认保存在 <code>/etc/nginx/conf.d/*.conf</code> 文件里，而不再是 <code>site-enabled</code> 里。新建 <code>subdomain.conf</code> 配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name ~^(?&lt;subdomain&gt;.+)\.isudox\.com$;  # 通配符匹配子域名</span><br><span class="line">    server_tokens off  # 隐藏 nignx 信息</span><br><span class="line">    location / &#123;</span><br><span class="line">        root /usr/share/nginx/html/$subdomain;</span><br><span class="line">        index index.html index.htm</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 Nginx 默认的网站根目录下新建 <code>git</code> 目录，写一个 <code>Hello, Git</code> 的 index.html，浏览器访问下，OK！</p>
+<p>如果后续还要新增其他子域名，可以类似的再写一个 Nginx conf 配置，或者直接用泛子域名解析的 conf 文件。</p>
+<h3 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h3><p>接下来就是给子域名安装 SSL 证书。小站域名 <code>isudox.com</code> 绑定了 Comodo 颁发的证书，但从 Comodo 买的这张证书并不支持通配符域名，因此这张证书就没法用在二级域名 <code>&lt;subdomain.isudox.com&gt;</code>。那么还得再去申请一张证书。<br>有钱的话，买什么样的证书都行；然而没钱，那就只能从下面几家能提供免费 SSL 证书的提供商里挑了。</p>
+<ul>
+<li><a href="https://www.wosign.com/" target="_blank" rel="noopener">WoSign</a></li>
+<li><a href="https://www.startssl.com/" target="_blank" rel="noopener">StartSSL</a></li>
+<li><a href="https://letsencrypt.org/" target="_blank" rel="noopener">Let’s Encrypt</a></li>
+</ul>
+<p>其中，Let’s Encrypt 的逼格应该是最高的，StartSSL 口碑比较好，WoSign 弃之。先述说 Let’s Encrypt 证书的申请。</p>
+<h4 id="Let’s-Encrypt-证书"><a href="#Let’s-Encrypt-证书" class="headerlink" title="Let’s Encrypt 证书"></a>Let’s Encrypt 证书</h4><p>Let’s Encrypt 证书的申请需要一点点动手能力，它提供了一个官方的脚本生成工具 <a href="https://certbot.eff.org/" target="_blank" rel="noopener">certbot</a>，只支持 Unix-liked 系统，把脚本下载本地，并添加执行权限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.eff.org/certbot-auto</span><br><span class="line">chmod a+x certbot-auto</span><br></pre></td></tr></table></figure>
+<p>certbot 支持几种不同的插件（apache、webroot、standalone、manual、nginx），用来获取和安装证书。但插件 nginx 还是试验阶段，可以使用 webroot 或 standalone 插件。区别是 webroot 插件用在已经运行着网站的服务器上，可以通过指定网站的目录来获取并安装证书：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./certbot-auto certonly --webroot -w /var/www/example/ -d www.example.com -d example.com -w /var/www/other -d other.example.net -d another.other.example.net</span><br></pre></td></tr></table></figure>
+<p>而 standalone 插件则用在本地机器上，通过指定网站的域名来获取和安装证书。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./certbot-auto certonly --standalone -d example.com -d www.example.com</span><br></pre></td></tr></table></figure>
+<p>Let’s Encrypt 的证书有效期是三个月，可以用 <code>letsencrypt renew</code> 命令重新激活。最后就是将证书的路径写入到 Nginx conf 配置里。</p>
+<h4 id="StartSSL-证书"><a href="#StartSSL-证书" class="headerlink" title="StartSSL 证书"></a>StartSSL 证书</h4><p>StartSSL 的证书生成就傻瓜多了，上手更容易，有效期也有一年之久。<br>用 <code>openssL</code> 生成 .csr 文件，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -newkey rsa:2048 -keyout git.isudox.com.key -out git.isudox.com.csr</span><br></pre></td></tr></table></figure>
+<p>命令会要求输入一个 passphrase 作为解码凭据，生成后将文件内容粘贴到 StartSSL 的网站上进行证书注册。之后就能从 StartSSL 上下载该子域名的证书文件，把 .key 后缀的密钥文件和 StartSSL 提供的证书文件上传到服务器上，并把二者的路径写入到 Nginx conf 里，在原来的子域名 conf 里添加如下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    return 301 https://$subdomain.isudox.com;  # HTTP 访问重定向到 HTTPS</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    server_name ~^(?&lt;subdomain&gt;.+)\.isudox\.com$;</span><br><span class="line">    location / &#123;</span><br><span class="line">        root /usr/share/nginx/html/$subdomain;</span><br><span class="line">        index index.html index.htm</span><br><span class="line">    &#125;</span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_certificate /path-to-crt/git.isudox.com.crt;</span><br><span class="line">    ssl_certificate_key /path-to-key/git.isudox.com.key;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重启 Nginx 发现失败了，原因是之前埋了个坑，通过 <code>openssL</code> 工具生成密钥对的时候，必须要求输入 passphrase，直接启动 Nginx 服务时没有匹配 passphrase 自然也就失败了。参考 Nginx <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_password_file" target="_blank" rel="noopener">官方文档</a>，Nginx 提供了一个参数 <code>ssl_password_file</code> 指定记录 passphrase 的文件。把 passphrase 写入该文件，并关联到 <code>ssl_password_file</code> 参数就能正常启动 Nginx 了。</p>
+<p>当然，如果是用 <code>ssh-keygen -t rsa</code> 命令生成密钥对，就不会强制要求 passphrase，也就不会有这个问题。</p>
+<p>现在再打开 git.isudox.com，就自动跳转到了 HTTPS 协议，URL 上挂小绿锁的视觉效果确实不错。<br><img src="https://o70e8d1kb.qnssl.com/url-with-green-lock.png" alt></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          
+            <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/26/scheme-of-ideavim-keymap/" rel="next" title="JetBrains IDE Vim 模式的方案">
+                <i class="fa fa-chevron-left"></i> JetBrains IDE Vim 模式的方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/01/running-gitlab-in-docker-container/" rel="prev" title="Docker 部署 GitLab">
+                Docker 部署 GitLab <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#解析子域名"><span class="nav-number">1.</span> <span class="nav-text">解析子域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装证书"><span class="nav-number">2.</span> <span class="nav-text">安装证书</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Let’s-Encrypt-证书"><span class="nav-number">2.1.</span> <span class="nav-text">Let’s Encrypt 证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StartSSL-证书"><span class="nav-number">2.2.</span> <span class="nav-text">StartSSL 证书</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

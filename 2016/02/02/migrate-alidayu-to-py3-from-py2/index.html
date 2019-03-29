@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定阿里大鱼的解决方案。 然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里大鱼短信 SDK 迁移到 Python 3.x">
+<meta property="og:url" content="https://isudox.com/2016/02/02/migrate-alidayu-to-py3-from-py2/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定阿里大鱼的解决方案。 然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阿里大鱼短信 SDK 迁移到 Python 3.x">
+<meta name="twitter:description" content="近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定阿里大鱼的解决方案。 然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/02/02/migrate-alidayu-to-py3-from-py2/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>阿里大鱼短信 SDK 迁移到 Python 3.x | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/02/02/migrate-alidayu-to-py3-from-py2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">阿里大鱼短信 SDK 迁移到 Python 3.x
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-02-02 11:05:24" itemprop="dateCreated datePublished" datetime="2016-02-02T11:05:24+08:00">2016-02-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定<a href="http://www.alidayu.com/" target="_blank" rel="noopener">阿里大鱼</a>的解决方案。</p>
+<p>然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python 3，导致很多时候用 Python 会有些捉襟见肘，尤其是像我这种野路子的 Python 开发。</p>
+<a id="more"></a>
+<p>比如阿里大鱼的短信方案，虽然相比其他厂商很良心的在 PHP 、 Java 版 SDK 之外，友情附赠了 Python 版，但集成进 Django 工程并 debug 后，真是握了棵草，它是基于 Python 2.x 开发的，翻了下开发包源码文件，署名为 “lihao” 的这位阿里同学是在 2012 年更新的源码，这竟是一份蒙尘多年的代码啊，当时我的内心是奔溃的……</p>
+<blockquote>
+<p>自己动手，丰衣足食。——《毛选》</p>
+</blockquote>
+<p>阿里大鱼短信开发包的源码并不复杂，来来去去无非一些 request，response 和 string 的处理，底层都是在阿里服务端 api 里实现的，短信包只是提供 api 调用、处理功能，因此迁移工作倒也不是很令人拙计。下面就把我填的坑一一道来（难免有遗忘和疏漏，见谅）——</p>
+<h4 id="一号坑"><a href="#一号坑" class="headerlink" title="一号坑"></a>一号坑</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果parameters是字典类</span></span><br><span class="line">keys = parameters.keys()</span><br></pre></td></tr></table></figure>
+<p>不出所料的话，控制台会输出<br><code>&gt;&gt;&gt;TypeError: &#39;dict_keys&#39; object does not support indexing</code><br>这是一大坑，在 Python 3.x 里，<code>dict.keys()</code>, <code>dict.values()</code> 和 <code>dict.items()</code> 是返回一个 <code>dict_keys</code> 对象（dict_keys 不支持 indexing），而不是 Python 2.x 那样返回一个 <code>list</code>。因此最简单的迁移方法就是显式调用 <code>list()</code> 处理，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果parameters是字典类</span></span><br><span class="line">keys = list(parameters.keys())</span><br></pre></td></tr></table></figure></p>
+<p>但实际上，这种处理办法并不是最优解，可参考 <a href="http://blog.labix.org/2008/06/27/watch-out-for-listdictkeys-in-python-3" target="_blank" rel="noopener">Watch out for list(dict.keys()) in Python 3</a></p>
+<h4 id="二号坑"><a href="#二号坑" class="headerlink" title="二号坑"></a>二号坑</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sign = hashlib.md5(parameters).hexdigest().upper()</span><br></pre></td></tr></table></figure>
+<p>哈哈，控制台会报如下错<br><code>&gt;&gt;&gt;Python hashlib problem “TypeError: Unicode-objects must be encoded before hashing”</code><br>言简意赅，debug 信息已经给出了解决方案，上述代码中的 parameters 参数必须先 encoded 后才能 hash。So easy!<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sign = hashlib.md5(parameters.encode(<span class="string">'utf8'</span>)).hexdigest().upper()</span><br></pre></td></tr></table></figure></p>
+<p>utf-8 转码后就没问题了，一个赛艇！</p>
+<h4 id="三号坑"><a href="#三号坑" class="headerlink" title="三号坑"></a>三号坑</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isinstance(pstr, str)):</span><br><span class="line">    <span class="keyword">return</span> pstr</span><br><span class="line"><span class="keyword">elif</span> (isinstance(pstr, unicode)):</span><br><span class="line">    <span class="keyword">return</span> pstr.encode(<span class="string">'utf-8'</span>)</span><br></pre></td></tr></table></figure>
+<p>运行后的错误信息：<br><code>&gt;&gt;&gt;NameError: global name &#39;unicode&#39; is not defined</code><br>Python 3.x 把 <code>unicode</code> 类型改名为 <code>str</code>，而原来 Python 2.x 下的 <code>str</code> 类型被 <code>bytes</code> 替代。所以解决办法就是按 Python 3.x 的定义来<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isinstance(pstr, bytes)):</span><br><span class="line">    <span class="keyword">return</span> pstr</span><br><span class="line"><span class="keyword">elif</span> (isinstance(pstr, str)):</span><br><span class="line">    <span class="keyword">return</span> pstr.encode(<span class="string">'utf-8'</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="四号坑"><a href="#四号坑" class="headerlink" title="四号坑"></a>四号坑</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connection = httplib.HTTPConnection(self.__domain, self.__port, <span class="keyword">False</span>, timeout)</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的地方有两处，Python 2.x 的 httplib 包的 import 路径为<br><code>import httplib</code><br>在 Python 3.x 里的 import 路径则是：<br><code>import http.client as httplib</code><br>还有一处注意点是，在更改了包路径后，httplib.HTTPConnection(httplib.HTTPConnection() 的参数也发生了变化，<br>Python 2.x 中该接口为<br><code>httplib.HTTPConnection(host[, port[, strict[, timeout[, source_address]]]])</code><br>其中，strict 默认为 False，而 Python 3.x 里该接口则修改成<br><code>httplib.HTTPConnection(self, host, port=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, source_address=None）</code><br>很显然，阿里源码里的传参是按照 Python 2.x 的写法，对照 Python 3.x 接口改过来便是<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connection = httplib.HTTPConnection(self.__domain, self.__port, timeout)</span><br></pre></td></tr></table></figure></p>
+<h4 id="五号坑"><a href="#五号坑" class="headerlink" title="五号坑"></a>五号坑</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">P_TIMESTAMP: str(long(time.time() * <span class="number">1000</span>))</span><br></pre></td></tr></table></figure>
+<p><code>&gt;&gt;&gt;NameError: name &#39;long&#39; is not defined</code><br>Python 3.x 已经将 Python 2.x 中的 <code>int</code> 和 <code>long</code> 型合并为 <code>int</code>，因此在 Python 3.x 下，已经不存在 <code>long</code> 类型了。修改成<code>int()</code>即可<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">P_TIMESTAMP: str(int(time.time() * <span class="number">1000</span>))</span><br></pre></td></tr></table></figure></p>
+<h4 id="六号坑"><a href="#六号坑" class="headerlink" title="六号坑"></a>六号坑</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> urlencode</span><br><span class="line">body = urllib.urlencode(application_parameter)</span><br></pre></td></tr></table></figure>
+<p>Python 3.x 把 Python 2.x 下 <code>urlencode()</code> 函数转移到了 <code>urllib.parse</code> 里。修改为<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urlencode</span><br><span class="line">body = urllib.parse.urlencode(application_parameter)</span><br></pre></td></tr></table></figure></p>
+<h4 id="七号坑"><a href="#七号坑" class="headerlink" title="七号坑"></a>七号坑</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = response.read()</span><br><span class="line">jsonobj = json.loads(result)</span><br></pre></td></tr></table></figure>
+<p>Python 3.x 里 JSON 只接收 unicode，因此 result 需要转码为 unicode<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = response.read().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">jsonobj = json.loads(result)</span><br></pre></td></tr></table></figure></p>
+<h4 id="八号坑"><a href="#八号坑" class="headerlink" title="八号坑"></a>八号坑</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> application_parameter.iteritems():</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>控制台报错：<br><code>&gt;&gt;&gt;AttributeError: &#39;dict&#39; object has no attribute &#39;iteritems&#39;</code><br>字典没有 iteritems 属性？原来是 Python 3.x 已经把 <code>iteritems()</code> 给移除掉了，因此不能再调用该方法。<br>参考 <a href="https://wiki.python.org/moin/Python3.0" target="_blank" rel="noopener">Python Wiki</a>:</p>
+<blockquote>
+<p>Remove dict.iteritems(), dict.iterkeys(), and dict.itervalues().<br>    Instead: use dict.items(), dict.keys(), and dict.values() respectively.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> application_parameter.items():</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>Done!</p>
+<h4 id="Python-3-x-版本的-base-py"><a href="#Python-3-x-版本的-base-py" class="headerlink" title="Python 3.x 版本的 base.py"></a>Python 3.x 版本的 base.py</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># base.py</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Created on 2012-7-3</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">@author: lihao</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">import</span> httplib</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">import</span> http.client <span class="keyword">as</span> httplib</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> top</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">import</span> mimetypes</span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urlencode</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">定义一些系统变量</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">SYSTEM_GENERATE_VERSION = <span class="string">"taobao-sdk-python-20151217"</span></span><br><span class="line"></span><br><span class="line">P_APPKEY = <span class="string">"app_key"</span></span><br><span class="line">P_API = <span class="string">"method"</span></span><br><span class="line">P_SESSION = <span class="string">"session"</span></span><br><span class="line">P_ACCESS_TOKEN = <span class="string">"access_token"</span></span><br><span class="line">P_VERSION = <span class="string">"v"</span></span><br><span class="line">P_FORMAT = <span class="string">"format"</span></span><br><span class="line">P_TIMESTAMP = <span class="string">"timestamp"</span></span><br><span class="line">P_SIGN = <span class="string">"sign"</span></span><br><span class="line">P_SIGN_METHOD = <span class="string">"sign_method"</span></span><br><span class="line">P_PARTNER_ID = <span class="string">"partner_id"</span></span><br><span class="line"></span><br><span class="line">P_CODE = <span class="string">'code'</span></span><br><span class="line">P_SUB_CODE = <span class="string">'sub_code'</span></span><br><span class="line">P_MSG = <span class="string">'msg'</span></span><br><span class="line">P_SUB_MSG = <span class="string">'sub_msg'</span></span><br><span class="line"></span><br><span class="line">N_REST = <span class="string">'/router/rest'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sign</span><span class="params">(secret, parameters)</span>:</span></span><br><span class="line">    <span class="comment"># ===========================================================================</span></span><br><span class="line">    <span class="comment"># '''签名方法</span></span><br><span class="line">    <span class="comment"># @param secret: 签名需要的密钥</span></span><br><span class="line">    <span class="comment"># @param parameters: 支持字典和string两种</span></span><br><span class="line">    <span class="comment"># '''</span></span><br><span class="line">    <span class="comment"># ===========================================================================</span></span><br><span class="line">    <span class="comment"># 如果parameters 是字典类的话</span></span><br><span class="line">    <span class="keyword">if</span> hasattr(parameters, <span class="string">"items"</span>):</span><br><span class="line">        <span class="comment"># keys = parameters.keys()</span></span><br><span class="line">        keys = list(parameters.keys())  <span class="comment"># sudoz: Py3</span></span><br><span class="line">        keys.sort()</span><br><span class="line"></span><br><span class="line">        parameters = <span class="string">"%s%s%s"</span> % (secret,</span><br><span class="line">                                 str().join(</span><br><span class="line">                                         <span class="string">'%s%s'</span> % (key, parameters[key]) <span class="keyword">for</span> key</span><br><span class="line">                                         <span class="keyword">in</span> keys),</span><br><span class="line">                                 secret)</span><br><span class="line">    <span class="comment"># sign = hashlib.md5(parameters).hexdigest().upper()</span></span><br><span class="line">    sign = hashlib.md5(parameters.encode(<span class="string">'utf8'</span>)).hexdigest().upper()   <span class="comment"># sudoz: Py3</span></span><br><span class="line">    <span class="keyword">return</span> sign</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mixStr</span><span class="params">(pstr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (isinstance(pstr, str)):</span><br><span class="line">        <span class="keyword">return</span> pstr</span><br><span class="line">    <span class="comment"># elif(isinstance(pstr, unicode)):</span></span><br><span class="line">    <span class="keyword">elif</span> (isinstance(pstr, str)):  <span class="comment"># sudoz: Py3</span></span><br><span class="line">        <span class="keyword">return</span> pstr.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> str(pstr)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileItem</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filename=None, content=None)</span>:</span></span><br><span class="line">        self.filename = filename</span><br><span class="line">        self.content = content</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MultiPartForm</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""Accumulate the data to be used when posting a form."""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.form_fields = []</span><br><span class="line">        self.files = []</span><br><span class="line">        self.boundary = <span class="string">"PYTHON_SDK_BOUNDARY"</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_content_type</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'multipart/form-data; boundary=%s'</span> % self.boundary</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_field</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        <span class="string">"""Add a simple field to the form data."""</span></span><br><span class="line">        self.form_fields.append((name, str(value)))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_file</span><span class="params">(self, fieldname, filename, fileHandle, mimetype=None)</span>:</span></span><br><span class="line">        <span class="string">"""Add a file to be uploaded."""</span></span><br><span class="line">        body = fileHandle.read()</span><br><span class="line">        <span class="keyword">if</span> mimetype <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            mimetype = mimetypes.guess_type(filename)[</span><br><span class="line">                           <span class="number">0</span>] <span class="keyword">or</span> <span class="string">'application/octet-stream'</span></span><br><span class="line">        self.files.append((</span><br><span class="line">                          mixStr(fieldname), mixStr(filename), mixStr(mimetype),</span><br><span class="line">                          mixStr(body)))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""Return a string representing the form data, including attached files."""</span></span><br><span class="line">        <span class="comment"># Build a list of lists, each containing "lines" of the</span></span><br><span class="line">        <span class="comment"># request.  Each part is separated by a boundary string.</span></span><br><span class="line">        <span class="comment"># Once the list is built, return a string where each</span></span><br><span class="line">        <span class="comment"># line is separated by '\r\n'.  </span></span><br><span class="line">        parts = []</span><br><span class="line">        part_boundary = <span class="string">'--'</span> + self.boundary</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Add the form fields</span></span><br><span class="line">        parts.extend(</span><br><span class="line">                [part_boundary,</span><br><span class="line">                 <span class="string">'Content-Disposition: form-data; name="%s"'</span> % name,</span><br><span class="line">                 <span class="string">'Content-Type: text/plain; charset=UTF-8'</span>,</span><br><span class="line">                 <span class="string">''</span>,</span><br><span class="line">                 value,</span><br><span class="line">                 ]</span><br><span class="line">                <span class="keyword">for</span> name, value <span class="keyword">in</span> self.form_fields</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Add the files to upload</span></span><br><span class="line">        parts.extend(</span><br><span class="line">                [part_boundary,</span><br><span class="line">                 <span class="string">'Content-Disposition: file; name="%s"; filename="%s"'</span> % \</span><br><span class="line">                 (field_name, filename),</span><br><span class="line">                 <span class="string">'Content-Type: %s'</span> % content_type,</span><br><span class="line">                 <span class="string">'Content-Transfer-Encoding: binary'</span>,</span><br><span class="line">                 <span class="string">''</span>,</span><br><span class="line">                 body,</span><br><span class="line">                 ]</span><br><span class="line">                <span class="keyword">for</span> field_name, filename, content_type, body <span class="keyword">in</span> self.files</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Flatten the list and add closing boundary marker,</span></span><br><span class="line">        <span class="comment"># then return CR+LF separated data</span></span><br><span class="line">        flattened = list(itertools.chain(*parts))</span><br><span class="line">        flattened.append(<span class="string">'--'</span> + self.boundary + <span class="string">'--'</span>)</span><br><span class="line">        flattened.append(<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'\r\n'</span>.join(flattened)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TopException</span><span class="params">(Exception)</span>:</span></span><br><span class="line">    <span class="comment"># ===========================================================================</span></span><br><span class="line">    <span class="comment"># 业务异常类</span></span><br><span class="line">    <span class="comment"># ===========================================================================</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.errorcode = <span class="keyword">None</span></span><br><span class="line">        self.message = <span class="keyword">None</span></span><br><span class="line">        self.subcode = <span class="keyword">None</span></span><br><span class="line">        self.submsg = <span class="keyword">None</span></span><br><span class="line">        self.application_host = <span class="keyword">None</span></span><br><span class="line">        self.service_host = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        sb = <span class="string">"errorcode="</span> + mixStr(self.errorcode) + \</span><br><span class="line">             <span class="string">" message="</span> + mixStr(self.message) + \</span><br><span class="line">             <span class="string">" subcode="</span> + mixStr(self.subcode) + \</span><br><span class="line">             <span class="string">" submsg="</span> + mixStr(self.submsg) + \</span><br><span class="line">             <span class="string">" application_host="</span> + mixStr(self.application_host) + \</span><br><span class="line">             <span class="string">" service_host="</span> + mixStr(self.service_host)</span><br><span class="line">        <span class="keyword">return</span> sb</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RequestException</span><span class="params">(Exception)</span>:</span></span><br><span class="line">    <span class="comment"># ===========================================================================</span></span><br><span class="line">    <span class="comment"># 请求连接异常类</span></span><br><span class="line">    <span class="comment"># ===========================================================================</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RestApi</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># ===========================================================================</span></span><br><span class="line">    <span class="comment"># Rest api的基类</span></span><br><span class="line">    <span class="comment"># ===========================================================================</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, domain=<span class="string">'gw.api.taobao.com'</span>, port=<span class="number">80</span>)</span>:</span></span><br><span class="line">        <span class="comment"># =======================================================================</span></span><br><span class="line">        <span class="comment"># 初始化基类</span></span><br><span class="line">        <span class="comment"># Args @param domain: 请求的域名或者ip</span></span><br><span class="line">        <span class="comment">#      @param port: 请求的端口</span></span><br><span class="line">        <span class="comment"># =======================================================================</span></span><br><span class="line">        self.__domain = domain</span><br><span class="line">        self.__port = port</span><br><span class="line">        self.__httpmethod = <span class="string">"POST"</span></span><br><span class="line">        <span class="keyword">if</span> (top.getDefaultAppInfo()):</span><br><span class="line">            self.__app_key = top.getDefaultAppInfo().appkey</span><br><span class="line">            self.__secret = top.getDefaultAppInfo().secret</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_request_header</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">'Content-type'</span>: <span class="string">'application/x-www-form-urlencoded;charset=UTF-8'</span>,</span><br><span class="line">            <span class="string">"Cache-Control"</span>: <span class="string">"no-cache"</span>,</span><br><span class="line">            <span class="string">"Connection"</span>: <span class="string">"Keep-Alive"</span>,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_app_info</span><span class="params">(self, appinfo)</span>:</span></span><br><span class="line">        <span class="comment"># =======================================================================</span></span><br><span class="line">        <span class="comment"># 设置请求的app信息</span></span><br><span class="line">        <span class="comment"># @param appinfo: import top</span></span><br><span class="line">        <span class="comment">#                 appinfo top.appinfo(appkey,secret)</span></span><br><span class="line">        <span class="comment"># =======================================================================</span></span><br><span class="line">        self.__app_key = appinfo.appkey</span><br><span class="line">        self.__secret = appinfo.secret</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getapiname</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getMultipartParas</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getTranslateParas</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_check_requst</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getResponse</span><span class="params">(self, authrize=None, timeout=<span class="number">30</span>)</span>:</span></span><br><span class="line">        <span class="comment"># =======================================================================</span></span><br><span class="line">        <span class="comment"># 获取response结果</span></span><br><span class="line">        <span class="comment"># =======================================================================</span></span><br><span class="line">        <span class="comment"># connection = httplib.HTTPConnection(self.__domain, self.__port, False,</span></span><br><span class="line">        <span class="comment">#                                     timeout)</span></span><br><span class="line">        connection = httplib.HTTPConnection(self.__domain, self.__port, timeout)    <span class="comment"># sudoz: Py3</span></span><br><span class="line">        sys_parameters = &#123;</span><br><span class="line">            P_FORMAT: <span class="string">'json'</span>,</span><br><span class="line">            P_APPKEY: self.__app_key,</span><br><span class="line">            P_SIGN_METHOD: <span class="string">"md5"</span>,</span><br><span class="line">            P_VERSION: <span class="string">'2.0'</span>,</span><br><span class="line">            <span class="comment"># P_TIMESTAMP: str(long(time.time() * 1000)),</span></span><br><span class="line">            P_TIMESTAMP: str(int(time.time() * <span class="number">1000</span>)),  <span class="comment"># sudoz: Py3</span></span><br><span class="line">            P_PARTNER_ID: SYSTEM_GENERATE_VERSION,</span><br><span class="line">            P_API: self.getapiname(),</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> authrize <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            sys_parameters[P_SESSION] = authrize</span><br><span class="line">        application_parameter = self.getApplicationParameters()</span><br><span class="line">        sign_parameter = sys_parameters.copy()</span><br><span class="line">        sign_parameter.update(application_parameter)</span><br><span class="line">        sys_parameters[P_SIGN] = sign(self.__secret, sign_parameter)</span><br><span class="line">        connection.connect()</span><br><span class="line"></span><br><span class="line">        header = self.get_request_header()</span><br><span class="line">        <span class="keyword">if</span> self.getMultipartParas():</span><br><span class="line">            form = MultiPartForm()</span><br><span class="line">            <span class="keyword">for</span> key, value <span class="keyword">in</span> application_parameter.items():</span><br><span class="line">                form.add_field(key, value)</span><br><span class="line">            <span class="keyword">for</span> key <span class="keyword">in</span> self.getMultipartParas():</span><br><span class="line">                fileitem = getattr(self, key)</span><br><span class="line">                <span class="keyword">if</span> fileitem <span class="keyword">and</span> isinstance(fileitem, FileItem):</span><br><span class="line">                    form.add_file(key, fileitem.filename, fileitem.content)</span><br><span class="line">            body = str(form)</span><br><span class="line">            header[<span class="string">'Content-type'</span>] = form.get_content_type()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># body = urllib.urlencode(application_parameter)</span></span><br><span class="line">            body = urllib.parse.urlencode(application_parameter)    <span class="comment"># sudoz: Py3</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># url = N_REST + "?" + urllib.urlencode(sys_parameters)</span></span><br><span class="line">        url = N_REST + <span class="string">"?"</span> + urllib.parse.urlencode(sys_parameters)   <span class="comment"># sudoz: Py3</span></span><br><span class="line">        connection.request(self.__httpmethod, url, body=body, headers=header)</span><br><span class="line">        response = connection.getresponse()</span><br><span class="line">        <span class="keyword">if</span> response.status <span class="keyword">is</span> <span class="keyword">not</span> <span class="number">200</span>:</span><br><span class="line">            <span class="keyword">raise</span> RequestException(<span class="string">'invalid http status '</span> + str(</span><br><span class="line">                response.status) + <span class="string">',detail body:'</span> + response.read())</span><br><span class="line">        <span class="comment"># result = response.read()</span></span><br><span class="line">        result = response.read().decode(<span class="string">'utf-8'</span>)    <span class="comment"># sudoz: Py3里JSON只接收unicode</span></span><br><span class="line">        jsonobj = json.loads(result)</span><br><span class="line">        <span class="keyword">return</span> jsonobj</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getApplicationParameters</span><span class="params">(self)</span>:</span></span><br><span class="line">        application_parameter = &#123;&#125;</span><br><span class="line">        <span class="comment"># for key, value in self.__dict__.iteritems():</span></span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> self.__dict__.items():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> key.startswith(</span><br><span class="line">                    <span class="string">"__"</span>) <span class="keyword">and</span> <span class="keyword">not</span> key <span class="keyword">in</span> self.getMultipartParas() <span class="keyword">and</span> <span class="keyword">not</span> key.startswith(</span><br><span class="line">                    <span class="string">"_RestApi__"</span>) <span class="keyword">and</span> value <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">                <span class="keyword">if</span> (key.startswith(<span class="string">"_"</span>)):</span><br><span class="line">                    application_parameter[key[<span class="number">1</span>:]] = value</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    application_parameter[key] = value</span><br><span class="line">        <span class="comment"># 查询翻译字典来规避一些关键字属性</span></span><br><span class="line">        translate_parameter = self.getTranslateParas()</span><br><span class="line">        <span class="comment"># for key, value in application_parameter.iteritems():</span></span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> application_parameter.items():  <span class="comment"># sudoz: Py3</span></span><br><span class="line">            <span class="keyword">if</span> key <span class="keyword">in</span> translate_parameter:</span><br><span class="line">                application_parameter[translate_parameter[key]] = \</span><br><span class="line">                application_parameter[key]</span><br><span class="line">                <span class="keyword">del</span> application_parameter[key]</span><br><span class="line">        <span class="keyword">return</span> application_parameter</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/23/leetcode-1st-week/" rel="next" title="LeetCode 1-5">
+                <i class="fa fa-chevron-left"></i> LeetCode 1-5
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/17/difference-between-string-stringbuilder-stringbuffer/" rel="prev" title="String, StringBuilder, StringBuffer 区别">
+                String, StringBuilder, StringBuffer 区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一号坑"><span class="nav-number">1.</span> <span class="nav-text">一号坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二号坑"><span class="nav-number">2.</span> <span class="nav-text">二号坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三号坑"><span class="nav-number">3.</span> <span class="nav-text">三号坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四号坑"><span class="nav-number">4.</span> <span class="nav-text">四号坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五号坑"><span class="nav-number">5.</span> <span class="nav-text">五号坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#六号坑"><span class="nav-number">6.</span> <span class="nav-text">六号坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#七号坑"><span class="nav-number">7.</span> <span class="nav-text">七号坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#八号坑"><span class="nav-number">8.</span> <span class="nav-text">八号坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-3-x-版本的-base-py"><span class="nav-number">9.</span> <span class="nav-text">Python 3.x 版本的 base.py</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

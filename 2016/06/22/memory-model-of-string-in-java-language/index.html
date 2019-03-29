@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。">
+<meta name="keywords" content="Java,Memory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java String 的内存模型">
+<meta property="og:url" content="https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/stacknheap.png">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/String-Constant-Pool.png">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java String 的内存模型">
+<meta name="twitter:description" content="在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。">
+<meta name="twitter:image" content="https://o70e8d1kb.qnssl.com/stacknheap.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Java String 的内存模型 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java String 的内存模型
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-06-22 13:00:53" itemprop="dateCreated datePublished" datetime="2016-06-22T13:00:53+08:00">2016-06-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在之前写的一篇博客中(<a href="/2016/02/17/difference-between-string-stringbuilder-stringbuffer/">String, StringBuilder, StringBuffer 区别</a>)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。</p>
+<a id="more"></a>
+<h4 id="字符串比较"><a href="#字符串比较" class="headerlink" title="字符串比较"></a>字符串比较</h4><p>字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String s1 = <span class="string">"hello,world!"</span>; <span class="comment">// 通过字面值</span></span><br><span class="line">String s2 = <span class="keyword">new</span> String(<span class="string">"hello,world!"</span>); <span class="comment">// 通过 new 关键字</span></span><br></pre></td></tr></table></figure></p>
+<p>字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Debug</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String s1 = <span class="string">"hello,world!"</span>;</span><br><span class="line">        String s2 = <span class="keyword">new</span> String(<span class="string">"hello,world!"</span>);</span><br><span class="line">        System.out.println(s1 == s2); <span class="comment">// false</span></span><br><span class="line">        System.out.println(Objects.equals(s1, s2)); <span class="comment">// true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>值都是 “hello,world!” 的字符串，然而两种比较的方式所得到的结果却不相同。字符串 s1 是通过字面值创建，字符串 s2 是通过关键字 new 创建，在分析这两种创建字符串方式的区别之前，先比较下 <code>==</code> 操作符和 <code>equals()</code> 方法在进行字符串比较时的差异。</p>
+<p><code>==</code> 操作符比较的是两个对象的引用是否指向同一内存地址，如果内存地址相同，则返回 true；<code>equals()</code> 比较的只是两个字符串对象的引用指向的内存地址所存储的字面值，而忽略内存地址是否相同。这样再去看上面的代码，从输出结果逆推，s1 和 s2 的引用的值都是 “hello,world!”，因此调用 <code>equals()</code> 比较返回 true 不难理解，那 s1 和 s2 内存地址不同，又该怎么解释，下面就进入正题，探讨 Java 里 String 在内存中的存储模型。</p>
+<h4 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h4><p>内存有栈和堆这两个概念：</p>
+<ul>
+<li>栈 <a href="https://en.wikipedia.org/wiki/Stack-based_memory_allocation" target="_blank" rel="noopener">statck</a>: 栈区是内存中遵循先进后出（LIFO）原则的一块存储区域。在现代计算机系统中，每个线程在内存中都保有自己的一段栈空间。栈区存储基本类型，int, short, long, byte, float, double, boolean, char（注意，不包括 String，String 不是基本类型），以及对象的引用，比如 <code>int a = 1;</code> a 和 1 都存储在栈区，<code>Date date = new Date();</code> date 存储在栈区， new Date() 的对象则存储在堆区。线程中方法的调用也记录在栈区中，使得方法的结果能返回到正确的位置。栈区内存由系统自动分配并释放；</li>
+<li>堆 <a href="https://en.wikipedia.org/wiki/Memory_management#HEAP" target="_blank" rel="noopener">heap</a>: 堆区存放由用户通过 new 操作创建的对象。系统不会自动释放堆区内存，比如 C++ 中执行 <code>new</code> 分配内存，执行 <code>delete</code> 释放被占用的内存。Java 因为 GC 机制，由 JVM 承担了手动释放内存的操作。</li>
+</ul>
+<p>栈因为严格遵循 LIFO， 其存取速度明显快于堆区。但栈区的数据和生命周期是在编译时就确定的，而堆区则可以在运行时动态分配内存空间。</p>
+<p>下图展示了堆区和栈区存储内容的差异，图片来自 vikashazrati.files.wordpress.com<br><img src="https://o70e8d1kb.qnssl.com/stacknheap.png" alt></p>
+<p>用接近系统底层的 C++ 语言程序简单演示下堆区和栈区分配内存的示例<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// example.cpp</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *pBuffer; <span class="comment">// 没有分配空间，除了指针本身，它被分配在了栈区</span></span><br><span class="line">    <span class="keyword">bool</span> b = <span class="literal">true</span>; <span class="comment">// 分配在栈区</span></span><br><span class="line">    <span class="keyword">if</span>(b)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 在栈区分配 500 byte 空间</span></span><br><span class="line">        <span class="keyword">char</span> buffer[<span class="number">500</span>];</span><br><span class="line">        <span class="comment">// 在堆区分配 500 byte 空间</span></span><br><span class="line">        pBuffer = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">500</span>];</span><br><span class="line">    &#125; <span class="comment">// buffer 的内存被释放, pBuffer 的还存在</span></span><br><span class="line">&#125; <span class="comment">// 如果没有执行 delete[] pBuffer，就会发生内存泄漏;</span></span><br></pre></td></tr></table></figure></p>
+<p>通过字面值和 <code>new</code> 关键字创建字符串对象引用 s1、s2 和字符串 “hello,world!” 分别都存储在内存什么地方，一个个分析。<br>字符串 “hello,world!” 在堆区申请空间存储，因为字符串是常量具有不可变性，它被存储在堆区的一块名叫 “String Constant Pool” 的字符串常量池中，字符串常量池中的字符串只存在一份，即如果常量池中已存在 “hello,world!”，那么 s1 不会在常量池中申请新的空间，而是直接把引用指向已存在的字符串内存地址。另外，s1 是字符串 “hello,world!” 的引用，存储在栈区。前面讲到，由关键字 <code>new</code> 创建的对象被分配在了堆区，但和字面值赋值不同的是，<code>new</code> 出来的对象不只是在分配在堆区的字符串常量池，在 <code>new</code> 一个新的 String 对象时，首先会在堆区创建该 String 对象，并让栈区的对象引用指向它，然后在常量池中查询是否已存在相同内容的字符串，如果有，就将堆区的空间和常量池中的空间通过 <code>String.inter()</code> 关联起来，如果没有，则在常量池中申请空间存放该字符串对象，再做关联。参考下面的代码和实例图。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String s1 = <span class="string">"abc"</span>; </span><br><span class="line">String s2 = <span class="string">"xyz"</span>;</span><br><span class="line">String s3 = <span class="string">"123"</span>;</span><br><span class="line">String s4 = <span class="string">"A"</span>;</span><br><span class="line"></span><br><span class="line">String s5 = <span class="keyword">new</span> String(<span class="string">"abc"</span>);</span><br><span class="line"><span class="keyword">char</span>[] c = &#123;<span class="string">'J'</span>, <span class="string">'A'</span>, <span class="string">'V'</span>, <span class="string">'A'</span>&#125;;</span><br><span class="line">String s6 = <span class="keyword">new</span> String(c);</span><br><span class="line">String s7 = <span class="keyword">new</span> String(<span class="keyword">new</span> StringBuffer());</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://o70e8d1kb.qnssl.com/String-Constant-Pool.png" alt></p>
+<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p>梳理了那么多理论，还是要用实践来印证。测试下面的代码，看看结果如何——<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestString</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 由字面值创建字符串</span></span><br><span class="line">        String s1 = <span class="string">"hello,world!"</span>;</span><br><span class="line">        String s2 = <span class="string">"hello,world!"</span>;</span><br><span class="line">        System.out.println(s1 == s2);</span><br><span class="line">        System.out.println(Objects.equals(s1, s2));</span><br><span class="line">        <span class="comment">// 由 new 关键字创建字符串</span></span><br><span class="line">        String s3 = <span class="keyword">new</span> String(<span class="string">"hello,world!"</span>);</span><br><span class="line">        String s4 = <span class="keyword">new</span> String(<span class="string">"hello,world!"</span>);</span><br><span class="line">        System.out.println(s3 == s4);</span><br><span class="line">        System.out.println(Objects.equals(s3, s4));</span><br><span class="line"></span><br><span class="line">        System.out.println(s1 == s3);</span><br><span class="line">        System.out.println(s1 == s3.intern());</span><br><span class="line"></span><br><span class="line">        String s5 = <span class="string">"hello,"</span>;</span><br><span class="line">        String s6 = <span class="string">"world!"</span>;</span><br><span class="line">        System.out.println(s1 == s5 + s6);</span><br><span class="line">        System.out.println(s1 == <span class="string">"hello,"</span> + <span class="string">"world!"</span>);</span><br><span class="line">        System.out.println(s3 == s5 + s6);</span><br><span class="line">        System.out.println(s1 == (s5 + s6).intern());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// output: true true false true false true false true false true</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Memory/" rel="tag"># Memory</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/15/leetcode-tour-3/" rel="next" title="LeetCode 11-15">
+                <i class="fa fa-chevron-left"></i> LeetCode 11-15
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/04/leetcode-tour-4/" rel="prev" title="LeetCode 16-20">
+                LeetCode 16-20 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串比较"><span class="nav-number">1.</span> <span class="nav-text">字符串比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存模型"><span class="nav-number">2.</span> <span class="nav-text">内存模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试结果"><span class="nav-number">3.</span> <span class="nav-text">测试结果</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

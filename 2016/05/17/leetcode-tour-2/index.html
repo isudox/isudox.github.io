@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。">
+<meta name="keywords" content="Algorithm,LeetCode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode 6-10">
+<meta property="og:url" content="https://isudox.com/2016/05/17/leetcode-tour-2/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.422Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode 6-10">
+<meta name="twitter:description" content="接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/05/17/leetcode-tour-2/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>LeetCode 6-10 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/05/17/leetcode-tour-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LeetCode 6-10
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-05-17 21:14:04" itemprop="dateCreated datePublished" datetime="2016-05-17T21:14:04+08:00">2016-05-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>接着上篇 <a href="/2015/11/23/leetcode-1st-week/">LeetCode 探险第一弹</a>，本篇记录第 6 到 10 题。</p>
+<a id="more"></a>
+<h3 id="ZigZag-Conversion"><a href="#ZigZag-Conversion" class="headerlink" title="ZigZag Conversion"></a>ZigZag Conversion</h3><p>第 6 题 <a href="https://leetcode.com/problems/zigzag-conversion/" target="_blank" rel="noopener">ZigZag Conversion</a></p>
+<blockquote>
+<p>字符串 <code>&quot;PAYPALISHIRING&quot;</code> 是由如下排列的字符串通过 ZigZag 形式读取所得。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">P   A   H   N</span><br><span class="line">A P L S I I G</span><br><span class="line">Y   I   R</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>如果按行读取则为 <code>&quot;PAHNAPLSIIGYIR&quot;</code><br>请编写代码将给定行数的 zigzag 形式字符串转换为行形式的字符串：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string convert(string text, int nRows);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>比如 <code>convert(&quot;PAYPALISHIRING&quot;, 3)</code> 得到 <code>&quot;PAHNAPLSIIGYIR&quot;</code></p>
+</blockquote>
+<p>这道 ZigZag 题很好玩，让我想起小时候做过的奥数题。从 ZigZag 型字符串中找规律，可以看到第一行和最后一行很容易挑出来，因为其字符的步进是固定的，即 2*(nRows-1)。然而中间的行的规律就不那么规则了，其步进间距是跳跃的，如果继续按 2*(nRows-1) 步进查找的话，会漏掉步进间距小于该值的字符。但是仔细观察除掉首行和末行的 ZigZag 排列字符串，可以发现它仍然是 ZigZag 字符串，只不过行数再减小，与之相应的步进间距也在变化，但始终符合 2*(nRows-1) 的规律。找到这个特性后，在步进查找时把中间行组成的 ZigZag 字符串的步进间距也作查询，就不会漏掉了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ZigZagConversion.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">convert</span><span class="params">(String s, <span class="keyword">int</span> numRows)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">if</span> (len &lt;= <span class="number">2</span> || numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        String result = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">int</span> step = <span class="number">2</span> * (numRows - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> currRow = <span class="number">0</span>; currRow &lt; numRows; currRow++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> currIndex = currRow; currIndex &lt; len; currIndex += <span class="number">2</span> * (numRows - <span class="number">1</span>)) &#123;</span><br><span class="line">                result += s.charAt(currIndex);</span><br><span class="line">                <span class="keyword">if</span> (currRow != <span class="number">0</span> &amp;&amp; currRow != numRows - <span class="number">1</span> &amp;&amp; currIndex + <span class="number">2</span> * (numRows - currRow - <span class="number">1</span>) &lt; len) &#123;</span><br><span class="line">                    result += s.charAt(currIndex + <span class="number">2</span> * (numRows - currRow - <span class="number">1</span>));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OJ 测试结果：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">1158 / 1158</td>
+<td style="text-align:center">42 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Reverse-Integer"><a href="#Reverse-Integer" class="headerlink" title="Reverse Integer"></a>Reverse Integer</h3><p>第 7 题 <a href="https://leetcode.com/problems/reverse-integer/" target="_blank" rel="noopener">Reverse Integer</a></p>
+<blockquote>
+<p>翻转整型数的数位，例如：<br>x = 123，返回 321；x = -123，返回 -321；</p>
+</blockquote>
+<p>题目解法很简单，但是有几个注意点要留心：</p>
+<ul>
+<li>如果数字末尾为 0，则翻转过来后的数字应该去掉头部的 0。比如 100 -&gt; 1；</li>
+<li>如果数字是负数，则翻转后的结果也得是负数；</li>
+<li>入参肯定是在 int 范围内，但翻转后得到的数字就不一定了。所以要考虑到溢出的情况，比如 1999999999 -&gt; 9999999991；</li>
+</ul>
+<p>假定如果翻转后的结果超出范围，则返回 0。先单细胞的思考下，不考虑优化，简单粗暴的先把问题解开。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ReverseInteger.java v1.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> isNeg = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">long</span> result = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            isNeg = <span class="keyword">true</span>;</span><br><span class="line">            x = <span class="number">0</span> - x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (x != <span class="number">0</span>) &#123;</span><br><span class="line">            result = result * <span class="number">10</span> + x % <span class="number">10</span>;</span><br><span class="line">            x /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (result &gt; Integer.MAX_VALUE) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (isNeg) &#123;</span><br><span class="line">            result = -result;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Math.toIntExact(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自测了几个用例后自信满满的提交了代码，LeetCode 抛出了运行时错误，出现错误的用例为 <code>-2147483648</code>，然后我就发现了自己愚蠢的错误：不止是在翻转结束时会发生溢出，在负数转正数的时候也会发生，当且仅当入参为 <code>-2147483648</code> 时！打个补丁吧，这方法真是太蠢了！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ReverseInteger.java v1.1</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> isNeg = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">long</span> result = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">if</span> (x == -<span class="number">2147483648</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            isNeg = <span class="keyword">true</span>;</span><br><span class="line">            x = -x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (x != <span class="number">0</span>) &#123;</span><br><span class="line">            result = result * <span class="number">10</span> + x % <span class="number">10</span>;</span><br><span class="line">            x /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (result &gt; Integer.MAX_VALUE) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (isNeg) &#123;</span><br><span class="line">            result = -result;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Math.toIntExact(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OJ 测试结果：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">1032 / 1032</td>
+<td style="text-align:center">2 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="String-to-Integer-atoi"><a href="#String-to-Integer-atoi" class="headerlink" title="String to Integer (atoi)"></a>String to Integer (atoi)</h3><p>第 8 题是经典到无以复加的<a href="https://leetcode.com/problems/string-to-integer-atoi/" target="_blank" rel="noopener">字符串数转整型数</a>！也就是实现 C 语言里的 atoi 函数。</p>
+<blockquote>
+<p>提示：仔细考虑所有可能的传参，题目没有指定输入类型。</p>
+</blockquote>
+<p>提示说的很明白了，把所有可能出现异常情况的传参都想到，我现在能想到的有如下情况：</p>
+<ul>
+<li>正常的 int 范围内的字符串数；</li>
+<li>超出 int 范围的大数字符串；</li>
+<li>字符串中包含非数字字符，包括空格符，字母、标点等；</li>
+<li>首字符是 <code>&quot;+&quot;</code>, <code>&quot;-&quot;</code>;</li>
+</ul>
+<p>仔细考虑可能出现的情况：<br>1) 正常的 int 型数值字符串，很好处理，依次取字符转换为 int 型并做数值相加；<br>2) 首字符为 <code>&quot;+&quot;</code>, <code>&quot;-&quot;</code> 时，截取去掉正负号的子字符串，再进行如上处理；<br>3) 若首字符为空格，则去掉该空格，比如 “   123” 转换结果应该为 123；<br>4) 若字符串中出现非数字，则舍弃该位以及后面的字符；<br>5) 弱字符串转换结果超出了整型数值范围，则取整型数的边界值，比如 “-999999999” 转换结果是 -2147483648</p>
+<p>再充分考虑到可能情况后，递归调用可以简化处理步骤，下面是我的解法，多说一句，LeetCode 上这道题的描述实在是太简略了，不少特殊情况的处理规则都是我提交代码试错的出来的，比如上面罗列出来的规则 3, 4 和 5。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">myAtoi</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (str == <span class="keyword">null</span> || Objects.equals(str, <span class="string">""</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (str.charAt(<span class="number">0</span>) == <span class="string">'-'</span>)</span><br><span class="line">            <span class="keyword">return</span> subAtoi(str.substring(<span class="number">1</span>), <span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">if</span> (str.charAt(<span class="number">0</span>) == <span class="string">'+'</span>)</span><br><span class="line">            <span class="keyword">return</span> subAtoi(str.substring(<span class="number">1</span>), <span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">if</span> (str.charAt(<span class="number">0</span>) == <span class="string">' '</span>)</span><br><span class="line">            <span class="keyword">return</span> myAtoi(str.substring(<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">return</span> subAtoi(str, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">subAtoi</span><span class="params">(String str, <span class="keyword">boolean</span> neg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (str == <span class="keyword">null</span> || str.equals(<span class="string">""</span>)) &#123;</span><br><span class="line">            System.out.println(<span class="string">"a"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; str.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!Character.isDigit(str.charAt(i)))</span><br><span class="line">                <span class="keyword">return</span> res;</span><br><span class="line">            <span class="keyword">int</span> digit = Character.getNumericValue(str.charAt(i));</span><br><span class="line">            <span class="keyword">if</span> (neg) &#123;</span><br><span class="line">                <span class="keyword">if</span> (i == <span class="number">9</span>) &#123;</span><br><span class="line">                    <span class="keyword">int</span> diff = res - Integer.MIN_VALUE / <span class="number">10</span>;</span><br><span class="line">                    <span class="keyword">if</span> (diff &lt; <span class="number">0</span> || (diff == <span class="number">0</span> &amp;&amp; digit &gt; <span class="number">8</span>))</span><br><span class="line">                        <span class="keyword">return</span> Integer.MIN_VALUE;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (i &gt;= <span class="number">10</span>)</span><br><span class="line">                    <span class="keyword">return</span> Integer.MIN_VALUE;</span><br><span class="line">                res = <span class="number">10</span> * res - digit;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (i == <span class="number">9</span>) &#123;</span><br><span class="line">                    <span class="keyword">int</span> diff = res - Integer.MAX_VALUE / <span class="number">10</span>;</span><br><span class="line">                    <span class="keyword">if</span> (diff &gt; <span class="number">0</span> || (diff == <span class="number">0</span> &amp;&amp; digit &gt; <span class="number">7</span>))</span><br><span class="line">                        <span class="keyword">return</span> Integer.MAX_VALUE;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (i &gt;= <span class="number">10</span>)</span><br><span class="line">                    <span class="keyword">return</span> Integer.MAX_VALUE;</span><br><span class="line">                res = digit + <span class="number">10</span> * res;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OJ 测试结果：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">1047 / 1047</td>
+<td style="text-align:center">8 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Palindrome-Number"><a href="#Palindrome-Number" class="headerlink" title="Palindrome Number"></a>Palindrome Number</h3><p>第 9 题 <a href="https://leetcode.com/problems/palindrome-number/" target="_blank" rel="noopener">Palindrome Number</a></p>
+<blockquote>
+<p>判断一个整型数是否为回文数，不要使用额外的存储空间。</p>
+</blockquote>
+<p>题目不难，无非就是判断该整数是否是轴对称，因为负整数有符号，所以不是回文数。因此主流程只需要对正整数的情况进行处理。<br>那么现在的问题就简化成，如何判断一个正整数是否轴对称。如果把正整数转换为字符串，通过栈 FILO 的特性翻转字符串肯定是可以判断其是否对称，但是这样做的话，申请了额外的存储空间。那如果直接翻转正整数呢，会存在两种特殊情况，一是超出整型数的范围，二是末位是 0 的数。但实际上，这两种情况都无需考虑，这里有一个关于假设的小伎俩：假定整数是回文数，那么翻转该整数得到的数就是相同的整数，就必然不存在超出整型数范围或末位为 0 的情况；反之，如果不是回文，那翻转过来的结果无论是溢出整型范围还是位数减少，都和原整数不相同，也就不是回文。所以这道题可以直接通过除十取余的方法来解决。Java 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PalindromeNumber.java v1.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPalindrome</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (x &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">int</span> y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> bak = x;</span><br><span class="line">        <span class="keyword">while</span> (x &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> temp = x;</span><br><span class="line">            x = temp / <span class="number">10</span>;</span><br><span class="line">            y = y * <span class="number">10</span> + temp % <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> y == bak;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OJ 测试结果：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">11506 / 11506</td>
+<td style="text-align:center">11 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>但这种耍小聪明的方法并不优雅，因为它没有直接处理上面提到的两种特殊情况。校验是否轴对称，其实本质上就是校验首位数和末位数是否相等，那么可以依次比较整数的首位和末位，如果校验通过，则将整数去掉首位和末位，再次比较。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PalindromeNumber.java v1.1</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPalindrome</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (x &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (x == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> temp = x;</span><br><span class="line">        <span class="keyword">while</span> (temp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            temp /= <span class="number">10</span>;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = count; i &gt; <span class="number">0</span>; i -= <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (x / <span class="keyword">this</span>.pow(<span class="number">10</span>, i - <span class="number">1</span>) != x % <span class="number">10</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            x = (x % <span class="keyword">this</span>.pow(<span class="number">10</span>, i - <span class="number">1</span>)) / <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">pow</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> z = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (; y &gt; <span class="number">0</span>; y--) z *= x;</span><br><span class="line">        <span class="keyword">return</span> z;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">11506 / 11506</td>
+<td style="text-align:center">14 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PalindromeNumber.java v1.2</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPalindrome</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (x &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">int</span> digits = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> temp = x;</span><br><span class="line">        <span class="keyword">while</span> (temp &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            temp /= <span class="number">10</span>;</span><br><span class="line">            digits++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> j = digits;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; j &gt; i; i++, j--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (digit(x, digits, j) != digit(x, digits, i)) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">pow</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> z = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (; y &gt; <span class="number">0</span>; y--) z *= x;</span><br><span class="line">        <span class="keyword">return</span> z;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">digit</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x / pow(<span class="number">10</span>, j - <span class="number">1</span>) % <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">11506 / 11506</td>
+<td style="text-align:center">15 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>哎，越来越慢，讲道理，还是把整数转换为字符串去处理是最简单的……</p>
+<p>所以，用 Python 来做的话，代码简直不能更简洁，因为 Python 直接支持翻转</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># palindrome_number.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPalindrome</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type x: int</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> x &gt;=<span class="number">0</span> <span class="keyword">and</span> str(x) == str(x)[::<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">11506 / 11506</td>
+<td style="text-align:center">272 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>Python 处理速度虽然比 Java 有数量级的差距，但是，编程的过程真是轻松太多了，真的就只用了一行代码解决战斗！在这里必须要喊一句口号——</p>
+<blockquote>
+<p><strong>人生苦短，我用 Python！</strong></p>
+</blockquote>
+<hr>
+<h3 id="Regular-Expression-Matching"><a href="#Regular-Expression-Matching" class="headerlink" title="Regular Expression Matching"></a>Regular Expression Matching</h3><p>第 10 题 <a href="https://leetcode.com/problems/regular-expression-matching/" target="_blank" rel="noopener">Regular Expression Matching</a></p>
+<blockquote>
+<p>实现正则表达式，使得支持 <code>&#39;.&#39;</code> 和 <code>&#39;*&#39;</code> 符。其中，<code>&#39;.&#39;</code> 匹配任意单个字符，<code>&#39;*&#39;</code> 匹配该符号前之前的零个或任意多个字符。</p>
+</blockquote>
+<p>这道题难道不是很简单吗，就算是用笨重的 Java 写，一行代码也能解决，你看——<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RegularExpressionMatching.java v1.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMatch</span><span class="params">(String s, String p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> java.util.regex.Pattern.compile(p).matcher(s).matches();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>开个玩笑，这种作弊行为当然不算数。LeetCode 上这道题的难度为 Hard 级，肯定是要求用自己的方式实现 <code>&#39;.&#39;</code> 和 <code>&#39;*&#39;</code> 符的正则匹配，因为这两个符号分别的组合可以形成多种匹配形式，所以逐条分析：</p>
+<ul>
+<li>正则式 p 不包含 <code>&#39;.&#39;</code> 和 <code>&#39;*&#39;</code> 符，字符串长度（判明空串）后再依次比较字符；</li>
+<li>正则式 p 仅包含 <code>&#39;.&#39;</code> 符，因为它只能表示一个任意字符，因此首先比较长度，长度一致再比较 <code>&#39;.&#39;</code> 符以外位置的字符是否相同；</li>
+<li>正则式 p 仅包含 <code>&#39;*&#39;</code> 符，记录 <code>&#39;*&#39;</code> 符前面的字符（<code>&#39;*&#39;</code> 符不会在首位），这里有一点需要注意，当 <code>&#39;*&#39;</code> 符在第二位时，可能会匹配 0 个它之前的字符，所以还得判断正则式第三位开始的子串正则式的匹配情况；当 <code>&#39;*&#39;</code> 符不在第二位时，就按部就班的从第一个字符开始依次比较；</li>
+<li>正则式 p 同时包含 <code>&#39;.&#39;</code> 和 <code>&#39;*&#39;</code> 符，复杂度最高，同时考虑情况 2 和 3；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RegularExpressionMatching.java v1.1</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMatch</span><span class="params">(String s, String p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> lenS = s.length(), lenP = p.length();</span><br><span class="line">        <span class="keyword">if</span> (lenP == <span class="number">0</span>) <span class="keyword">return</span> lenS == <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (lenP == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p.charAt(<span class="number">0</span>) == <span class="string">'.'</span>) <span class="keyword">return</span> lenS == <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">return</span> lenS == <span class="number">1</span> &amp;&amp; s.charAt(<span class="number">0</span>) == p.charAt(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p.charAt(<span class="number">1</span>) == <span class="string">'*'</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isMatch(s, p.substring(<span class="number">2</span>))) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(s.length() &gt; <span class="number">0</span> &amp;&amp; (p.charAt(<span class="number">0</span>) == <span class="string">'.'</span> || s.charAt(<span class="number">0</span>) == p.charAt(<span class="number">0</span>))) &#123;</span><br><span class="line">                <span class="keyword">return</span> isMatch(s.substring(<span class="number">1</span>), p);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(lenS &gt; <span class="number">0</span> &amp;&amp; (p.charAt(<span class="number">0</span>) == <span class="string">'.'</span> || s.charAt(<span class="number">0</span>) == p.charAt(<span class="number">0</span>))) &#123;</span><br><span class="line">                <span class="keyword">return</span> isMatch(s.substring(<span class="number">1</span>), p.substring(<span class="number">1</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大致讲解下上面的思路：<br>1) 先判断空串的情况，当正则式 p 为空串时，当且仅当字符串 s 也是空串时才能匹配；<br>2) 当正则式 p 长度为 1 时，当 p 为 <code>&#39;.&#39;</code> 且 s 长度也为 1 时匹配，当 p 不为 <code>&#39;.&#39;</code> 时，只有当 s 长度为 1 且 s 和 p 相同时匹配；<br>3) 当正则式 p 长度大于 1 且第二个字符为 <code>&#39;*&#39;</code> 时，情况就比较多变了。由于 <code>&#39;*&#39;</code> 可以匹配任意多个字符，所以如果取p <code>&#39;*&#39;</code> 后的子串能匹配 s，则 p 也能匹配上 s；如果 s 的长度非 0 且 p 首字符是 <code>&#39;.&#39;</code> 或者 s 和 p 的首字符相同，则 s 去掉首位的子字符串如果能和 p 匹配，意味着 s 和 p 匹配。因此，这里要用到递归调用。<br>4) 当正则式 p 长度大于 1 且第二个字符非 <code>&#39;*&#39;</code> 时，只有当 s 长度大于 0 且 s 和 p 首字符相同或者 p 的首字符为 <code>&#39;.&#39;</code> 时才匹配；</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">445 / 445</td>
+<td style="text-align:center">116 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>自己的实现不如 Java 内置的正则匹配算法效率高，类 Pattern 的完成上述测试用例匹配的时间是 87 ms。</p>
+<p>下一篇：<a href="/2016/06/15/leetcode-tour-3/">LeetCode 探险第三弹</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/17/intellij-idea-keymap-zh/" rel="next" title="[译] IntelliJ IDEA 快捷键操作">
+                <i class="fa fa-chevron-left"></i> [译] IntelliJ IDEA 快捷键操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/" rel="prev" title="Spring 加载含中文 properties 文件的思考">
+                Spring 加载含中文 properties 文件的思考 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ZigZag-Conversion"><span class="nav-number">1.</span> <span class="nav-text">ZigZag Conversion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reverse-Integer"><span class="nav-number">2.</span> <span class="nav-text">Reverse Integer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-to-Integer-atoi"><span class="nav-number">3.</span> <span class="nav-text">String to Integer (atoi)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Palindrome-Number"><span class="nav-number">4.</span> <span class="nav-text">Palindrome Number</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Regular-Expression-Matching"><span class="nav-number">5.</span> <span class="nav-text">Regular Expression Matching</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="继上篇 LeetCode 探险第二弹，第三弹记录第 11 到 15 题。">
+<meta name="keywords" content="Algorithm,LeetCode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode 11-15">
+<meta property="og:url" content="https://isudox.com/2016/06/15/leetcode-tour-3/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="继上篇 LeetCode 探险第二弹，第三弹记录第 11 到 15 题。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode 11-15">
+<meta name="twitter:description" content="继上篇 LeetCode 探险第二弹，第三弹记录第 11 到 15 题。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/06/15/leetcode-tour-3/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>LeetCode 11-15 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/06/15/leetcode-tour-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LeetCode 11-15
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-06-15 20:18:15" itemprop="dateCreated datePublished" datetime="2016-06-15T20:18:15+08:00">2016-06-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>继上篇 <a href="/2016/05/17/leetcode-tour-2/">LeetCode 探险第二弹</a>，第三弹记录第 11 到 15 题。</p>
+<a id="more"></a>
+<h3 id="Container-With-Most-Water"><a href="#Container-With-Most-Water" class="headerlink" title="Container With Most Water"></a>Container With Most Water</h3><p>第 11 题 <a href="https://leetcode.com/problems/container-with-most-water/" target="_blank" rel="noopener">Container With Most Water</a></p>
+<blockquote>
+<p>给出 n 个非负整数 a<sub>1</sub>, a<sub>2</sub>, …, a<sub>n</sub>，每个数指向一个坐标点 (i, a<sub>i</sub>)。该 n 个坐标点画出了 n 条纵线，即从 (i, a<sub>i</sub>) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。</p>
+</blockquote>
+<p>假设待求的这两条线段的坐标分别为(i, 0)-(i, a<sub>i</sub>) 和 (j, 0)-(j, a<sub>j</sub>)，那么容器的底座长度 L=Math.abs(i - j)，高度 H=Math.min(a<sub>i</sub>, a<sub>j</sub>)，容积 V=L*H。</p>
+<p>最笨也是最直接的办法就是在循环里暴力枚举。把所有能组成的容器都测量一遍，不多说了，直接撸代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContainerWithMostWater.java v1.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxArea</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxV = <span class="number">0</span>, curV = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> count = height.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; count; j++) &#123;</span><br><span class="line">                curV = (j - i) * (height[i] &lt; height[j] ? height[i] : height[j]);</span><br><span class="line">                maxV = Math.max(maxV, curV);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxV;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>提交后被 Lee他Code 婉拒，因为 Time Limit Exceeded，这种解法时间复杂度是 O(n<sup>2</sup>)，当 n 很大时，运行时间随指数增长会非常可怕。只能想办法精简处理过程，是不是所有 0.5(n*(n-1)) 中组合都要计算一遍，必须不是。涉及两个变量长和高，因为长的最大值是已知的，从长度取最大开始比较：<br>先取首末两个点 1 和 n，容积是 V=(n-1)*Math.min(a<sub>1</sub>, a<sub>n</sub>)。除此之外的选点，长度不可能比这种情况大，要使长度变小的前提下，容积更大，必要条件就是 Math.min(a<sub>i</sub>, a<sub>j</sub>) 要大于 Math.min(a<sub>1</sub>, a<sub>n</sub>)。所以可以从首末两端往中间移动，求取容积并存储当前最大容积后，放弃两侧高度较小的那个点，并向中心移动，这样处理可以省去很多不必要的计算，时间复杂度降低到 O(n)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContainerWithMostWater.java v1.1</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxArea</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxV = <span class="number">0</span>, curV = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = height.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (height[i] &lt; height[j]) &#123;</span><br><span class="line">                curV = (j - i) * (height[i++]);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (height[i] &gt; height[j]) &#123;</span><br><span class="line">                curV = (j - i) * (height[j--]);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                curV = (j - i) * (height[i++]);</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">            maxV = Math.max(maxV, curV);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxV;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">45 / 45</td>
+<td style="text-align:center">5 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Integer-to-Roman"><a href="#Integer-to-Roman" class="headerlink" title="Integer to Roman"></a>Integer to Roman</h3><p>第 12 题 <a href="https://leetcode.com/problems/integer-to-roman/" target="_blank" rel="noopener">Integer to Roman</a></p>
+<blockquote>
+<p>给出一个整型数，将其转换为罗马数字。输入的整数在 1-3999 之间。</p>
+</blockquote>
+<p>先来整理下罗马数字的表达方式：<br>1-9: “I”, “II”, “III”, “IV”, “V”, “VI”, “VII”, “VIII”, “IX”<br>10-90: “X”, “XX”, “XXX”, “XL”, “L”, “LX”, “LXX”, “LXXX”, “XC”<br>100-900: “C”, “CC”, “CCC”, “CD”, “D”, “DC”, “DCC”, “DCCC”, “CM”<br>1000-3000: “M”, “MM”, “MMM”</p>
+<p>I 表示单位 1，V 表示单位 5。同理，X 表示 10，L 表示 50；C 表示 100，D 表示 500；M 表示 1000。单位较小的如果在单位较大的符号左边，则是相减关系，反之则是相加关系。</p>
+<p>比如数字 432，先拆分成 400+20+3，即分别为 CD、XXX、II，所以转换结果是 CDXXXII；再比如 98，拆分为 90+8，即 XCVIII。<br>算法的关键就是把整数拆分成各个数位上所代表的数值的相加。通过二维字符串数组的索引位置和值的映射实现各个加和整数与罗马数字的对应。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IntegerToRoman.java v1.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">intToRoman</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        String[] ones = &#123;<span class="string">""</span>, <span class="string">"I"</span>, <span class="string">"II"</span>, <span class="string">"III"</span>, <span class="string">"IV"</span>, <span class="string">"V"</span>, <span class="string">"VI"</span>, <span class="string">"VII"</span>, <span class="string">"VIII"</span>, <span class="string">"IX"</span>&#125;;</span><br><span class="line">        String[] tens = &#123;<span class="string">""</span>, <span class="string">"X"</span>, <span class="string">"XX"</span>, <span class="string">"XXX"</span>, <span class="string">"XL"</span>, <span class="string">"L"</span>, <span class="string">"LX"</span>, <span class="string">"LXX"</span>, <span class="string">"LXXX"</span>, <span class="string">"XC"</span>&#125;;</span><br><span class="line">        String[] hundreds = &#123;<span class="string">""</span>, <span class="string">"C"</span>, <span class="string">"CC"</span>, <span class="string">"CCC"</span>, <span class="string">"CD"</span>, <span class="string">"D"</span>, <span class="string">"DC"</span>, <span class="string">"DCC"</span>, <span class="string">"DCCC"</span>, <span class="string">"CM"</span>&#125;;</span><br><span class="line">        String[] thousands = &#123;<span class="string">""</span>, <span class="string">"M"</span>, <span class="string">"MM"</span>, <span class="string">"MMM"</span>&#125;;</span><br><span class="line">        String[][] romans = &#123;ones, tens, hundreds, thousands&#125;;</span><br><span class="line">        String res = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">int</span> len = String.valueOf(num).length();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">int</span> x = num / pow(<span class="number">10</span>, i);</span><br><span class="line">            res = res + romans[i][x];</span><br><span class="line">            num = num % pow(<span class="number">10</span>, i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">pow</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> z = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (; y &gt; <span class="number">0</span>; y--) z *= x;</span><br><span class="line">        <span class="keyword">return</span> z;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">15 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>这种做法在细节上处理的很不好，算法复杂度略高，因为整数的分拆和转换罗马数字是从最高位开始，所以需要幂运算，浪费了一些运算时间。如果从整数的最低位开始处理，就不需要做幂运算了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IntegerToRoman.java v1.1</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">intToRoman</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        String[] ones = &#123;<span class="string">""</span>, <span class="string">"I"</span>, <span class="string">"II"</span>, <span class="string">"III"</span>, <span class="string">"IV"</span>, <span class="string">"V"</span>, <span class="string">"VI"</span>, <span class="string">"VII"</span>, <span class="string">"VIII"</span>, <span class="string">"IX"</span>&#125;;</span><br><span class="line">        String[] tens = &#123;<span class="string">""</span>, <span class="string">"X"</span>, <span class="string">"XX"</span>, <span class="string">"XXX"</span>, <span class="string">"XL"</span>, <span class="string">"L"</span>, <span class="string">"LX"</span>, <span class="string">"LXX"</span>, <span class="string">"LXXX"</span>, <span class="string">"XC"</span>&#125;;</span><br><span class="line">        String[] hundreds = &#123;<span class="string">""</span>, <span class="string">"C"</span>, <span class="string">"CC"</span>, <span class="string">"CCC"</span>, <span class="string">"CD"</span>, <span class="string">"D"</span>, <span class="string">"DC"</span>, <span class="string">"DCC"</span>, <span class="string">"DCCC"</span>, <span class="string">"CM"</span>&#125;;</span><br><span class="line">        String[] thousands = &#123;<span class="string">""</span>, <span class="string">"M"</span>, <span class="string">"MM"</span>, <span class="string">"MMM"</span>&#125;;</span><br><span class="line">        String[][] romans = &#123;ones, tens, hundreds, thousands&#125;;</span><br><span class="line">        String res = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">int</span> digit = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (num &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> x = num % <span class="number">10</span>;</span><br><span class="line">            res = romans[digit][x] + res;</span><br><span class="line">            num = num / <span class="number">10</span>;</span><br><span class="line">            digit++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">12 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>另外再提供一个思路，罗马数字 1 - 3999 的匹配过程中，9*10<sup>n</sup>，5*10<sup>n</sup> 和 4*10<sup>n</sup> 是特殊的符号，因此把它们单独放进映射列表中。让整数从高位作消减，每减去一个数，就拼接该数所对应的罗马数字，直到不能再减为止。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IntegerToRoman.java v1.2</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">intToRoman</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        String[] romans = &#123;<span class="string">"M"</span>, <span class="string">"CM"</span>, <span class="string">"D"</span>, <span class="string">"CD"</span>, <span class="string">"C"</span>, <span class="string">"XC"</span>, <span class="string">"L"</span>, <span class="string">"XL"</span>, <span class="string">"X"</span>, <span class="string">"IX"</span>, <span class="string">"V"</span>, <span class="string">"IV"</span>, <span class="string">"I"</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span>[] ints = &#123;<span class="number">1000</span>, <span class="number">900</span>, <span class="number">500</span>, <span class="number">400</span>, <span class="number">100</span>, <span class="number">90</span>, <span class="number">50</span>, <span class="number">40</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        StringBuilder res = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ints.length; i++) &#123;</span><br><span class="line">            <span class="keyword">while</span> (num &gt;= ints[i]) &#123;</span><br><span class="line">                res.append(romans[i]);</span><br><span class="line">                num -= ints[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">8 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Roman-to-Integer"><a href="#Roman-to-Integer" class="headerlink" title="Roman to Integer"></a>Roman to Integer</h3><p>第 13 题 <a href="https://leetcode.com/problems/roman-to-integer/" target="_blank" rel="noopener">Roman to Integer</a></p>
+<blockquote>
+<p>给出一个罗马数字，将其转换为整型数。范围在 1-3999 之间。</p>
+</blockquote>
+<p>这题就是前一题的逆向。可以借用上面的思路，从字符串的首位开始寻找匹配的罗马数字，如果从首位开始的字符串能匹配罗马数字，则把该字符串截掉，继续匹配；如果没有匹配，则换下一个罗马数字继续判断是否匹配。这里有一个注意点，就是一旦匹配后截取子字符串时，要根据被截掉的罗马数字的长度来定截取的起始位置。Java 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RomanToInteger.java v1.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">romanToInt</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        String[] romans = &#123;<span class="string">"M"</span>, <span class="string">"CM"</span>, <span class="string">"D"</span>, <span class="string">"CD"</span>, <span class="string">"C"</span>, <span class="string">"XC"</span>, <span class="string">"L"</span>, <span class="string">"XL"</span>, <span class="string">"X"</span>, <span class="string">"IX"</span>, <span class="string">"V"</span>, <span class="string">"IV"</span>, <span class="string">"I"</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span>[] ints = &#123;<span class="number">1000</span>, <span class="number">900</span>, <span class="number">500</span>, <span class="number">400</span>, <span class="number">100</span>, <span class="number">90</span>, <span class="number">50</span>, <span class="number">40</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; romans.length;) &#123;</span><br><span class="line">            <span class="keyword">int</span> index = s.indexOf(romans[i]);</span><br><span class="line">            <span class="keyword">if</span> (index == <span class="number">0</span>) &#123;</span><br><span class="line">                res += ints[i];</span><br><span class="line">                s = s.substring(index + romans[i].length());</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">10 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>再换种思路，前一题分析时讲到，小单位在大单位左边时时相减的关系，反之则是相加的关系，比如 “IV” 表示 V-I=4，而 “VI” 表示 V+I=6。每次在匹配当前罗马数字时再去和前一位罗马数字进行比较，如果是比之前的大，则在加上当前罗马数字所代表的整数后还要减去前一位所代表的数字；如果比之前的要小，就只需要加上当前的数字。还有一个细节，如果当前罗马数字比前一位大，由于上一次操作时已经把前一位的数字加上去了，所以在操作当前罗马数字时需要减两次前一罗马数字。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RomanToInteger.java v1.1</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">romanToInt</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pre = <span class="number">0</span>, cur = <span class="number">0</span>, res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">switch</span> (s.charAt(i)) &#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'M'</span>: cur = <span class="number">1000</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'D'</span>: cur = <span class="number">500</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'C'</span>: cur = <span class="number">100</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'L'</span>: cur = <span class="number">50</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'X'</span>: cur = <span class="number">10</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'V'</span>: cur = <span class="number">5</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'I'</span>: cur = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (cur &gt; pre) &#123;</span><br><span class="line">                res += cur - pre * <span class="number">2</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                res += cur;</span><br><span class="line">            &#125;</span><br><span class="line">            pre = cur;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">7 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Longest-Common-Prefix"><a href="#Longest-Common-Prefix" class="headerlink" title="Longest Common Prefix"></a>Longest Common Prefix</h3><p>第 14 题 <a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="noopener">Longest Common Prefix</a></p>
+<blockquote>
+<p>编写一个函数，找出给定的字符串数组中最长的公共前缀字符串。</p>
+</blockquote>
+<p>这是一道非常非常经典的算法题，江湖人称 “LCP”。由于限定了是前缀字符串，使得子字符串的起始位置是固定的，因此题目变得很好处理。<br>先判断两种特殊输入，字符串数组为空或者 <code>null</code>，以及字符串数组仅包含一个字符串这两种情况。<br>然后找出字符串数组中的最短字符串的长度，因为这个长度限定了最长公共前缀字符串的最大长度。接下来就从字符串的首位依次往后比较，一旦出现不相同的情况，保存当前的公共前缀字符串，立即终止比较。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LongestCommonPrefix.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">longestCommonPrefix</span><span class="params">(String[] strs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (strs == <span class="keyword">null</span> || strs.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">if</span> (strs.length == <span class="number">1</span>) <span class="keyword">return</span> strs[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> minLen = strs[<span class="number">0</span>].length();</span><br><span class="line">        <span class="keyword">for</span> (String str : strs) &#123;</span><br><span class="line">            minLen = str.length() &lt; minLen ? str.length() : minLen;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; minLen; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; strs.length - <span class="number">1</span>; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (strs[j].charAt(i) != strs[j + <span class="number">1</span>].charAt(i)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> strs[j].substring(<span class="number">0</span>, i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> strs[<span class="number">0</span>].substring(<span class="number">0</span>, minLen);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">117 / 117</td>
+<td style="text-align:center">2 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="3Sum"><a href="#3Sum" class="headerlink" title="3Sum"></a>3Sum</h3><p>第 15 题 <a href="https://leetcode.com/problems/3sum/" target="_blank" rel="noopener">3Sum</a></p>
+<blockquote>
+<p>有 n 个整型数组成的数组 S，其中是否存在 a, b, c 三个数，使得 a + b + c = 0？找出所有的组合。<br>比如给出数组 S = [ -1, 0, 1, 2, -1, -4 ]，结果就是：[ [-1, 0, 1], [-1, -1, 2] ]<br>注，需要去重。</p>
+</blockquote>
+<p>首先排除数组元素小于 3 的异常情况。因为三者求和为 0，因此必然包含正数和负数，所以把数组排序后如果首个元素大于 0，或者最后一个元素小于 0 都可以直接终止算法。另外，由于最终的结果不能有重复的组合，所以有必要对数组进行排序，这样方便去掉重复的数字组合。<br>对递增排序后的数组枚举，枚举时选定一个数 nums[i] 作为最小数，然后再从后面的数中选定中间数 nums[i+1] 和最大数 nums[n]，三者求和。如果结果等于 0，则需要把中间数和最大数的下标同时往中间移动，如果移动后的数和之前一样，则继续向中间移动，这样处理是一方面是节省不必要的运算，更重要的是为了去重；如果结果大于 0，相应的把最大数减小，即向左移动下标 n；如果结果小于 0，则把中间数的下标向右移动；直到中间数和最大数相遇为止。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 3Sum.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; threeSum(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length &lt; <span class="number">3</span>) <span class="keyword">return</span> res;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="keyword">int</span> count = nums.length, i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (nums[i] &lt;= <span class="number">0</span> &amp;&amp; nums[count - <span class="number">1</span>] &gt;= <span class="number">0</span> &amp;&amp; i &lt; count - <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">int</span> k = count - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span> (j &lt; k) &#123;</span><br><span class="line">                <span class="keyword">int</span> sum = nums[i] + nums[j] + nums[k];</span><br><span class="line">                <span class="keyword">if</span> (sum == <span class="number">0</span>) &#123;</span><br><span class="line">                    res.add(Arrays.asList(nums[i], nums[j++], nums[k--]));</span><br><span class="line">                    <span class="keyword">while</span> (j &lt; k &amp;&amp; nums[j] == nums[j - <span class="number">1</span>]) j++;</span><br><span class="line">                    <span class="keyword">while</span> (j &lt; k &amp;&amp; nums[k] == nums[k + <span class="number">1</span>]) k--;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (sum &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                    j++;</span><br><span class="line">                    <span class="keyword">while</span> (j &lt; k &amp;&amp; nums[j] == nums[j - <span class="number">1</span>]) j++;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    k--;</span><br><span class="line">                    <span class="keyword">while</span> (j &lt; k &amp;&amp; nums[k] == nums[k + <span class="number">1</span>]) k--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            i++;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; count - <span class="number">2</span> &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) i++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">311 / 311</td>
+<td style="text-align:center">9 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>下一篇：<a href="/2016/07/04/leetcode-tour-4/">LeetCode 探险第四弹</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/06/using-chain-of-responsibility-pattern/" rel="next" title="责任链模式的实际运用">
+                <i class="fa fa-chevron-left"></i> 责任链模式的实际运用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/22/memory-model-of-string-in-java-language/" rel="prev" title="Java String 的内存模型">
+                Java String 的内存模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Container-With-Most-Water"><span class="nav-number">1.</span> <span class="nav-text">Container With Most Water</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Integer-to-Roman"><span class="nav-number">2.</span> <span class="nav-text">Integer to Roman</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Roman-to-Integer"><span class="nav-number">3.</span> <span class="nav-text">Roman to Integer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Longest-Common-Prefix"><span class="nav-number">4.</span> <span class="nav-text">Longest Common Prefix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3Sum"><span class="nav-number">5.</span> <span class="nav-text">3Sum</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

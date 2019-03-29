@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。">
+<meta name="keywords" content="Algorithm,LeetCode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode 1-5">
+<meta property="og:url" content="https://isudox.com/2015/11/23/leetcode-1st-week/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode 1-5">
+<meta name="twitter:description" content="上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2015/11/23/leetcode-1st-week/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>LeetCode 1-5 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2015/11/23/leetcode-1st-week/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LeetCode 1-5
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2015-11-23 20:50:27" itemprop="dateCreated datePublished" datetime="2015-11-23T20:50:27+08:00">2015-11-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上学时零零碎碎上 <a href="https://leetcode.com/" target="_blank" rel="noopener">LeetCode</a> 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。<br>LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。</p>
+<a id="more"></a>
+<h3 id="Two-Sum"><a href="#Two-Sum" class="headerlink" title="Two Sum"></a>Two Sum</h3><p>第 1 题 <a href="https://leetcode.com/problems/two-sum/" target="_blank" rel="noopener">Two Sum</a> 算是简单题，题意大致为：</p>
+<blockquote>
+<p>给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。<br>伪代码：<br>nums = [2, 7, 11, 15], target = 9<br>nums[0] + nums[1] = 2 + 7 = 9<br>return [0, 1]</p>
+</blockquote>
+<p>这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TwoSum.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (len &lt; <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; len; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[i] + nums[j] == target) &#123;</span><br><span class="line">                    res[<span class="number">0</span>] = i + <span class="number">1</span>;</span><br><span class="line">                    res[<span class="number">1</span>] = j + <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># two_sum.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">twoSum</span><span class="params">(self, nums, target)</span>:</span></span><br><span class="line">        d = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">            x = nums[i]</span><br><span class="line">            <span class="keyword">if</span> target - x <span class="keyword">in</span> d:</span><br><span class="line">                <span class="keyword">return</span> d[target - x], i</span><br><span class="line">            d[x] = i</span><br></pre></td></tr></table></figure>
+<p>OJ 结果：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">16 / 16</td>
+<td style="text-align:center">62 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">16 / 16</td>
+<td style="text-align:center">44 ms</td>
+<td style="text-align:center">Python</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Add-Two-Numbers"><a href="#Add-Two-Numbers" class="headerlink" title="Add Two Numbers"></a>Add Two Numbers</h3><p>第 2 题 <a href="https://leetcode.com/problems/add-two-numbers/" target="_blank" rel="noopener">Add Two Numbers</a></p>
+<blockquote>
+<p>给定两个链表(linked list)，以倒序表示正整数。将两数求和并返回该和的链表形式。<br><strong>Input:</strong> (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br><strong>Output:</strong> 7 -&gt; 0 -&gt; 8</p>
+</blockquote>
+<p>这道题有点拗口，简单解释下题意：用链表表示非负整数，整数的每一位用倒序存储在链表的节点中，例如 342 用链表形式存储则为 2 -&gt; 4 -&gt; 3，给出两个链表表示的正整数，求两数加和的链表形式。</p>
+<p>这道题有坑！刚开始解题时并没有把各种可能的情况考虑到，提交两次都被驳回。下面我把我的解法从最开始被拒绝的草稿到最后被接受的过程完整写下来。先抛开诡异的情况，只考虑最主干的思路，把算法的骨架码出来。<br>涉及到链表，其实下意识的就能联想到链式反应，这在算法里对应的就是递归。我的思路是尝试把链表递归还原成整数，然后再把求和的整数转化成链表。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = listNode2Num(l1) + listNode2Num;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> num2ListNode(sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">listNode2Num</span><span class="params">(ListNode listNode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (listNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> listNode.val + listNode2Num(listNode.next) * <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">num2ListNode</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        ListNode listNode = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (num == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        listNode.val = num % <span class="number">10</span>;</span><br><span class="line">        listNode.next = num2ListNode(num / <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> listNode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>肉眼 debug 了下似乎没有问题，leetcode 的测试用例也通过了，提交代码被 OJ 否决了，问题出在哪了呢？看下面的用例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># input</span><br><span class="line">[0], [0]</span><br></pre></td></tr></table></figure>
+<p>找到出错的点了，在把数值转换为链表的方法 num2ListNode() 里发生了错误，因为传参是 0 直接返回了 null。那么就打补丁吧，在调用 num2ListNode() 前对参数进行判断，修改代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AddTwoNumbers.java v1.1</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = listNode2Num(l1) + listNode2Num;</span><br><span class="line">        <span class="keyword">if</span> (sum == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> num2ListNode(sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">listNode2Num</span><span class="params">(ListNode listNode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (listNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> listNode.val + listNode2Num(listNode.next) * <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">num2ListNode</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        ListNode listNode = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (num == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        listNode.val = num % <span class="number">10</span>;</span><br><span class="line">        listNode.next = num2ListNode(num / <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> listNode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的补丁解决了当数值为 0 时的异常情况，再次提交，然后……再次悲剧地被 OJ 婉拒了。OJ 给出了如下的报错测试用例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[1], [9,9,9,9,9,9,9,9,9,9,9,9,9]</span><br></pre></td></tr></table></figure>
+<p>看到这个用例其实就知道代码疏漏点在什么地方，就是没有考虑到对大数的处理。当链表表示的大整数数值超过 int 型的范围时，在链表转换整数的过程中就已经发生错误了。好在 Java 处理大整数比 C/C++ 方便了很多，不需要先转换成 String 类，Java 的 Math 包里内置了 <a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html" target="_blank" rel="noopener">BigInteger</a> 类，只要内存够大，就可以表示任意大整数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AddTwoNumbers.java v1.2</span></span><br><span class="line"><span class="keyword">import</span> java.math.BigInteger;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        BigInteger sum = listNode2Num(l1).add(listNode2Num(l2));</span><br><span class="line">        <span class="keyword">if</span> (BigInteger.ZERO.compareTo(sum) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> num2ListNode(sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BigInteger <span class="title">listNode2Num</span><span class="params">(ListNode listNode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (listNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> BigInteger.valueOf(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> BigInteger.valueOf(listNode.val).add(listNode2Num(listNode.next)</span><br><span class="line">                                                    .multiply(BigInteger.valueOf(<span class="number">10</span>)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">num2ListNode</span><span class="params">(BigInteger num)</span> </span>&#123;</span><br><span class="line">        ListNode listNode = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (BigInteger.ZERO.compareTo(num) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        listNode.val = num.mod(BigInteger.valueOf(<span class="number">10</span>)).intValue();</span><br><span class="line">        listNode.next = num2ListNode(num.divide(BigInteger.valueOf(<span class="number">10</span>)));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> listNode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>BigInteger 类的方法需要参考 JDK 文档，这里不赘述了。代码提交，OJ 通过，一个赛艇！</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">1556 / 1556</td>
+<td style="text-align:center">24 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>解法的时间复杂度堪忧啊，暂时还没想到优化的解法，后续待完善。</p>
+<hr>
+<h3 id="Longest-Substring-Without-Repeating-Characters"><a href="#Longest-Substring-Without-Repeating-Characters" class="headerlink" title="Longest Substring Without Repeating Characters"></a>Longest Substring Without Repeating Characters</h3><p>第 3 题 <a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">Longest Substring Without Repeating Characters</a></p>
+<blockquote>
+<p>给出一个字符串，求其最长的无重复字符的子字符串的长度。<br>e.g.<br>“abcabcbb” =&gt; “abc” =&gt; 3;<br>“bbbbb” =&gt; “b” =&gt; 1;<br>“pwwkew” =&gt; “wke” =&gt; 3;</p>
+</blockquote>
+<p>这道题的题意很明确，也没有什么隐藏的坑，思路理清就能写出来。</p>
+<ul>
+<li>首先一定是遍历字符串；</li>
+<li>从第一个字符开始遍历，在遍历过程中，记录当前字符出现的次数，如果字符是第一次出现，则把当前记录的子串长度加一；如果字符已经出现过，说明该字串已经出现重复字符，则终止遍历，并从上一次遍历的起始位置的下一字符，重新上述步骤；</li>
+</ul>
+<p>解法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LongestSubstringWithoutRepeatingCharacters.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxLen = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> sLen = s.length();</span><br><span class="line">        <span class="keyword">if</span> (sLen == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sLen; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> curLen = <span class="number">0</span>;</span><br><span class="line">            Map&lt;String, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; sLen; j++) &#123;</span><br><span class="line">                String key = String.valueOf(s.charAt(j));</span><br><span class="line">                <span class="keyword">if</span> (map.get(key) == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    map.put(key, <span class="number">1</span>);</span><br><span class="line">                    curLen += <span class="number">1</span>;</span><br><span class="line">                    maxLen = curLen &gt; maxLen ? curLen : maxLen;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxLen;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OJ 测试结果：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">982 / 982</td>
+<td style="text-align:center">138 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Median-of-Two-Sorted-Arrays"><a href="#Median-of-Two-Sorted-Arrays" class="headerlink" title="Median of Two Sorted Arrays"></a>Median of Two Sorted Arrays</h3><p>第 4 题 <a href="https://leetcode.com/problems/median-of-two-sorted-arrays/" target="_blank" rel="noopener">Median of Two Sorted Arrays</a></p>
+<blockquote>
+<p>长度分别为 m, n 的有序数组 nums1 和 nums2，找出这两个数组的中位数。要求时间复杂度为 O(log(m+n))<br>nums1 = [1, 3], nums2 = [2] 中位数为 2.0<br>nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
+</blockquote>
+<p>这题是 Hard 难度，但题目本身并不复杂，主要是对时间复杂度有要求，因此需要细细思考下。</p>
+<p>要找两个有序数组的中位数，最直接的想法就是将两个数组合并排序，中位数自然而然就找到了。依次遍历两个有序数组，直到将其合并为一个有序数组，从而找到中位数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MedianOfTwoSortedArrays.java v1.0</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findMedianSortedArrays</span><span class="params">(<span class="keyword">int</span>[] nums1, <span class="keyword">int</span>[] nums2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = nums1.length, n = nums2.length;</span><br><span class="line">        <span class="keyword">if</span> (m == <span class="number">0</span> &amp;&amp; n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> len = m + n;</span><br><span class="line">        <span class="keyword">int</span>[] ints = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; len; index++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; m &amp;&amp; j &lt; n) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums1[i] &lt; nums2[j]) &#123;</span><br><span class="line">                    ints[index] = nums1[i++];</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    ints[index] = nums2[j++];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (i &lt; m) &#123;</span><br><span class="line">                    ints[index] = nums1[i++];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (j &lt; n) &#123;</span><br><span class="line">                    ints[index] = nums2[j++];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (len % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> (ints[len / <span class="number">2</span> - <span class="number">1</span>] + ints[len / <span class="number">2</span>]) / <span class="number">2.0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> ints[len / <span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">2080 / 2080</td>
+<td style="text-align:center">6 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Longest-Palindromic-Substring"><a href="#Longest-Palindromic-Substring" class="headerlink" title="Longest Palindromic Substring"></a>Longest Palindromic Substring</h3><p>第 5 题 <a href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">Longest Palindromic Substring</a></p>
+<blockquote>
+<p>给出一个字符串 S，从 S 中找出其最长的回文子串。可以假定 S 的最大长度为 1000，并且存在唯一的最长回文子串。</p>
+</blockquote>
+<p>回文字符串就是正序和反序相同，也就是说回文以中心点对称，如 “abcba”。所以可以考虑从中心点向两侧扩展枚举，如果两侧相等，则记录下当前回文长度，并即时更新最大回文长度；否则，则移动中心点，重复枚举操作。这个思路有一个需要注意的地方，就是回文长度的奇偶，这两种枚举的处理有所不同。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LongestPalindromicSubstring.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">if</span> (len &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> maxLen = <span class="number">0</span>;</span><br><span class="line">        String palindrome = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="comment">// odd</span></span><br><span class="line">            String oddStr = check(s, i, i, len);</span><br><span class="line">            <span class="keyword">int</span> oddLen = oddStr.length();</span><br><span class="line">            <span class="keyword">if</span> (oddLen &gt; maxLen) &#123;</span><br><span class="line">                maxLen = oddLen;</span><br><span class="line">                palindrome = oddStr;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// even</span></span><br><span class="line">            String evenStr = check(s, i, i + <span class="number">1</span>, len);</span><br><span class="line">            <span class="keyword">int</span> evenLen = evenStr.length();</span><br><span class="line">            <span class="keyword">if</span> (evenLen &gt; maxLen) &#123;</span><br><span class="line">                maxLen = evenLen;</span><br><span class="line">                palindrome = evenStr;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> palindrome;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">check</span><span class="params">(String s, <span class="keyword">int</span> start, <span class="keyword">int</span> end, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (start &gt;= <span class="number">0</span>  &amp;&amp;  end &lt;= len - <span class="number">1</span> &amp;&amp; s.charAt(start) == s.charAt(end)) &#123;</span><br><span class="line">            start--;</span><br><span class="line">            end++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s.substring(start + <span class="number">1</span>, end);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OJ 测试结果：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">88 / 88</td>
+<td style="text-align:center">35 ms</td>
+<td style="text-align:center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>下一篇：<a href="/2016/05/17/leetcode-tour-2/">LeetCode 探险第二弹</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/29/my-hhkb-pro2-type-s/" rel="next" title="神器有价，情怀无价 —— HHKB">
+                <i class="fa fa-chevron-left"></i> 神器有价，情怀无价 —— HHKB
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/02/migrate-alidayu-to-py3-from-py2/" rel="prev" title="阿里大鱼短信 SDK 迁移到 Python 3.x">
+                阿里大鱼短信 SDK 迁移到 Python 3.x <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Two-Sum"><span class="nav-number">1.</span> <span class="nav-text">Two Sum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-Two-Numbers"><span class="nav-number">2.</span> <span class="nav-text">Add Two Numbers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Longest-Substring-Without-Repeating-Characters"><span class="nav-number">3.</span> <span class="nav-text">Longest Substring Without Repeating Characters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Median-of-Two-Sorted-Arrays"><span class="nav-number">4.</span> <span class="nav-text">Median of Two Sorted Arrays</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Longest-Palindromic-Substring"><span class="nav-number">5.</span> <span class="nav-text">Longest Palindromic Substring</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。">
+<meta name="keywords" content="Git,Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 部署 GitLab">
+<meta property="og:url" content="https://isudox.com/2016/08/01/running-gitlab-in-docker-container/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker 部署 GitLab">
+<meta name="twitter:description" content="前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/08/01/running-gitlab-in-docker-container/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Docker 部署 GitLab | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/08/01/running-gitlab-in-docker-container/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker 部署 GitLab
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-08-01 17:15:08" itemprop="dateCreated datePublished" datetime="2016-08-01T17:15:08+08:00">2016-08-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 <a href="https://about.gitlab.com/" target="_blank" rel="noopener">GitLab</a>。顺便实践了一把 Docker 的应用部署。</p>
+<a id="more"></a>
+<p>GitLab 的外部依赖很多，有 Nginx、Rails、Postgres、Redis、MySQL、unicorn、Go 等。如果单独安装各个依赖，一大堆的配置会让人抓狂。如果用官网提供的 omni 集成包，除非是全新的服务器，否则很大可能就导致依赖的重复安装，比如进程里有多个 Nginx、MySQL，很容易把服务器环境弄得很乱。像 GitLab 这样的程序，其实很适合用 Docker 来部署，一则和实机环境隔离开，另外运行性能相当好。</p>
+<h3 id="安装-Docker-环境"><a href="#安装-Docker-环境" class="headerlink" title="安装 Docker 环境"></a>安装 Docker 环境</h3><h4 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h4><p>惯例，以 Debian 8 为参考，把 Docker 官方维护的 deb 包添加到系统的 APT 源内，创建文件 <code>/etc/apt/sources.list.d/docker.list</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deb https://apt.dockerproject.org/repo debian-jessie main</span><br></pre></td></tr></table></figure>
+<p>更新源，安装 <code>docker-engine</code> 包，执行 <code>ps -ef | grep docker</code> 查看 Docker 的进程，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root      2885     1  0 09:40 ?        00:00:10 /usr/bin/dockerd --raw-logs</span><br><span class="line">root      2897  2885  0 09:40 ?        00:00:00 docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --shim docker-containerd-shim --metrics-interval=0 --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --runtime docker-runc</span><br><span class="line">sudoz    21053  6463  0 14:54 pts/0    00:00:00 grep --color=auto --exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn docker</span><br></pre></td></tr></table></figure>
+<p>可以看到，Docker 的守护进程以 root 用户运行，通过绑定 Unix socket 而非 TCP 端口号来转发数据，通常 Unix socket 所属用户是 root，所以在执行 <code>docker [command]</code> 时需要加上 <code>sudo</code>。如果非 root 用户需要 docker 命令的执行权限，可以把用户加进 docker 用户组，这样 docker 守护进程在启动时，把 Unix socket 读写权限赋予给 docker 用户组，从而使得非 root 用户获得 docker 执行权限。很简单，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo sudo usermod -aG docker $(whoami)</span><br><span class="line">sudo service docker restart</span><br></pre></td></tr></table></figure>
+<h4 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search [image]</span><br></pre></td></tr></table></figure>
+<p>在 Docker Hub 上搜索相关的镜像，并返回镜像的状态和信息；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull [image]</span><br></pre></td></tr></table></figure>
+<p>从 Docker Hub 上下载指定的镜像，注意此时并没有运行 Docker 容器，仅仅只是下载；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run [image]</span><br></pre></td></tr></table></figure>
+<p>在容器内运行已下载的指定镜像，如果镜像未下载完成，会先执行下载；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps [-l, -a]</span><br></pre></td></tr></table></figure>
+<p>类似系统的 ps 命令，查看当前正在运行的 Docker 容器，-l 参数是显示最近运行的容器，-a 参数显示全部的容器；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop/start/restart [container]</span><br></pre></td></tr></table></figure>
+<p>容器有唯一的 ID，可以通过上述命令停止/启动/重启指定容器；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm [container]</span><br></pre></td></tr></table></figure>
+<p>删除指定的容器；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<p>查看全部已下载的 Docker 镜像；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi [image]</span><br></pre></td></tr></table></figure>
+<p>删除指定的 Docker 镜像；</p>
+<p>目前为止，这些命令已经够用了。还有一些命令的参数没有展开，用到的时候再具体解释。</p>
+<h3 id="Docker-运行-GitLab"><a href="#Docker-运行-GitLab" class="headerlink" title="Docker 运行 GitLab"></a>Docker 运行 GitLab</h3><p>Docker Hub 上维护的 GitLab 镜像有好几个，我没有选官方维护的镜像，而是 <a href="https://hub.docker.com/r/sameersbn/gitlab/" target="_blank" rel="noopener">sameersbn/gitlab</a> 镜像，这个镜像相比官方的更灵活。</p>
+<p>安装很简单，参考上面给出的 Docker 命令，先下载镜像。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull sameersbn/gitlab:8.10.2</span><br></pre></td></tr></table></figure>
+<p>Docker 提供了一个快速运行的工具 <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">docker-compose</a>，docker-compose 可以将配置文件里的 docker 命令和参数解释出来并运行，镜像的作者提供了可供参考的配置文件 <a href="https://raw.githubusercontent.com/sameersbn/docker-gitlab/master/docker-compose.yml" target="_blank" rel="noopener">docker-compose.yml</a>。从文件里可以看到，该 GitLab 镜像依赖了 Postgres 和 Redis，这些在镜像里没有包含，可以连接外部已经存在的服务，或者另起容器去运行这些依赖服务。</p>
+<p>或者手动去运行容器，不通过 docker-compose。<br>首先，运行 Postgres 容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run --name gitlab-postgresql -d \</span><br><span class="line">    --env <span class="string">'DB_NAME=gitlabhq_production'</span> \</span><br><span class="line">    --env <span class="string">'DB_USER=gitlab'</span> --env <span class="string">'DB_PASS=your_password'</span> \</span><br><span class="line">    --env <span class="string">'DB_EXTENSION=pg_trgm'</span> \</span><br><span class="line">    --volume /srv/docker/gitlab/postgresql:/var/lib/postgresql \</span><br><span class="line">    sameersbn/postgresql:9.4-24</span><br></pre></td></tr></table></figure>
+<p>然后，运行 Redis 容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run --name gitlab-redis -d \</span><br><span class="line">    --volume /srv/docker/gitlab/redis:/var/lib/redis \</span><br><span class="line">    sameersbn/redis:latest</span><br></pre></td></tr></table></figure>
+<p>最后，运行 GitLab 容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run --name gitlab -d \</span><br><span class="line">    --link gitlab-postgresql:postgresql --link gitlab-redis:redisio \</span><br><span class="line">    --publish 10022:22 --publish 10080:80 \</span><br><span class="line">    --env <span class="string">'GITLAB_PORT=10080'</span> --env <span class="string">'GITLAB_SSH_PORT=10022'</span> \</span><br><span class="line">    --env <span class="string">'GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alpha-numeric-string'</span> \</span><br><span class="line">    --volume /srv/docker/gitlab/gitlab:/home/git/data \</span><br><span class="line">    sameersbn/gitlab:8.10.2</span><br></pre></td></tr></table></figure>
+<p>上面的命令涉及几个参数，分别解释下：</p>
+<ul>
+<li><code>--name</code> 参数设置容器的名称，该名称必须唯一；</li>
+<li><code>-d</code> 参数使容器在后台运行；</li>
+<li><code>--volume</code> 参数设置容器挂载的磁盘目录（和宿主机共享）；</li>
+<li><code>--env</code> 参数设置容器的环境变量；</li>
+<li><code>link</code> 参数指定容器需要连接的其他容器；</li>
+<li><code>publish</code> 参数指定容器的外部端口号和内部端口号；</li>
+</ul>
+<p>对比手动运行的命令参数和配置文件的参数，两者是一致的。</p>
+<p>Docker 容器挂载的共享目录在容器删除时并不会一并被删除，这里需要留意，如果 <code>/srv/gitlab</code> 里的文件不需要的话，可以手动删除，以免再次运行容器时发生前后配置差异的冲突。</p>
+<p>GitLab 容器运行起来后，通过 <code>docker logs -f [container]</code> 来查看运行时日志，运行正常的话，就能访问 <a href="http://localhost:10080" target="_blank" rel="noopener">http://localhost:10080</a> 看到 GitLab 了。当然这只是在本地运行，如果要部署到服务器上，还需要再做些工作。我的目标是通过 git 子域名访问 Docker 容器内的 GitLab，同时支持 HTTPS 访问。</p>
+<h3 id="Nginx-反代-Docker-容器"><a href="#Nginx-反代-Docker-容器" class="headerlink" title="Nginx 反代 Docker 容器"></a>Nginx 反代 Docker 容器</h3><p>要实现上面的目标，需要用到 Nginx 的反向代理，用 Nginx 作为负载的前端，将访问请求代理到 Docker 容器的外部端口上，从访问者的角度上看，就好像直接通过域名访问到 GitLab 一样。</p>
+<h4 id="开启-GitLab-SSL-支持"><a href="#开启-GitLab-SSL-支持" class="headerlink" title="开启 GitLab SSL 支持"></a>开启 GitLab SSL 支持</h4><p>Docker GitLab 的 <code>--publish</code> 参数设置了 10080:80 的端口号，这表明容器内部的 80 端口映射到宿主机的 10080 端口上，因此访问 Docker 容器的外部端口来访问容器内的应用。</p>
+<p>如果是通过上述方式访问 GitLab，那么 SSL 的配置是在 Docker 内部完成，这里不做说明了，我的想法是通过外部负载，比如 Nginx，转发请求到 Docker 容器的端口上。</p>
+<p>首先得为 GitLab 的域名准备好 SSL 证书，这个在上一篇水文中已经写了。设置 Docker 容器的环境变量 <code>GITLAB_HTTPS=true</code>，使得 GitLab 支持 HTTPS，将环境变量 <code>GITLAB_PORT</code> 改为 443，把环境变量 <code>GITLAB_HOST</code> 设置为和 SSL 证书相匹配的域名，这样 GitLab 容器的运行命令变成如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run --name gitlab -d \</span><br><span class="line">    --publish 10022:22 --publish 10080:80 \</span><br><span class="line">    --env <span class="string">'GITLAB_SSH_PORT=10022'</span> --env <span class="string">'GITLAB_PORT=443'</span> \</span><br><span class="line">    --env <span class="string">'GITLAB_HTTPS=true'</span> --env <span class="string">'GITLAB_HOST=git.isudox.com'</span> \</span><br><span class="line">    --volume /srv/docker/gitlab/gitlab:/home/git/data \</span><br><span class="line">    sameersbn/gitlab:8.10.2</span><br></pre></td></tr></table></figure>
+<h4 id="反向代理到-Docker"><a href="#反向代理到-Docker" class="headerlink" title="反向代理到 Docker"></a>反向代理到 Docker</h4><p>GitLab 容器正常启动后，还需要 Nginx 把请求反向代理到容器上。如果只是把 HTTP 的请求反代到 GitLab 并不麻烦，但需要同时把 HTTP 重定向 HTTPS。且看下面的 Nginx 配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">upstream gitlab &#123;</span><br><span class="line">    server 45.33.47.109:10080 fail_timeout=0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name git.isudox.com;</span><br><span class="line">    server_tokens off;</span><br><span class="line"></span><br><span class="line">    access_log off;</span><br><span class="line"></span><br><span class="line">    root /dev/null;</span><br><span class="line"></span><br><span class="line">    client_max_body_size 0;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_read_timeout 300;</span><br><span class="line">        proxy_connect_timeout 300;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_set_header X-Frame-Options SAMEORIGIN;</span><br><span class="line">        proxy_pass http://gitlab;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    server_name git.isudox.com;</span><br><span class="line">    server_tokens off;</span><br><span class="line"></span><br><span class="line">    root /dev/null;</span><br><span class="line">    client_max_body_size 0;</span><br><span class="line"></span><br><span class="line">    ssl on;</span><br><span class="line">    ssl_certificate /path-to-your-crt;</span><br><span class="line">    ssl_certificate_key /path-to-your-key;</span><br><span class="line">    ssl_verify_client off;</span><br><span class="line"></span><br><span class="line">    ssl_ciphers</span><br><span class="line">    &quot;ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4&quot;;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">    ssl_session_cache shared:SSL:10m;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        gzip off;</span><br><span class="line"></span><br><span class="line">        proxy_read_timeout 300;</span><br><span class="line">        proxy_connect_timeout 300;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        proxy_set_header Host $http_host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto https;</span><br><span class="line">        proxy_set_header X-Frame-Options SAMEORIGIN;</span><br><span class="line">        proxy_pass http://gitlab;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试下 HTTP 到 HTTPS 的重定向，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">"X-Forwarded-Proto: https"</span> http://45.33.47.109:10080/user/sign_in</span><br><span class="line">&lt;html&gt;&lt;body&gt;You are being &lt;a href=<span class="string">"https://45.33.47.109:10080/users/sign_in"</span>&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>验收下最终的成果，<a href="http://git.isudox.com" target="_blank" rel="noopener">GitLab</a></p>
+<p>最后，贴上我的 <code>docker-composer.yml</code> 配置，仅作备忘。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  redis:</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">sameersbn/redis:latest</span></span><br><span class="line"><span class="attr">    command:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="bullet">--loglevel</span> <span class="string">warning</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">/srv/docker/gitlab/redis:/var/lib/redis:Z</span></span><br><span class="line"></span><br><span class="line"><span class="attr">  postgresql:</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">sameersbn/postgresql:9.4-24</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">/srv/docker/gitlab/postgresql:/var/lib/postgresql:Z</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_USER=gitlab</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_PASS=helloworld</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_NAME=gitlabhq_production</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_EXTENSION=pg_trgm</span></span><br><span class="line"></span><br><span class="line"><span class="attr">  gitlab:</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">sameersbn/gitlab:8.10.3</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">redis</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">postgresql</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">"10080:80"</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">"10022:22"</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">/srv/docker/gitlab/gitlab:/home/git/data:Z</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DEBUG=false</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_ADAPTER=postgresql</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_HOST=postgresql</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_PORT=5432</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_USER=gitlab</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_PASS=helloworld</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">DB_NAME=gitlabhq_production</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">REDIS_HOST=redis</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">REDIS_PORT=6379</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">TZ=Asia/Shanghai</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_TIMEZONE=Beijing</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_HTTPS=true</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SSL_SELF_SIGNED=false</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_HOST=git.isudox.com</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_PORT=443</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_SSH_PORT=10022</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_RELATIVE_URL_ROOT=</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_SECRETS_DB_KEY_BASE=qwertyuiopasdfghjklzxcvbnm</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_ROOT_PASSWORD=</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_ROOT_EMAIL=</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_NOTIFY_ON_BROKEN_BUILDS=true</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_NOTIFY_PUSHER=false</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_EMAIL=hi@gmail.com</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_EMAIL_DISPLAY_NAME=GitLab</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_EMAIL_REPLY_TO=hi@gmail.com</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_EMAIL_ENABLED=true</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_BACKUP_SCHEDULE=daily</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">GITLAB_BACKUP_TIME=05:00</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SMTP_ENABLED=enable</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SMTP_DOMAIN=www.gmail.com</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SMTP_HOST=smtp.gmail.com</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SMTP_PORT=587</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SMTP_USER=hi@gmail.com</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SMTP_PASS=helloworld</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SMTP_STARTTLS=true</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">SMTP_AUTHENTICATION=login</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">    -</span> <span class="string">IMAP_ENABLED=false</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">IMAP_HOST=imap.gmail.com</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">IMAP_PORT=993</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">IMAP_USER=hi@gmail.com</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">IMAP_PASS=helloworld</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">IMAP_SSL=true</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">IMAP_STARTTLS=false</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/28/secure-subdomain-with-ssl-certificate/" rel="next" title="为子域名安装 SSL 证书">
+                <i class="fa fa-chevron-left"></i> 为子域名安装 SSL 证书
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/03/imitate-rpc-invoke-locally-by-spring-aop/" rel="prev" title="Spring AOP 本地模拟线上 RPC">
+                Spring AOP 本地模拟线上 RPC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-Docker-环境"><span class="nav-number">1.</span> <span class="nav-text">安装 Docker 环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装配置"><span class="nav-number">1.1.</span> <span class="nav-text">安装配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基础操作"><span class="nav-number">1.2.</span> <span class="nav-text">基础操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-运行-GitLab"><span class="nav-number">2.</span> <span class="nav-text">Docker 运行 GitLab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-反代-Docker-容器"><span class="nav-number">3.</span> <span class="nav-text">Nginx 反代 Docker 容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开启-GitLab-SSL-支持"><span class="nav-number">3.1.</span> <span class="nav-text">开启 GitLab SSL 支持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反向代理到-Docker"><span class="nav-number">3.2.</span> <span class="nav-text">反向代理到 Docker</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

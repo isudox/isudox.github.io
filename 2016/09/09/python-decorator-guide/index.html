@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 @decorator 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 Python 装饰器">
+<meta property="og:url" content="https://isudox.com/2016/09/09/python-decorator-guide/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 @decorator 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/qxf2-gun-decorator1.jpg">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.425Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解 Python 装饰器">
+<meta name="twitter:description" content="前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 @decorator 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。">
+<meta name="twitter:image" content="https://o70e8d1kb.qnssl.com/qxf2-gun-decorator1.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/09/09/python-decorator-guide/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>理解 Python 装饰器 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/09/09/python-decorator-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">理解 Python 装饰器
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-09-09 22:42:36" itemprop="dateCreated datePublished" datetime="2016-09-09T22:42:36+08:00">2016-09-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 <code>@decorator</code> 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。</p>
+<a id="more"></a>
+<h3 id="管窥装饰器"><a href="#管窥装饰器" class="headerlink" title="管窥装饰器"></a>管窥装饰器</h3><p>下面是一个很简单的 Python 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'call me'</span>)</span><br><span class="line"></span><br><span class="line">call()</span><br></pre></td></tr></table></figure>
+<p>很简单，这会得到 “call me” 的文本输出。现在增加一个时间标记，告知是什么时间呼叫的我，可以这么改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'call me'</span>)</span><br><span class="line">    print(<span class="string">'at '</span>, time.strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>, time.localtime(time.time()))))</span><br><span class="line">          </span><br><span class="line">call()</span><br></pre></td></tr></table></figure>
+<p>这么做有一个麻烦的地方，就是在 <code>call()</code> 方法内部做了改动。在很多场景下，我们不希望去改变方法本身的行为，因为这个方法可能在很多地方都被调用了，如果在方法内部做了修改，那么对每个调用都会产生影响，但我们只希望在某些调用时才去改变它的行为。比较常见的实用场景如用户登录拦截。</p>
+<p>不改变函数本身，那么该如何对 <code>call()</code> 加上时间标记呢？这就到装饰器大显身手的时候了。装饰器可以把被装饰的方法包裹起来，被装饰者本身的行为不会变，装饰器只是在它之外添加了额外的功能。下面这张图解释的很形象：</p>
+<p><img src="https://o70e8d1kb.qnssl.com/qxf2-gun-decorator1.jpg" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'call me '</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mark_time</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'at'</span>,</span><br><span class="line">              time.strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>, time.localtime(time.time())))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">call = mark_time(call)</span><br><span class="line">call()</span><br></pre></td></tr></table></figure>
+<p>上面就实现了简朴的装饰器，Python 内置了对装饰器的语法支持，可以更便捷的实现装饰功能，就是上面提到的 <code>@decorator</code>，这相当于是 <code>func = decorator(func)</code> 的作用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mark_time</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        func()</span><br><span class="line">        print(<span class="string">'at'</span>,</span><br><span class="line">              time.strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>, time.localtime(time.time())))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@mark_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'call me '</span>)</span><br><span class="line"></span><br><span class="line">call()</span><br></pre></td></tr></table></figure>
+<p>可以看出，<code>@mark_time</code> 的作用等同于 <code>call = mark_time(call)</code>，得到一个可调用的函数名。</p>
+<p>如果需要多个装饰器来实现功能，只需要按顺序对方法进行装饰，装饰的顺序是从下到上：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@f1(arg)</span></span><br><span class="line"><span class="meta">@f2</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+<p>等效于执行 <code>f1(arg)(f2(foo))()</code></p>
+<h3 id="认识函数"><a href="#认识函数" class="headerlink" title="认识函数"></a>认识函数</h3><p>了解装饰器的基础用法只是皮毛，深入理解装饰器前，得先理解函数究竟是什么。</p>
+<p>首先明确一点，在 Python 中，函数 function 也是一种对象 Object。这就意味着：</p>
+<ul>
+<li>函数可以被指派为参数（作为传入或返回值）；</li>
+<li>函数可以被定义在函数体中；</li>
+</ul>
+<p>因此，函数的返回值可以是另一个函数。手写一段示例代码来印证这一点：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_drink</span><span class="params">(choice=<span class="string">'tea'</span>)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">serve_tea</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Green tea'</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">serve_coffee</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Coffee latte'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> choice == <span class="string">'tea'</span>:</span><br><span class="line">        <span class="keyword">return</span> serve_tea</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> serve_coffee</span><br><span class="line"></span><br><span class="line">my_drink = get_drink()</span><br><span class="line"></span><br><span class="line">print(my_drink)  <span class="comment"># &lt;function get_drink.&lt;locals&gt;.serve_tea at 0x7f313f307f28&gt;</span></span><br><span class="line"></span><br><span class="line">print(my_drink())  <span class="comment"># Green tea</span></span><br><span class="line"></span><br><span class="line">print(get_drink(<span class="string">'coffee'</span>)())  <span class="comment"># Coffee latte</span></span><br></pre></td></tr></table></figure>
+<p>这样之前写的装饰器函数返回的 <code>wrapper</code> 就不难明白了。装饰器的本质就是实现了在被装饰的方法执行之前/之后，执行装饰的动作。</p>
+<h3 id="带参装饰器"><a href="#带参装饰器" class="headerlink" title="带参装饰器"></a>带参装饰器</h3><p>假设有这么个需求，在前面的 <code>call()</code> 方法之前加上主语，实现 “{who} calls me at {time}”，可以考虑给装饰器函数本身传递一个入参 {who}。<br>已有的装饰器是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call = mark_time(call)</span><br><span class="line">call()</span><br></pre></td></tr></table></figure>
+<p>增加入参的装饰器是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call = mark_time(<span class="string">'sudoz'</span>)(call)</span><br><span class="line">call()</span><br></pre></td></tr></table></figure>
+<p>拆开来看上面的代码：先执行 <code>mark_time(&#39;sudoz&#39;)</code> 返回一个回调函数 wrapper_1（假设是这个函数名），然后执行 <code>wrapper_1(call)</code>，得到另一个回调函数 wrapper_2，<code>call()</code> 实际上运行的是 <code>wrapper_2()</code>。这么拆解开来，就很好实现带参的装饰器方法了，就是相比不带参的装饰器外面多套一层以返回 wrapper_1：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mark_time</span><span class="params">(who)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper_1</span><span class="params">(func)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper_2</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            print(<span class="string">'%s'</span> % who)</span><br><span class="line">            func()</span><br><span class="line">            print(<span class="string">'at'</span>,</span><br><span class="line">                  time.strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>, time.localtime(time.time())))</span><br><span class="line">        <span class="keyword">return</span> wrapper_2</span><br><span class="line">    <span class="keyword">return</span> wrapper_1</span><br><span class="line"></span><br><span class="line"><span class="meta">@mark_time('sudoz')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'call me '</span>)</span><br><span class="line"></span><br><span class="line">call()</span><br></pre></td></tr></table></figure>
+<h3 id="内置装饰器"><a href="#内置装饰器" class="headerlink" title="内置装饰器"></a>内置装饰器</h3><p>Python 类有 3 个内置的装饰器：<code>@staticmethod</code>，<code>@classmethod</code>，<code>property</code>——</p>
+<ul>
+<li><code>@staticmethod</code> 装饰的方法是类的静态方法，即无需通过类的实例去调用，因此方法的参数中没有类实例 <code>self</code>；</li>
+<li><code>@classmethod</code> 装饰的方法是类方法，方法的第一个参数是类对象 <code>cls</code>，可以在方法内调用类对象本身；</li>
+<li><code>@property</code> 装饰的方法是类的属性，装饰器内部定义了 <code>getter</code> 和 <code>setter</code> 方法，这种方式和 Java 里的 <code>getXXX</code>、<code>setXXX</code> 非常相像；</li>
+</ul>
+<p>代码演示下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, city)</span>:</span></span><br><span class="line">        self._name = name</span><br><span class="line">        self._city = city</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_static_method</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'nothing to do.'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_class_method</span><span class="params">(cls)</span>:</span></span><br><span class="line">        print(cls.__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._name</span><br><span class="line"></span><br><span class="line"><span class="meta">    @name.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self._name = name</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">city</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._city</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">demo = Demo(<span class="string">'sudoz'</span>, <span class="string">'beijing'</span>)</span><br><span class="line">Demo.test_static_method()  <span class="comment"># nothing to do</span></span><br><span class="line">demo.test_static_method()  <span class="comment"># nothing to do</span></span><br><span class="line">demo.test_class_method()   <span class="comment"># Demo</span></span><br><span class="line">print(demo.name)           <span class="comment"># sudoz beijing</span></span><br><span class="line">demo.name = <span class="string">'anonymous'</span></span><br><span class="line">print(demo.name)           <span class="comment"># anonymous</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    demo.city = <span class="string">'hangzhou'</span></span><br><span class="line">    print(demo.city)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    print(e)              <span class="comment"># can't set attribute</span></span><br></pre></td></tr></table></figure>
+<p>注意上面的代码，如果被 <code>@property</code> 装饰的属性没有设置 <code>setter</code> 方法，那么该属性就是类的只读属性，不能被修改，因此上面试图修改 city 属性，抛出异常。</p>
+<h3 id="functools-进阶"><a href="#functools-进阶" class="headerlink" title="functools 进阶"></a>functools 进阶</h3><p>装饰器在执行时，有一个隐蔽的小动作可能会被忽略：它把被装饰的函数的 <code>__name__</code> 属性给置换成回调函数的属性了。测试下上面代码里被装饰后的 <code>call</code> 的 <code>__name__</code> 属性，不再是 “call” 而是 “wrapper_2”。Python 2.5 版本新增的 <code>functools.wraps()</code> 解决了这个问题，它会把被装饰方法的名称，模块复制到装饰器内。而<code>functools.wraps()</code> 本身也是一个装饰器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foobar</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'foo'</span>)</span><br><span class="line">        <span class="keyword">return</span> func(args)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@foobar</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hello</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">    print(<span class="string">'Hello %s'</span> % args[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(say_hello.__name__)  <span class="comment"># Output: bar</span></span><br><span class="line"></span><br><span class="line">say_hello(<span class="string">'sudoz'</span>)  <span class="comment"># Output: Hello sudoz</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/03/learning-python-package-click/" rel="next" title="Python Click 学习笔记">
+                <i class="fa fa-chevron-left"></i> Python Click 学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/13/java-collections-overview/" rel="prev" title="Java 常用容器小结">
+                Java 常用容器小结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#管窥装饰器"><span class="nav-number">1.</span> <span class="nav-text">管窥装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#认识函数"><span class="nav-number">2.</span> <span class="nav-text">认识函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带参装饰器"><span class="nav-number">3.</span> <span class="nav-text">带参装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内置装饰器"><span class="nav-number">4.</span> <span class="nav-text">内置装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#functools-进阶"><span class="nav-number">5.</span> <span class="nav-text">functools 进阶</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

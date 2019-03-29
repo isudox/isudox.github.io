@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译] 一个行之有效的 Git 分支模型">
+<meta property="og:url" content="https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/git-model@2x.png">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/centr-decentr@2x.png">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/main-branches@2x.png">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/fb@2x.png">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/merge-without-ff@2x.png">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/hotfix-branches@2x.png">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.428Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译] 一个行之有效的 Git 分支模型">
+<meta name="twitter:description" content="原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。">
+<meta name="twitter:image" content="https://o70e8d1kb.qnssl.com/git-model@2x.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[译] 一个行之有效的 Git 分支模型 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[译] 一个行之有效的 Git 分支模型
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-02-18 14:51:10" itemprop="dateCreated datePublished" datetime="2017-02-18T14:51:10+08:00">2017-02-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Translation/" itemprop="url" rel="index"><span itemprop="name">Translation</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文 <a href="http://nvie.com/posts/a-successful-git-branching-model/" target="_blank" rel="noopener">A successful Git branching model</a> 是 <a href="https://github.com/nvie/gitflow" target="_blank" rel="noopener">gitflow</a> 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。</p>
+<a id="more"></a>
+<blockquote>
+<p>上面是废话，下面是译文。</p>
+</blockquote>
+<hr>
+<p>本文里，我会介绍一个在一年前就引入进多个项目（包括工作和个人项目）中的开发模型，实践表明该模型很成功。为此专门写篇文章的想法由来已久，但始终没挤出时间来做，直到现在。我不会细究项目的具体细节，仅仅是项目开发的分支策略和发布管理。</p>
+<p align="center"><img src="https://o70e8d1kb.qnssl.com/git-model@2x.png" width="575"></p>
+
+<p>该模型专注于使用 <a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a> 作为代码版本管理工具。（另外，如果你对 Git 感兴趣，我司的 GitPrime 提供了一些很棒的软件性能实时数据分析功能）</p>
+<h2 id="为什么使用-Git"><a href="#为什么使用-Git" class="headerlink" title="为什么使用 Git"></a>为什么使用 Git</h2><p>关于 Git 相比于中心化的代码管理系统的优劣，可以从网上找到很多相关讨论。作为开发者，我选择 Git。Git 确实改变了开发者们对分支和合并的理解。在之前使用经典的 CVS/Subversion 时，新建分支和合并分支总是有点吓人（小心代码合并时的冲突，它们会咬你）。</p>
+<p>但是用 Git 时，这些日常工作流的主要操作都变得简便易行。举例来说，在 CVS/Subversion 的相关书籍中，分支和合并操作会在靠后的章节中介绍（面向高阶读者），而 Git 的书中，往往是前三章的基础操作里就会做说明。</p>
+<p>由于 Git 的简单性和重用性（repetitive），分支和合并不再是令人生畏的高危操作。版本管理工具应该更多的协助代码的新建分支和合并分支。</p>
+<p>闲言少叙，进入开发模型的正题吧。我要介绍的模型基本上只是团队里每个成员都要遵循的一组开发流程规范。</p>
+<h2 id="去中心化也中心化"><a href="#去中心化也中心化" class="headerlink" title="去中心化也中心化"></a>去中心化也中心化</h2><p>在分支模型下工作良好的代码库，实际上有一个真实的中心代码库。注意这个库被视为一个中心（因为 Git 是分布式的版本管理工具，所以从技术角度上说并不存在中心代码库）。我们将其视为为 origin，因为所有 Git 用户都熟悉这个名称。</p>
+<p><img align="center" src="https://o70e8d1kb.qnssl.com/centr-decentr@2x.png" width="487"></p>
+<p>每个开发者对 origin 进行 pull 和 push 操作。但是除了中心化的 push-pull，每个开发者也可能会建立子团队并 pull 同个子团队里其他成员的代码改动。比如，和两个或更多开发者合作开发一个大的新功能时，避免过早的将开发进行过程中的代码 push 上去。上图中，有 Alice 和 Bob 的小团队，Clair 和 David 的小团队。</p>
+<p>本质上说，这实际上就像是 Alice 定义了一个 Git 远程分支，名叫 bob，并指向 Bob 的代码库，反之亦然。</p>
+<h2 id="主干分支"><a href="#主干分支" class="headerlink" title="主干分支"></a>主干分支</h2><p><img align="right" src="https://o70e8d1kb.qnssl.com/main-branches@2x.png" width="267"><br>我的开发模型实际上从现有的模型中得到很多启发。中心库保有两个伴随代码库整个生命流程的主要分支：</p>
+<ul>
+<li>master</li>
+<li>develop</li>
+</ul>
+<p>Git 用户应该对 origin 上的 <code>master</code> 分支很熟悉。此外，另一个分支命名为 <code>develop</code>。</p>
+<p>我们将 <code>origin/master</code> 分支作为一个主干分支，使得它的 HEAD 指针始终指向可发布的生产状态（production-ready state）。</p>
+<p><code>origin/develop</code> 分支作为另一主干分支，而它的 HEAD 指针始终指向为下一发版而做的最新开发改动。有人把这成为 integration 分支。通常这就是 nightly 版本发布的出处。</p>
+<p>当 <code>develop</code> 分支上的代码开发到 stable 状态并且已经可以发布时，所有的改动都应该 merge 到 <code>master</code> 分支上，然后打上发布版本号的标签。后面会继续讲如何执行这一系列操作。</p>
+<p>因此，每次把改动合并到 <code>master</code> 分支上后，就生成了一个新的可发布的生产状态。我们对合并到 <code>master</code> 分支的行为把控严格，所以理论上，每当 <code>master</code> 分支上有 commit 操作时，我们可以通过 Git hook 脚本实现自动构建并把应用推送到生产服务器上。</p>
+<h2 id="辅助分支"><a href="#辅助分支" class="headerlink" title="辅助分支"></a>辅助分支</h2><p>主干分支之外，我们的开发模型使用了很多辅助分支来帮助团队成员间的并行开发，减轻功能跟踪的成本，预备新版的发布，协助快速修复已发布版本的问题。和主干分支不同，这些辅助分支只有有限的生命期，最终会被移除。</p>
+<p>我们可能会用到的辅助分支有：</p>
+<ul>
+<li>Feature 分支</li>
+<li>Release 分支</li>
+<li>Hotfix 分支</li>
+</ul>
+<p>上面的每个辅助分支都有一个特定的目标，且严格限制哪些是起源分支，哪些是合并的目标分支。我们一会儿会详细解释。</p>
+<p>这些辅助分支并不特别，分支的类型是按照我们如何使用它们而划分的，也就是普通的 Git 分支而已。</p>
+<h3 id="Feature-分支"><a href="#Feature-分支" class="headerlink" title="Feature 分支"></a>Feature 分支</h3><p><img align="right" src="https://o70e8d1kb.qnssl.com/fb@2x.png" width="133"><br>从 <code>develop</code> 分支派生；<br>必须 merge 回 <code>develop</code> 分支；<br>辅助分支的命名惯例是：除 master，develop，release_* 和 hotfix-* 以外的任意命名。</p>
+<p>Feature 分支，或者叫 topic 分支，是用来为未来的发版而开发新 features 的分支。当开始 feature 的开发时，。Feature 分支的本质它会在 feature 的开发期内存在，但最终会合并回 <code>develop</code> 分支（以明确的将 feature 添加进即将 release 的版本中），或者被直接丢弃掉（在令人失望的情况下）。</p>
+<p>Feature 分支通常只存在于开发者的 repo 中，而不会在中心库 origin repo 中。</p>
+<center><strong>创建 Feature 分支</strong></center>
+
+<p>要创建一个新的 Feature 分支，从 <code>develop</code> 分支上派生：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b myfeature develop</span><br><span class="line">Switched to a new branch <span class="string">"myfeature"</span></span><br></pre></td></tr></table></figure>
+<center><strong>已完成的 feature 合并回 develop</strong></center>
+
+<p>已开发完成的 features 应该被合并至 <code>develop</code> 分支上，将 features 添加到即将发 release 的代码版本中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout develop</span><br><span class="line">Switched to branch <span class="string">'develop'</span></span><br><span class="line">$ git merge --no-ff myfeature</span><br><span class="line">Updating ea1b82a..05e9557</span><br><span class="line">(Summary of changes)</span><br><span class="line">$ git branch -d myfeature</span><br><span class="line">Deleted branch myfeature (was 05e9557).</span><br><span class="line">$ git push origin develop</span><br></pre></td></tr></table></figure>
+<p><code>--no-ff</code> 标识使得 merge 操作总是创建一个新的 commit，即使 merge 可以使用 fast-forward。这避免了 feature 分支历史信息的丢失，而且把所有 commit 归并在一起。比较下图的两个案例：</p>
+<p align="center"><img src="https://o70e8d1kb.qnssl.com/merge-without-ff@2x.png" width="478"></p>
+
+<p>右边的案例中，无法从 Git 历史中找到是哪些 commit 实现了 feature，你必须要手工的去检查所有的 log 信息。撤销一个 feature 对后一案例而言简直是头疼，而如果使用了 –no-ff 标志，则很容易完成。</p>
+<p>是的，它会付出创建更多的 commit 的代价，但所得更多。</p>
+<h3 id="Release-分支"><a href="#Release-分支" class="headerlink" title="Release 分支"></a>Release 分支</h3><p>从 <code>develop</code> 分支派生；<br>必须 merge 回 <code>develop</code> 分支和 <code>master</code> 分支；<br>分支命名惯例：release-*</p>
+<p>Release 分支为新的生产版本做预备。They allow for last-minute dotting of i’s and crossing t’s. 此外，Release 分支也可以用来修复小 bug 和准备发布版本的元数据（版本号，构建日期等）。通过 Release 分支，<code>develop</code> 分支将被清理以便接收下一个大版本的发布。</p>
+<p>从 <code>develop</code> 分支派生新分支的关键时刻是在开发几乎要到达预期的 release 状态时。至少所有针对要构建版本的 feature 必须已经 merge 到 <code>develop</code> 分支上了。而针对未来的 release 的 feature 则需要等到当前的 release 分支派生以后。</p>
+<p>正是在 Release 分支的开始时，而不是之前，即将到来的 release 才被分配版本号。直到那时，<code>develop</code> 分支才反映了 next release 的改动，但直到 release 分支开始前，next release 是 0.3 版还是 1.0 版并不确定。对 release 版本的决定是在 release 分支开始时，并由项目的版本号规则来拟定。</p>
+<center><strong>创建 release 分支</strong></center>
+
+<p>Release 分支是由 <code>develop</code> 分支派生而来。例如，当前的生产版本是 1.15，且即将有一个大迭代。<code>develop</code> 分支的状态已经为 next release 做好准备，我们也已经决定好即将到来的版本是 1.2。因此我们从当前的 <code>develop</code> 分支上派生并命名该 <code>release</code> 分支为新的版本号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b release-1.2 develop</span><br><span class="line">Switched to a new branch <span class="string">"release-1.2"</span></span><br><span class="line">$ ./bump-version.sh 1.2</span><br><span class="line">Files modified successfully, version bumped to 1.2.</span><br><span class="line">$ git commit -a -m <span class="string">"Bumped version number to 1.2"</span></span><br><span class="line">[release-1.2 74d9424] Bumped version number to 1.2</span><br><span class="line">1 files changed, 1 insertions(+), 1 deletions(-)</span><br></pre></td></tr></table></figure>
+<p>创建并切换到新分支后，我们 bump 了版本号。在这里，<code>bump-version.sh</code> 是一个虚拟出来的 shell 脚本，用来修改一些文件，使其能体现新版本。之后，新的版本被 commit 上去。</p>
+<p>该新分支可能会存在一段时间，知道 release 可以确定被发布出来。在此期间，分支上可能会修复一些 bug（而不是在 <code>develop</code> 分支上）。严禁在该分支上添加大的 feature 进来。release 分支最后必须被 merge 回 <code>develop</code> 分支上，然后继续等待下一个大版本的发布。</p>
+<center><strong>完成 release 分支</strong></center>
+
+<p>当 release 分支的开发状态到了真正可以发布的时候，就需要采取一些行动了。首先， release 分支得 merge 到 <code>master</code> 分支（记住，<code>master</code> 上的每个 commit 都是一个新的 release）。然后，提交到 <code>master</code> 上的 commit 必须被标记上 Tag，以便将来参考该历史版本。最后，release 分支上的改动还需要 merge 回 <code>develop</code> 分支，以便将来的 release 也能包含这些 bug fixes。</p>
+<p>开始的两步操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">Switched to branch <span class="string">'master'</span></span><br><span class="line">$ git merge --no-ff release-1.2</span><br><span class="line">Merge made by recursive.</span><br><span class="line">(Summary of changes)</span><br><span class="line">$ git tag -a 1.2</span><br></pre></td></tr></table></figure>
+<p>到此，release 已经完成，并且标记了 Tag。（你可能还想使用 <code>-s</code> 或 <code>-u</code> 参数来对 Tag 进行加密）</p>
+<p>为了让 release 分支上的改动能保留下来，继续将改动 merge 回 <code>develop</code> 分支，Git 操作如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout develop</span><br><span class="line">Switched to branch <span class="string">'develop'</span></span><br><span class="line">$ git merge --no-ff release-1.2</span><br><span class="line">Merge made by recursive.</span><br><span class="line">(Summary of changes)</span><br></pre></td></tr></table></figure>
+<p>这些操作可能会导致代码冲突，尝试解决冲突后再提交。<br>现在，我们已经彻底完成工作并且 release 分支已经可以被移除了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d release-1.2</span><br><span class="line">Deleted branch release-1.2 (was ff452fe).</span><br></pre></td></tr></table></figure>
+<h3 id="Hotfix-分支"><a href="#Hotfix-分支" class="headerlink" title="Hotfix 分支"></a>Hotfix 分支</h3><p><img align="right" src="https://o70e8d1kb.qnssl.com/hotfix-branches@2x.png" width="316"><br>从 <code>master</code> 分支派生；<br>必须 merge 回 <code>develop</code> 分支和 <code>master</code> 分支；<br>分支命名惯例：hotfix-*</p>
+<p>Hotfix 分支和 release 分支很类似，都是为发布新的生产版本而准备，虽然是计划外的。其存在的必要性是由于当前生产版本处于需要紧急修复的状态。当生产版本发生严重 bug 时，就必须立即修复，hotfix 分支可以从生产版本的 <code>master</code> 分支上的相应 Tag 派生出来。</p>
+<p>实质上，在 <code>develop</code> 分支上开发的人员可以继续，另一边，其他人员则可以快速的进行生产版本的修复工作。</p>
+<center><strong>创建 release 分支</strong></center>
+
+<p>Hotfix 分支从 <code>master</code> 派生。比如，当前线上运行的生产版本是 1.2 版，遇到严重 bug，但是 <code>develop</code> 分支上的版本还不到稳定版，就可以派生 hotfix 分支来修复线上发现的 bug：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b hotfix-1.2.1 master</span><br><span class="line">Switched to a new branch <span class="string">"hotfix-1.2.1"</span></span><br><span class="line">$ ./bump-version.sh 1.2.1</span><br><span class="line">Files modified successfully, version bumped to 1.2.1.</span><br><span class="line">$ git commit -a -m <span class="string">"Bumped version number to 1.2.1"</span></span><br><span class="line">[hotfix-1.2.1 41e61bb] Bumped version number to 1.2.1</span><br><span class="line">1 files changed, 1 insertions(+), 1 deletions(-)</span><br></pre></td></tr></table></figure>
+<p>别忘了在派生新分支后 bump 了版本号。<br>然后，修复 bug 并提交上去：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">"Fixed severe production problem"</span></span><br><span class="line">[hotfix-1.2.1 abbe5d6] Fixed severe production problem</span><br><span class="line">5 files changed, 32 insertions(+), 17 deletions(-)</span><br></pre></td></tr></table></figure>
+<center><strong>完成 release 分支</strong></center>
+
+<p>当 bug 修复完成，修复代码需要合并到 <code>master</code> 分支上，同时还得 merge 到 <code>develop</code> 分支，以保证下一个 release 版本不会出现此 bug。这和 release 分支的结束过程是非常类似的。</p>
+<p>首先，<code>master</code> 分支合并修复代码，然后为新的 release 标记 Tag：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">Switched to branch <span class="string">'master'</span></span><br><span class="line">$ git merge --no-ff hotfix-1.2.1</span><br><span class="line">Merge made by recursive.</span><br><span class="line">(Summary of changes)</span><br><span class="line">$ git tag -a 1.2.1</span><br></pre></td></tr></table></figure>
+<p>然后，轮到 <code>develop</code> 分支合并修复代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout develop</span><br><span class="line">Switched to branch <span class="string">'develop'</span></span><br><span class="line">$ git merge --no-ff hotfix-1.2.1</span><br><span class="line">Merge made by recursive.</span><br><span class="line">(Summary of changes)</span><br></pre></td></tr></table></figure>
+<p>有一个例外的原则是，如果当前有一个 release 分支存在，那么 hotfix 分支上的改动需要 merge 到 release 分支，而不是 <code>develop</code> 分支。当 release 分支结束时，merge 到 release 分支上的修复代码最终还是会 merge 到 <code>develop</code> 上。</p>
+<p>最后，移除已经完成历史使命的分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d hotfix-1.2.1</span><br><span class="line">Deleted branch hotfix-1.2.1 (was abbe5d6).</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个分支模型虽然没什么令人耳目一新的东西，不过文章一开始给出的那张大图已经呈现了它对我们项目的裨益。它构造了一个优雅的模型，易于理解，并允许团队成员对分支的派生和发布有共同的认识。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/16/spring-mvc-redirect-forward/" rel="next" title="探索 Spring MVC 重定向和转发">
+                <i class="fa fa-chevron-left"></i> 探索 Spring MVC 重定向和转发
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/06/thrift-learn-notes-idl/" rel="prev" title="Thrift 学习笔记：IDL">
+                Thrift 学习笔记：IDL <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么使用-Git"><span class="nav-number">1.</span> <span class="nav-text">为什么使用 Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去中心化也中心化"><span class="nav-number">2.</span> <span class="nav-text">去中心化也中心化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主干分支"><span class="nav-number">3.</span> <span class="nav-text">主干分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#辅助分支"><span class="nav-number">4.</span> <span class="nav-text">辅助分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Feature-分支"><span class="nav-number">4.1.</span> <span class="nav-text">Feature 分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Release-分支"><span class="nav-number">4.2.</span> <span class="nav-text">Release 分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hotfix-分支"><span class="nav-number">4.3.</span> <span class="nav-text">Hotfix 分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

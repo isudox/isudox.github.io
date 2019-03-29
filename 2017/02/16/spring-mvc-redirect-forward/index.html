@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。">
+<meta name="keywords" content="Java,Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="探索 Spring MVC 重定向和转发">
+<meta property="og:url" content="https://isudox.com/2017/02/16/spring-mvc-redirect-forward/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.428Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="探索 Spring MVC 重定向和转发">
+<meta name="twitter:description" content="最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2017/02/16/spring-mvc-redirect-forward/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>探索 Spring MVC 重定向和转发 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2017/02/16/spring-mvc-redirect-forward/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">探索 Spring MVC 重定向和转发
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-02-16 11:35:09" itemprop="dateCreated datePublished" datetime="2017-02-16T11:35:09+08:00">2017-02-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。</p>
+<a id="more"></a>
+<p>比如客户端的请求进到 Controller 方法中，我们会判断当前用户状态，可能会跳转到用户中心页，也可能会跳转到等待页，又或者错误页。类似的场景很多，都需要用到请求的重定向和转发。Sping MVC 实现重定向或转发的方法有很多，我先大致梳理下，然后再通过源码加深理解。</p>
+<h2 id="常用处理方式"><a href="#常用处理方式" class="headerlink" title="常用处理方式"></a>常用处理方式</h2><p>Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 <code>ModelAndView</code> 对象，又或者是 <code>RedirectView</code> 对象，下面逐一说明。</p>
+<h3 id="String-重定向"><a href="#String-重定向" class="headerlink" title="String 重定向"></a>String 重定向</h3><p>是 return 映射到另一个 Controller 方法的字符串。如果有请求参数，就拼接在 RequestMapping 映射的字符串后面。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回字符串映射的方式</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"hello"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;</span><br><span class="line">    doSomething();</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/bye"</span>;</span><br><span class="line">    <span class="comment">// return "redirect:/bye?username=sudoz";</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ModelAndView-重定向"><a href="#ModelAndView-重定向" class="headerlink" title="ModelAndView 重定向"></a>ModelAndView 重定向</h3><p>另一种方法是通过返回 <code>ModelAndView</code> 对象来实现跳转。类似的，如果有请求参数，也可以通过类似 GET 参数拼接的方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回 ModelAndView 对象</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"hello"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">hello</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;</span><br><span class="line">    doSomething();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(<span class="string">"redirect:/bye"</span>);</span><br><span class="line">    <span class="comment">// return new ModelAndView("redirect:/bye?username=sudoz");</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RedirectView-重定向"><a href="#RedirectView-重定向" class="headerlink" title="RedirectView 重定向"></a>RedirectView 重定向</h3><p>还有一种方法是通过返回 <code>RedirectView</code> 对象实现跳转，该方法和上面的不同之处在于，<code>RedirectView</code> 对象不需要设置 redirect 前缀：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回 RedirectView 对象</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"hello"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> RedirectView <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    doSomething();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"/bye"</span>);</span><br><span class="line">    <span class="comment">// return new RedirectView("bye?username=sudoz");</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="带参跳转"><a href="#带参跳转" class="headerlink" title="带参跳转"></a>带参跳转</h2><p>在做方法跳转时，如果要把参数带给下一个方法，像上面代码里通过拼接 URL 参数的方法有时候并不实用。因为参数不一定都是是字符串，而且浏览器对 URL 的长度是有限制的。<code>RedirectAttributes</code> 对象可以用来保存请求重定向时的参数。利用 <code>RedirectAttributes</code> 改写上面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> RedirectView <span class="title">hello</span><span class="params">(RedirectAttributes attrs)</span> </span>&#123;</span><br><span class="line">    attrs.addAttribute(<span class="string">"message"</span>, <span class="string">"hello"</span>);    </span><br><span class="line">    attrs.addFlashAttribute(<span class="string">"username"</span>, <span class="string">"sudoz"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"hello"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"hello"</span>)</span><br><span class="line">    <span class="function">Map&lt;String, String&gt; <span class="title">hello</span><span class="params">(@ModelAttribute(<span class="string">"username"</span>)</span> String username,</span></span><br><span class="line"><span class="function">                              @<span class="title">ModelAttribute</span><span class="params">(<span class="string">"message"</span>)</span> String message) </span>&#123;</span><br><span class="line">    Map&lt;String, String&gt; map = Maps.newHashMap();</span><br><span class="line">    map.put(<span class="string">"username"</span>, username);</span><br><span class="line">    map.put(<span class="string">"message"</span>, message);</span><br><span class="line">    <span class="keyword">return</span> map;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码中，调用 <code>addAttribute()</code> 和 <code>addFlashAttribute()</code> 方法往 <code>RedirectAttributes</code> 对象中插入了两个值，如果看源码，就能知道，<code>RedirectAttributes</code> 接口的实现类 <code>RedirectAttributesModelMap</code> 继承了 <code>ModelMap</code>，本质上就是 <code>HashMap</code> 的子类，因此可以用来存储 Key-Value 对。这两个方法都很常用，使用上也必然存在不同：</p>
+<ul>
+<li><code>addAttribute()</code> 方法会把 Key-Value 作为请求参数添加的 URL 的后面；</li>
+<li><code>addFlashAttribute()</code> 方法会把 Key-Value 暂存在 session 中，在跳转到目标方法后，即完成任务，会从 session 中删掉；</li>
+</ul>
+<p>用 <code>curl</code> 命令来测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -i http://localhost:8080/</span><br><span class="line"></span><br><span class="line">HTTP/1.1 302 </span><br><span class="line">Set-Cookie: JSESSIONID=D1CC5E15FA8EF9474C4CED7D4F660E66;path=/;HttpOnly</span><br><span class="line">Location: http://localhost:8080/hello;jsessionid=D1CC5E15FA8EF9474C4CED7D4F660E66?username=sudoz</span><br><span class="line">Content-Language: en-US</span><br><span class="line">Content-Length: 0</span><br><span class="line">Date: Thu, 16 Feb 2017 12:33:46 GMT</span><br></pre></td></tr></table></figure>
+<p>可以看到，通过 <code>addAttribute()</code> 添加的键值对变成了 URL 后面的参数，<code>addFlashAttribute()</code> 方法添加的键值对则没有出现在 URL 上，而是存储在了 session 中。跳转的目标方法通过 <code>@ModelAttribute(&quot;key&quot;)</code> 注解指定接收的参数。</p>
+<h2 id="redirect-和-forward-的区别"><a href="#redirect-和-forward-的区别" class="headerlink" title="redirect 和 forward 的区别"></a>redirect 和 forward 的区别</h2><p>上面列出的 3 种方法，其实都是 Spring MVC 在处理请求时的重定向，即 redirect 跳转。另一种分发请求的方式是转发，即 forward。（我不确定这么翻译是否正确，所以下面就直接用 redirect 和 forward 来表述），二者的区别从 HTTP 的规范中就明确了：</p>
+<ul>
+<li>redirect 的 HTTP 返回码是 302，且跳转的新 URL 会存储在 HTTP Response Headers 的 Location 字段中。客户端在接收到 Response 后，会发起另一次请求，这次请求的 URL 就是重定向的 URL；</li>
+<li>forward 的转发过程只发生在服务端；Servlet 容器会直接把源请求打向目标 URL，而不会经由客户端发起请求；因此客户端接收到的响应是来自转发后的目标方法，但是浏览器呈现的 URL 却并不会改变，且 forward 不能将参数转发出去。</li>
+</ul>
+<h2 id="Spring-Boot-测试"><a href="#Spring-Boot-测试" class="headerlink" title="Spring Boot 测试"></a>Spring Boot 测试</h2><p>为了更清晰的比较各种方法，我把 Spring Boot 的测试代码贴出来。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HomeController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"sudoz"</span>)</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/"</span>)</span><br><span class="line">    <span class="function">String <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"redirect:hello?username=jim&amp;message=how are you"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"redirectView"</span>)</span><br><span class="line">    <span class="function">RedirectView <span class="title">redirectView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"forward"</span>)</span><br><span class="line">    <span class="function">ModelAndView <span class="title">forward</span><span class="params">(RedirectAttributes attrs)</span> </span>&#123;</span><br><span class="line">        attrs.addFlashAttribute(<span class="string">"username"</span>, username);</span><br><span class="line">        attrs.addAttribute(<span class="string">"message"</span>, <span class="string">"hello"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(<span class="string">"forward:hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"redirect"</span>)</span><br><span class="line">    <span class="function">ModelAndView <span class="title">redirect</span><span class="params">(RedirectAttributes attrs)</span> </span>&#123;</span><br><span class="line">        attrs.addFlashAttribute(<span class="string">"username"</span>, username);</span><br><span class="line">        attrs.addAttribute(<span class="string">"message"</span>, <span class="string">"hello"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(<span class="string">"redirect:hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"hello"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function">Map&lt;String, String&gt; <span class="title">hello</span><span class="params">(Model model, @ModelAttribute(<span class="string">"username"</span>)</span> String username,</span></span><br><span class="line"><span class="function">                              @<span class="title">ModelAttribute</span><span class="params">(<span class="string">"message"</span>)</span> String message) </span>&#123;</span><br><span class="line">        Map&lt;String, String&gt; map = Maps.newHashMap();</span><br><span class="line">        map.put(<span class="string">"username"</span>, username);</span><br><span class="line">        map.put(<span class="string">"message"</span>, message);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分析源码"><a href="#分析源码" class="headerlink" title="分析源码"></a>分析源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UrlBasedViewResolver</span> <span class="keyword">extends</span> <span class="title">AbstractCachingViewResolver</span> <span class="keyword">implements</span> <span class="title">Ordered</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String REDIRECT_URL_PREFIX = <span class="string">"redirect:"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String FORWARD_URL_PREFIX = <span class="string">"forward:"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> View <span class="title">createView</span><span class="params">(String viewName, Locale locale)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// If this resolver is not supposed to handle the given view,</span></span><br><span class="line">        <span class="comment">// return null to pass on to the next resolver in the chain.</span></span><br><span class="line">        <span class="keyword">if</span> (!canHandle(viewName, locale)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Check for special "redirect:" prefix.</span></span><br><span class="line">        <span class="keyword">if</span> (viewName.startsWith(REDIRECT_URL_PREFIX)) &#123;</span><br><span class="line">            String redirectUrl = viewName.substring(REDIRECT_URL_PREFIX.length());</span><br><span class="line">            RedirectView view = <span class="keyword">new</span> RedirectView(redirectUrl, isRedirectContextRelative(), isRedirectHttp10Compatible());</span><br><span class="line">            <span class="keyword">return</span> applyLifecycleMethods(viewName, view);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Check for special "forward:" prefix.</span></span><br><span class="line">        <span class="keyword">if</span> (viewName.startsWith(FORWARD_URL_PREFIX)) &#123;</span><br><span class="line">            String forwardUrl = viewName.substring(FORWARD_URL_PREFIX.length());</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> InternalResourceView(forwardUrl);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Else fall back to superclass implementation: calling loadView.</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.createView(viewName, locale);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>参考资料</p>
+<ul>
+<li><a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html" target="_blank" rel="noopener">Spring MVC Documentation</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/14/explore-flask-source-code-structure/" rel="next" title="读 Flask 源码：源码结构">
+                <i class="fa fa-chevron-left"></i> 读 Flask 源码：源码结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/18/a-successful-git-branching-model-zh/" rel="prev" title="[译] 一个行之有效的 Git 分支模型">
+                [译] 一个行之有效的 Git 分支模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用处理方式"><span class="nav-number">1.</span> <span class="nav-text">常用处理方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String-重定向"><span class="nav-number">1.1.</span> <span class="nav-text">String 重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ModelAndView-重定向"><span class="nav-number">1.2.</span> <span class="nav-text">ModelAndView 重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedirectView-重定向"><span class="nav-number">1.3.</span> <span class="nav-text">RedirectView 重定向</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带参跳转"><span class="nav-number">2.</span> <span class="nav-text">带参跳转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redirect-和-forward-的区别"><span class="nav-number">3.</span> <span class="nav-text">redirect 和 forward 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot-测试"><span class="nav-number">4.</span> <span class="nav-text">Spring Boot 测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析源码"><span class="nav-number">5.</span> <span class="nav-text">分析源码</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。">
+<meta name="keywords" content="Frontend,Webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2016 前端补习 Webpack 篇">
+<meta property="og:url" content="https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://webpack.github.io/assets/what-is-webpack.png">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2016 前端补习 Webpack 篇">
+<meta name="twitter:description" content="对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。">
+<meta name="twitter:image" content="https://webpack.github.io/assets/what-is-webpack.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>2016 前端补习 Webpack 篇 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2016 前端补习 Webpack 篇
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-12-26 10:40:41" itemprop="dateCreated datePublished" datetime="2016-12-26T10:40:41+08:00">2016-12-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。</p>
+<a id="more"></a>
+<blockquote>
+<p>因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。</p>
+</blockquote>
+<h2 id="Webpack-基础命令"><a href="#Webpack-基础命令" class="headerlink" title="Webpack 基础命令"></a>Webpack 基础命令</h2><h3 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h3><p><img src="https://webpack.github.io/assets/what-is-webpack.png" alt="What is webpack"></p>
+<p><a href="https://webpack.js.org/" target="_blank" rel="noopener">Webpack</a> 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># globally install</span></span><br><span class="line">yarn global add webpack@2.1.0-beta.20</span><br><span class="line"><span class="comment"># locally install</span></span><br><span class="line">yarn add webpack@2.1.0-beta.20 -D</span><br></pre></td></tr></table></figure>
+<p>安装完后，就可以在控制台使用 <code>webpack</code> 命令了。在目录下执行 <code>webpack</code>，首先需要配置 <code>webpack.config.js</code> 文件，由该配置文件来控制 <code>webpack</code> 的操作。参考阮一峰老师 GitHub 上的示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: <span class="string">'./main.js'</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">'bundle.js'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>然后执行 <code>webpack</code> 命令就可以按照配置文件的设置，把目录下的 <code>main.js</code> 打包成 <code>bundle.js</code>。</p>
+<h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><p>Webpack 有 4 个核心概念必须要了解：<a href="https://webpack.js.org/concepts/entry-points/" target="_blank" rel="noopener">Entry</a>、<a href="https://webpack.js.org/concepts/output/" target="_blank" rel="noopener">Output</a>、<a href="https://webpack.js.org/concepts/loaders/" target="_blank" rel="noopener">Loaders</a> 和 <a href="https://webpack.js.org/concepts/plugins/" target="_blank" rel="noopener">Plugins</a>。</p>
+<h4 id="Entry"><a href="#Entry" class="headerlink" title="Entry"></a>Entry</h4><p>webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告诉 webpack 这张图表的入口位置并循着依赖关系去打包，webpack 通过对 webpack configuration object 设置 <code>entry</code> 属性来定义 Entry，参考下面的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># webpack.config.js</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: <span class="string">'./path/to/my/entry/file.js'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>如果要指定多个 Entry，则需要将 <code>entry</code> 属性从 <code>string</code> 改为 <code>Array&lt;string&gt;</code>，比如 [‘./main.js’, ‘./index.js’]。也可以使用 Object 语法，把 <code>entry</code> 属性设置为一个 key-value 对象，这是更具扩展性的定义 <code>entry</code> 的写法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> config = &#123;</span><br><span class="line">  entry: &#123;</span><br><span class="line">    app: <span class="string">'./src/app.js'</span>,</span><br><span class="line">    vendors: <span class="string">'./src/vendors.js'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
+<h4 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h4><p>既然由 Bundle 的入口 Entry，相应的必然也会有 Bundle 的出口，这就是 Output。我们需要告知 webpack 对打包后的静态资源如何处置，存放在哪，文件名是什么。webpack 的 <code>output</code> 属性描述了该如何处理打包后的代码。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># webpack.config.js</span><br><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: <span class="string">'./path/to/my/entry/file.js'</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'dist'</span>),</span><br><span class="line">    filename: <span class="string">'my-first-webpack.bundle.js'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>对于 <code>output.filename</code>，如果 <code>entry</code> 属性配置了多个文件，则需要使用命名替换的方式确保 output filename 不重名。其中，占位符 <code>[name]</code> 采用 chunk 的名称作为替换，<code>[hash]</code> 是采用编译后文件的 hash 值替换，而 <code>[chunkhash]</code> 则是根据 chunk 的 hash 值来替换。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  entry: &#123;</span><br><span class="line">    app: <span class="string">'./src/app.js'</span>,</span><br><span class="line">    search: <span class="string">'./src/search.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">'[name].js'</span>,</span><br><span class="line">    path: __dirname + <span class="string">'/build'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于 <code>output.path</code> 属性，必须设为绝对路径，占位符 <code>[hash]</code> 会被编译后文件的 hash 值替换：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">output: &#123;</span><br><span class="line">    path: <span class="string">"/home/proj/public/assets"</span>,</span><br><span class="line">    publicPath: <span class="string">"/assets/"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Loaders"><a href="#Loaders" class="headerlink" title="Loaders"></a>Loaders</h4><p>webpack 可以对项目里所有静态资源（包括 <code>.css</code>、<code>.html</code>、<code>scss</code>、<code>jpg</code> 等）所谓模块进行处理，但是 webpack 只能理解 JavaScript，如果要处理其他类型的静态文件，就需要 webpack 的 Loaders，把这些静态文件转换成模块的处理器。在 <code>webpack.config.js</code> 的 Loaders 属性配置中，有两个目标需要确认：</p>
+<ol>
+<li>标识什么文件可以被转换成模块（由 <code>test</code> 属性指定）；</li>
+<li>指定转换这些文件的处理器 loader（由 <code>use</code> 属性指定）;</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config = &#123;</span><br><span class="line">  entry: <span class="string">'./path/to/my/entry/file.js'</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'dist'</span>),  <span class="comment">// bundle 文件的绝对路径</span></span><br><span class="line">    publicPath: <span class="string">"/dist/"</span>,  <span class="comment">// 网站运行时的访问路径</span></span><br><span class="line">    filename: <span class="string">'my-first-webpack.bundle.js'</span>  <span class="comment">// bundle 的文件名</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;<span class="attr">test</span>: <span class="regexp">/\.(js|jsx)$/</span>, <span class="attr">use</span>: <span class="string">'babel-loader'</span>&#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>上面的配置，通过 <code>rule</code> 属性对单个模块的处理进行设置，因此 webpack 会对项目依赖关系中被 <code>require</code> 或 <code>import</code> 的 <code>.js</code> 和 <code>.jsx</code> 文件，在它们被添加进 bundle 之前，用 <code>babel-loader</code> 处理器进行转换处理（该处理器会把 JSX 和 ES6 的文件转换成 JS 文件）。另外，loaders 的名称都是 <code>xxx-loader</code> 格式，<code>use</code> 属性也可以简写为 <code>xxx</code>。</p>
+<h4 id="Plugins"><a href="#Plugins" class="headerlink" title="Plugins"></a>Plugins</h4><p>Loaders 只能在 bundle 之前对静态资源作预处理，而 Plugins 则可以对编译后文件和 chunk 文件进行处理，比如 <code>UglifyJsPlugin</code> 可以对 bundle 后的 JavaScript 代码进行压缩处理。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</span><br><span class="line"><span class="keyword">var</span> uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: <span class="string">'./main.js'</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">'bundle.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="keyword">new</span> uglifyJsPlugin(&#123;</span><br><span class="line">      compress: &#123;</span><br><span class="line">        warnings: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="结合-React"><a href="#结合-React" class="headerlink" title="结合 React"></a>结合 React</h2><p>在了解 webpack 的基础操作后，可以在 React 项目中实际运用 webpack 进行打包。为了便于描述，就采用最简单的 Hello World 例子。React 项目结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- hello-world</span><br><span class="line">    - dist/</span><br><span class="line">    - src/</span><br><span class="line">        - js/</span><br><span class="line">            Welcome.js</span><br><span class="line">            entry.js</span><br><span class="line">    index.html</span><br><span class="line">    webpack.config.js</span><br></pre></td></tr></table></figure>
+<p>其中，<code>Welcome.js</code> 定义了一个 React Component，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Welcome.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Welcome</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, &#123;this.props.name&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>entry.js</code> 是依赖关系的入口文件，引入依赖的模块，并输出页面元素：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> Welcome <span class="keyword">from</span> <span class="string">'./Welcome'</span>;</span><br><span class="line"></span><br><span class="line">React.render(<span class="xml"><span class="tag">&lt;<span class="name">Welcome</span> <span class="attr">name</span>=<span class="string">"sudoz"</span> /&gt;</span>, document.getElementById('root'));</span></span><br></pre></td></tr></table></figure>
+<p>而 <code>index.html</code> 的页面源码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hello World<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"root"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- This HTML file is a template. --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/dist/bundle.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>webpack.config.js</code> 需要对 React 的 JSX 文件进行 babel 转换：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: [</span><br><span class="line">    path.resolve(root_path, <span class="string">'./src/js/entry'</span>)</span><br><span class="line">  ],</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: path.resolve(root_path, <span class="string">'dist'</span>),</span><br><span class="line">    publicPath: <span class="string">'/dist/'</span>,</span><br><span class="line">    filename: <span class="string">'bundle.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js[x]$/</span>,</span><br><span class="line">        use: [<span class="string">'babel-loader'</span>],</span><br><span class="line">        query: &#123;</span><br><span class="line">          presets: [<span class="string">'es2015'</span>, <span class="string">'react'</span>]</span><br><span class="line">        &#125;,</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span></span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="模块热替换"><a href="#模块热替换" class="headerlink" title="模块热替换"></a>模块热替换</h2><p>当修改、新增或移除模块时，热替换（Hot Module Replacement, HMR）可以使程序无需重新载入页面就能实现更新。</p>
+<p>要使用 HMR，需要安装一下依赖，另外在安装 React 依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yarn add -D babel@6.5.2 babel-core@6.13.2 babel-loader@6.2.4 babel-preset-es2015@6.13.2 babel-preset-react@6.11.1 babel-preset-stage-2@6.13.0 css-loader@0.23.1 postcss-loader@0.9.1 react-hot-loader@3.0.0-beta.6 style-loader@0.13.1 webpack@2.1.0-beta.20 webpack-dev-server@2.1.0-beta.0</span><br><span class="line"></span><br><span class="line">yarn add react@15.3.0 react-dom@15.3.0</span><br></pre></td></tr></table></figure>
+<p>配置 <code>.babelrc</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"presets"</span>: [</span><br><span class="line">    [<span class="string">"es2015"</span>, &#123;<span class="string">"modules"</span>: <span class="literal">false</span>&#125;],</span><br><span class="line">    <span class="comment">// webpack understands the native import syntax, and uses it for tree shaking</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"stage-2"</span>,</span><br><span class="line">    <span class="comment">// Specifies what level of language features to activate.</span></span><br><span class="line">    <span class="comment">// Stage 2 is "draft", 4 is finished, 0 is strawman.</span></span><br><span class="line">    <span class="comment">// See https://tc39.github.io/process-document/</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"react"</span></span><br><span class="line">    <span class="comment">// Transpile React components to JavaScript</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"plugins"</span>: [</span><br><span class="line">    <span class="string">"react-hot-loader/babel"</span></span><br><span class="line">    <span class="comment">// Enables React code to work with HMR.</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>webpack.config.js</code> 的参考配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; resolve &#125; = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: [</span><br><span class="line">    <span class="string">'react-hot-loader/patch'</span>,</span><br><span class="line">    <span class="comment">// activate HMR for React</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'webpack-dev-server/client?http://localhost:8080'</span>,</span><br><span class="line">    <span class="comment">// bundle the client for webpack-dev-server</span></span><br><span class="line">    <span class="comment">// and connect to the provided endpoint</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'webpack/hot/only-dev-server'</span>,</span><br><span class="line">    <span class="comment">// bundle the client for hot reloading</span></span><br><span class="line">    <span class="comment">// only- means to only hot reload for successful updates</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="string">'./index.js'</span></span><br><span class="line">    <span class="comment">// the entry point of our app</span></span><br><span class="line">  ],</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">'bundle.js'</span>,</span><br><span class="line">    <span class="comment">// the output bundle</span></span><br><span class="line"></span><br><span class="line">    path: resolve(__dirname, <span class="string">'dist'</span>),</span><br><span class="line"></span><br><span class="line">    publicPath: <span class="string">'/'</span></span><br><span class="line">    <span class="comment">// necessary for HMR to know where to load the hot update chunks</span></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  context: resolve(__dirname, <span class="string">'src'</span>),</span><br><span class="line"></span><br><span class="line">  devtool: <span class="string">'inline-source-map'</span>,</span><br><span class="line"></span><br><span class="line">  devServer: &#123;</span><br><span class="line">    hot: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// enable HMR on the server</span></span><br><span class="line"></span><br><span class="line">    contentBase: resolve(__dirname, <span class="string">'dist'</span>),</span><br><span class="line">    <span class="comment">// match the output path</span></span><br><span class="line"></span><br><span class="line">    publicPath: <span class="string">'/'</span></span><br><span class="line">    <span class="comment">// match the output `publicPath`</span></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          <span class="string">'babel-loader'</span>,</span><br><span class="line">        ],</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          <span class="string">'style-loader'</span>,</span><br><span class="line">          <span class="string">'css-loader?modules'</span>,</span><br><span class="line">          <span class="string">'postcss-loader'</span>,</span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="keyword">new</span> webpack.HotModuleReplacementPlugin(),</span><br><span class="line">    <span class="comment">// enable HMR globally</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> webpack.NamedModulesPlugin(),</span><br><span class="line">    <span class="comment">// prints more readable module names in the browser console on HMR updates</span></span><br><span class="line">  ],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>上面的配置是假定入口文件是 <code>./src/index.js</code>，且需要引入 Loader 来处理 CSS 模块。注意 <code>entry</code> 属性中增加了 <code>react-hot-loader</code> 模块，这是开启 React 组件 HMR 的必要操作。<code>NamedModulesPlugin</code> 是非常有用的 Plugin，它能友好的显示什么模块发生了 HMR。</p>
+<p>再来看 webpack 官方文档给出的入口 JS 文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ./src/index.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AppContainer &#125; <span class="keyword">from</span> <span class="string">'react-hot-loader'</span>;</span><br><span class="line"><span class="comment">// AppContainer is a necessary wrapper component for HMR</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./components/App'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> render = <span class="function">(<span class="params">Component</span>) =&gt;</span> &#123;</span><br><span class="line">  ReactDOM.render(</span><br><span class="line">    &lt;AppContainer&gt;</span><br><span class="line">      &lt;Component/&gt;</span><br><span class="line">    &lt;<span class="regexp">/AppContainer&gt;,</span></span><br><span class="line"><span class="regexp">    document.getElementById('root')</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">render(App);</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ Hot Module Replacement API</span></span><br><span class="line"><span class="regexp">if (module.hot) &#123;</span></span><br><span class="line"><span class="regexp">  module.hot.accept('./</span>components/App<span class="string">', () =&gt; &#123;</span></span><br><span class="line"><span class="string">    const NewApp = require('</span>./components/App<span class="string">').default</span></span><br><span class="line"><span class="string">    render(NewApp)</span></span><br><span class="line"><span class="string">  &#125;);</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>App 组件 <code>App.js</code> 源码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ./src/components/App.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> styles <span class="keyword">from</span> <span class="string">'./App.css'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> (</span><br><span class="line">  &lt;div className=&#123;styles.app&#125;&gt;</span><br><span class="line">    &lt;h2&gt;Hello, &lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>div&gt;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> App;</span><br></pre></td></tr></table></figure>
+<p><code>App.css</code></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// ./src/components/App.css</span><br><span class="line"><span class="selector-class">.app</span> &#123;</span><br><span class="line">    <span class="attribute">text-size-adjust</span>: none;</span><br><span class="line">    <span class="attribute">font-family</span>: helvetica, arial, sans-serif;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">200%</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">6px</span> <span class="number">20px</span> <span class="number">30px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在项目根目录下执行 <code>webpack-dev-server</code>，打开 <code>http：//127.0.0.1:8080</code> 查看页面控制台。</p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>Webpack 2 - <a href="https://webpack.js.org" target="_blank" rel="noopener">Docs</a></li>
+<li>阮一峰 - <a href="https://github.com/ruanyf/webpack-demos" target="_blank" rel="noopener">webpack-demos</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Frontend/" rel="tag"># Frontend</a>
+          
+            <a href="/tags/Webpack/" rel="tag"># Webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/12/cors-in-action/" rel="next" title="CORS 跨域调试记录">
+                <i class="fa fa-chevron-left"></i> CORS 跨域调试记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/27/yarn-front-end-development-trends-in-2016/" rel="prev" title="2016 前端补习 Yarn 篇">
+                2016 前端补习 Yarn 篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Webpack-基础命令"><span class="nav-number">1.</span> <span class="nav-text">Webpack 基础命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello-World"><span class="nav-number">1.1.</span> <span class="nav-text">Hello World</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核心概念"><span class="nav-number">1.2.</span> <span class="nav-text">核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Entry"><span class="nav-number">1.2.1.</span> <span class="nav-text">Entry</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Output"><span class="nav-number">1.2.2.</span> <span class="nav-text">Output</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Loaders"><span class="nav-number">1.2.3.</span> <span class="nav-text">Loaders</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Plugins"><span class="nav-number">1.2.4.</span> <span class="nav-text">Plugins</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结合-React"><span class="nav-number">2.</span> <span class="nav-text">结合 React</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块热替换"><span class="nav-number">3.</span> <span class="nav-text">模块热替换</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

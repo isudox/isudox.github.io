@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。">
+<meta name="keywords" content="Proxy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过代理安装 AUR 软件包">
+<meta property="og:url" content="https://isudox.com/2016/05/09/install-aur-packages-by-proxy/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-1.png">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-2.png">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.421Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过代理安装 AUR 软件包">
+<meta name="twitter:description" content="Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。">
+<meta name="twitter:image" content="https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/05/09/install-aur-packages-by-proxy/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>通过代理安装 AUR 软件包 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/05/09/install-aur-packages-by-proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">通过代理安装 AUR 软件包
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-05-09 23:27:07" itemprop="dateCreated datePublished" datetime="2016-05-09T23:27:07+08:00">2016-05-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 <a href="https://wiki.archlinux.org/index.php/Arch_User_Repository" target="_blank" rel="noopener">AUR</a>(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。</p>
+<a id="more"></a>
+<p>这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。</p>
+<p>就以上面提到的 <a href="https://aur.archlinux.org/packages/atom-editor/" target="_blank" rel="noopener">atom-editor</a> 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"># Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt;</span><br><span class="line"># Contributor: John Reese &lt;jreese@noswap.com&gt;</span><br><span class="line"># Upstream URL: https://github.com/atom/atom</span><br><span class="line">#</span><br><span class="line"># For improvements/fixes to this package, please send a pull request:</span><br><span class="line"># https://github.com/sjug/atom-editor</span><br><span class="line"></span><br><span class="line">pkgname=atom-editor</span><br><span class="line">pkgver=1.7.3</span><br><span class="line">pkgrel=1</span><br><span class="line">pkgdesc=&apos;Chrome-based text editor from Github&apos;</span><br><span class="line">arch=(&apos;x86_64&apos; &apos;i686&apos;)</span><br><span class="line">url=&apos;https://github.com/atom/atom&apos;</span><br><span class="line">license=(&apos;MIT&apos;)</span><br><span class="line">depends=(&apos;alsa-lib&apos; &apos;desktop-file-utils&apos; &apos;gconf&apos; &apos;gtk2&apos; &apos;libgnome-keyring&apos; &apos;libnotify&apos; &apos;libxtst&apos; &apos;nodejs&apos; &apos;nss&apos; &apos;python2&apos;)</span><br><span class="line">optdepends=(&apos;gvfs: file deletion support&apos;)</span><br><span class="line">makedepends=(&apos;git&apos; &apos;npm&apos;)</span><br><span class="line">conflicts=(&apos;atom-editor-bin&apos; &apos;atom-editor-git&apos;)</span><br><span class="line">install=atom.install</span><br><span class="line">source=(&quot;https://github.com/atom/atom/archive/v$&#123;pkgver&#125;.tar.gz&quot;</span><br><span class="line">        &apos;package.patch&apos;)</span><br><span class="line">sha256sums=(&apos;5074b59ddaca5525eb48098dee6fe63013799cbc77749add314b9e1bc894b8f4&apos;</span><br><span class="line">            &apos;ab27ab817f67043e98298d525efb6a417dea07f4012b6dfb7cf6a538f9b50bab&apos;)</span><br><span class="line"></span><br><span class="line">prepare() &#123;</span><br><span class="line">  cd &quot;atom-$pkgver&quot;</span><br><span class="line"></span><br><span class="line">  patch -Np0 -i &quot;$srcdir/package.patch&quot;</span><br><span class="line"></span><br><span class="line">  sed -i -e &quot;/exception-reporting/d&quot; \</span><br><span class="line">      -e &quot;/metrics/d&quot; package.json</span><br><span class="line"></span><br><span class="line">  sed -e &quot;s/&lt;%= description %&gt;/$pkgdesc/&quot; \</span><br><span class="line">    -e &quot;s|&lt;%= appName %&gt;|Atom|&quot;\</span><br><span class="line">    -e &quot;s|&lt;%= installDir %&gt;/share/&lt;%= appFileName %&gt;|/usr/bin|&quot;\</span><br><span class="line">    -e &quot;s|&lt;%= iconPath %&gt;|atom|&quot;\</span><br><span class="line">    resources/linux/atom.desktop.in &gt; resources/linux/Atom.desktop</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">build() &#123;</span><br><span class="line">  cd &quot;$srcdir/atom-$pkgver&quot;</span><br><span class="line"></span><br><span class="line">  export PYTHON=python2</span><br><span class="line">  script/build --build-dir &quot;$srcdir/atom-build&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">package() &#123;</span><br><span class="line">  cd &quot;$srcdir/atom-$pkgver&quot;</span><br><span class="line"></span><br><span class="line">  script/grunt install --build-dir &quot;$srcdir/atom-build&quot; --install-dir &quot;$pkgdir/usr&quot;</span><br><span class="line"></span><br><span class="line">  install -Dm644 resources/linux/Atom.desktop &quot;$pkgdir/usr/share/applications/atom.desktop&quot;</span><br><span class="line">  install -Dm644 resources/app-icons/stable/png/1024.png &quot;$pkgdir/usr/share/pixmaps/atom.png&quot;</span><br><span class="line">  install -Dm644 LICENSE.md &quot;$pkgdir/usr/share/licenses/$pkgname/LICENSE.md&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>脚本内容很清晰，注明了软件包的说明，下载路径，依赖/冲突关系和安装命令。很显然，安装失败的原因就是因为国内网络无法连接上 atom 的安装包下载地址 <a href="https://github.com/atom/atom/archive/v1.7.3.tar.gz。" target="_blank" rel="noopener">https://github.com/atom/atom/archive/v1.7.3.tar.gz。</a><br>AUR 包的安装需要在包目录下执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">makepkg -sri</span><br></pre></td></tr></table></figure></p>
+<p>因此得修改 makepkg 的配置，使得 makepkg 在调用下载程序时能通过 Proxy 翻过防火墙的阻碍。makepkg 的配置文件位于 <code>/etc/makepkg.conf</code>，找到 DLAGENT 字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#-- The download utilities that makepkg should use to acquire sources</span><br><span class="line">#  Format: &apos;protocol::agent&apos;</span><br><span class="line">DLAGENTS=(&apos;ftp::/usr/bin/curl -fC - --ftp-pasv --retry 3 --retry-delay 3 -o %o %u&apos;</span><br><span class="line">          &apos;http::/usr/bin/curl -fLC - --retry 3 --retry-delay 3 -o %o %u&apos;</span><br><span class="line">          &apos;https::/usr/bin/curl -fLC - --retry 3 --retry-delay 3 -o %o %u&apos;</span><br><span class="line">          &apos;rsync::/usr/bin/rsync --no-motd -z %u %o&apos;</span><br><span class="line">          &apos;scp::/usr/bin/scp -C %u %o&apos;)</span><br></pre></td></tr></table></figure>
+<p>DLAGENT 顾名思义就是 Download Agent 的意思，这个字段指定了不同网络协议的下载工具和下载参数，默认是调用 curl 下载。现在只需要让 curl 通过 Proxy 而非直连的方式去下载 PKGBUILD 里设置的软件包即可。查看 curl 命令的参数用法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -h | grep socks</span><br><span class="line">     --socks4 HOST[:PORT]  SOCKS4 proxy on given host + port</span><br><span class="line">     --socks4a HOST[:PORT]  SOCKS4a proxy on given host + port</span><br><span class="line">     --socks5 HOST[:PORT]  SOCKS5 proxy on given host + port</span><br><span class="line">     --socks5-hostname HOST[:PORT]  SOCKS5 proxy, pass host name to proxy</span><br><span class="line">     --socks5-gssapi-service NAME  SOCKS5 proxy service name <span class="keyword">for</span> GSS-API</span><br><span class="line">     --socks5-gssapi-nec  Compatibility with NEC SOCKS5 server</span><br></pre></td></tr></table></figure>
+<p>因为我搭的 Proxy 是通过 socks5，所以在 makepkg.conf 配置文件里的 DLAGENT 字段中加上 <code>--socks5 127.0.0.1:1080</code> 参数就行了。最后测试一把：</p>
+<p><img src="https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-1.png" alt="Imgur"></p>
+<p><img src="https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-2.png" alt="Imgur"></p>
+<p>大功告成，喜大普奔！</p>
+<p>另外，也可以自定义下载工具，比如 axel 就是很好的替代选择，可以设置多线程下载，速度非常快。</p>
+<p>没有自由，何谈快乐！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Proxy/" rel="tag"># Proxy</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/18/imitate-wechat-moment-on-mobile-device/" rel="next" title="移动端仿微信朋友圈发布图文">
+                <i class="fa fa-chevron-left"></i> 移动端仿微信朋友圈发布图文
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/10/summary-of-spring-mvc-interceptor/" rel="prev" title="Spring MVC 拦截器使用小结">
+                Spring MVC 拦截器使用小结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

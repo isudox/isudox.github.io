@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。">
+<meta name="keywords" content="Frontend,Canvas,HTML5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端仿微信朋友圈发布图文">
+<meta property="og:url" content="https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/index.html">
+<meta property="og:site_name" content="I sudo X">
+<meta property="og:description" content="最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-1.png">
+<meta property="og:image" content="https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-2.png">
+<meta property="og:updated_time" content="2019-03-26T15:34:13.421Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动端仿微信朋友圈发布图文">
+<meta name="twitter:description" content="最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。">
+<meta name="twitter:image" content="https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>移动端仿微信朋友圈发布图文 | I sudo X</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I sudo X</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script>
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sudoz">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I sudo X">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">移动端仿微信朋友圈发布图文
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-04-18 19:55:14" itemprop="dateCreated datePublished" datetime="2016-04-18T19:55:14+08:00">2016-04-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-26 23:34:13" itemprop="dateModified" datetime="2019-03-26T23:34:13+08:00">2019-03-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。</p>
+<a id="more"></a>
+<p>由于微信朋友圈的火爆和用户基础，因此 JD 的这个项目中类朋友圈的原型设计基本也是抄袭的微信，只不过换成 HTML5 的样式，所以原型图就不贴出来了……要实现的功能大致等于微信朋友圈，用户通过手机相册或摄像头上传图片，发布到京东 App 的一个版块里，由于一期不开发社交功能，因此没有朋友圈留言功能（电商 APP 不务正业，我也是无力吐槽）。<br>从项目前端开始讲吧。</p>
+<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><p>在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 <a href="http://fex.baidu.com/webuploader/" target="_blank" rel="noopener">WebUploader</a> 组件，或者 <a href="https://github.com/blueimp/jQuery-File-Upload" target="_blank" rel="noopener">jQuery-File-Upload</a>，再久远些还有用 Flash 做的文件上传插件，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像朋友圈发状态一次上传好几张图片，客户端不做处理的话，无论是传输时间还是流量损耗都是不能接受的。因此移动端需要在上传前默认对大体积图片进行压缩处理，后面会完整说明。</p>
+<h4 id="input-标签"><a href="#input-标签" class="headerlink" title="input 标签"></a>input 标签</h4><p>移动端上传文件仍然采用 HTML5 的 input 标签，区别于 PC 端上，移动设备除了调用文件浏览器外，还可以调用摄像头进行拍照上传，需要加入 capture 参数<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"image/*"</span> <span class="attr">capture</span>=<span class="string">"camera"</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。</p>
+<p>关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 图片添加按钮 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"previewer"</span> <span class="attr">class</span>=<span class="string">"upload-list"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">id</span>=<span class="string">"select-image"</span> <span class="attr">class</span>=<span class="string">"add-pic-btn"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:;"</span> <span class="attr">onclick</span>=<span class="string">"clickBrowse();"</span>&gt;</span>+<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 预览列表 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 隐藏的 input --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">id</span>=<span class="string">"browsefile"</span> <span class="attr">name</span>=<span class="string">"imageselect"</span> <span class="attr">style</span>=<span class="string">"visibility: hidden"</span> <span class="attr">accept</span>=<span class="string">"image/*"</span> <span class="attr">capture</span>=<span class="string">"camera"</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* footprint-add.js */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 自定义图片添加按钮的click事件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">clickBrowse</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    log(<span class="string">"点击添加"</span>);</span><br><span class="line">    $(<span class="string">'#browsefile'</span>).click();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.File &amp;&amp; <span class="built_in">window</span>.FileReader &amp;&amp; <span class="built_in">window</span>.FormData) &#123;</span><br><span class="line">        log(<span class="string">"支持File对象"</span>);</span><br><span class="line">        <span class="keyword">var</span> inputFiled = $(<span class="string">'#browsefile'</span>);</span><br><span class="line">        inputFiled.on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">            log(<span class="string">"有添加动作"</span>);</span><br><span class="line">            <span class="keyword">if</span> (imageIndex == <span class="number">9</span>) &#123;</span><br><span class="line">                <span class="comment">// 如果已经预选了9张，则不再添加</span></span><br><span class="line">                mTips.show(<span class="string">'最多添加9张图片哦'</span>, <span class="number">2000</span>);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">var</span> images = e.target.files;</span><br><span class="line">            <span class="keyword">var</span> count = images.length;  <span class="comment">// 图片数量</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">                <span class="keyword">var</span> image = e.target.files[i];</span><br><span class="line">                <span class="keyword">if</span> (image) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!<span class="regexp">/\/(?:jpeg|jpg|png)/i</span>.test(image.type)) &#123;</span><br><span class="line">                        <span class="keyword">return</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    readFile(image);  <span class="comment">// 读取图片</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>其中 clickBrowse() 方法为监听 input 标签 change 事件的方法。另外参照了微信朋友圈的做法，图片数量限制为 9 张。上面代码里最终的一步就是 readFile() 方法，它实现了对相册和摄像头图片的读取和处理。ReadFile() 调用了 HTML5 的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader" target="_blank" rel="noopener">FileReader API</a>，接下来的小节就具体说说 HTML5 的 FileReader。</p>
+<h4 id="FileReader"><a href="#FileReader" class="headerlink" title="FileReader"></a>FileReader</h4><p>在具体展开讲 FileReader 之前，得先了解在 Web 中使用 <a href="https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications" target="_blank" rel="noopener">File</a> 接口，MDN 的这篇文章详细介绍了如何在 Web 应用中使用 File 接口。简言之，File API 提供了在 Web 应用中对文件对象的抽象功能，对于 type=”file” 的 input 标签，所选的文件被抽象为 <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileList" target="_blank" rel="noopener">FileList</a> 对象，可以像数组一样去调用 FileList 中的 File 对象。其中，File 对象中的属性主要有：</p>
+<ul>
+<li>name: 当前File对象所引用文件的文件名，不包含任何路径信息，只读</li>
+<li>size: 当前File对象所引用文件的文件大小，单位为字节，只读</li>
+<li>type: 当前File对象所引用文件的文件类型(MIME类型)，如果类型未知,则返回空字符串，只读</li>
+</ul>
+<p>对照上一节贴出来的代码，程序里调用了 File 接口获取 File 对象，并将 File 对象传递给 readFile() 方法，由 FileReader 读取 File 对象。<br>参考 MDN 的权威解释，FileReader 可以异步的读取存储在用户计算机上的文件（或原始数据缓存）内容。创建 FileReader 对象的方法就是 new 一个对象出来：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</span><br></pre></td></tr></table></figure>
+<p>FileReader 读取文件内容的方法有：</p>
+<ul>
+<li>abort(): 中止该读取操作。在返回时，eadyState 属性的值为 DONE</li>
+<li>readAsArrayBuffer(): 开始读取指定的 Blob 对象或 File 对象中的内容。当读取操作完成时，readyState 属性的值会成为 DONE，如果设置了 onloadend 事件处理程序，则调用之。同时，result 属性中将包含一个 ArrayBuffer 对象以表示所读取文件的内容</li>
+<li>readAsBinaryString(): 当读取操作完成时，readyState 属性的值会成为 DONE。同时，result 属性中将包含所读取文件的原始二进制数据</li>
+<li>readAsDataURL(): 当读取操作完成时，readyState 属性的值会成为 DONE。同时，result 属性中将包含一个data: URL格式的字符串以表示所读取文件的内容</li>
+<li>readAsText(): 当读取操作完成时,readyState 属性的值会成为 DONE。同时，result属性中将包含一个字符串以表示所读取的文件内容</li>
+</ul>
+<p>FileReader 有如下事件处理标识：</p>
+<ul>
+<li>onabort: 当读取操作被中止时调用</li>
+<li>onerror: 当读取操作发生错误时调用</li>
+<li>onload: 当读取操作成功完成时调用</li>
+<li>onloadend: 当读取操作完成时调用,不管是成功还是失败.该处理程序在onload或者onerror之后调用</li>
+<li>onloadstart: 当读取操作将要开始之前调用</li>
+<li>onprogress: 在读取数据过程中周期性调用</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFile</span>(<span class="params">image</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</span><br><span class="line">    reader.onloadend = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> previewer = $(<span class="string">'#previewer'</span>);</span><br><span class="line">        <span class="keyword">var</span> src = <span class="keyword">this</span>.result;  <span class="comment">// base64</span></span><br><span class="line">        previewer.append(<span class="string">'&lt;li&gt;&lt;img src="'</span> + src + <span class="string">'" alt=""&gt;&lt;i class="remove"&gt;&lt;/i&gt;&lt;/li&gt;'</span>);</span><br><span class="line">        <span class="comment">// 清除图片上传input的值</span></span><br><span class="line">        $(<span class="string">'#browsefile'</span>).val(<span class="string">""</span>);</span><br><span class="line">        <span class="comment">// 对图片进行本地Canvas处理</span></span><br><span class="line">        processFile(reader.result, image.type);</span><br><span class="line">    &#125;;</span><br><span class="line">    reader.onerror = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        log(<span class="string">'读取图片异常'</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    reader.readAsDataURL(image);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面贴出的 readFile() 方法中，创建了 FileReader 对象对入参 File 对象进行处理，调用 readAsDataUrl() 方法获取 File 的 base64 字符串。在读取操作完成时，执行自定义的操作，在我的程序里做了图片预览和 Canvas 处理。在进行 Canvas 操作时有个坑，编码时并不知道，到测试时才发现的，因此放到后面再展开。<br>在图片文件读取到后，紧接着要做的就是调用 Canvas API 对图片进行前端压缩处理。</p>
+<h4 id="Canvas"><a href="#Canvas" class="headerlink" title="Canvas"></a>Canvas</h4><p>Canvas 对图片的处理放在了 processFile() 方法中，我的做法略粗暴，对图片的高宽设定了固定的限值，只对超过高宽限值的图片做压缩处理。其实应该采取更合理的压缩策略，比如根据图片文件的大小，后期迭代时再完善吧。先把这部分的代码贴出来。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Canvas处理</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">processFile</span>(<span class="params">dataURL, fileType</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> maxWidth = <span class="number">800</span>, maxHeight = <span class="number">800</span>;</span><br><span class="line">    <span class="keyword">var</span> image = <span class="keyword">new</span> Image();</span><br><span class="line">    image.src = dataURL;</span><br><span class="line">    image.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> width = image.width;</span><br><span class="line">        <span class="keyword">var</span> height = image.height;</span><br><span class="line">        <span class="keyword">var</span> shouldResize = (width &gt; maxWidth) || (height &gt; maxHeight);</span><br><span class="line">        <span class="keyword">if</span> (!shouldResize) &#123;</span><br><span class="line">            <span class="comment">// 无需压缩</span></span><br><span class="line">            imageIndex++;</span><br><span class="line">            imageData[<span class="string">'imageData'</span> + imageIndex] = dataURL;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> newWidth, newHeight;</span><br><span class="line">        <span class="comment">// 等比压缩</span></span><br><span class="line">        <span class="keyword">if</span> (width &gt; height) &#123;</span><br><span class="line">            newHeight = height * (maxWidth / width);</span><br><span class="line">            newWidth = maxWidth;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            newWidth = width * (maxHeight / height);</span><br><span class="line">            newHeight = maxHeight;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> canvas = <span class="built_in">document</span>.createElement(<span class="string">'canvas'</span>);</span><br><span class="line">        canvas.width = newWidth;</span><br><span class="line">        canvas.height = newHeight;</span><br><span class="line">        <span class="keyword">var</span> context = canvas.getContext(<span class="string">'2d'</span>);</span><br><span class="line">        context.drawImage(<span class="keyword">this</span>, <span class="number">0</span>, <span class="number">0</span>, newWidth, newHeight);</span><br><span class="line">        dataURL = canvas.toDataURL(fileType);   <span class="comment">// base64</span></span><br><span class="line">        imageIndex++;</span><br><span class="line">        imageData[<span class="string">'imageData'</span> + imageIndex] = dataURL;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    image.onerror = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        log(<span class="string">'图片处理时异常！'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重点看 Canvas API 部分。MDN 上有相当完善的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial" target="_blank" rel="noopener">tutorial</a>。首先通过 createElement() 创建 canvas 元素，并设置 canvas 的高宽。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">"tutorial"</span> <span class="attr">width</span>=<span class="string">"150"</span> <span class="attr">height</span>=<span class="string">"150"</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>canvas 元素创建了一个固定大小的画布，在这个上下文 context 中可以绘制和处理要展示的内容。初始的 canvas 元素是空白的，要在上面绘制内容，需要先获取它的上下文。上面的代码里通过 getContext() 方法获取 canvas 元素的上下文。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> context = canvas.getContext(<span class="string">'2d'</span>);</span><br></pre></td></tr></table></figure>
+<p>在取得 canvas 上下文后，就能通过 drawImage() 方法将图片绘制到 canvas 元素里。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">context.drawImage(image, x, y, width, height);</span><br></pre></td></tr></table></figure>
+<p>其中参数 image 是 image 或者 canvas 对象，x 和 y 是其在目标 canvas 里的其实坐标，width 和 height 控制 canvas 绘制时的缩放宽高。drawImage() 函数支持更多传参，具体可参考 MDN 上的文档。</p>
+<p>在 canvas 元素上绘出图像后，再调用 canvas.toDataURL() 方法，就能获取到该 canvas 对象中所包含图片编码后的 data: URL 字符串。到此，canvas 的处理流程就完成了，接下来的步骤就是将处理后的图片数据发送到后端。</p>
+<h4 id="FormData"><a href="#FormData" class="headerlink" title="FormData"></a>FormData</h4><p>HTML5 新增加了 <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData" target="_blank" rel="noopener">FormData</a> 接口，FormData 类似 HashMap，通过 append() 方法插入键值对，模拟待提交的表单元素，FormData 相比普通 ajax 提交的优势在于，它可以异步上传二进制文件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发布按钮事件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">submit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> tag = $(<span class="string">'#tag'</span>).val();</span><br><span class="line">    <span class="keyword">var</span> content = $(<span class="string">'#feeling'</span>).val();</span><br><span class="line">    formData.append(<span class="string">"tag"</span>, tag);</span><br><span class="line">    formData.append(<span class="string">"content"</span>, content);</span><br><span class="line">    formData.append(<span class="string">"profileId"</span>, <span class="built_in">window</span>.localStorage.getItem(<span class="string">"profileId"</span>));</span><br><span class="line">    <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> imageData) &#123;</span><br><span class="line">        formData.append(<span class="string">"imageData_"</span> + i, imageData[key]);</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">    formData.append(<span class="string">"count"</span>, i);    <span class="comment">// 图片数量</span></span><br><span class="line">    $.ajax(&#123;</span><br><span class="line">        type: <span class="string">'POST'</span>,</span><br><span class="line">        url: <span class="string">'/footprint/upload'</span>,</span><br><span class="line">        data: formData,</span><br><span class="line">        contentType: <span class="literal">false</span>,</span><br><span class="line">        processData: <span class="literal">false</span>,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">            log(data);</span><br><span class="line">            <span class="keyword">if</span> (data.success) &#123;</span><br><span class="line">                <span class="comment">// handler</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// handler</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        error: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// handler</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>FormData 的 api 里有一需要注意的地方，我一开始也没有留心。因为产品的设计是仿 (chao) 照 (xi) 微信的，对于图文的发布限制了最多上传 9 张图片，同时支持删除待提交图片，所以需要动态的监控待提交的图片数量，FormData 有一个删除键值对的方法 formdata.delete(key)，我当时想既然有这个方法就可以即时删除待提交的图片数据，然而我错了，delete() 方法在浏览器里支持可以说很糟糕，参考 MDN 给出的兼容列表：</p>
+<p><img src="https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-1.png" alt></p>
+<p>只能另觅它途。我采取的方案比较基础，因为提交到后端的图片数据是 dataURL，即 base64 编码的一组字符串，因此可以创建两个变量，一个记录待传图片的数量，另一个变量保存图片的 base64 编码，即时处理图片的添加和删除，在提交按钮点击时将 base64 的 dataURL 数组 append 进 FormData 对象里并异步提交到后端处理。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 监听图片删除按钮点击</span></span><br><span class="line">$(<span class="built_in">document</span>).on(<span class="string">'click'</span>, <span class="string">'.remove'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> i = $(<span class="keyword">this</span>).index();</span><br><span class="line">    log(<span class="string">'remove index '</span> + i);</span><br><span class="line">    <span class="comment">// 删除FormData和页面上的图片</span></span><br><span class="line">    $(<span class="keyword">this</span>).parent().remove();</span><br><span class="line">    <span class="keyword">delete</span> imageData[<span class="string">'imageData'</span> + i];</span><br><span class="line">    imageIndex--;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>update20160525: 在 Chromium 更新到 50.0 后，测试已支持 FormData.delete() 方法。</p>
+<p><img src="https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-2.png" alt></p>
+<h4 id="iOS-调试兼容性"><a href="#iOS-调试兼容性" class="headerlink" title="iOS 调试兼容性"></a>iOS 调试兼容性</h4><p>前面在讲 canvas 处理时提到一个坑，再功能测试时才发现，就是经过 canvas 处理后的图片上传服务器后读取出来会发生旋转的问题。多次测试后发现，只有当调用摄像头竖拍上传时才会发生这个错误，横拍或者调用相册选图上传就正常。通常这种不知道从哪冒出来的 bug 找谷歌就行了，关键字 canvas upload image ios rotation 搜索到 stackoverflow 上有同样的<a href="http://stackoverflow.com/questions/19463126/how-to-draw-photo-with-correct-orientation-in-canvas-after-capture-photo-by-usin" target="_blank" rel="noopener">问题</a>，道出了问题发生的根源，就是摄像头竖拍照片的 EXIF 的信息发生了变化。读取 EXIF 并修正照片的旋转。</p>
+<p>Github 上有一个读取照片 EXIF 信息的 <a href="https://github.com/exif-js/exif-js" target="_blank" rel="noopener">exif.js</a> 库，提供了读取 API，在上面的 readFile() 方法中加入 EXIF 读取：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取图片</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFile</span>(<span class="params">image</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 省略...</span></span><br><span class="line">    reader.onloadend = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        EXIF.getData(image, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            EXIF.getAllTags(<span class="keyword">this</span>);</span><br><span class="line">            orientation = EXIF.getTag(<span class="keyword">this</span>, <span class="string">'Orientation'</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">        processFile(reader.result, image.type, orientation);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Canvas处理图片</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">processFile</span>(<span class="params">dataURL, fileType, orientation</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> device = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">if</span> (navigator.userAgent.match(<span class="regexp">/iphone/i</span>)) &#123;</span><br><span class="line">        device = <span class="string">'iphone'</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (navigator.userAgent.match(<span class="regexp">/android/i</span>)) &#123;</span><br><span class="line">        device = <span class="string">'android'</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        device = <span class="string">'other'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 省略...</span></span><br><span class="line">    <span class="comment">// bugfix: 解决iOS设备上传竖拍照片后被逆时针旋转90°的问题</span></span><br><span class="line">    <span class="keyword">if</span> (device === <span class="string">'iphone'</span>) &#123;</span><br><span class="line">        <span class="keyword">switch</span> (orientation) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">                context.rotate(<span class="number">90</span>*<span class="built_in">Math</span>.PI/<span class="number">180</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                context.rotate(<span class="number">180</span>*<span class="built_in">Math</span>.PI/<span class="number">180</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">                context.rotate(<span class="number">-90</span>*<span class="built_in">Math</span>.PI/<span class="number">180</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调整 orientation 属性后，iOS 设备测试正常。</p>
+<p>到此，前端部分的工作就大体上介绍完了，下面继续将后端部分的业务处理，因为 JD 交易平台的项目绝大多数是采用 Spring MVC，因此后端方案采用的还是 Spring MVC，当然 PHP、Python 的处理思路都是一样的，就当抛砖引玉了。</p>
+<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><h4 id="接收-FormData"><a href="#接收-FormData" class="headerlink" title="接收 FormData"></a>接收 FormData</h4><p>服务器端接收客户端发送过来的 FormData 数据，最主要的工作就是将 base64 编码串提取出来并根据需要转换成所需的格式（在我的代码里转成了 byte 类型）。这部分工作很简单，需要注意的点是 base64 编码串的标准格式形如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABoYAAAJJCA</span><br></pre></td></tr></table></figure>
+<p>需要将其头部的标识位截去，即保留 <code>&quot;,&quot;</code> 后面的编码串。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"upload"</span>, method = RequestMethod.POST)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SimpleResponse <span class="title">upload</span><span class="params">(HttpServletRequest request, @RequestParam Map&lt;String, String&gt; formData)</span> </span>&#123;</span><br><span class="line">    SimpleResponse response = <span class="keyword">new</span> SimpleResponse();</span><br><span class="line">    Footprint footprint = <span class="keyword">new</span> Footprint();</span><br><span class="line">    String pin = (String) request.getAttribute(<span class="string">"pin"</span>);</span><br><span class="line">    Long profileId = Long.parseLong(formData.get(<span class="string">"profileId"</span>));</span><br><span class="line">    footprint.setPin(pin);</span><br><span class="line">    footprint.setProfileId(profileId);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> count = Integer.parseInt(formData.get(<span class="string">"count"</span>)); <span class="comment">// 图片数量</span></span><br><span class="line">        String tag = formData.get(<span class="string">"tag"</span>) == <span class="keyword">null</span> ? <span class="string">""</span> : formData.get(<span class="string">"tag"</span>); <span class="comment">// 足迹标签</span></span><br><span class="line">        String content = formData.get(<span class="string">"content"</span>) == <span class="keyword">null</span> ? <span class="string">""</span> : formData.get(<span class="string">"content"</span>); <span class="comment">// 足迹正文</span></span><br><span class="line">        footprint.setTag(tag);</span><br><span class="line">        footprint.setContent(content);</span><br><span class="line">        logger.error(<span class="string">"Tag: &#123;&#125;, Content: &#123;&#125;, Count: &#123;&#125;"</span>, tag, content, count);</span><br><span class="line">        <span class="keyword">byte</span>[][] imageByte = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (count &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            imageByte = <span class="keyword">new</span> <span class="keyword">byte</span>[count][];</span><br><span class="line">            <span class="comment">// base64转byte[]</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">                String base64Str = formData.get(<span class="string">"imageData_"</span> + i).split(<span class="string">","</span>)[<span class="number">1</span>]; <span class="comment">// 截掉base64的头部</span></span><br><span class="line">                <span class="keyword">byte</span>[] bytes = EncodeUtil.base64ToByte(base64Str);</span><br><span class="line">                imageByte[i] = bytes;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Footprint saveResult = footprintDBService.save(footprint, imageByte); <span class="comment">// 传给后台处理并存储到云存储</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (saveResult == <span class="keyword">null</span>) &#123;</span><br><span class="line">            response.setSuccess(<span class="keyword">false</span>);</span><br><span class="line">            response.setMessage(<span class="string">"很抱歉服务器响应缓慢，请稍后再试"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            response.setSuccess(<span class="keyword">true</span>);</span><br><span class="line">            response.setData(saveResult);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(<span class="string">"发生异常: "</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> response;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Frontend/" rel="tag"># Frontend</a>
+          
+            <a href="/tags/Canvas/" rel="tag"># Canvas</a>
+          
+            <a href="/tags/HTML5/" rel="tag"># HTML5</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/22/using-the-django-authentication-system-zh/" rel="next" title="[译] 使用 Django 认证系统">
+                <i class="fa fa-chevron-left"></i> [译] 使用 Django 认证系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/09/install-aur-packages-by-proxy/" rel="prev" title="通过代理安装 AUR 软件包">
+                通过代理安装 AUR 软件包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sudoz</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端"><span class="nav-number">1.</span> <span class="nav-text">前端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#input-标签"><span class="nav-number">1.1.</span> <span class="nav-text">input 标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FileReader"><span class="nav-number">1.2.</span> <span class="nav-text">FileReader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Canvas"><span class="nav-number">1.3.</span> <span class="nav-text">Canvas</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FormData"><span class="nav-number">1.4.</span> <span class="nav-text">FormData</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS-调试兼容性"><span class="nav-number">1.5.</span> <span class="nav-text">iOS 调试兼容性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后端"><span class="nav-number">2.</span> <span class="nav-text">后端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#接收-FormData"><span class="nav-number">2.1.</span> <span class="nav-text">接收 FormData</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化"><span class="nav-number">3.</span> <span class="nav-text">优化</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sudoz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
