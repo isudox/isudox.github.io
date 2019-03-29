@@ -7,13 +7,11 @@ tags:
 categories:
   - Coding
 ---
-
-136. Single Number
+> [136. Single Number](https://leetcode.com/problems/single-number/solution/)
+>
+> Easy
 
 <!-- more -->
-
-> [136. Single Number](https://leetcode.com/problems/single-number/solution/)
-> Easy
 
 Given a non-empty array of integers, every element appears twice except for one. Find that single one.
 
@@ -75,3 +73,9 @@ Space complexity is `O(1)`;
 ******
 
 [GitHub Link](https://github.com/isudox/leetcode-solution/blob/master/docs/136.single-number.md)
+
+```
+Forgive my poor English, I just wanna improve my writing skill.
+So if I make some stupid mistakes in writing, forget about them.
+Let's focus on the code :)
+```
