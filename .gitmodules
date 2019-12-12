@@ -4,3 +4,7 @@
 [submodule "themes/nova"]
 	path = themes/nova
 	url = https://github.com/isudox/hugo-theme-nova.git
+[submodule "public"]
+	path = public
+	url = https://github.com/isudox/isudox.github.io.git
+	branch = master

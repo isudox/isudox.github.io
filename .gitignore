@@ -1,6 +1,5 @@
 .deploy*/
 node_modules
-public
 db.json
 *.log
 .vscode/
