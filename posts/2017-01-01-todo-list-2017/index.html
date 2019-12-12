@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>展望 2017 - I sudo X</title>
+    
+    <meta name="description" content="看完李安的《推手》，迎来了 2017 年的第一天。这算是新的一年里的开篇吧，就不写代码了，看社区里很多同行在做过 2016 年的总结，或是新一年的期望。对过去一年，我似乎很难整理出一条清晰的逻辑去完整的复盘和总结，总体来讲，自己并不是很满意，当然也有令我激动的地方，比如遇到了 Kiki 啊……自认为在毕业后的一年里没有取得自己想要的进步，没有达到我想达到的层次，新的一年里还得加油啊。既然不做总结了，展望还是要有的，万一做到了呢？
+ 博客的 Markdown 解析器好像不支持 checkbox 语法，尴尬
+  锻炼身体，体重达到 65 kg 以上，用肌肉武装自己； 学习英语，雅思争取拿到满意的成绩； 提升阅读量，重拾中学时的阅读热情。目标每个月都能啃掉一本书； 向 Kiki 学吉他，光看 Live 有什么劲啊； 养一条狗，陪它长大； 好好写博客，向大牛看齐，写出有深度有干货的技术博客，好好混 GitHub，写出自己满意的开源作品； 为爱自己的人，为自己爱的人，赚钱！赚更多钱！！赚好多钱！！！  嗯，就是这样。其实上面有些是 2016 年的计划，当然这就意味着我没做到，只能延期一年，希望明年这时候会是另外一个状态。
+最后，既然是程序员，自然要用程序员的方式辞旧迎新——
+&lt;/2016&gt; &lt;2017&gt; ">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">展望 2017</h1>
+    <div class="post-meta">January 1, 2017</div>
+  </header>
+  <div class="post-content"><p>看完李安的《推手》，迎来了 2017 年的第一天。这算是新的一年里的开篇吧，就不写代码了，看社区里很多同行在做过 2016 年的总结，或是新一年的期望。对过去一年，我似乎很难整理出一条清晰的逻辑去完整的复盘和总结，总体来讲，自己并不是很满意，当然也有令我激动的地方，比如遇到了 Kiki 啊……自认为在毕业后的一年里没有取得自己想要的进步，没有达到我想达到的层次，新的一年里还得加油啊。既然不做总结了，展望还是要有的，万一做到了呢？</p>
+<!-- raw HTML omitted -->
+<blockquote>
+<p>博客的 Markdown 解析器好像不支持 <code>checkbox</code> 语法，尴尬</p>
+</blockquote>
+<ul>
+<li>锻炼身体，体重达到 65 kg 以上，用肌肉武装自己；</li>
+<li>学习英语，雅思争取拿到满意的成绩；</li>
+<li>提升阅读量，重拾中学时的阅读热情。目标每个月都能啃掉一本书；</li>
+<li>向 Kiki 学吉他，光看 Live 有什么劲啊；</li>
+<li>养一条狗，陪它长大；</li>
+<li>好好写博客，向大牛看齐，写出有深度有干货的技术博客，好好混 GitHub，写出自己满意的开源作品；</li>
+<li>为爱自己的人，为自己爱的人，赚钱！赚更多钱！！赚好多钱！！！</li>
+</ul>
+<p>嗯，就是这样。其实上面有些是 2016 年的计划，当然这就意味着我没做到，只能延期一年，希望明年这时候会是另外一个状态。</p>
+<p>最后，既然是程序员，自然要用程序员的方式辞旧迎新——</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;/<span style="color:#f92672">2016</span>&gt;
+&lt;<span style="color:#f92672">2017</span>&gt;
+</code></pre></div></div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/todo">Todo</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

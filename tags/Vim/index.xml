@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim on I sudo X</title>
+    <link>https://isudox.com/tags/vim/</link>
+    <description>Recent content in Vim on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 25 Jun 2017 22:40:10 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>扔掉鼠标，开始键盘流编程</title>
+      <link>https://isudox.com/posts/2017-06-25-coding-with-keyboard-no-mouse/</link>
+      <pubDate>Sun, 25 Jun 2017 22:40:10 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2017-06-25-coding-with-keyboard-no-mouse/</guid>
+      <description>之前曾和朋友讨论，为什么很多程序员舍得买千元价位的键盘，却很少愿意买个同级别的鼠标……最后一致认为原因在于代码是键盘敲出来的，不是鼠标点出来的。如果以后编程简化到拖拽下控件就搞定，那价值天平恐怕就能向鼠标倾斜了。
+在开始尝试键盘流编程前，需要达成一个共识──
+ 不依赖鼠标的编程，不仅很酷，更重要的是非常高效。
+ 以 Java 编程来说，我使用的软硬件是 MacBook Pro、IntelliJ IDEA、Vim。脱离鼠标编程的关键在于──
+ 熟悉代码定位的快捷键，包括目标文件的打开，方法定义/实现的跳转等； 熟悉文档操作的快捷键，复制粘贴是最最基础的，复杂高阶的甚至可以是宏操作；  纯熟的掌握以上两个技能，基本可以实现不依赖鼠标，双手不离开键盘地进行编程了。而 MacBook + IntelliJ IDEA + Vim 的组合工具最大化的降低了上述两点的习得门槛。为什么下这样的结论，其一，macOS 常用的组合键是 Command 键，这样就释放了大量潜在的以 Control 键为基础的快捷键，此外 macOS 支持 Emacs 的光标移动快捷键，这非常高效；其二，IntelliJ IDEA 是最棒的 Java IDE 没有之一，它的快捷键也是最出色的；其三，Vim 是久经考验的编辑器之神。
+吹工具的话到此为止，下面就具体写写怎么用这些工具实现键盘流编程。
+IDEA 本身并不支持 Vim 操作，需要安装一个堪称神器的插件 IdeaVim，几乎可以说是模拟 Vim 最好的一个插件了。IDEA 的完善快捷键加上 Vim 强大的文本编辑能力，多加练习就完全可以脱离对鼠标的依赖。
+先来看 IDEA 自带的快捷键，哪些能带来强大的生产力。
+IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以打开全局文件查找和最近访问文件查找； 在文件查找框中输入 / + 文件夹名，可以定位到文件夹所在位置； 通过 Command + E 打开最近访问文件的查找框； 通过 Command + Shift + O 查找文档名，精确定位文档； 在选择文档时，你根本不需要移动鼠标去点击，扔掉鼠标，试着用 Ctrl + N (P, F, B) 来对光标进行向下、向上、向前和向后移动。</description>
+    </item>
+    
+    <item>
+      <title>JetBrains IDE Vim 模式的方案</title>
+      <link>https://isudox.com/posts/2016-07-26-scheme-of-ideavim-keymap/</link>
+      <pubDate>Tue, 26 Jul 2016 16:47:03 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-07-26-scheme-of-ideavim-keymap/</guid>
+      <description>之前的一篇博客翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 Ideavim，模拟 Vim 编辑器的操作。
+在安装 ideavim 插件后，IDE 可能会处在几种不同的模式下：
+ Vim 模拟器关闭模式（Vim Emulator off） Vim 模拟器开启模式（Vim Emulator on） Vim 命令模式（Command mode） Vim 插入模式（Insert mode） Vim 末行命令模式（Last line mode）  当关闭 Vim 模拟器时，IDE 的 Keymap 会恢复到安装 Ideavim 之前的状态，因此最好是在自己自定义设置并熟悉 IDE 自带的 keymap 后安装 Ideavim 插件。开启/关闭 Vim 模拟器的快捷键可以北自定义，默认的切换快捷键是 Ctrl + Alt + V，这个切换方式和 IDE 自带的快捷键冲突，可以考虑改成更合适的映射。我把切换 Vim 开关状态的快捷键修改成了 Ctrl + ;，这样，如果 Caps 键映射成 Ctrl 键，左手右手一个慢动作，可以很方便的开启/关闭 Vim 模拟器。
+Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模拟器开启后，IDE 就拥有了 Vim 编辑器的强大功能（不是全部，但也很强大了）。Vim 的三个模式基本都耳熟能详了，命令模式下的键盘动作会被识别为命令，而不是字符输入，比如 a 进入 append 输入，i 进入 insert 输入，x 删除光标所在的字符，X 删除光标之前的字符，dd 删除光标所在行，yy 复制当前行，p 粘贴等。插入模式就是正常的文本输入编辑，Esc 键退出插入模式，或者 Ctrl + [。末行命令模式是从命令模式下按 : 键进入，可以执行保存、退出、set:options 等操作。</description>
+    </item>
+    
+  </channel>
+</rss>

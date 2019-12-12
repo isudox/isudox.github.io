@@ -1,929 +1,258 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next muse use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.0.1">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    version: '7.0.1',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta property="og:type" content="website">
-<meta property="og:title" content="I sudo X">
-<meta property="og:url" content="https://isudox.com/tags/LeetCode/index.html">
-<meta property="og:site_name" content="I sudo X">
-<meta property="og:locale" content="zh-Hans">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="I sudo X">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="I sudo X" type="application/atom+xml">
-
-
-
-  
-  
-  <link rel="canonical" href="https://isudox.com/tags/LeetCode/">
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>Tag: LeetCode | I sudo X</title>
-  
-
-
-
-
-
-
-  <script>
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?416f859610dfc2db62c90f5d33de2fdd";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-  
-
-  <div class="container sidebar-position-left ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
+    <title>LeetCode - I sudo X</title>
     
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">I sudo X</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
     
-  </div>
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
 
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
 
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
 
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="list">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
         
         
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="st-search-show-outputs">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
-        </li>
-      
-    </ul>
-  
-
-  
-    
-
-    
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
+      </nav>
+    </header>
+    <main class="main">
 
 
-  
 
-  
-    <div class="site-search">
-      
-  <form class="site-search-form">
-  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
-</form>
 
+
+<header class="page-header">
+  <h1>LeetCode</h1>
+</header>
+
+
+
+
+
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>LeetCode-39 Combination Sum</h2>
+  </header>
+  <section class="entry-content">
+   <p>39. Combination Sum
+Medium
+ Problem Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+The same repeated number may be chosen from candidates unlimited number of times.
+Note:
+ All numbers (including target) will be positive integers. The solution set must not contain duplicate combinations.  Example 1:
+Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] Example 2:...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>March 29, 2019</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2019-03-29-leetcode-39-combination-sum/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>LeetCode-136 Single Number</h2>
+  </header>
+  <section class="entry-content">
+   <p>136. Single Number
+Easy
+ Given a non-empty array of integers, every element appears twice except for one. Find that single one.
+Note:
+ Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+ Example 1:
+Input: [2,2,1] Output: 1 Example 2:
+Input: [4,1,2,1,2] Output: 4 Solution Actually it&#39;s quite simple to solve, but we should make clear that it requires O(N) complexity and no extra memory usage....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>March 26, 2019</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2019-03-26-leetcode-136-single-number/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>LeetCode 26-30</h2>
+  </header>
+  <section class="entry-content">
+   <p>三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。
+Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Array
+ 给定一个有序数组，去掉其中重复的元素，并返回新数组的长度。 不要为其他数组分配额外的空间，必须在给定的内存中完成。
+ 假设传入的数组是 [1, 1, 2]，得到的结果应该是 2。题意很简单，但是有两个注意点，一个是该数组是有序的，即从小到大排列，另一个是不允许分配新数组的存储空间，这就意味着不用创建新的数组来保存数据，也不能通过 Set 来过滤重复元素。
+因为第二点的限，只能在给定的数组上进行数值比较的同时，计算非重复元素的数量；因为第一点的设定，所以可以做到对数组只遍历一次。具体做法就是，在遍历数组元素时，比较前后两个元素，如果相等，则重复元素的数量加一，同时移动当前遍历位置，直到遍历到数组最末元素。
+编写 Java 解法如下：
+// Rejected × public class Solution { public int removeDuplicates(int[] nums) { int count = nums.length; int dup = 0; if (count &lt; 2) return count; for (int i = 0; i &lt; count - 1; i&#43;&#43;) { if (nums[i] == nums[i &#43; 1]) dup&#43;&#43;; } return count - dup; } } 本地测试结果是正确的，但是提交的 LeetCode 上却被否决，因为上面的方法只计算出了非重复元素的个数 n，没有考虑把有序数组前 n 位修改成正确的有序非重复元素。因此在遍历的同时，需要修改发现重复的位置上的元素。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>October 17, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-10-17-leetcode-26-30/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>LeetCode 21-25</h2>
+  </header>
+  <section class="entry-content">
+   <p>本篇记录 LeetCode 算法部分第 21 至 25 题。
+Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
+ 将两个有序链表合并成一个新的有序链表。
+ 题目不复杂，取两个指针分别往下遍历两个链表的每个节点，逐次指向节点的值，取其较小值，并移动该指针，另一指针不动。继续往下比较，知道其中有一个指针到达末端为止。 循环解法：
+// MergeTwoSortedLists.java v1.0 // Definition for singly-linked list. // public class ListNode { // int val; // ListNode next; // ListNode(int x) { val = x; } // } public class Solution { public ListNode mergeTwoLists(ListNode l1, ListNode l2) { ListNode res = new ListNode(0); ListNode temp = res; while (l1 !...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>July 8, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-07-08-leetcode-tour-5/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>LeetCode 16-20</h2>
+  </header>
+  <section class="entry-content">
+   <p>本篇记录 LeetCode 算法部分第 16-20 题。
+3Sum Closest 第 16 题 3Sum Closest
+ 给定一个包含 n 个整型数的数组 S，找出 S 中的三个数，使得三者求和的结果和目标值最接近。返回求和结果，假定 S 中一定存在唯一解。 举例：数组 S = { -1 2 1 -4 }，目标值 target = 1。最接近目标值的求和结果为 (-1 &#43; 2 &#43; 1 = 2)
+ 这题是第 15 题的延伸。沿用前一题的思路，先对数组进行排序，取 a(i) &#43; a(i&#43;k) &#43; a(n) 求和，如果结果和目标值一致，则直接将求和结果返回；如果结果大于目标值，则表明需要减小下标 n 的值，逐次减小，每次比较当前求和结果与目标值的差值和前一次求和比较的差值，取绝对值较小的保留，同时保留当前的求和结果；如果结果小于目标值，则需要增大下标 (i&#43;k)。Java 代码如下
+// ThreeSumClosest.java v1.0 public class Solution { public int threeSumClosest(int[] nums, int target) { int sum = Integer....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>July 4, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-07-04-leetcode-tour-4/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>LeetCode 11-15</h2>
+  </header>
+  <section class="entry-content">
+   <p>继上篇 LeetCode 探险第二弹，第三弹记录第 11 到 15 题。
+Container With Most Water 第 11 题 Container With Most Water
+ 给出 n 个非负整数 a1, a2, …, an，每个数指向一个坐标点 (i, ai)。该 n 个坐标点画出了 n 条纵线，即从 (i, ai) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。
+ 假设待求的这两条线段的坐标分别为(i, 0)-(i, ai) 和 (j, 0)-(j, aj)，那么容器的底座长度 L=Math.abs(i - j)，高度 H=Math.min(ai, aj)，容积 V=L*H。
+最笨也是最直接的办法就是在循环里暴力枚举。把所有能组成的容器都测量一遍，不多说了，直接撸代码：
+// ContainerWithMostWater.java v1.0 public class Solution { public int maxArea(int[] height) { int maxV = 0, curV = 0; int count = height....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>June 15, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-06-15-leetcode-tour-3/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>LeetCode 6-10</h2>
+  </header>
+  <section class="entry-content">
+   <p>接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。
+ZigZag Conversion 第 6 题 ZigZag Conversion
+ 字符串 &#34;PAYPALISHIRING&#34; 是由如下排列的字符串通过 ZigZag 形式读取所得。
+ P A H N A P L S I I G Y I R
+&gt; 如果按行读取则为 `&#34;PAHNAPLSIIGYIR&#34;` &gt; 请编写代码将给定行数的 zigzag 形式字符串转换为行形式的字符串： &gt; ``` string convert(string text, int nRows);  比如 convert(&#34;PAYPALISHIRING&#34;, 3) 得到 &#34;PAHNAPLSIIGYIR&#34;
+ 这道 ZigZag 题很好玩，让我想起小时候做过的奥数题。从 ZigZag 型字符串中找规律，可以看到第一行和最后一行很容易挑出来，因为其字符的步进是固定的，即 2*(nRows-1)。然而中间的行的规律就不那么规则了，其步进间距是跳跃的，如果继续按 2*(nRows-1) 步进查找的话，会漏掉步进间距小于该值的字符。但是仔细观察除掉首行和末行的 ZigZag 排列字符串，可以发现它仍然是 ZigZag 字符串，只不过行数再减小，与之相应的步进间距也在变化，但始终符合 2*(nRows-1) 的规律。找到这个特性后，在步进查找时把中间行组成的 ZigZag 字符串的步进间距也作查询，就不会漏掉了。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>May 17, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-05-17-leetcode-tour-2/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>LeetCode 1-5</h2>
+  </header>
+  <section class="entry-content">
+   <p>上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。
+Two Sum 第 1 题 Two Sum 算是简单题，题意大致为：
+ 给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。 伪代码： nums = [2, 7, 11, 15], target = 9 nums[0] &#43; nums[1] = 2 &#43; 7 = 9 return [0, 1]
+ 这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答
+// TwoSum.java public class Solution { public int[] twoSum(int[] nums, int target) { int len = nums.length; int[] res = new int[2]; if (len &lt; 2) { return res; } for (int i = 0; i &lt; len; i&#43;&#43;) { for (int j = i &#43; 1; j &lt; len; j&#43;&#43;) { if (nums[i] &#43; nums[j] == target) { res[0] = i &#43; 1; res[1] = j &#43; 1; break; } } } return res; } } # two_sum....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>November 23, 2015</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2015-11-23-leetcode-1st-week/"></a>
+</article>
+
+
+
+
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
 <script>
-  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-  _st('install', 'bDJ1BXjgkwVZSrnkzynx','2.0.0');
+  hljs.initHighlightingOnLoad();
 </script>
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-          <div id="content" class="content">
-            
-
-  
-  
-  
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>LeetCode<small>Tag</small>
-        </h1>
-      </div>
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/03/29/leetcode-39-combination-sum/" itemprop="url">
-            
-              <span itemprop="name">LeetCode-39 Combination Sum</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-29T21:54:41+08:00" content="2019-03-29">
-          03-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/03/26/leetcode-136-single-number/" itemprop="url">
-            
-              <span itemprop="name">LeetCode-136 Single Number</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-26T20:20:20+08:00" content="2019-03-26">
-          03-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2016/10/17/leetcode-26-30/" itemprop="url">
-            
-              <span itemprop="name">LeetCode 26-30</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2016-10-17T17:09:15+08:00" content="2016-10-17">
-          10-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2016/07/08/leetcode-tour-5/" itemprop="url">
-            
-              <span itemprop="name">LeetCode 21-25</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2016-07-08T21:25:43+08:00" content="2016-07-08">
-          07-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2016/07/04/leetcode-tour-4/" itemprop="url">
-            
-              <span itemprop="name">LeetCode 16-20</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2016-07-04T15:06:59+08:00" content="2016-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2016/06/15/leetcode-tour-3/" itemprop="url">
-            
-              <span itemprop="name">LeetCode 11-15</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2016-06-15T20:18:15+08:00" content="2016-06-15">
-          06-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2016/05/17/leetcode-tour-2/" itemprop="url">
-            
-              <span itemprop="name">LeetCode 6-10</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2016-05-17T21:14:04+08:00" content="2016-05-17">
-          05-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2015/11/23/leetcode-1st-week/" itemprop="url">
-            
-              <span itemprop="name">LeetCode 1-5</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2015-11-23T20:50:27+08:00" content="2015-11-23">
-          11-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-    </div>
-
-  </div>
-  
-  
-  
-
-  
-
-
-
-          </div>
-          
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">sudoz</p>
-              <div class="site-description motion-element" itemprop="description"></div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">61</span>
-                    <span class="site-state-item-name">posts</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                      <a href="/categories/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">8</span>
-                    <span class="site-state-item-name">categories</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">35</span>
-                    <span class="site-state-item-name">tags</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">sudoz</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=7.0.1"></script>
-
-  <script src="/js/src/motion.js?v=7.0.1"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
-
-
-
-  
-
-  
-
-
-  <script src="/js/src/next-boot.js?v=7.0.1"></script>
-
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
 </body>
 </html>
+

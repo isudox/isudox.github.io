@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>通过反射统一 RPC 调用入口 - I sudo X</title>
+    
+    <meta name="description" content="最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一个专属的 Porcessor 去处理服务调用的结果。当然好处就是功能区分清晰，不好的地方就是当 Processor 多了后维护起来不太方便。一种思路就是利用反射思想，为 Processor 中的 RPC 调用添加统一入口，通过服务名和方法名对调用进行定位。
+代理的思路很简单，但真的非常实用，在实际开发中，合理使用代理，能精简很多固有代码。从代理的统一入口进入，根据传入的远程服务名和方法名，自动定位到需要被远程调用的方法，再传入入参并调用该方法，就能代理过多的 Processor 调用 RPC。
+代理入口的代码如下：
+@Service(value = &#34;rpcEntry&#34;) public class RpcEntry { @Resource private Map&lt;String, Object&gt; serviceMap; // 远程服务的 k-v 映射  private final Map&lt;String, Method&gt; actions = new HashMap&lt;&gt;(); // 存储方法调用  public Result process(String invokeStr, Object[] args) { String serviceName = methodKey.split(&#34;\\.&#34;)[0]; if (!actions.containsKey(invokeStr)) { Object service = serviceMap.get(serviceName); if (service != null) { for (Method m : service.getClass().getMethods()) { actions.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">通过反射统一 RPC 调用入口</h1>
+    <div class="post-meta">February 6, 2017</div>
+  </header>
+  <div class="post-content"><p>最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一个专属的 Porcessor 去处理服务调用的结果。当然好处就是功能区分清晰，不好的地方就是当 Processor 多了后维护起来不太方便。一种思路就是利用反射思想，为 Processor 中的 RPC 调用添加统一入口，通过服务名和方法名对调用进行定位。</p>
+<!-- raw HTML omitted -->
+<p>代理的思路很简单，但真的非常实用，在实际开发中，合理使用代理，能精简很多固有代码。从代理的统一入口进入，根据传入的远程服务名和方法名，自动定位到需要被远程调用的方法，再传入入参并调用该方法，就能代理过多的 Processor 调用 RPC。</p>
+<p>代理入口的代码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rpcEntry&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RpcEntry</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Resource</span>
+	<span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> serviceMap<span style="color:#f92672">;</span>  <span style="color:#75715e">// 远程服务的 k-v 映射
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Method<span style="color:#f92672">&gt;</span> actions <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>  <span style="color:#75715e">// 存储方法调用
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">public</span> Result <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>String invokeStr<span style="color:#f92672">,</span> Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String serviceName <span style="color:#f92672">=</span> methodKey<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\.&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>actions<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>invokeStr<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Object service <span style="color:#f92672">=</span> serviceMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>serviceName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>service <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Method m <span style="color:#f92672">:</span> service<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getMethods</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    actions<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%s.%s&#34;</span><span style="color:#f92672">,</span> serviceName<span style="color:#f92672">,</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> m<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        Method method <span style="color:#f92672">=</span> actions<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>invokeStr<span style="color:#f92672">)</span><span style="color:#f92672">;</span>  <span style="color:#75715e">// 定位要调用的方法
+</span><span style="color:#75715e"></span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>method <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Object service <span style="color:#f92672">=</span> serviceMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>serviceName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            Object res <span style="color:#f92672">=</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>service<span style="color:#f92672">,</span> args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+            <span style="color:#75715e">// 对调用结果进行自定义处理
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;调用的方法[%s]不存在，请确认。&#34;</span><span style="color:#f92672">,</span> methodKey<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>上面代码中的远程服务映射可以在 Spring 中配置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;serviceMap&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.util.HashMap&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;constructor-arg</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;map</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;example1&#34;</span> <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;example1ServiceImpl&#34;</span> <span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;example2&#34;</span> <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;example2ServiceImpl&#34;</span> <span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;example3&#34;</span> <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;example3ServiceImpl&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/map&gt;</span>
+  <span style="color:#f92672">&lt;/constructor-arg&gt;</span>
+<span style="color:#f92672">&lt;/bean&gt;</span>
+</code></pre></div><p>有了统一的调用入口后，如果想调用 example1ServiceImpl.debug() 方法，不需要在专门的 Processor 中进行调用，只需用下面的代码进行调用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Resource</span>
+<span style="color:#66d9ef">private</span> RpcEntry rpcEntry<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    rpcEntry<span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;example1.debug&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div></div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/java">Java</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/rpc">RPC</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

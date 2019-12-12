@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>移动端仿微信朋友圈发布图文 - I sudo X</title>
+    
+    <meta name="description" content="最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。
+由于微信朋友圈的火爆和用户基础，因此 JD 的这个项目中类朋友圈的原型设计基本也是抄袭的微信，只不过换成 HTML5 的样式，所以原型图就不贴出来了……要实现的功能大致等于微信朋友圈，用户通过手机相册或摄像头上传图片，发布到京东 App 的一个版块里，由于一期不开发社交功能，因此没有朋友圈留言功能（电商 APP 不务正业，我也是无力吐槽）。 从项目前端开始讲吧。
+前端 在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 WebUploader 组件，或者 jQuery-File-Upload，再久远些还有用 Flash 做的文件上传插件，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像朋友圈发状态一次上传好几张图片，客户端不做处理的话，无论是传输时间还是流量损耗都是不能接受的。因此移动端需要在上传前默认对大体积图片进行压缩处理，后面会完整说明。
+input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别于 PC 端上，移动设备除了调用文件浏览器外，还可以调用摄像头进行拍照上传，需要加入 capture 参数
+&lt;input type=&#34;file&#34; name=&#34;file&#34; accept=&#34;image/*&#34; capture=&#34;camera&#34;&gt; 但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。
+关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。
+&lt;!--图片添加按钮 --&gt; &lt;ul id=&#34;previewer&#34; class=&#34;upload-list&#34;&gt; &lt;li id=&#34;select-image&#34; class=&#34;add-pic-btn&#34;&gt;&lt;a href=&#34;javascript:;&#34; onclick=&#34;clickBrowse();&#34;&gt;&#43;&lt;/a&gt;&lt;/li&gt; &lt;!">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">移动端仿微信朋友圈发布图文</h1>
+    <div class="post-meta">April 18, 2016</div>
+  </header>
+  <div class="post-content"><p>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。</p>
+<!-- raw HTML omitted -->
+<p>由于微信朋友圈的火爆和用户基础，因此 JD 的这个项目中类朋友圈的原型设计基本也是抄袭的微信，只不过换成 HTML5 的样式，所以原型图就不贴出来了……要实现的功能大致等于微信朋友圈，用户通过手机相册或摄像头上传图片，发布到京东 App 的一个版块里，由于一期不开发社交功能，因此没有朋友圈留言功能（电商 APP 不务正业，我也是无力吐槽）。
+从项目前端开始讲吧。</p>
+<h3 id="heading">前端</h3>
+<p>在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 <a href="http://fex.baidu.com/webuploader/">WebUploader</a> 组件，或者 <a href="https://github.com/blueimp/jQuery-File-Upload">jQuery-File-Upload</a>，再久远些还有用 Flash 做的文件上传插件，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像朋友圈发状态一次上传好几张图片，客户端不做处理的话，无论是传输时间还是流量损耗都是不能接受的。因此移动端需要在上传前默认对大体积图片进行压缩处理，后面会完整说明。</p>
+<h4 id="input-">input 标签</h4>
+<p>移动端上传文件仍然采用 HTML5 的 input 标签，区别于 PC 端上，移动设备除了调用文件浏览器外，还可以调用摄像头进行拍照上传，需要加入 capture 参数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;image/*&#34;</span> <span style="color:#a6e22e">capture</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;camera&#34;</span>&gt;
+</code></pre></div><p>但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。</p>
+<p>关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 图片添加按钮 </span><span style="color:#75715e">--&gt;</span>
+&lt;<span style="color:#f92672">ul</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;previewer&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;upload-list&#34;</span>&gt;
+    &lt;<span style="color:#f92672">li</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;select-image&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;add-pic-btn&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript:;&#34;</span> <span style="color:#a6e22e">onclick</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;clickBrowse();&#34;</span>&gt;+&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 预览列表 </span><span style="color:#75715e">--&gt;</span>
+&lt;/<span style="color:#f92672">ul</span>&gt;
+<span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 隐藏的 input </span><span style="color:#75715e">--&gt;</span>
+&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;browsefile&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;imageselect&#34;</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;visibility: hidden&#34;</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;image/*&#34;</span> <span style="color:#a6e22e">capture</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;camera&#34;</span>&gt;
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">/* footprint-add.js */</span>
+
+<span style="color:#75715e">// 自定义图片添加按钮的click事件
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">clickBrowse</span>() {
+    <span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;点击添加&#34;</span>);
+    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#browsefile&#39;</span>).<span style="color:#a6e22e">click</span>();
+}
+
+<span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span> () {
+    <span style="color:#66d9ef">if</span> (window.<span style="color:#a6e22e">File</span> <span style="color:#f92672">&amp;&amp;</span> window.<span style="color:#a6e22e">FileReader</span> <span style="color:#f92672">&amp;&amp;</span> window.<span style="color:#a6e22e">FormData</span>) {
+        <span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;支持File对象&#34;</span>);
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">inputFiled</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#browsefile&#39;</span>);
+        <span style="color:#a6e22e">inputFiled</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;change&#39;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">e</span>) {
+            <span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;有添加动作&#34;</span>);
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">imageIndex</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">9</span>) {
+                <span style="color:#75715e">// 如果已经预选了9张，则不再添加
+</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">mTips</span>.<span style="color:#a6e22e">show</span>(<span style="color:#e6db74">&#39;最多添加9张图片哦&#39;</span>, <span style="color:#ae81ff">2000</span>);
+                <span style="color:#66d9ef">return</span>;
+            }
+            <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">images</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">files</span>;
+            <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">count</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">images</span>.<span style="color:#a6e22e">length</span>;  <span style="color:#75715e">// 图片数量
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">count</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+                <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">image</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">files</span>[<span style="color:#a6e22e">i</span>];
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">image</span>) {
+                    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#e6db74">/\/(?:jpeg|jpg|png)/i</span>.<span style="color:#a6e22e">test</span>(<span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">type</span>)) {
+                        <span style="color:#66d9ef">return</span>;
+                    }
+                    <span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">image</span>);  <span style="color:#75715e">// 读取图片
+</span><span style="color:#75715e"></span>                }
+            }
+        })
+    }
+})
+</code></pre></div><p>其中 clickBrowse() 方法为监听 input 标签 change 事件的方法。另外参照了微信朋友圈的做法，图片数量限制为 9 张。上面代码里最终的一步就是 readFile() 方法，它实现了对相册和摄像头图片的读取和处理。ReadFile() 调用了 HTML5 的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader">FileReader API</a>，接下来的小节就具体说说 HTML5 的 FileReader。</p>
+<h4 id="filereader">FileReader</h4>
+<p>在具体展开讲 FileReader 之前，得先了解在 Web 中使用 <a href="https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications">File</a> 接口，MDN 的这篇文章详细介绍了如何在 Web 应用中使用 File 接口。简言之，File API 提供了在 Web 应用中对文件对象的抽象功能，对于 type=&quot;file&rdquo; 的 input 标签，所选的文件被抽象为 <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileList">FileList</a> 对象，可以像数组一样去调用 FileList 中的 File 对象。其中，File 对象中的属性主要有：</p>
+<ul>
+<li>name: 当前File对象所引用文件的文件名，不包含任何路径信息，只读</li>
+<li>size: 当前File对象所引用文件的文件大小，单位为字节，只读</li>
+<li>type: 当前File对象所引用文件的文件类型(MIME类型)，如果类型未知,则返回空字符串，只读</li>
+</ul>
+<p>对照上一节贴出来的代码，程序里调用了 File 接口获取 File 对象，并将 File 对象传递给 readFile() 方法，由 FileReader 读取 File 对象。
+参考 MDN 的权威解释，FileReader 可以异步的读取存储在用户计算机上的文件（或原始数据缓存）内容。创建 FileReader 对象的方法就是 new 一个对象出来：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">reader</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">FileReader</span>();
+</code></pre></div><p>FileReader 读取文件内容的方法有：</p>
+<ul>
+<li>abort(): 中止该读取操作。在返回时，eadyState 属性的值为 DONE</li>
+<li>readAsArrayBuffer(): 开始读取指定的 Blob 对象或 File 对象中的内容。当读取操作完成时，readyState 属性的值会成为 DONE，如果设置了 onloadend 事件处理程序，则调用之。同时，result 属性中将包含一个 ArrayBuffer 对象以表示所读取文件的内容</li>
+<li>readAsBinaryString(): 当读取操作完成时，readyState 属性的值会成为 DONE。同时，result 属性中将包含所读取文件的原始二进制数据</li>
+<li>readAsDataURL(): 当读取操作完成时，readyState 属性的值会成为 DONE。同时，result 属性中将包含一个data: URL格式的字符串以表示所读取文件的内容</li>
+<li>readAsText(): 当读取操作完成时,readyState 属性的值会成为 DONE。同时，result属性中将包含一个字符串以表示所读取的文件内容</li>
+</ul>
+<p>FileReader 有如下事件处理标识：</p>
+<ul>
+<li>onabort: 当读取操作被中止时调用</li>
+<li>onerror: 当读取操作发生错误时调用</li>
+<li>onload: 当读取操作成功完成时调用</li>
+<li>onloadend: 当读取操作完成时调用,不管是成功还是失败.该处理程序在onload或者onerror之后调用</li>
+<li>onloadstart: 当读取操作将要开始之前调用</li>
+<li>onprogress: 在读取数据过程中周期性调用</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">image</span>) {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">reader</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">FileReader</span>();
+    <span style="color:#a6e22e">reader</span>.<span style="color:#a6e22e">onloadend</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">previewer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#previewer&#39;</span>);
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">result</span>;  <span style="color:#75715e">// base64
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">previewer</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#39;&lt;li&gt;&lt;img src=&#34;&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">src</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#34; alt=&#34;&#34;&gt;&lt;i class=&#34;remove&#34;&gt;&lt;/i&gt;&lt;/li&gt;&#39;</span>);
+        <span style="color:#75715e">// 清除图片上传input的值
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#browsefile&#39;</span>).<span style="color:#a6e22e">val</span>(<span style="color:#e6db74">&#34;&#34;</span>);
+        <span style="color:#75715e">// 对图片进行本地Canvas处理
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">processFile</span>(<span style="color:#a6e22e">reader</span>.<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">type</span>);
+    };
+    <span style="color:#a6e22e">reader</span>.<span style="color:#a6e22e">onerror</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+        <span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;读取图片异常&#39;</span>);
+    };
+    <span style="color:#a6e22e">reader</span>.<span style="color:#a6e22e">readAsDataURL</span>(<span style="color:#a6e22e">image</span>);
+}
+</code></pre></div><p>上面贴出的 readFile() 方法中，创建了 FileReader 对象对入参 File 对象进行处理，调用 readAsDataUrl() 方法获取 File 的 base64 字符串。在读取操作完成时，执行自定义的操作，在我的程序里做了图片预览和 Canvas 处理。在进行 Canvas 操作时有个坑，编码时并不知道，到测试时才发现的，因此放到后面再展开。
+在图片文件读取到后，紧接着要做的就是调用 Canvas API 对图片进行前端压缩处理。</p>
+<h4 id="canvas">Canvas</h4>
+<p>Canvas 对图片的处理放在了 processFile() 方法中，我的做法略粗暴，对图片的高宽设定了固定的限值，只对超过高宽限值的图片做压缩处理。其实应该采取更合理的压缩策略，比如根据图片文件的大小，后期迭代时再完善吧。先把这部分的代码贴出来。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Canvas处理
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">processFile</span>(<span style="color:#a6e22e">dataURL</span>, <span style="color:#a6e22e">fileType</span>) {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">maxWidth</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">800</span>, <span style="color:#a6e22e">maxHeight</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">800</span>;
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">image</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Image</span>();
+    <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">dataURL</span>;
+    <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">width</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">width</span>;
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">height</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">height</span>;
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">shouldResize</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">width</span> <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">maxWidth</span>) <span style="color:#f92672">||</span> (<span style="color:#a6e22e">height</span> <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">maxHeight</span>);
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">shouldResize</span>) {
+            <span style="color:#75715e">// 无需压缩
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">imageIndex</span><span style="color:#f92672">++</span>;
+            <span style="color:#a6e22e">imageData</span>[<span style="color:#e6db74">&#39;imageData&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">imageIndex</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">dataURL</span>;
+            <span style="color:#66d9ef">return</span>;
+        }
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">newWidth</span>, <span style="color:#a6e22e">newHeight</span>;
+        <span style="color:#75715e">// 等比压缩
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">width</span> <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">height</span>) {
+            <span style="color:#a6e22e">newHeight</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">height</span> <span style="color:#f92672">*</span> (<span style="color:#a6e22e">maxWidth</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">width</span>);
+            <span style="color:#a6e22e">newWidth</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">maxWidth</span>;
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#a6e22e">newWidth</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">width</span> <span style="color:#f92672">*</span> (<span style="color:#a6e22e">maxHeight</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">height</span>);
+            <span style="color:#a6e22e">newHeight</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">maxHeight</span>;
+        }
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">canvas</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;canvas&#39;</span>);
+        <span style="color:#a6e22e">canvas</span>.<span style="color:#a6e22e">width</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">newWidth</span>;
+        <span style="color:#a6e22e">canvas</span>.<span style="color:#a6e22e">height</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">newHeight</span>;
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">canvas</span>.<span style="color:#a6e22e">getContext</span>(<span style="color:#e6db74">&#39;2d&#39;</span>);
+        <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">drawImage</span>(<span style="color:#66d9ef">this</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">newWidth</span>, <span style="color:#a6e22e">newHeight</span>);
+        <span style="color:#a6e22e">dataURL</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">canvas</span>.<span style="color:#a6e22e">toDataURL</span>(<span style="color:#a6e22e">fileType</span>);   <span style="color:#75715e">// base64
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">imageIndex</span><span style="color:#f92672">++</span>;
+        <span style="color:#a6e22e">imageData</span>[<span style="color:#e6db74">&#39;imageData&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">imageIndex</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">dataURL</span>;
+        <span style="color:#66d9ef">return</span>;
+    };
+    <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">onerror</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+        <span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;图片处理时异常！&#39;</span>);
+    }
+}
+</code></pre></div><p>重点看 Canvas API 部分。MDN 上有相当完善的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial">tutorial</a>。首先通过 createElement() 创建 canvas 元素，并设置 canvas 的高宽。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">canvas</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tutorial&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;150&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;150&#34;</span>&gt;&lt;/<span style="color:#f92672">canvas</span>&gt;
+</code></pre></div><p>canvas 元素创建了一个固定大小的画布，在这个上下文 context 中可以绘制和处理要展示的内容。初始的 canvas 元素是空白的，要在上面绘制内容，需要先获取它的上下文。上面的代码里通过 getContext() 方法获取 canvas 元素的上下文。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">canvas</span>.<span style="color:#a6e22e">getContext</span>(<span style="color:#e6db74">&#39;2d&#39;</span>);
+</code></pre></div><p>在取得 canvas 上下文后，就能通过 drawImage() 方法将图片绘制到 canvas 元素里。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">drawImage</span>(<span style="color:#a6e22e">image</span>, <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">width</span>, <span style="color:#a6e22e">height</span>);
+</code></pre></div><p>其中参数 image 是 image 或者 canvas 对象，x 和 y 是其在目标 canvas 里的其实坐标，width 和 height 控制 canvas 绘制时的缩放宽高。drawImage() 函数支持更多传参，具体可参考 MDN 上的文档。</p>
+<p>在 canvas 元素上绘出图像后，再调用 canvas.toDataURL() 方法，就能获取到该 canvas 对象中所包含图片编码后的 data: URL 字符串。到此，canvas 的处理流程就完成了，接下来的步骤就是将处理后的图片数据发送到后端。</p>
+<h4 id="formdata">FormData</h4>
+<p>HTML5 新增加了 <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData">FormData</a> 接口，FormData 类似 HashMap，通过 append() 方法插入键值对，模拟待提交的表单元素，FormData 相比普通 ajax 提交的优势在于，它可以异步上传二进制文件。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 发布按钮事件
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">submit</span>() {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">tag</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#tag&#39;</span>).<span style="color:#a6e22e">val</span>();
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">content</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#feeling&#39;</span>).<span style="color:#a6e22e">val</span>();
+    <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;tag&#34;</span>, <span style="color:#a6e22e">tag</span>);
+    <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;content&#34;</span>, <span style="color:#a6e22e">content</span>);
+    <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;profileId&#34;</span>, window.<span style="color:#a6e22e">localStorage</span>.<span style="color:#a6e22e">getItem</span>(<span style="color:#e6db74">&#34;profileId&#34;</span>));
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">key</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">imageData</span>) {
+        <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;imageData_&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">imageData</span>[<span style="color:#a6e22e">key</span>]);
+        <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>;
+    }
+    <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;count&#34;</span>, <span style="color:#a6e22e">i</span>);    <span style="color:#75715e">// 图片数量
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajax</span>({
+        <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>,
+        <span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/footprint/upload&#39;</span>,
+        <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">formData</span>,
+        <span style="color:#a6e22e">contentType</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+        <span style="color:#a6e22e">processData</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+        <span style="color:#a6e22e">success</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">data</span>) {
+            <span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">data</span>);
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">success</span>) {
+                <span style="color:#75715e">// handler
+</span><span style="color:#75715e"></span>            } <span style="color:#66d9ef">else</span> {
+                <span style="color:#75715e">// handler
+</span><span style="color:#75715e"></span>            }
+        },
+        <span style="color:#a6e22e">error</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">data</span>) {
+            <span style="color:#75715e">// handler
+</span><span style="color:#75715e"></span>        }
+    });
+}
+</code></pre></div><p>FormData 的 api 里有一需要注意的地方，我一开始也没有留心。因为产品的设计是仿 (chao) 照 (xi) 微信的，对于图文的发布限制了最多上传 9 张图片，同时支持删除待提交图片，所以需要动态的监控待提交的图片数量，FormData 有一个删除键值对的方法 formdata.delete(key)，我当时想既然有这个方法就可以即时删除待提交的图片数据，然而我错了，delete() 方法在浏览器里支持可以说很糟糕，参考 MDN 给出的兼容列表：</p>
+<p><img src="https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-1.png" alt=""></p>
+<p>只能另觅它途。我采取的方案比较基础，因为提交到后端的图片数据是 dataURL，即 base64 编码的一组字符串，因此可以创建两个变量，一个记录待传图片的数量，另一个变量保存图片的 base64 编码，即时处理图片的添加和删除，在提交按钮点击时将 base64 的 dataURL 数组 append 进 FormData 对象里并异步提交到后端处理。代码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 监听图片删除按钮点击
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(document).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;click&#39;</span>, <span style="color:#e6db74">&#39;.remove&#39;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">e</span>) {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">this</span>).<span style="color:#a6e22e">index</span>();
+    <span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;remove index &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">i</span>);
+    <span style="color:#75715e">// 删除FormData和页面上的图片
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">this</span>).<span style="color:#a6e22e">parent</span>().<span style="color:#a6e22e">remove</span>();
+    <span style="color:#66d9ef">delete</span> <span style="color:#a6e22e">imageData</span>[<span style="color:#e6db74">&#39;imageData&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">i</span>];
+    <span style="color:#a6e22e">imageIndex</span><span style="color:#f92672">--</span>;
+});
+</code></pre></div><p>update20160525: 在 Chromium 更新到 50.0 后，测试已支持 FormData.delete() 方法。</p>
+<p><img src="https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-2.png" alt=""></p>
+<h4 id="ios-">iOS 调试兼容性</h4>
+<p>前面在讲 canvas 处理时提到一个坑，再功能测试时才发现，就是经过 canvas 处理后的图片上传服务器后读取出来会发生旋转的问题。多次测试后发现，只有当调用摄像头竖拍上传时才会发生这个错误，横拍或者调用相册选图上传就正常。通常这种不知道从哪冒出来的 bug 找谷歌就行了，关键字 canvas upload image ios rotation 搜索到 stackoverflow 上有同样的<a href="http://stackoverflow.com/questions/19463126/how-to-draw-photo-with-correct-orientation-in-canvas-after-capture-photo-by-usin">问题</a>，道出了问题发生的根源，就是摄像头竖拍照片的 EXIF 的信息发生了变化。读取 EXIF 并修正照片的旋转。</p>
+<p>Github 上有一个读取照片 EXIF 信息的 <a href="https://github.com/exif-js/exif-js">exif.js</a> 库，提供了读取 API，在上面的 readFile() 方法中加入 EXIF 读取：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 读取图片
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">image</span>) {
+    <span style="color:#75715e">// 省略...
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">reader</span>.<span style="color:#a6e22e">onloadend</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+        <span style="color:#a6e22e">EXIF</span>.<span style="color:#a6e22e">getData</span>(<span style="color:#a6e22e">image</span>, <span style="color:#66d9ef">function</span> () {
+            <span style="color:#a6e22e">EXIF</span>.<span style="color:#a6e22e">getAllTags</span>(<span style="color:#66d9ef">this</span>);
+            <span style="color:#a6e22e">orientation</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">EXIF</span>.<span style="color:#a6e22e">getTag</span>(<span style="color:#66d9ef">this</span>, <span style="color:#e6db74">&#39;Orientation&#39;</span>);
+        });
+        <span style="color:#a6e22e">processFile</span>(<span style="color:#a6e22e">reader</span>.<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">image</span>.<span style="color:#a6e22e">type</span>, <span style="color:#a6e22e">orientation</span>);
+    };
+}
+
+<span style="color:#75715e">// Canvas处理图片
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">processFile</span>(<span style="color:#a6e22e">dataURL</span>, <span style="color:#a6e22e">fileType</span>, <span style="color:#a6e22e">orientation</span>) {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">device</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">navigator</span>.<span style="color:#a6e22e">userAgent</span>.<span style="color:#a6e22e">match</span>(<span style="color:#e6db74">/iphone/i</span>)) {
+        <span style="color:#a6e22e">device</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;iphone&#39;</span>;
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">navigator</span>.<span style="color:#a6e22e">userAgent</span>.<span style="color:#a6e22e">match</span>(<span style="color:#e6db74">/android/i</span>)) {
+        <span style="color:#a6e22e">device</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;android&#39;</span>;
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#a6e22e">device</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;other&#39;</span>;
+    }
+    <span style="color:#75715e">// 省略...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// bugfix: 解决iOS设备上传竖拍照片后被逆时针旋转90°的问题
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">device</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;iphone&#39;</span>) {
+        <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">orientation</span>) {
+            <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">:</span>
+                <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">rotate</span>(<span style="color:#ae81ff">90</span><span style="color:#f92672">*</span>Math.<span style="color:#a6e22e">PI</span><span style="color:#f92672">/</span><span style="color:#ae81ff">180</span>);
+                <span style="color:#66d9ef">break</span>;
+            <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">:</span>
+                <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">rotate</span>(<span style="color:#ae81ff">180</span><span style="color:#f92672">*</span>Math.<span style="color:#a6e22e">PI</span><span style="color:#f92672">/</span><span style="color:#ae81ff">180</span>);
+                <span style="color:#66d9ef">break</span>;
+            <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">:</span>
+                <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">rotate</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">90</span><span style="color:#f92672">*</span>Math.<span style="color:#a6e22e">PI</span><span style="color:#f92672">/</span><span style="color:#ae81ff">180</span>);
+                <span style="color:#66d9ef">break</span>;
+        }
+    }
+}
+</code></pre></div><p>调整 orientation 属性后，iOS 设备测试正常。</p>
+<p>到此，前端部分的工作就大体上介绍完了，下面继续将后端部分的业务处理，因为 JD 交易平台的项目绝大多数是采用 Spring MVC，因此后端方案采用的还是 Spring MVC，当然 PHP、Python 的处理思路都是一样的，就当抛砖引玉了。</p>
+<h3 id="heading-1">后端</h3>
+<h4 id="-formdata">接收 FormData</h4>
+<p>服务器端接收客户端发送过来的 FormData 数据，最主要的工作就是将 base64 编码串提取出来并根据需要转换成所需的格式（在我的代码里转成了 byte 类型）。这部分工作很简单，需要注意的点是 base64 编码串的标准格式形如：</p>
+<pre><code>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABoYAAAJJCA
+</code></pre><p>需要将其头部的标识位截去，即保留 <code>&quot;,&quot;</code> 后面的编码串。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;upload&#34;</span><span style="color:#f92672">,</span> method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">POST</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@ResponseBody</span>
+<span style="color:#66d9ef">public</span> SimpleResponse <span style="color:#a6e22e">upload</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span> <span style="color:#a6e22e">@RequestParam</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> formData<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    SimpleResponse response <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleResponse<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    Footprint footprint <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Footprint<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    String pin <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>String<span style="color:#f92672">)</span> request<span style="color:#f92672">.</span><span style="color:#a6e22e">getAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;pin&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    Long profileId <span style="color:#f92672">=</span> Long<span style="color:#f92672">.</span><span style="color:#a6e22e">parseLong</span><span style="color:#f92672">(</span>formData<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;profileId&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    footprint<span style="color:#f92672">.</span><span style="color:#a6e22e">setPin</span><span style="color:#f92672">(</span>pin<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    footprint<span style="color:#f92672">.</span><span style="color:#a6e22e">setProfileId</span><span style="color:#f92672">(</span>profileId<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>formData<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;count&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 图片数量
+</span><span style="color:#75715e"></span>        String tag <span style="color:#f92672">=</span> formData<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;tag&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">:</span> formData<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;tag&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 足迹标签
+</span><span style="color:#75715e"></span>        String content <span style="color:#f92672">=</span> formData<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;content&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">:</span> formData<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;content&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 足迹正文
+</span><span style="color:#75715e"></span>        footprint<span style="color:#f92672">.</span><span style="color:#a6e22e">setTag</span><span style="color:#f92672">(</span>tag<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        footprint<span style="color:#f92672">.</span><span style="color:#a6e22e">setContent</span><span style="color:#f92672">(</span>content<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Tag: {}, Content: {}, Count: {}&#34;</span><span style="color:#f92672">,</span> tag<span style="color:#f92672">,</span> content<span style="color:#f92672">,</span> count<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> imageByte <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>count <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            imageByte <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>count<span style="color:#f92672">]</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">// base64转byte[]
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> count<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                String base64Str <span style="color:#f92672">=</span> formData<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;imageData_&#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">[</span>1<span style="color:#f92672">]</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 截掉base64的头部
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> bytes <span style="color:#f92672">=</span> EncodeUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">base64ToByte</span><span style="color:#f92672">(</span>base64Str<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                imageByte<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> bytes<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+
+        Footprint saveResult <span style="color:#f92672">=</span> footprintDBService<span style="color:#f92672">.</span><span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>footprint<span style="color:#f92672">,</span> imageByte<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 传给后台处理并存储到云存储
+</span><span style="color:#75715e"></span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>saveResult <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            response<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuccess</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            response<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;很抱歉服务器响应缓慢，请稍后再试&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            response<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuccess</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            response<span style="color:#f92672">.</span><span style="color:#a6e22e">setData</span><span style="color:#f92672">(</span>saveResult<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;发生异常: &#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">return</span> response<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="heading-2">优化</h3>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/canvas">Canvas</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/html5">HTML5</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/frontend">Frontend</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

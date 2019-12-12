@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Translation on I sudo X</title>
+    <link>https://isudox.com/categories/translation/</link>
+    <description>Recent content in Translation on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Feb 2017 14:51:10 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/categories/translation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[译] 一个行之有效的 Git 分支模型</title>
+      <link>https://isudox.com/posts/2017-02-18-a-successful-git-branching-model-zh/</link>
+      <pubDate>Sat, 18 Feb 2017 14:51:10 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2017-02-18-a-successful-git-branching-model-zh/</guid>
+      <description>原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。
+ 上面是废话，下面是译文。
+  本文里，我会介绍一个在一年前就引入进多个项目（包括工作和个人项目）中的开发模型，实践表明该模型很成功。为此专门写篇文章的想法由来已久，但始终没挤出时间来做，直到现在。我不会细究项目的具体细节，仅仅是项目开发的分支策略和发布管理。
+该模型专注于使用 Git 作为代码版本管理工具。（另外，如果你对 Git 感兴趣，我司的 GitPrime 提供了一些很棒的软件性能实时数据分析功能）
+为什么使用 Git 关于 Git 相比于中心化的代码管理系统的优劣，可以从网上找到很多相关讨论。作为开发者，我选择 Git。Git 确实改变了开发者们对分支和合并的理解。在之前使用经典的 CVS/Subversion 时，新建分支和合并分支总是有点吓人（小心代码合并时的冲突，它们会咬你）。
+但是用 Git 时，这些日常工作流的主要操作都变得简便易行。举例来说，在 CVS/Subversion 的相关书籍中，分支和合并操作会在靠后的章节中介绍（面向高阶读者），而 Git 的书中，往往是前三章的基础操作里就会做说明。
+由于 Git 的简单性和重用性（repetitive），分支和合并不再是令人生畏的高危操作。版本管理工具应该更多的协助代码的新建分支和合并分支。
+闲言少叙，进入开发模型的正题吧。我要介绍的模型基本上只是团队里每个成员都要遵循的一组开发流程规范。
+去中心化也中心化 在分支模型下工作良好的代码库，实际上有一个真实的中心代码库。注意这个库被视为一个中心（因为 Git 是分布式的版本管理工具，所以从技术角度上说并不存在中心代码库）。我们将其视为为 origin，因为所有 Git 用户都熟悉这个名称。
+每个开发者对 origin 进行 pull 和 push 操作。但是除了中心化的 push-pull，每个开发者也可能会建立子团队并 pull 同个子团队里其他成员的代码改动。比如，和两个或更多开发者合作开发一个大的新功能时，避免过早的将开发进行过程中的代码 push 上去。上图中，有 Alice 和 Bob 的小团队，Clair 和 David 的小团队。</description>
+    </item>
+    
+    <item>
+      <title>[译] IntelliJ IDEA 快捷键操作</title>
+      <link>https://isudox.com/posts/2016-05-17-intellij-idea-keymap-zh/</link>
+      <pubDate>Tue, 17 May 2016 16:02:15 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-05-17-intellij-idea-keymap-zh/</guid>
+      <description>捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时去翻看手册，索性把官方的默认 Keymap 翻译成中文。
+编辑 Ctrl + Space: 基本代码补全（类、方法或变量名） Ctrl + Shift + Space: 智能代码补全（根据类型过滤待选的方法和变量列表） Ctrl + Shift + Enter: 补全语句 Ctrl + P: 参数信息（在方法内调用参数） Ctrl + Q: 快速查看文档 Shift + F1: 外部文档 Ctrl + F1: 显示光标所在处的错误或警告信息 Alt + Insert: 生成代码（Getters, Setters, Constructors, hashCode/equals, toString） Ctrl + O: 重写父类方法 Ctrl + I: 实现接口方法 Ctrl + Alt + T: 包裹代码（if..else, try..catch, for, synchronized, etc.） Ctrl + /: 注释/取消注释当前行 Ctrl + Shift + /: 注释/取消注释代码块 Ctrl + W: 层次递增地选中代码块 Ctrl + Shift + W: 对当前选中的代码块层次递减的回到之前的选中状态（Ctrl + W 的逆过程） Alt + Q: 上下文信息 Alt + Enter: 显示意图动作和快速修复 Ctrl + Alt + L: 格式化代码 Ctrl + Alt + O: 优化 imports Ctrl + Alt + I: 自动缩进行 Tab / Shift + Tab: 缩进/回退当前选中的行 Ctrl + X or Shift + Delete: 剪切当前行或选中的代码块到剪贴板 Ctrl + C or Ctrl + Insert: 复制当前行或选中的代码块到剪贴板 Ctrl + V or Shift + Insert: 从剪贴板黏贴 Ctrl + Shift + V: 从当前 buffers 中黏贴 Ctrl + D: 复制当前行或选中的代码段到后一位置 Ctrl + Y: 删除光标所在行 Ctrl + Shift + J: 智能行拼接 Ctrl + Enter: 智能行分拆 Shift + Enter: 新增一行 Ctrl + Shift + U: 变更光标所在单词或选中代码段的大小写 Ctrl + Shift + ] / [: 向上/向下选中代码直到代码块的结束/开始位置 Ctrl + Delete: 向后删除到单词尾 Ctrl + Backspace: 向前删除到单词头 Ctrl + NumPad+/-: 展开/并拢代码块 Ctrl + Shift + NumPad+: 展开全部代码 Ctrl + Shift + NumPad-: 收拢全部代码 Ctrl + F4: 关闭当前 tab Alt + Shift + Inert: 开启/关闭列选择模式</description>
+    </item>
+    
+    <item>
+      <title>[译] 使用 Django 认证系统</title>
+      <link>https://isudox.com/posts/2016-03-22-using-the-django-authentication-system-zh/</link>
+      <pubDate>Tue, 22 Mar 2016 22:31:20 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-03-22-using-the-django-authentication-system-zh/</guid>
+      <description>译自 Django Documentation，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。
+ 本文介绍了 Django 认证系统在默认配置下的使用。默认配置已经发展到能够满足大多数项目需求，处理相当数量的任务，而且具备严谨的密码和权限实现。对于有自定义验证需求的项目，Django 支持扩展验证。 Django 认证系统提供认证和授权功能，由于两部分功能有耦合，因此通常简称为认证系统。
+User 对象 User 对象是认证系统的核心。该对象一般抽象表示与网站进行交互的用户，被用来进行权限控制，信息注册，关联内容及其创建者。Django 框架中只存在一种 User 类，像superusers，staff只是具有一些特殊属性的 User 对象，而不是不同类的 User 对象。
+默认的 user 有如下主要属性：
+ username password email first_name last_name  全面的参考请阅读完整 API 文档，下文更偏业务导向。
+创建 users 创建 user 最直接的方式是调用内置的 create_user() 辅助方法：
+&amp;gt;&amp;gt;&amp;gt; from django.contrib.auth.models import User &amp;gt;&amp;gt;&amp;gt; user = User.objects.create_user(&amp;#39;john&amp;#39;, &amp;#39;lennon@thebeatles.com&amp;#39;, &amp;#39;johnpassword&amp;#39;) # At this point, user is a User object that has already been saved # to the database.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>理解 Python 生成器 - I sudo X</title>
+    
+    <meta name="description" content="在 Python 里创建一个有一定规律的序列，很直观的做法就是在循环里创建序列的各个元素。但 Python 有更加符合 Pythonic 风格的做法，就是用生成器来实现。
+举个被写滥的例子吧，用 Python 生成 Fibonacci 数列的前 n 个数字，该怎么做？
+def fib(n): if n &lt; 2: return 1 return fib(n - 1) &#43; fib(n - 2) def gen_fib(n): res = [] for i in range(n): res.append(fib(i)) return res 而 Pythonic 的写法是像下面这样：
+def fib(n): if n &lt; 2: return 1 return fib(n - 1) &#43; fib(n - 2) def gen_fib(n): for i in range(n): yield fib(i) 查看把上面两种做法的返回结果，可以找到二者的不同：">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">理解 Python 生成器</h1>
+    <div class="post-meta">October 26, 2016</div>
+  </header>
+  <div class="post-content"><p>在 Python 里创建一个有一定规律的序列，很直观的做法就是在循环里创建序列的各个元素。但 Python 有更加符合 Pythonic 风格的做法，就是用生成器来实现。</p>
+<!-- raw HTML omitted -->
+<p>举个被写滥的例子吧，用 Python 生成 Fibonacci 数列的前 n 个数字，该怎么做？</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fib</span>(n):
+    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">return</span> fib(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> fib(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gen_fib</span>(n):
+    res <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n):
+        res<span style="color:#f92672">.</span>append(fib(i))
+    <span style="color:#66d9ef">return</span> res
+</code></pre></div><p>而 Pythonic 的写法是像下面这样：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fib</span>(n):
+    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">return</span> fib(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> fib(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gen_fib</span>(n):
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n):
+        <span style="color:#66d9ef">yield</span> fib(i)
+</code></pre></div><p>查看把上面两种做法的返回结果，可以找到二者的不同：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&lt;class <span style="color:#e6db74">&#39;list&#39;</span>&gt;
+&lt;class <span style="color:#e6db74">&#39;generator&#39;</span>&gt;
+</code></pre></div><p>前者返回的是 <code>list</code> 对象，后者返回的是 <code>generator</code> 对象。这就是本文要探讨的点。</p>
+<h3 id="generator-">Generator 对象</h3>
+<p>再看上面的代码，第一种写法里，<code>gen_fib()</code> 方法由 <code>return</code> 关键字返回结果；在第二种写法里，<code>gen_fib()</code> 方法却没有显式的返回，而是通过 <code>yield</code> 关键字得到处理结果。</p>
+<p><code>yield</code> 关键字的作用是使对象变成一个 <code>generator</code>，换句话说，此时 <code>generator</code> 对象还没有把结果生成出来。可以通过 <code>next()</code> 方法使 <code>generator</code> 对象把待生成的元素逐个生成。看下面这段简单的示例代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_yield</span>(n):
+    <span style="color:#66d9ef">yield</span> n
+    <span style="color:#66d9ef">yield</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+
+g <span style="color:#f92672">=</span> test_yield(<span style="color:#ae81ff">1</span>)
+next(g)
+next(g)
+next(g)
+</code></pre></div><p>运行得到的结果是依次输出 1、2 和抛出 <code>StopIteration</code> 的异常信息。<code>yield</code> 类似程序执行的断点，<code>next()</code> 方法进入到断点的现场，执行断点处的代码，再次调用 <code>next()</code>，则进入下一个断点处，直到越界为止。注意，虽然上面多次用了 <code>yield</code>，但 <code>generator</code> 对象只被创建了一次，且并不是再它被创建时就执行了生成元素的全部过程，而是在调用 <code>next()</code> 方法时，才去执行了断点所在处的代码，取得变量值。</p>
+<p>因为 <code>generator</code> 是 iterable 的，因此可以直接在 for 循环中将元素迭代生成出来，也避免了 <code>next()</code> 方法在最后一次查找断点现场时发生越界的问题：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">g <span style="color:#f92672">=</span> gen_fib(<span style="color:#ae81ff">10</span>)
+<span style="color:#66d9ef">for</span> e <span style="color:#f92672">in</span> g:
+    do_something(e)
+</code></pre></div><p><code>generator</code> 的好处显而易见，它不需要像普通的写法那样预先创建一个 iterable 的集合再将其返回，它只是在需要生成某个元素时再去执行生成的代码，这有效提升了内存管理。</p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>Python Wiki - <a href="https://wiki.python.org/moin/Generators">Generators</a></li>
+<li><a href="https://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/">Improve Your Python: &lsquo;yield&rsquo; and Generators Explained</a></li>
+</ul>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/python">Python</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

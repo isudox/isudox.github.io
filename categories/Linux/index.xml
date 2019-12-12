@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on I sudo X</title>
+    <link>https://isudox.com/categories/linux/</link>
+    <description>Recent content in Linux on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 May 2016 23:27:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>通过代理安装 AUR 软件包</title>
+      <link>https://isudox.com/posts/2016-05-09-install-aur-packages-by-proxy/</link>
+      <pubDate>Mon, 09 May 2016 23:27:07 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-05-09-install-aur-packages-by-proxy/</guid>
+      <description>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。
+这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。
+就以上面提到的 atom-editor 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为
+# Maintainer: Sebastian Jug &amp;lt;seb@stianj.ug&amp;gt; # Contributor: John Reese &amp;lt;jreese@noswap.com&amp;gt; # Upstream URL: https://github.com/atom/atom # # For improvements/fixes to this package, please send a pull request: # https://github.com/sjug/atom-editor pkgname=atom-editor pkgver=1.7.3 pkgrel=1 pkgdesc=&#39;Chrome-based text editor from Github&#39; arch=(&#39;x86_64&#39; &#39;i686&#39;) url=&#39;https://github.com/atom/atom&#39; license=(&#39;MIT&#39;) depends=(&#39;alsa-lib&#39; &#39;desktop-file-utils&#39; &#39;gconf&#39; &#39;gtk2&#39; &#39;libgnome-keyring&#39; &#39;libnotify&#39; &#39;libxtst&#39; &#39;nodejs&#39; &#39;nss&#39; &#39;python2&#39;) optdepends=(&#39;gvfs: file deletion support&#39;) makedepends=(&#39;git&#39; &#39;npm&#39;) conflicts=(&#39;atom-editor-bin&#39; &#39;atom-editor-git&#39;) install=atom.</description>
+    </item>
+    
+    <item>
+      <title>开启 Arch 之旅</title>
+      <link>https://isudox.com/posts/2015-09-26-begin-arch-linux/</link>
+      <pubDate>Sat, 26 Sep 2015 18:02:05 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2015-09-26-begin-arch-linux/</guid>
+      <description>iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry&amp;hellip;
+最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而言，这不啻一个新的玩点。
+在 V2EX 上混的时候，被多次安利 Arch Linux，传闻中的 K.I.S.S 风格，滚动升级，业界良心的 Wiki，强大的社区支持，让常在 Linux 下搬砖的我心生向往。于是就在别人轻抚刚发货的 iPhone 6S 的夜晚，开始第 N + 1 次折腾。
+故事就在这样一个夜晚发生了&amp;hellip;
+准备工作 Arch 的镜像很小，仅不到 700M，由于光驱已经退役，因此就用了 U 盘做启动。在 Linux 下用 dd 命令就可以将镜像文件烧写进 U 盘：
+$ dd bs=4M if=/path_archlinux.iso of=/dev/sdx &amp;amp;&amp;amp; sync 其中 sdx 为 /dev 下挂载的 U 盘文件符。片刻功夫，烧写完毕，准备工作就绪！
+躁起来吧，骚年 重启选择 U 盘启动，U 盘里的镜像文件释放展开，屏幕上显现启动列表，选择第一个 x86-64 进入 Arch 配置安装。前方没有任何图形，黑白两色的屏幕像极了窗外的夜。
+联网 相比 Debian、CentOS 这些动辄 3,4G 的安装镜像，Arch 有着诱人的小而美，也意味这很多包都需要联网下载。所以安装过程中，必须要联网。
+$ wifi-mune 输入 Wifi 密码，ping 测试。</description>
+    </item>
+    
+  </channel>
+</rss>

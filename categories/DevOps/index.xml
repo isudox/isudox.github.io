@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DevOps on I sudo X</title>
+    <link>https://isudox.com/categories/devops/</link>
+    <description>Recent content in DevOps on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Aug 2016 13:45:50 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Gunicorn 驱动工厂模式 Flask 应用</title>
+      <link>https://isudox.com/posts/2016-08-29-running-flask-with-gunicorn-in-application-factory/</link>
+      <pubDate>Mon, 29 Aug 2016 13:45:50 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-08-29-running-flask-with-gunicorn-in-application-factory/</guid>
+      <description>之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— Gunicorn，并且利用工厂模式对不同开发环境进行了隔离。工厂模式下的 Flask 应用在用 Gunicorn 部署时，需要做一点针对性的改动。
+基础的 Flask 应用部署 先写一个最简单的 Flask 应用 hello：
+# hello.py from flask import Flask app = Flask(__name__) @app.route(&amp;#39;/&amp;#39;) def hello_world(): return &amp;#34;Hello World!&amp;#34; if __name__ == &amp;#39;__main__&amp;#39;: app.run(host=&amp;#39;0.0.0.0&amp;#39;, port=5000) 然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。
+当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：
+gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明：</description>
+    </item>
+    
+    <item>
+      <title>Docker 部署 GitLab</title>
+      <link>https://isudox.com/posts/2016-08-01-running-gitlab-in-docker-container/</link>
+      <pubDate>Mon, 01 Aug 2016 17:15:08 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-08-01-running-gitlab-in-docker-container/</guid>
+      <description>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。
+GitLab 的外部依赖很多，有 Nginx、Rails、Postgres、Redis、MySQL、unicorn、Go 等。如果单独安装各个依赖，一大堆的配置会让人抓狂。如果用官网提供的 omni 集成包，除非是全新的服务器，否则很大可能就导致依赖的重复安装，比如进程里有多个 Nginx、MySQL，很容易把服务器环境弄得很乱。像 GitLab 这样的程序，其实很适合用 Docker 来部署，一则和实机环境隔离开，另外运行性能相当好。
+安装 Docker 环境 安装配置 惯例，以 Debian 8 为参考，把 Docker 官方维护的 deb 包添加到系统的 APT 源内，创建文件 /etc/apt/sources.list.d/docker.list：
+deb https://apt.dockerproject.org/repo debian-jessie main 更新源，安装 docker-engine 包，执行 ps -ef | grep docker 查看 Docker 的进程，
+root 2885 1 0 09:40 ? 00:00:10 /usr/bin/dockerd --raw-logs root 2897 2885 0 09:40 ? 00:00:00 docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --shim docker-containerd-shim --metrics-interval=0 --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --runtime docker-runc sudoz 21053 6463 0 14:54 pts/0 00:00:00 grep --color=auto --exclude-dir=.</description>
+    </item>
+    
+    <item>
+      <title>为子域名安装 SSL 证书</title>
+      <link>https://isudox.com/posts/2016-07-28-secure-subdomain-with-ssl-certificate/</link>
+      <pubDate>Thu, 28 Jul 2016 17:07:42 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-07-28-secure-subdomain-with-ssl-certificate/</guid>
+      <description>今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。 Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。
+解析子域名 从域名提供商买到域名后，可以用在多个不同的网站上。比如经常可以看到类似这样的域名，bss.example.com，blog.example.com，其实这俩是彼此独立的网站，但是都访问到 sample.com 域名下，这就是在同一域名下部署多个网站的范例。
+域名和 IP 通过 DNS 关联在一起，所以无论常见多少个子域名，都是要通过 DNS 解析到关联 IP 的服务器上。如果要新增子域名，需要在提供 DNS 解析服务的提供商处建立一条解析，将子域名关联到根域名的 IP 上。
+本人小站的域名是从 Godaddy 上购买，但域名解析服务是并没有用 Godaddy 默认提供的服务，而是用了 Linode 提供的免费解析服务。但操作都是相同的，在 DNS 的 zone file 中添加一条 A/AAAA 记录：
+git A 45.33.47.109 git AAAA 2600:3c01::f03c:91ff:fe18:68b6 添加完后等待 DNS 服务更新，大概 15 分钟后就能 ping 通这条新建的子域名。这就意味着对子域名的访问已经通过 DNS 解析指向了我的 Linode 服务器上。
+现在要完成的就是通过 HTTP Server 将访问请求打到网站的目录下，我是用 Nginx，在 Nginx conf 里添加子域名解析的针对性配置或者泛子域名解析的通用配置。较新版本的 Nginx 的多站点配置默认保存在 /etc/nginx/conf.</description>
+    </item>
+    
+    <item>
+      <title>Django 部署的非最佳实践</title>
+      <link>https://isudox.com/posts/2016-06-01-non-best-practice-of-django-deployment/</link>
+      <pubDate>Wed, 01 Jun 2016 17:24:27 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-06-01-non-best-practice-of-django-deployment/</guid>
+      <description>上周末接到急差，要重新部署之前开发的 Django 项目。磕磕绊绊遇到很多预想不到的问题，也发现自己对 Django 应用的部署依旧很生疏，遂记一篇水文。
+一些题外话 Django 工程结构 在 Django 官方文档里，新建 Django 工程用下面的命令完成：
+django-admin startproject mysite 这样创建的工程根目录下，会生成一个和项目名称同名的子目录，存放 settings.py wsgi.py 等文件。这样做肯定没问题，但是没必要，也不优雅。对此 Kenneth Reitz 的建议是，在命令的后面加一 . 号：
+django-admin.py start-project mysite . 这样，Django 工程的配置文件就存放在根目录下了。
+虚拟环境 virtualenv 一般在测试服务器上，用 virtualenv 把不同版本的环境隔离开来是首选的方案。此外还有一个工具 virtualenvwrapper，来管理由 virtualenv 虚拟出来的 Python 环境，非常实用。
+pip 安装 virtualenvwrapper 后，需要设置几个全局环境变量。可以把下面的配置添加进 shell 的配置文件里，比如我用的 zsh，那么就是添加进 .zshrc 文件：
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.4 export WORKON_HOME=$HOME/.virtualenvs source /usr/local/bin/virtualenvwrapper.sh 分别指定默认的 Python 版本和 Python 虚拟环境的目录。设置后，就可以非常方便的通过 workon 命令切换已安装的 Python 虚拟环境，而无需定向到虚拟环境的路径。
+导出 pip 列表 在有了 Python 虚拟环境后，还得有快速安装 pip 包的方法，pip 提供了导出 pip 列表的功能 freeze，以及快速安装工程所需 pip 包的功能 install：</description>
+    </item>
+    
+  </channel>
+</rss>

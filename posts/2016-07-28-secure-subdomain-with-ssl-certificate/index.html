@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>为子域名安装 SSL 证书 - I sudo X</title>
+    
+    <meta name="description" content="今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。 Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。
+解析子域名 从域名提供商买到域名后，可以用在多个不同的网站上。比如经常可以看到类似这样的域名，bss.example.com，blog.example.com，其实这俩是彼此独立的网站，但是都访问到 sample.com 域名下，这就是在同一域名下部署多个网站的范例。
+域名和 IP 通过 DNS 关联在一起，所以无论常见多少个子域名，都是要通过 DNS 解析到关联 IP 的服务器上。如果要新增子域名，需要在提供 DNS 解析服务的提供商处建立一条解析，将子域名关联到根域名的 IP 上。
+本人小站的域名是从 Godaddy 上购买，但域名解析服务是并没有用 Godaddy 默认提供的服务，而是用了 Linode 提供的免费解析服务。但操作都是相同的，在 DNS 的 zone file 中添加一条 A/AAAA 记录：
+git A 45.33.47.109 git AAAA 2600:3c01::f03c:91ff:fe18:68b6 添加完后等待 DNS 服务更新，大概 15 分钟后就能 ping 通这条新建的子域名。这就意味着对子域名的访问已经通过 DNS 解析指向了我的 Linode 服务器上。
+现在要完成的就是通过 HTTP Server 将访问请求打到网站的目录下，我是用 Nginx，在 Nginx conf 里添加子域名解析的针对性配置或者泛子域名解析的通用配置。较新版本的 Nginx 的多站点配置默认保存在 /etc/nginx/conf.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">为子域名安装 SSL 证书</h1>
+    <div class="post-meta">July 28, 2016</div>
+  </header>
+  <div class="post-content"><p>今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。
+Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。</p>
+<!-- raw HTML omitted -->
+<h3 id="heading">解析子域名</h3>
+<p>从域名提供商买到域名后，可以用在多个不同的网站上。比如经常可以看到类似这样的域名，<code>bss.example.com</code>，<code>blog.example.com</code>，其实这俩是彼此独立的网站，但是都访问到 <code>sample.com</code> 域名下，这就是在同一域名下部署多个网站的范例。</p>
+<p>域名和 IP 通过 DNS 关联在一起，所以无论常见多少个子域名，都是要通过 DNS 解析到关联 IP 的服务器上。如果要新增子域名，需要在提供 DNS 解析服务的提供商处建立一条解析，将子域名关联到根域名的 IP 上。</p>
+<p>本人小站的域名是从 Godaddy 上购买，但域名解析服务是并没有用 Godaddy 默认提供的服务，而是用了 Linode 提供的免费解析服务。但操作都是相同的，在 DNS 的 <code>zone file</code> 中添加一条 A/AAAA 记录：</p>
+<pre><code>git        A        45.33.47.109
+git        AAAA     2600:3c01::f03c:91ff:fe18:68b6
+</code></pre><p>添加完后等待 DNS 服务更新，大概 15 分钟后就能 ping 通这条新建的子域名。这就意味着对子域名的访问已经通过 DNS 解析指向了我的 Linode 服务器上。</p>
+<p>现在要完成的就是通过 HTTP Server 将访问请求打到网站的目录下，我是用 Nginx，在 Nginx conf 里添加子域名解析的针对性配置或者泛子域名解析的通用配置。较新版本的 Nginx 的多站点配置默认保存在 <code>/etc/nginx/conf.d/*.conf</code> 文件里，而不再是 <code>site-enabled</code> 里。新建 <code>subdomain.conf</code> 配置文件：</p>
+<pre><code class="language-conf" data-lang="conf">server {
+    listen 80;
+    server_name ~^(?&lt;subdomain&gt;.+)\.isudox\.com$;  # 通配符匹配子域名
+    server_tokens off  # 隐藏 nignx 信息
+    location / {
+        root /usr/share/nginx/html/$subdomain;
+        index index.html index.htm
+    }
+}
+
+</code></pre><p>在 Nginx 默认的网站根目录下新建 <code>git</code> 目录，写一个 <code>Hello, Git</code> 的 index.html，浏览器访问下，OK！</p>
+<p>如果后续还要新增其他子域名，可以类似的再写一个 Nginx conf 配置，或者直接用泛子域名解析的 conf 文件。</p>
+<h3 id="heading-1">安装证书</h3>
+<p>接下来就是给子域名安装 SSL 证书。小站域名 <code>isudox.com</code> 绑定了 Comodo 颁发的证书，但从 Comodo 买的这张证书并不支持通配符域名，因此这张证书就没法用在二级域名 <code>&lt;subdomain.isudox.com&gt;</code>。那么还得再去申请一张证书。
+有钱的话，买什么样的证书都行；然而没钱，那就只能从下面几家能提供免费 SSL 证书的提供商里挑了。</p>
+<ul>
+<li><a href="https://www.wosign.com/">WoSign</a></li>
+<li><a href="https://www.startssl.com/">StartSSL</a></li>
+<li><a href="https://letsencrypt.org/">Let’s Encrypt</a></li>
+</ul>
+<p>其中，Let's Encrypt 的逼格应该是最高的，StartSSL 口碑比较好，WoSign 弃之。先述说 Let’s Encrypt 证书的申请。</p>
+<h4 id="lets-encrypt-">Let’s Encrypt 证书</h4>
+<p>Let's Encrypt 证书的申请需要一点点动手能力，它提供了一个官方的脚本生成工具 <a href="https://certbot.eff.org/">certbot</a>，只支持 Unix-liked 系统，把脚本下载本地，并添加执行权限。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget https://dl.eff.org/certbot-auto
+chmod a+x certbot-auto
+</code></pre></div><p>certbot 支持几种不同的插件（apache、webroot、standalone、manual、nginx），用来获取和安装证书。但插件 nginx 还是试验阶段，可以使用 webroot 或 standalone 插件。区别是 webroot 插件用在已经运行着网站的服务器上，可以通过指定网站的目录来获取并安装证书：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./certbot-auto certonly --webroot -w /var/www/example/ -d www.example.com -d example.com -w /var/www/other -d other.example.net -d another.other.example.net
+</code></pre></div><p>而 standalone 插件则用在本地机器上，通过指定网站的域名来获取和安装证书。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./certbot-auto certonly --standalone -d example.com -d www.example.com
+</code></pre></div><p>Let’s Encrypt 的证书有效期是三个月，可以用 <code>letsencrypt renew </code> 命令重新激活。最后就是将证书的路径写入到 Nginx conf 配置里。</p>
+<h4 id="startssl-">StartSSL 证书</h4>
+<p>StartSSL 的证书生成就傻瓜多了，上手更容易，有效期也有一年之久。
+用 <code>openssL</code> 生成 .csr 文件，</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl req -newkey rsa:2048 -keyout git.isudox.com.key -out git.isudox.com.csr
+</code></pre></div><p>命令会要求输入一个 passphrase 作为解码凭据，生成后将文件内容粘贴到 StartSSL 的网站上进行证书注册。之后就能从 StartSSL 上下载该子域名的证书文件，把 .key 后缀的密钥文件和 StartSSL 提供的证书文件上传到服务器上，并把二者的路径写入到 Nginx conf 里，在原来的子域名 conf 里添加如下内容</p>
+<pre><code class="language-conf" data-lang="conf">server {
+    return 301 https://$subdomain.isudox.com;  # HTTP 访问重定向到 HTTPS
+}
+server {
+    listen 443 ssl http2;
+    server_name ~^(?&lt;subdomain&gt;.+)\.isudox\.com$;
+    location / {
+        root /usr/share/nginx/html/$subdomain;
+        index index.html index.htm
+    }
+    ssl on;
+    ssl_session_timeout 5m;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_certificate /path-to-crt/git.isudox.com.crt;
+    ssl_certificate_key /path-to-key/git.isudox.com.key;
+}
+</code></pre><p>重启 Nginx 发现失败了，原因是之前埋了个坑，通过 <code>openssL</code> 工具生成密钥对的时候，必须要求输入 passphrase，直接启动 Nginx 服务时没有匹配 passphrase 自然也就失败了。参考 Nginx <a href="http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_password_file">官方文档</a>，Nginx 提供了一个参数 <code>ssl_password_file</code> 指定记录 passphrase 的文件。把 passphrase 写入该文件，并关联到 <code>ssl_password_file</code> 参数就能正常启动 Nginx 了。</p>
+<p>当然，如果是用 <code>ssh-keygen -t rsa</code> 命令生成密钥对，就不会强制要求 passphrase，也就不会有这个问题。</p>
+<p>现在再打开 git.isudox.com，就自动跳转到了 HTTPS 协议，URL 上挂小绿锁的视觉效果确实不错。
+<img src="https://o70e8d1kb.qnssl.com/url-with-green-lock.png" alt=""></p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/http">HTTP</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/nginx">Nginx</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

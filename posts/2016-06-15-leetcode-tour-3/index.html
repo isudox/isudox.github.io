@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>LeetCode 11-15 - I sudo X</title>
+    
+    <meta name="description" content="继上篇 LeetCode 探险第二弹，第三弹记录第 11 到 15 题。
+Container With Most Water 第 11 题 Container With Most Water
+ 给出 n 个非负整数 a1, a2, &hellip;, an，每个数指向一个坐标点 (i, ai)。该 n 个坐标点画出了 n 条纵线，即从 (i, ai) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。
+ 假设待求的这两条线段的坐标分别为(i, 0)-(i, ai) 和 (j, 0)-(j, aj)，那么容器的底座长度 L=Math.abs(i - j)，高度 H=Math.min(ai, aj)，容积 V=L*H。
+最笨也是最直接的办法就是在循环里暴力枚举。把所有能组成的容器都测量一遍，不多说了，直接撸代码：
+// ContainerWithMostWater.java v1.0 public class Solution { public int maxArea(int[] height) { int maxV = 0, curV = 0; int count = height.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">LeetCode 11-15</h1>
+    <div class="post-meta">June 15, 2016</div>
+  </header>
+  <div class="post-content"><p>继上篇 <a href="/2016/05/17/leetcode-tour-2/">LeetCode 探险第二弹</a>，第三弹记录第 11 到 15 题。</p>
+<!-- raw HTML omitted -->
+<h3 id="container-with-most-water">Container With Most Water</h3>
+<p>第 11 题 <a href="https://leetcode.com/problems/container-with-most-water/">Container With Most Water</a></p>
+<blockquote>
+<p>给出 n 个非负整数 a<!-- raw HTML omitted -->1<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->2<!-- raw HTML omitted -->, &hellip;, a<!-- raw HTML omitted -->n<!-- raw HTML omitted -->，每个数指向一个坐标点 (i, a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->)。该 n 个坐标点画出了 n 条纵线，即从 (i, a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。</p>
+</blockquote>
+<p>假设待求的这两条线段的坐标分别为(i, 0)-(i, a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->) 和 (j, 0)-(j, a<!-- raw HTML omitted -->j<!-- raw HTML omitted -->)，那么容器的底座长度 L=Math.abs(i - j)，高度 H=Math.min(a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->j<!-- raw HTML omitted -->)，容积 V=L*H。</p>
+<p>最笨也是最直接的办法就是在循环里暴力枚举。把所有能组成的容器都测量一遍，不多说了，直接撸代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ContainerWithMostWater.java v1.0
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">maxArea</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> height<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> maxV <span style="color:#f92672">=</span> 0<span style="color:#f92672">,</span> curV <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> height<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> count<span style="color:#f92672">;</span> j<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                curV <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">-</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">*</span> <span style="color:#f92672">(</span>height<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">&lt;</span> height<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">?</span> height<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">:</span> height<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                maxV <span style="color:#f92672">=</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">(</span>maxV<span style="color:#f92672">,</span> curV<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> maxV<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>提交后被 Lee他Code 婉拒，因为 Time Limit Exceeded，这种解法时间复杂度是 O(n<!-- raw HTML omitted -->2<!-- raw HTML omitted -->)，当 n 很大时，运行时间随指数增长会非常可怕。只能想办法精简处理过程，是不是所有 0.5(n*(n-1)) 中组合都要计算一遍，必须不是。涉及两个变量长和高，因为长的最大值是已知的，从长度取最大开始比较：
+先取首末两个点 1 和 n，容积是 V=(n-1)*Math.min(a<!-- raw HTML omitted -->1<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->n<!-- raw HTML omitted -->)。除此之外的选点，长度不可能比这种情况大，要使长度变小的前提下，容积更大，必要条件就是 Math.min(a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->j<!-- raw HTML omitted -->) 要大于 Math.min(a<!-- raw HTML omitted -->1<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->n<!-- raw HTML omitted -->)。所以可以从首末两端往中间移动，求取容积并存储当前最大容积后，放弃两侧高度较小的那个点，并向中心移动，这样处理可以省去很多不必要的计算，时间复杂度降低到 O(n)。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ContainerWithMostWater.java v1.1
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">maxArea</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> height<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> maxV <span style="color:#f92672">=</span> 0<span style="color:#f92672">,</span> curV <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">,</span> j <span style="color:#f92672">=</span> height<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> j<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>height<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">&lt;</span> height<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                curV <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">-</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">*</span> <span style="color:#f92672">(</span>height<span style="color:#f92672">[</span>i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>height<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">&gt;</span> height<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                curV <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">-</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">*</span> <span style="color:#f92672">(</span>height<span style="color:#f92672">[</span>j<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                curV <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">-</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">*</span> <span style="color:#f92672">(</span>height<span style="color:#f92672">[</span>i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                j<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            maxV <span style="color:#f92672">=</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">(</span>maxV<span style="color:#f92672">,</span> curV<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> maxV<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">Status</th>
+<th align="center">Tests</th>
+<th align="center">Run Time</th>
+<th align="center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Accepted</td>
+<td align="center">45 / 45</td>
+<td align="center">5 ms</td>
+<td align="center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="integer-to-roman">Integer to Roman</h3>
+<p>第 12 题 <a href="https://leetcode.com/problems/integer-to-roman/">Integer to Roman</a></p>
+<blockquote>
+<p>给出一个整型数，将其转换为罗马数字。输入的整数在 1-3999 之间。</p>
+</blockquote>
+<p>先来整理下罗马数字的表达方式：
+1-9: &ldquo;I&rdquo;, &ldquo;II&rdquo;, &ldquo;III&rdquo;, &ldquo;IV&rdquo;, &ldquo;V&rdquo;, &ldquo;VI&rdquo;, &ldquo;VII&rdquo;, &ldquo;VIII&rdquo;, &ldquo;IX&rdquo;
+10-90: &ldquo;X&rdquo;, &ldquo;XX&rdquo;, &ldquo;XXX&rdquo;, &ldquo;XL&rdquo;, &ldquo;L&rdquo;, &ldquo;LX&rdquo;, &ldquo;LXX&rdquo;, &ldquo;LXXX&rdquo;, &ldquo;XC&rdquo;
+100-900: &ldquo;C&rdquo;, &ldquo;CC&rdquo;, &ldquo;CCC&rdquo;, &ldquo;CD&rdquo;, &ldquo;D&rdquo;, &ldquo;DC&rdquo;, &ldquo;DCC&rdquo;, &ldquo;DCCC&rdquo;, &ldquo;CM&rdquo;
+1000-3000: &ldquo;M&rdquo;, &ldquo;MM&rdquo;, &ldquo;MMM&rdquo;</p>
+<p>I 表示单位 1，V 表示单位 5。同理，X 表示 10，L 表示 50；C 表示 100，D 表示 500；M 表示 1000。单位较小的如果在单位较大的符号左边，则是相减关系，反之则是相加关系。</p>
+<p>比如数字 432，先拆分成 400+20+3，即分别为 CD、XXX、II，所以转换结果是 CDXXXII；再比如 98，拆分为 90+8，即 XCVIII。
+算法的关键就是把整数拆分成各个数位上所代表的数值的相加。通过二维字符串数组的索引位置和值的映射实现各个加和整数与罗马数字的对应。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// IntegerToRoman.java v1.0
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">intToRoman</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> ones <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;I&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;II&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;III&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;IV&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;V&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;VI&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;VII&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;VIII&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;IX&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> tens <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;X&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XXX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XL&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;L&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;LX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;LXX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;LXXX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XC&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> hundreds <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;C&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CCC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CD&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;D&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;DC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;DCC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;DCCC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CM&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> thousands <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;M&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;MM&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;MMM&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> romans <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>ones<span style="color:#f92672">,</span> tens<span style="color:#f92672">,</span> hundreds<span style="color:#f92672">,</span> thousands<span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String res <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> len <span style="color:#f92672">=</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>num<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> len <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span> i <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> num <span style="color:#f92672">/</span> pow<span style="color:#f92672">(</span>10<span style="color:#f92672">,</span> i<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            res <span style="color:#f92672">=</span> res <span style="color:#f92672">+</span> romans<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">[</span>x<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+            num <span style="color:#f92672">=</span> num <span style="color:#f92672">%</span> pow<span style="color:#f92672">(</span>10<span style="color:#f92672">,</span> i<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">pow</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> z <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#f92672">;</span> y <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">;</span> y<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">)</span> z <span style="color:#f92672">*</span><span style="color:#f92672">=</span> x<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> z<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">Status</th>
+<th align="center">Tests</th>
+<th align="center">Run Time</th>
+<th align="center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Accepted</td>
+<td align="center">3999 / 3999</td>
+<td align="center">15 ms</td>
+<td align="center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>这种做法在细节上处理的很不好，算法复杂度略高，因为整数的分拆和转换罗马数字是从最高位开始，所以需要幂运算，浪费了一些运算时间。如果从整数的最低位开始处理，就不需要做幂运算了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// IntegerToRoman.java v1.1
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">intToRoman</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> ones <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;I&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;II&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;III&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;IV&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;V&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;VI&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;VII&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;VIII&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;IX&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> tens <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;X&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XXX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XL&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;L&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;LX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;LXX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;LXXX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XC&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> hundreds <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;C&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CCC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CD&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;D&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;DC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;DCC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;DCCC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CM&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> thousands <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;M&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;MM&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;MMM&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> romans <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>ones<span style="color:#f92672">,</span> tens<span style="color:#f92672">,</span> hundreds<span style="color:#f92672">,</span> thousands<span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        String res <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> digit <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>num <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> num <span style="color:#f92672">%</span> 10<span style="color:#f92672">;</span>
+            res <span style="color:#f92672">=</span> romans<span style="color:#f92672">[</span>digit<span style="color:#f92672">]</span><span style="color:#f92672">[</span>x<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> res<span style="color:#f92672">;</span>
+            num <span style="color:#f92672">=</span> num <span style="color:#f92672">/</span> 10<span style="color:#f92672">;</span>
+            digit<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">Status</th>
+<th align="center">Tests</th>
+<th align="center">Run Time</th>
+<th align="center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Accepted</td>
+<td align="center">3999 / 3999</td>
+<td align="center">12 ms</td>
+<td align="center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>另外再提供一个思路，罗马数字 1 - 3999 的匹配过程中，9*10<!-- raw HTML omitted -->n<!-- raw HTML omitted -->，5*10<!-- raw HTML omitted -->n<!-- raw HTML omitted --> 和 4*10<!-- raw HTML omitted -->n<!-- raw HTML omitted --> 是特殊的符号，因此把它们单独放进映射列表中。让整数从高位作消减，每减去一个数，就拼接该数所对应的罗马数字，直到不能再减为止。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// IntegerToRoman.java v1.2
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">intToRoman</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> romans <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;M&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CM&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;D&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CD&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;C&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;L&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XL&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;X&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;IX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;V&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;IV&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;I&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> ints <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>1000<span style="color:#f92672">,</span> 900<span style="color:#f92672">,</span> 500<span style="color:#f92672">,</span> 400<span style="color:#f92672">,</span> 100<span style="color:#f92672">,</span> 90<span style="color:#f92672">,</span> 50<span style="color:#f92672">,</span> 40<span style="color:#f92672">,</span> 10<span style="color:#f92672">,</span> 9<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 1<span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        StringBuilder res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> ints<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>num <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> ints<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                res<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>romans<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                num <span style="color:#f92672">-</span><span style="color:#f92672">=</span> ints<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">Status</th>
+<th align="center">Tests</th>
+<th align="center">Run Time</th>
+<th align="center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Accepted</td>
+<td align="center">3999 / 3999</td>
+<td align="center">8 ms</td>
+<td align="center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="roman-to-integer">Roman to Integer</h3>
+<p>第 13 题 <a href="https://leetcode.com/problems/roman-to-integer/">Roman to Integer</a></p>
+<blockquote>
+<p>给出一个罗马数字，将其转换为整型数。范围在 1-3999 之间。</p>
+</blockquote>
+<p>这题就是前一题的逆向。可以借用上面的思路，从字符串的首位开始寻找匹配的罗马数字，如果从首位开始的字符串能匹配罗马数字，则把该字符串截掉，继续匹配；如果没有匹配，则换下一个罗马数字继续判断是否匹配。这里有一个注意点，就是一旦匹配后截取子字符串时，要根据被截掉的罗马数字的长度来定截取的起始位置。Java 代码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// RomanToInteger.java v1.0
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">romanToInt</span><span style="color:#f92672">(</span>String s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> romans <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;M&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CM&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;D&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;CD&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;C&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;L&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;XL&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;X&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;IX&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;V&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;IV&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;I&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> ints <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>1000<span style="color:#f92672">,</span> 900<span style="color:#f92672">,</span> 500<span style="color:#f92672">,</span> 400<span style="color:#f92672">,</span> 100<span style="color:#f92672">,</span> 90<span style="color:#f92672">,</span> 50<span style="color:#f92672">,</span> 40<span style="color:#f92672">,</span> 10<span style="color:#f92672">,</span> 9<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 1<span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> res <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> romans<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">indexOf</span><span style="color:#f92672">(</span>romans<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>index <span style="color:#f92672">=</span><span style="color:#f92672">=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                res <span style="color:#f92672">+</span><span style="color:#f92672">=</span> ints<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+                s <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>index <span style="color:#f92672">+</span> romans<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">Status</th>
+<th align="center">Tests</th>
+<th align="center">Run Time</th>
+<th align="center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Accepted</td>
+<td align="center">3999 / 3999</td>
+<td align="center">10 ms</td>
+<td align="center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>再换种思路，前一题分析时讲到，小单位在大单位左边时时相减的关系，反之则是相加的关系，比如 &ldquo;IV&rdquo; 表示 V-I=4，而 &ldquo;VI&rdquo; 表示 V+I=6。每次在匹配当前罗马数字时再去和前一位罗马数字进行比较，如果是比之前的大，则在加上当前罗马数字所代表的整数后还要减去前一位所代表的数字；如果比之前的要小，就只需要加上当前的数字。还有一个细节，如果当前罗马数字比前一位大，由于上一次操作时已经把前一位的数字加上去了，所以在操作当前罗马数字时需要减两次前一罗马数字。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// RomanToInteger.java v1.1
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">romanToInt</span><span style="color:#f92672">(</span>String s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> pre <span style="color:#f92672">=</span> 0<span style="color:#f92672">,</span> cur <span style="color:#f92672">=</span> 0<span style="color:#f92672">,</span> res <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;M&#39;</span><span style="color:#f92672">:</span> cur <span style="color:#f92672">=</span> 1000<span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;D&#39;</span><span style="color:#f92672">:</span> cur <span style="color:#f92672">=</span> 500<span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;C&#39;</span><span style="color:#f92672">:</span> cur <span style="color:#f92672">=</span> 100<span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;L&#39;</span><span style="color:#f92672">:</span> cur <span style="color:#f92672">=</span> 50<span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;X&#39;</span><span style="color:#f92672">:</span> cur <span style="color:#f92672">=</span> 10<span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;V&#39;</span><span style="color:#f92672">:</span> cur <span style="color:#f92672">=</span> 5<span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;I&#39;</span><span style="color:#f92672">:</span> cur <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cur <span style="color:#f92672">&gt;</span> pre<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                res <span style="color:#f92672">+</span><span style="color:#f92672">=</span> cur <span style="color:#f92672">-</span> pre <span style="color:#f92672">*</span> 2<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                res <span style="color:#f92672">+</span><span style="color:#f92672">=</span> cur<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            pre <span style="color:#f92672">=</span> cur<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">Status</th>
+<th align="center">Tests</th>
+<th align="center">Run Time</th>
+<th align="center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Accepted</td>
+<td align="center">3999 / 3999</td>
+<td align="center">7 ms</td>
+<td align="center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="longest-common-prefix">Longest Common Prefix</h3>
+<p>第 14 题 <a href="https://leetcode.com/problems/longest-common-prefix/">Longest Common Prefix</a></p>
+<blockquote>
+<p>编写一个函数，找出给定的字符串数组中最长的公共前缀字符串。</p>
+</blockquote>
+<p>这是一道非常非常经典的算法题，江湖人称 &ldquo;LCP&rdquo;。由于限定了是前缀字符串，使得子字符串的起始位置是固定的，因此题目变得很好处理。
+先判断两种特殊输入，字符串数组为空或者 <code>null</code>，以及字符串数组仅包含一个字符串这两种情况。
+然后找出字符串数组中的最短字符串的长度，因为这个长度限定了最长公共前缀字符串的最大长度。接下来就从字符串的首位依次往后比较，一旦出现不相同的情况，保存当前的公共前缀字符串，立即终止比较。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// LongestCommonPrefix.java
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">longestCommonPrefix</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> strs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>strs <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">|</span><span style="color:#f92672">|</span> strs<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> 0<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>strs<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> 1<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> strs<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> minLen <span style="color:#f92672">=</span> strs<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String str <span style="color:#f92672">:</span> strs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            minLen <span style="color:#f92672">=</span> str<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">&lt;</span> minLen <span style="color:#f92672">?</span> str<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> minLen<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> minLen<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> strs<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span> j<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>strs<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> strs<span style="color:#f92672">[</span>j <span style="color:#f92672">+</span> 1<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">return</span> strs<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> i<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> strs<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> minLen<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">Status</th>
+<th align="center">Tests</th>
+<th align="center">Run Time</th>
+<th align="center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Accepted</td>
+<td align="center">117 / 117</td>
+<td align="center">2 ms</td>
+<td align="center">Java</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="3sum">3Sum</h3>
+<p>第 15 题 <a href="https://leetcode.com/problems/3sum/">3Sum</a></p>
+<blockquote>
+<p>有 n 个整型数组成的数组 S，其中是否存在 a, b, c 三个数，使得 a + b + c = 0？找出所有的组合。
+比如给出数组 S = [ -1, 0, 1, 2, -1, -4 ]，结果就是：[ [-1, 0, 1], [-1, -1, 2] ]
+注，需要去重。</p>
+</blockquote>
+<p>首先排除数组元素小于 3 的异常情况。因为三者求和为 0，因此必然包含正数和负数，所以把数组排序后如果首个元素大于 0，或者最后一个元素小于 0 都可以直接终止算法。另外，由于最终的结果不能有重复的组合，所以有必要对数组进行排序，这样方便去掉重复的数字组合。
+对递增排序后的数组枚举，枚举时选定一个数 nums[i] 作为最小数，然后再从后面的数中选定中间数 nums[i+1] 和最大数 nums[n]，三者求和。如果结果等于 0，则需要把中间数和最大数的下标同时往中间移动，如果移动后的数和之前一样，则继续向中间移动，这样处理是一方面是节省不必要的运算，更重要的是为了去重；如果结果大于 0，相应的把最大数减小，即向左移动下标 n；如果结果小于 0，则把中间数的下标向右移动；直到中间数和最大数相遇为止。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 3Sum.java
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">threeSum</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> nums<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>nums <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">|</span><span style="color:#f92672">|</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;</span> 3<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
+        Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">,</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> 0 <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> nums<span style="color:#f92672">[</span>count <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span> <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> 0 <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> count <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sum <span style="color:#f92672">=</span><span style="color:#f92672">=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    res<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">,</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span><span style="color:#f92672">,</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>j <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span><span style="color:#f92672">)</span> j<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>k <span style="color:#f92672">+</span> 1<span style="color:#f92672">]</span><span style="color:#f92672">)</span> k<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sum <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    j<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>j <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span><span style="color:#f92672">)</span> j<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                    k<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>k <span style="color:#f92672">+</span> 1<span style="color:#f92672">]</span><span style="color:#f92672">)</span> k<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+            i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 2 <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span><span style="color:#f92672">)</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">Status</th>
+<th align="center">Tests</th>
+<th align="center">Run Time</th>
+<th align="center">Language</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Accepted</td>
+<td align="center">311 / 311</td>
+<td align="center">9 ms</td>
+<td align="center">Java</td>
+</tr>
+</tbody>
+</table>
+<p>下一篇：<a href="/2016/07/04/leetcode-tour-4/">LeetCode 探险第四弹</a></p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/algorithm">Algorithm</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/leetcode">LeetCode</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

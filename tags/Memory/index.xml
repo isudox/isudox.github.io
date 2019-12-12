@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Memory on I sudo X</title>
+    <link>https://isudox.com/tags/memory/</link>
+    <description>Recent content in Memory on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Jun 2016 13:00:53 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/tags/memory/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Java String 的内存模型</title>
+      <link>https://isudox.com/posts/2016-06-22-memory-model-of-string-in-java-language/</link>
+      <pubDate>Wed, 22 Jun 2016 13:00:53 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-06-22-memory-model-of-string-in-java-language/</guid>
+      <description>在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。
+字符串比较 字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：
+String s1 = &amp;#34;hello,world!&amp;#34;; // 通过字面值 String s2 = new String(&amp;#34;hello,world!&amp;#34;); // 通过 new 关键字 字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：
+public class Debug { public static void main(String[] args) { String s1 = &amp;#34;hello,world!&amp;#34;; String s2 = new String(&amp;#34;hello,world!&amp;#34;); System.out.println(s1 == s2); // false  System.out.println(Objects.equals(s1, s2)); // true  } } 值都是 &amp;ldquo;hello,world!&amp;rdquo; 的字符串，然而两种比较的方式所得到的结果却不相同。字符串 s1 是通过字面值创建，字符串 s2 是通过关键字 new 创建，在分析这两种创建字符串方式的区别之前，先比较下 == 操作符和 equals() 方法在进行字符串比较时的差异。</description>
+    </item>
+    
+  </channel>
+</rss>

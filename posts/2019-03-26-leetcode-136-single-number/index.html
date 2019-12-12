@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>LeetCode-136 Single Number - I sudo X</title>
+    
+    <meta name="description" content="136. Single Number
+Easy
+ Given a non-empty array of integers, every element appears twice except for one. Find that single one.
+Note:
+ Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+ Example 1:
+Input: [2,2,1] Output: 1 Example 2:
+Input: [4,1,2,1,2] Output: 4 Solution Actually it&#39;s quite simple to solve, but we should make clear that it requires O(N) complexity and no extra memory usage.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">LeetCode-136 Single Number</h1>
+    <div class="post-meta">March 26, 2019</div>
+  </header>
+  <div class="post-content"><blockquote>
+<p><a href="https://leetcode.com/problems/single-number/solution/">136. Single Number</a></p>
+<p>Easy</p>
+</blockquote>
+<!-- raw HTML omitted -->
+<p>Given a non-empty array of integers, every element appears twice except for one. Find that single one.</p>
+<p><strong>Note:</strong></p>
+<blockquote>
+<p>Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?</p>
+</blockquote>
+<p>Example 1:</p>
+<pre><code>Input: [2,2,1]
+Output: 1
+</code></pre><p>Example 2:</p>
+<pre><code>Input: [4,1,2,1,2]
+Output: 4
+</code></pre><h2 id="solution">Solution</h2>
+<p>Actually it's quite simple to solve, but we should make clear that it requires <code>O(N)</code> complexity and no extra memory usage. So we need to find out the single one during several iterations.
+As is well-known,</p>
+<pre><code>a XOR a = 0
+0 XOR a = a
+</code></pre><p>So all the duplicate numbers will be calculated to <code>0</code> after looping xor, and the result of the iteration of xor must be the single number value.
+Here is the sample code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>:
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">single_number</span>(self, nums: List[int]) <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> int:
+        <span style="color:#75715e"># xor each sibling num</span>
+        <span style="color:#66d9ef">return</span> reduce(<span style="color:#66d9ef">lambda</span> a, b: a <span style="color:#f92672">^</span> b, nums)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SingleNumber</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">singleNumber</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> nums<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            nums<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">^</span><span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> nums<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="complexity-analysis">Complexity Analysis</h2>
+<p>Time complexity of this approach is <code>O(N)</code>;
+Space complexity is <code>O(1)</code>;</p>
+<hr>
+<p><a href="https://github.com/isudox/leetcode-solution/blob/master/docs/136.single-number.md">GitHub Link</a></p>
+<pre><code>Forgive my poor English, I just wanna improve my writing skill.
+So if I make some stupid mistakes in writing, forget about them.
+Let's focus on the code :)
+</code></pre></div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/algorithm">Algorithm</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/leetcode">LeetCode</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

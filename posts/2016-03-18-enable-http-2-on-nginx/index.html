@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Nginx 启用 HTTP/2 - I sudo X</title>
+    
+    <meta name="description" content="今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。 上 Google 搜索关键字，才知道自己已经滞后了6个月，Nginx 从1.9.5版本开始已经加入了对 HTTP/2 的官方支持 Nginx Open Source 1.9.5 Released with HTTP/2 Support。这篇文章里也提到了 Nginx 从 1.9.5 开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级 Nginx，开启 HTTP/2。
+挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼 conf 文件，没有 SPDY 的参数设置，可以平滑升级到 1.10.0了。由于 Nginx1.10.0 发布在 mainline 上，如果想采用 apt 方式升级，还需要配置下 source 源。先安装 Nginx 的 apt 源的签名key，把 key 添加进 apt 源。
+sudo apt-key add nginx_signing.key 修改/etc/apt/sources.list，在文件后追加 nginx mainline 的 deb 包源和 deb-src 源
+deb http://nginx.org/packages/debian/ codename nginx deb-src http://nginx.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Nginx 启用 HTTP/2</h1>
+    <div class="post-meta">March 18, 2016</div>
+  </header>
+  <div class="post-content"><p>今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。
+上 Google 搜索关键字，才知道自己已经滞后了6个月，Nginx 从1.9.5版本开始已经加入了对 HTTP/2 的官方支持 <a href="https://www.nginx.com/blog/nginx-1-9-5/">Nginx Open Source 1.9.5 Released with HTTP/2 Support</a>。这篇文章里也提到了 Nginx 从 1.9.5 开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级 Nginx，开启 HTTP/2。</p>
+<!-- raw HTML omitted -->
+<p>挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼 conf 文件，没有 SPDY 的参数设置，可以平滑升级到 1.10.0了。由于 Nginx1.10.0 发布在 mainline 上，如果想采用 <code>apt</code> 方式升级，还需要配置下 source 源。先安装 Nginx 的 apt 源的签名<a href="http://nginx.org/keys/nginx_signing.key">key</a>，把 key 添加进 apt 源。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-key add nginx_signing.key
+</code></pre></div><p>修改<code>/etc/apt/sources.list</code>，在文件后追加 nginx mainline 的 deb 包源和 deb-src 源</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">deb http://nginx.org/packages/debian/ codename nginx
+deb-src http://nginx.org/packages/debian/ codename nginx
+</code></pre></div><p>此处的 <code>codename</code> 是系统版本的别称，比如我的服务器系统版本是 Debian 8，别名是 <code>jessie</code>，<code>codename</code> 即为 <code>jessie</code>。更新系统，Nginx 顺利升级到1.10.0</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nginx version: nginx/1.10.0
+built by gcc 4.9.2 <span style="color:#f92672">(</span>Debian 4.9.2-10<span style="color:#f92672">)</span>
+built with OpenSSL 1.0.1k <span style="color:#ae81ff">8</span> Jan <span style="color:#ae81ff">2015</span>
+TLS SNI support enabled
+configure arguments:
+--prefix<span style="color:#f92672">=</span>/etc/nginx
+--sbin-path<span style="color:#f92672">=</span>/usr/sbin/nginx
+--conf-path<span style="color:#f92672">=</span>/etc/nginx/nginx.conf
+--error-log-path<span style="color:#f92672">=</span>/var/log/nginx/error.log
+--http-log-path<span style="color:#f92672">=</span>/var/log/nginx/access.log
+--pid-path<span style="color:#f92672">=</span>/var/run/nginx.pid
+--lock-path<span style="color:#f92672">=</span>/var/run/nginx.lock
+--http-client-body-temp-path<span style="color:#f92672">=</span>/var/cache/nginx/client_temp
+--http-proxy-temp-path<span style="color:#f92672">=</span>/var/cache/nginx/proxy_temp
+--http-fastcgi-temp-path<span style="color:#f92672">=</span>/var/cache/nginx/fastcgi_temp
+--http-uwsgi-temp-path<span style="color:#f92672">=</span>/var/cache/nginx/uwsgi_temp
+--http-scgi-temp-path<span style="color:#f92672">=</span>/var/cache/nginx/scgi_temp
+--user<span style="color:#f92672">=</span>nginx
+--group<span style="color:#f92672">=</span>nginx
+--with-http_ssl_module
+--with-http_realip_module
+--with-http_addition_module
+--with-http_sub_module
+--with-http_dav_module
+--with-http_flv_module
+--with-http_mp4_module
+--with-http_gunzip_module
+--with-http_gzip_static_module
+--with-http_random_index_module
+--with-http_secure_link_module
+--with-http_stub_status_module
+--with-http_auth_request_module
+--with-mail
+--with-mail_ssl_module
+--with-file-aio
+--with-http_v2_module
+--with-ipv6
+--with-threads
+--with-stream
+--with-stream_ssl_module
+--with-http_slice_module
+</code></pre></div><p>可以看到 Nginx 已经把 1.8.x 时代的 Nginx 参数列表里的 <code>--with-http_spdy_module</code> 替换为 <code>--with-http_v2_module</code>，而这个 module 就是开启 HTTP/2 支持的模块。</p>
+<p>修改 <code>/etc/nginx/conf.d/xxx.conf</code> 站点配置文件，在 443 端口监听的 server 设置里加上 <code>http2</code> 参数，80 端口访问强制跳转 https</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">server <span style="color:#f92672">{</span>
+    listen <span style="color:#ae81ff">443</span> ssl http2 default_server;
+<span style="color:#f92672">}</span>
+server <span style="color:#f92672">{</span>
+    listen 80;
+    location / <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">301</span> https://$host$request_uri;
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>改造的同时，我顺便把 SSL 证书换成 Comodo PositiveSSL。重新载入 Nginx 配置<code>sudo service nginx reload</code>。迫不及待的打开小站测试，然后呵呵哒，Chrome 返回 not available 的错误信息</p>
+<pre><code>This webpage is not available
+ERR_SPDY_INADEQUATE_TRANSPORT_SECURITY
+</code></pre><p>原来在 Nginx 的站点配置里有一行参数 <code>ssl_prefer_server_ciphers on;</code>，如果开启了这个选项，那么当 Nginx 配置的 SSL ciphers 不支持 HTTP/2 时，就会发生上述错误，浏览器会拒绝该 HTTP/2 连接请求。所以需要把站点配置里的 <code>ciphers</code> 参数改成支持 HTTP/2 的设置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssl_ciphers <span style="color:#e6db74">&#39;kEECDH+ECDSA+AES128 kEECDH+ECDSA+AES256 kEECDH+AES128 kEECDH+AES256 kEDH+AES128 kEDH+AES256 DES-CBC3-SHA +SHA !aNULL !eNULL !LOW !kECDH !DSS !MD5 !EXP !PSK !SRP !CAMELLIA !SEED&#39;</span>;
+</code></pre></div><p>好了，小站顺利打开，检查下是否走的 HTTP/2
+<img src="https://o70e8d1kb.qnssl.com/enable-http-2-on-nginx-1.png" alt="">
+在 protocol 栏看到协议已经是 h2 了，表明开启 HTTP/2 成功。</p>
+<p>对本站的小幅改进就到这里完工了。计划下周在工作之余，一锅乱炖 HTTP/1.1 和 HTTP/2，一直以来对HTTP协议这块的认识很欠缺，论一个 Web 开发者的自我修养……</p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/http">HTTP</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/nginx">Nginx</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>阿里大鱼短信 SDK 迁移到 Python 3.x - I sudo X</title>
+    
+    <meta name="description" content="近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定阿里大鱼的解决方案。
+然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python 3，导致很多时候用 Python 会有些捉襟见肘，尤其是像我这种野路子的 Python 开发。
+比如阿里大鱼的短信方案，虽然相比其他厂商很良心的在 PHP 、 Java 版 SDK 之外，友情附赠了 Python 版，但集成进 Django 工程并 debug 后，真是握了棵草，它是基于 Python 2.x 开发的，翻了下开发包源码文件，署名为 “lihao” 的这位阿里同学是在 2012 年更新的源码，这竟是一份蒙尘多年的代码啊，当时我的内心是奔溃的……
+ 自己动手，丰衣足食。——《毛选》
+ 阿里大鱼短信开发包的源码并不复杂，来来去去无非一些 request，response 和 string 的处理，底层都是在阿里服务端 api 里实现的，短信包只是提供 api 调用、处理功能，因此迁移工作倒也不是很令人拙计。下面就把我填的坑一一道来（难免有遗忘和疏漏，见谅）——
+一号坑 # 如果parameters是字典类 keys = parameters.keys() 不出所料的话，控制台会输出 &gt;&gt;&gt;TypeError: &#39;dict_keys&#39; object does not support indexing 这是一大坑，在 Python 3.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">阿里大鱼短信 SDK 迁移到 Python 3.x</h1>
+    <div class="post-meta">February 2, 2016</div>
+  </header>
+  <div class="post-content"><p>近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定<a href="http://www.alidayu.com/">阿里大鱼</a>的解决方案。</p>
+<p>然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python 3，导致很多时候用 Python 会有些捉襟见肘，尤其是像我这种野路子的 Python 开发。</p>
+<!-- raw HTML omitted -->
+<p>比如阿里大鱼的短信方案，虽然相比其他厂商很良心的在 PHP 、 Java 版 SDK 之外，友情附赠了 Python 版，但集成进 Django 工程并 debug 后，真是握了棵草，它是基于 Python 2.x 开发的，翻了下开发包源码文件，署名为 “lihao” 的这位阿里同学是在 2012 年更新的源码，这竟是一份蒙尘多年的代码啊，当时我的内心是奔溃的……</p>
+<blockquote>
+<p>自己动手，丰衣足食。——《毛选》</p>
+</blockquote>
+<p>阿里大鱼短信开发包的源码并不复杂，来来去去无非一些 request，response 和 string 的处理，底层都是在阿里服务端 api 里实现的，短信包只是提供 api 调用、处理功能，因此迁移工作倒也不是很令人拙计。下面就把我填的坑一一道来（难免有遗忘和疏漏，见谅）——</p>
+<h4 id="heading">一号坑</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 如果parameters是字典类</span>
+keys <span style="color:#f92672">=</span> parameters<span style="color:#f92672">.</span>keys()
+</code></pre></div><p>不出所料的话，控制台会输出
+<code>&gt;&gt;&gt;TypeError: 'dict_keys' object does not support indexing</code>
+这是一大坑，在 Python 3.x 里，<code>dict.keys()</code>, <code>dict.values()</code> 和 <code>dict.items()</code> 是返回一个 <code>dict_keys</code> 对象（dict_keys 不支持 indexing），而不是 Python 2.x 那样返回一个 <code>list</code>。因此最简单的迁移方法就是显式调用 <code>list()</code> 处理，</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 如果parameters是字典类</span>
+keys <span style="color:#f92672">=</span> list(parameters<span style="color:#f92672">.</span>keys())
+</code></pre></div><p>但实际上，这种处理办法并不是最优解，可参考 <a href="http://blog.labix.org/2008/06/27/watch-out-for-listdictkeys-in-python-3">Watch out for list(dict.keys()) in Python 3</a></p>
+<h4 id="heading-1">二号坑</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sign <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>md5(parameters)<span style="color:#f92672">.</span>hexdigest()<span style="color:#f92672">.</span>upper()
+</code></pre></div><p>哈哈，控制台会报如下错
+<code>&gt;&gt;&gt;Python hashlib problem “TypeError: Unicode-objects must be encoded before hashing”</code>
+言简意赅，debug 信息已经给出了解决方案，上述代码中的 parameters 参数必须先 encoded 后才能 hash。So easy!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sign <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>md5(parameters<span style="color:#f92672">.</span>encode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">utf8</span><span style="color:#e6db74">&#39;</span>))<span style="color:#f92672">.</span>hexdigest()<span style="color:#f92672">.</span>upper()
+</code></pre></div><p>utf-8 转码后就没问题了，一个赛艇！</p>
+<h4 id="heading-2">三号坑</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">if</span> (isinstance(pstr, str)):
+    <span style="color:#66d9ef">return</span> pstr
+<span style="color:#66d9ef">elif</span> (isinstance(pstr, unicode)):
+    <span style="color:#66d9ef">return</span> pstr<span style="color:#f92672">.</span>encode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">utf-8</span><span style="color:#e6db74">&#39;</span>)
+</code></pre></div><p>运行后的错误信息：
+<code>&gt;&gt;&gt;NameError: global name 'unicode' is not defined</code>
+Python 3.x 把 <code>unicode</code> 类型改名为 <code>str</code>，而原来 Python 2.x 下的 <code>str</code> 类型被 <code>bytes</code> 替代。所以解决办法就是按 Python 3.x 的定义来</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">if</span> (isinstance(pstr, bytes)):
+    <span style="color:#66d9ef">return</span> pstr
+<span style="color:#66d9ef">elif</span> (isinstance(pstr, str)):
+    <span style="color:#66d9ef">return</span> pstr<span style="color:#f92672">.</span>encode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">utf-8</span><span style="color:#e6db74">&#39;</span>)
+</code></pre></div><h4 id="heading-3">四号坑</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">connection <span style="color:#f92672">=</span> httplib<span style="color:#f92672">.</span>HTTPConnection(self<span style="color:#f92672">.</span>__domain, self<span style="color:#f92672">.</span>__port, False, timeout)
+</code></pre></div><p>这里需要注意的地方有两处，Python 2.x 的 httplib 包的 import 路径为
+<code>import httplib</code>
+在 Python 3.x 里的 import 路径则是：
+<code>import http.client as httplib</code>
+还有一处注意点是，在更改了包路径后，httplib.HTTPConnection(httplib.HTTPConnection() 的参数也发生了变化，
+Python 2.x 中该接口为
+<code>httplib.HTTPConnection(host[, port[, strict[, timeout[, source_address]]]])</code>
+其中，strict 默认为 False，而 Python 3.x 里该接口则修改成
+<code>httplib.HTTPConnection(self, host, port=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, source_address=None）</code>
+很显然，阿里源码里的传参是按照 Python 2.x 的写法，对照 Python 3.x 接口改过来便是</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">connection <span style="color:#f92672">=</span> httplib<span style="color:#f92672">.</span>HTTPConnection(self<span style="color:#f92672">.</span>__domain, self<span style="color:#f92672">.</span>__port, timeout)
+</code></pre></div><h4 id="heading-4">五号坑</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">P_TIMESTAMP: str(long(time<span style="color:#f92672">.</span>time() <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>))
+</code></pre></div><p><code>&gt;&gt;&gt;NameError: name 'long' is not defined</code>
+Python 3.x 已经将 Python 2.x 中的 <code>int</code> 和 <code>long</code> 型合并为 <code>int</code>，因此在 Python 3.x 下，已经不存在 <code>long</code> 类型了。修改成<code>int()</code>即可</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">P_TIMESTAMP: str(int(time<span style="color:#f92672">.</span>time() <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>))
+</code></pre></div><h4 id="heading-5">六号坑</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> urllib <span style="color:#f92672">import</span> urlencode
+body <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>urlencode(application_parameter)
+</code></pre></div><p>Python 3.x 把 Python 2.x 下 <code>urlencode()</code> 函数转移到了 <code>urllib.parse</code> 里。修改为</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> urllib.parse <span style="color:#f92672">import</span> urlencode
+body <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>parse<span style="color:#f92672">.</span>urlencode(application_parameter)
+</code></pre></div><h4 id="heading-6">七号坑</h4>
+<pre><code>result = response.read()
+jsonobj = json.loads(result)
+</code></pre><p>Python 3.x 里 JSON 只接收 unicode，因此 result 需要转码为 unicode</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">result <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>decode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">utf-8</span><span style="color:#e6db74">&#39;</span>)
+jsonobj <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(result)
+</code></pre></div><h4 id="heading-7">八号坑</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> application_parameter<span style="color:#f92672">.</span>iteritems():
+    <span style="color:#66d9ef">pass</span>
+</code></pre></div><p>控制台报错：
+<code>&gt;&gt;&gt;AttributeError: 'dict' object has no attribute 'iteritems'</code>
+字典没有 iteritems 属性？原来是 Python 3.x 已经把 <code>iteritems()</code> 给移除掉了，因此不能再调用该方法。
+参考 <a href="https://wiki.python.org/moin/Python3.0">Python Wiki</a>:</p>
+<blockquote>
+<p>Remove dict.iteritems(), dict.iterkeys(), and dict.itervalues().
+Instead: use dict.items(), dict.keys(), and dict.values() respectively.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> application_parameter<span style="color:#f92672">.</span>items():
+    <span style="color:#66d9ef">pass</span>
+</code></pre></div><p>Done!</p>
+<h4 id="python-3x--basepy">Python 3.x 版本的 base.py</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># base.py</span>
+<span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">Created on 2012-7-3</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">@author: lihao</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+
+<span style="color:#66d9ef">try</span>:
+    <span style="color:#f92672">import</span> httplib
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ImportError</span>:
+    <span style="color:#f92672">import</span> http.client <span style="color:#f92672">as</span> httplib
+<span style="color:#f92672">import</span> urllib
+<span style="color:#f92672">import</span> time
+<span style="color:#f92672">import</span> hashlib
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> top
+<span style="color:#f92672">import</span> itertools
+<span style="color:#f92672">import</span> mimetypes
+<span style="color:#f92672">from</span> urllib.parse <span style="color:#f92672">import</span> urlencode
+
+<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;&#39;&#39;</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">定义一些系统变量</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;&#39;&#39;</span>
+
+SYSTEM_GENERATE_VERSION <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">taobao-sdk-python-20151217</span><span style="color:#e6db74">&#34;</span>
+
+P_APPKEY <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">app_key</span><span style="color:#e6db74">&#34;</span>
+P_API <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">method</span><span style="color:#e6db74">&#34;</span>
+P_SESSION <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">session</span><span style="color:#e6db74">&#34;</span>
+P_ACCESS_TOKEN <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">access_token</span><span style="color:#e6db74">&#34;</span>
+P_VERSION <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">v</span><span style="color:#e6db74">&#34;</span>
+P_FORMAT <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">format</span><span style="color:#e6db74">&#34;</span>
+P_TIMESTAMP <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">timestamp</span><span style="color:#e6db74">&#34;</span>
+P_SIGN <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">sign</span><span style="color:#e6db74">&#34;</span>
+P_SIGN_METHOD <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">sign_method</span><span style="color:#e6db74">&#34;</span>
+P_PARTNER_ID <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">partner_id</span><span style="color:#e6db74">&#34;</span>
+
+P_CODE <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">code</span><span style="color:#e6db74">&#39;</span>
+P_SUB_CODE <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">sub_code</span><span style="color:#e6db74">&#39;</span>
+P_MSG <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">msg</span><span style="color:#e6db74">&#39;</span>
+P_SUB_MSG <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">sub_msg</span><span style="color:#e6db74">&#39;</span>
+
+N_REST <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/router/rest</span><span style="color:#e6db74">&#39;</span>
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sign</span>(secret, parameters):
+    <span style="color:#75715e"># ===========================================================================</span>
+    <span style="color:#75715e"># &#39;&#39;&#39;签名方法</span>
+    <span style="color:#75715e"># @param secret: 签名需要的密钥</span>
+    <span style="color:#75715e"># @param parameters: 支持字典和string两种</span>
+    <span style="color:#75715e"># &#39;&#39;&#39;</span>
+    <span style="color:#75715e"># ===========================================================================</span>
+    <span style="color:#75715e"># 如果parameters 是字典类的话</span>
+    <span style="color:#66d9ef">if</span> hasattr(parameters, <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">items</span><span style="color:#e6db74">&#34;</span>):
+        <span style="color:#75715e"># keys = parameters.keys()</span>
+        keys <span style="color:#f92672">=</span> list(parameters<span style="color:#f92672">.</span>keys())  <span style="color:#75715e"># sudoz: Py3</span>
+        keys<span style="color:#f92672">.</span>sort()
+
+        parameters <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (secret,
+                                 str()<span style="color:#f92672">.</span>join(
+                                         <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> (key, parameters[key]) <span style="color:#66d9ef">for</span> key
+                                         <span style="color:#f92672">in</span> keys),
+                                 secret)
+    <span style="color:#75715e"># sign = hashlib.md5(parameters).hexdigest().upper()</span>
+    sign <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>md5(parameters<span style="color:#f92672">.</span>encode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">utf8</span><span style="color:#e6db74">&#39;</span>))<span style="color:#f92672">.</span>hexdigest()<span style="color:#f92672">.</span>upper()   <span style="color:#75715e"># sudoz: Py3</span>
+    <span style="color:#66d9ef">return</span> sign
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mixStr</span>(pstr):
+    <span style="color:#66d9ef">if</span> (isinstance(pstr, str)):
+        <span style="color:#66d9ef">return</span> pstr
+    <span style="color:#75715e"># elif(isinstance(pstr, unicode)):</span>
+    <span style="color:#66d9ef">elif</span> (isinstance(pstr, str)):  <span style="color:#75715e"># sudoz: Py3</span>
+        <span style="color:#66d9ef">return</span> pstr<span style="color:#f92672">.</span>encode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">utf-8</span><span style="color:#e6db74">&#39;</span>)
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">return</span> str(pstr)
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FileItem</span>(object):
+    <span style="color:#66d9ef">def</span> __init__(self, filename<span style="color:#f92672">=</span>None, content<span style="color:#f92672">=</span>None):
+        self<span style="color:#f92672">.</span>filename <span style="color:#f92672">=</span> filename
+        self<span style="color:#f92672">.</span>content <span style="color:#f92672">=</span> content
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MultiPartForm</span>(object):
+    <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">Accumulate the data to be used when posting a form.</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+
+    <span style="color:#66d9ef">def</span> __init__(self):
+        self<span style="color:#f92672">.</span>form_fields <span style="color:#f92672">=</span> []
+        self<span style="color:#f92672">.</span>files <span style="color:#f92672">=</span> []
+        self<span style="color:#f92672">.</span>boundary <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PYTHON_SDK_BOUNDARY</span><span style="color:#e6db74">&#34;</span>
+        <span style="color:#66d9ef">return</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_content_type</span>(self):
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">multipart/form-data; boundary=</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>boundary
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_field</span>(self, name, value):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">Add a simple field to the form data.</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        self<span style="color:#f92672">.</span>form_fields<span style="color:#f92672">.</span>append((name, str(value)))
+        <span style="color:#66d9ef">return</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_file</span>(self, fieldname, filename, fileHandle, mimetype<span style="color:#f92672">=</span>None):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">Add a file to be uploaded.</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        body <span style="color:#f92672">=</span> fileHandle<span style="color:#f92672">.</span>read()
+        <span style="color:#66d9ef">if</span> mimetype <span style="color:#f92672">is</span> None:
+            mimetype <span style="color:#f92672">=</span> mimetypes<span style="color:#f92672">.</span>guess_type(filename)[
+                           <span style="color:#ae81ff">0</span>] <span style="color:#f92672">or</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">application/octet-stream</span><span style="color:#e6db74">&#39;</span>
+        self<span style="color:#f92672">.</span>files<span style="color:#f92672">.</span>append((
+                          mixStr(fieldname), mixStr(filename), mixStr(mimetype),
+                          mixStr(body)))
+        <span style="color:#66d9ef">return</span>
+
+    <span style="color:#66d9ef">def</span> __str__(self):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">Return a string representing the form data, including attached files.</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        <span style="color:#75715e"># Build a list of lists, each containing &#34;lines&#34; of the</span>
+        <span style="color:#75715e"># request.  Each part is separated by a boundary string.</span>
+        <span style="color:#75715e"># Once the list is built, return a string where each</span>
+        <span style="color:#75715e"># line is separated by &#39;\r\n&#39;.  </span>
+        parts <span style="color:#f92672">=</span> []
+        part_boundary <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">--</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>boundary
+
+        <span style="color:#75715e"># Add the form fields</span>
+        parts<span style="color:#f92672">.</span>extend(
+                [part_boundary,
+                 <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Content-Disposition: form-data; name=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> name,
+                 <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Content-Type: text/plain; charset=UTF-8</span><span style="color:#e6db74">&#39;</span>,
+                 <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span>,
+                 value,
+                 ]
+                <span style="color:#66d9ef">for</span> name, value <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>form_fields
+        )
+
+        <span style="color:#75715e"># Add the files to upload</span>
+        parts<span style="color:#f92672">.</span>extend(
+                [part_boundary,
+                 <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Content-Disposition: file; name=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">; filename=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> \
+                 (field_name, filename),
+                 <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Content-Type: </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> content_type,
+                 <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Content-Transfer-Encoding: binary</span><span style="color:#e6db74">&#39;</span>,
+                 <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span>,
+                 body,
+                 ]
+                <span style="color:#66d9ef">for</span> field_name, filename, content_type, body <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>files
+        )
+
+        <span style="color:#75715e"># Flatten the list and add closing boundary marker,</span>
+        <span style="color:#75715e"># then return CR+LF separated data</span>
+        flattened <span style="color:#f92672">=</span> list(itertools<span style="color:#f92672">.</span>chain(<span style="color:#f92672">*</span>parts))
+        flattened<span style="color:#f92672">.</span>append(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">--</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>boundary <span style="color:#f92672">+</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">--</span><span style="color:#e6db74">&#39;</span>)
+        flattened<span style="color:#f92672">.</span>append(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>join(flattened)
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TopException</span>(<span style="color:#a6e22e">Exception</span>):
+    <span style="color:#75715e"># ===========================================================================</span>
+    <span style="color:#75715e"># 业务异常类</span>
+    <span style="color:#75715e"># ===========================================================================</span>
+    <span style="color:#66d9ef">def</span> __init__(self):
+        self<span style="color:#f92672">.</span>errorcode <span style="color:#f92672">=</span> None
+        self<span style="color:#f92672">.</span>message <span style="color:#f92672">=</span> None
+        self<span style="color:#f92672">.</span>subcode <span style="color:#f92672">=</span> None
+        self<span style="color:#f92672">.</span>submsg <span style="color:#f92672">=</span> None
+        self<span style="color:#f92672">.</span>application_host <span style="color:#f92672">=</span> None
+        self<span style="color:#f92672">.</span>service_host <span style="color:#f92672">=</span> None
+
+    <span style="color:#66d9ef">def</span> __str__(self, <span style="color:#f92672">*</span>args, <span style="color:#f92672">*</span><span style="color:#f92672">*</span>kwargs):
+        sb <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">errorcode=</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> mixStr(self<span style="color:#f92672">.</span>errorcode) <span style="color:#f92672">+</span> \
+             <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> message=</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> mixStr(self<span style="color:#f92672">.</span>message) <span style="color:#f92672">+</span> \
+             <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> subcode=</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> mixStr(self<span style="color:#f92672">.</span>subcode) <span style="color:#f92672">+</span> \
+             <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> submsg=</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> mixStr(self<span style="color:#f92672">.</span>submsg) <span style="color:#f92672">+</span> \
+             <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> application_host=</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> mixStr(self<span style="color:#f92672">.</span>application_host) <span style="color:#f92672">+</span> \
+             <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> service_host=</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> mixStr(self<span style="color:#f92672">.</span>service_host)
+        <span style="color:#66d9ef">return</span> sb
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequestException</span>(<span style="color:#a6e22e">Exception</span>):
+    <span style="color:#75715e"># ===========================================================================</span>
+    <span style="color:#75715e"># 请求连接异常类</span>
+    <span style="color:#75715e"># ===========================================================================</span>
+    <span style="color:#66d9ef">pass</span>
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RestApi</span>(object):
+    <span style="color:#75715e"># ===========================================================================</span>
+    <span style="color:#75715e"># Rest api的基类</span>
+    <span style="color:#75715e"># ===========================================================================</span>
+
+    <span style="color:#66d9ef">def</span> __init__(self, domain<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">gw.api.taobao.com</span><span style="color:#e6db74">&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">80</span>):
+        <span style="color:#75715e"># =======================================================================</span>
+        <span style="color:#75715e"># 初始化基类</span>
+        <span style="color:#75715e"># Args @param domain: 请求的域名或者ip</span>
+        <span style="color:#75715e">#      @param port: 请求的端口</span>
+        <span style="color:#75715e"># =======================================================================</span>
+        self<span style="color:#f92672">.</span>__domain <span style="color:#f92672">=</span> domain
+        self<span style="color:#f92672">.</span>__port <span style="color:#f92672">=</span> port
+        self<span style="color:#f92672">.</span>__httpmethod <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">POST</span><span style="color:#e6db74">&#34;</span>
+        <span style="color:#66d9ef">if</span> (top<span style="color:#f92672">.</span>getDefaultAppInfo()):
+            self<span style="color:#f92672">.</span>__app_key <span style="color:#f92672">=</span> top<span style="color:#f92672">.</span>getDefaultAppInfo()<span style="color:#f92672">.</span>appkey
+            self<span style="color:#f92672">.</span>__secret <span style="color:#f92672">=</span> top<span style="color:#f92672">.</span>getDefaultAppInfo()<span style="color:#f92672">.</span>secret
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_request_header</span>(self):
+        <span style="color:#66d9ef">return</span> {
+            <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Content-type</span><span style="color:#e6db74">&#39;</span>: <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">application/x-www-form-urlencoded;charset=UTF-8</span><span style="color:#e6db74">&#39;</span>,
+            <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Cache-Control</span><span style="color:#e6db74">&#34;</span>: <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">no-cache</span><span style="color:#e6db74">&#34;</span>,
+            <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Connection</span><span style="color:#e6db74">&#34;</span>: <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Keep-Alive</span><span style="color:#e6db74">&#34;</span>,
+        }
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set_app_info</span>(self, appinfo):
+        <span style="color:#75715e"># =======================================================================</span>
+        <span style="color:#75715e"># 设置请求的app信息</span>
+        <span style="color:#75715e"># @param appinfo: import top</span>
+        <span style="color:#75715e">#                 appinfo top.appinfo(appkey,secret)</span>
+        <span style="color:#75715e"># =======================================================================</span>
+        self<span style="color:#f92672">.</span>__app_key <span style="color:#f92672">=</span> appinfo<span style="color:#f92672">.</span>appkey
+        self<span style="color:#f92672">.</span>__secret <span style="color:#f92672">=</span> appinfo<span style="color:#f92672">.</span>secret
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getapiname</span>(self):
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getMultipartParas</span>(self):
+        <span style="color:#66d9ef">return</span> []
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getTranslateParas</span>(self):
+        <span style="color:#66d9ef">return</span> {}
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_check_requst</span>(self):
+        <span style="color:#66d9ef">pass</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getResponse</span>(self, authrize<span style="color:#f92672">=</span>None, timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>):
+        <span style="color:#75715e"># =======================================================================</span>
+        <span style="color:#75715e"># 获取response结果</span>
+        <span style="color:#75715e"># =======================================================================</span>
+        <span style="color:#75715e"># connection = httplib.HTTPConnection(self.__domain, self.__port, False,</span>
+        <span style="color:#75715e">#                                     timeout)</span>
+        connection <span style="color:#f92672">=</span> httplib<span style="color:#f92672">.</span>HTTPConnection(self<span style="color:#f92672">.</span>__domain, self<span style="color:#f92672">.</span>__port, timeout)    <span style="color:#75715e"># sudoz: Py3</span>
+        sys_parameters <span style="color:#f92672">=</span> {
+            P_FORMAT: <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">json</span><span style="color:#e6db74">&#39;</span>,
+            P_APPKEY: self<span style="color:#f92672">.</span>__app_key,
+            P_SIGN_METHOD: <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">md5</span><span style="color:#e6db74">&#34;</span>,
+            P_VERSION: <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">2.0</span><span style="color:#e6db74">&#39;</span>,
+            <span style="color:#75715e"># P_TIMESTAMP: str(long(time.time() * 1000)),</span>
+            P_TIMESTAMP: str(int(time<span style="color:#f92672">.</span>time() <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>)),  <span style="color:#75715e"># sudoz: Py3</span>
+            P_PARTNER_ID: SYSTEM_GENERATE_VERSION,
+            P_API: self<span style="color:#f92672">.</span>getapiname(),
+        }
+        <span style="color:#66d9ef">if</span> authrize <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> None:
+            sys_parameters[P_SESSION] <span style="color:#f92672">=</span> authrize
+        application_parameter <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>getApplicationParameters()
+        sign_parameter <span style="color:#f92672">=</span> sys_parameters<span style="color:#f92672">.</span>copy()
+        sign_parameter<span style="color:#f92672">.</span>update(application_parameter)
+        sys_parameters[P_SIGN] <span style="color:#f92672">=</span> sign(self<span style="color:#f92672">.</span>__secret, sign_parameter)
+        connection<span style="color:#f92672">.</span>connect()
+
+        header <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_request_header()
+        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>getMultipartParas():
+            form <span style="color:#f92672">=</span> MultiPartForm()
+            <span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> application_parameter<span style="color:#f92672">.</span>items():
+                form<span style="color:#f92672">.</span>add_field(key, value)
+            <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>getMultipartParas():
+                fileitem <span style="color:#f92672">=</span> getattr(self, key)
+                <span style="color:#66d9ef">if</span> fileitem <span style="color:#f92672">and</span> isinstance(fileitem, FileItem):
+                    form<span style="color:#f92672">.</span>add_file(key, fileitem<span style="color:#f92672">.</span>filename, fileitem<span style="color:#f92672">.</span>content)
+            body <span style="color:#f92672">=</span> str(form)
+            header[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Content-type</span><span style="color:#e6db74">&#39;</span>] <span style="color:#f92672">=</span> form<span style="color:#f92672">.</span>get_content_type()
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#75715e"># body = urllib.urlencode(application_parameter)</span>
+            body <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>parse<span style="color:#f92672">.</span>urlencode(application_parameter)    <span style="color:#75715e"># sudoz: Py3</span>
+
+        <span style="color:#75715e"># url = N_REST + &#34;?&#34; + urllib.urlencode(sys_parameters)</span>
+        url <span style="color:#f92672">=</span> N_REST <span style="color:#f92672">+</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">?</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> urllib<span style="color:#f92672">.</span>parse<span style="color:#f92672">.</span>urlencode(sys_parameters)   <span style="color:#75715e"># sudoz: Py3</span>
+        connection<span style="color:#f92672">.</span>request(self<span style="color:#f92672">.</span>__httpmethod, url, body<span style="color:#f92672">=</span>body, headers<span style="color:#f92672">=</span>header)
+        response <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>getresponse()
+        <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#ae81ff">200</span>:
+            <span style="color:#66d9ef">raise</span> RequestException(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">invalid http status </span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> str(
+                response<span style="color:#f92672">.</span>status) <span style="color:#f92672">+</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">,detail body:</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> response<span style="color:#f92672">.</span>read())
+        <span style="color:#75715e"># result = response.read()</span>
+        result <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>decode(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">utf-8</span><span style="color:#e6db74">&#39;</span>)    <span style="color:#75715e"># sudoz: Py3里JSON只接收unicode</span>
+        jsonobj <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(result)
+        <span style="color:#66d9ef">return</span> jsonobj
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getApplicationParameters</span>(self):
+        application_parameter <span style="color:#f92672">=</span> {}
+        <span style="color:#75715e"># for key, value in self.__dict__.iteritems():</span>
+        <span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>__dict__<span style="color:#f92672">.</span>items():
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> key<span style="color:#f92672">.</span>startswith(
+                    <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">__</span><span style="color:#e6db74">&#34;</span>) <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> key <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>getMultipartParas() <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> key<span style="color:#f92672">.</span>startswith(
+                    <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">_RestApi__</span><span style="color:#e6db74">&#34;</span>) <span style="color:#f92672">and</span> value <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> None:
+                <span style="color:#66d9ef">if</span> (key<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">_</span><span style="color:#e6db74">&#34;</span>)):
+                    application_parameter[key[<span style="color:#ae81ff">1</span>:]] <span style="color:#f92672">=</span> value
+                <span style="color:#66d9ef">else</span>:
+                    application_parameter[key] <span style="color:#f92672">=</span> value
+        <span style="color:#75715e"># 查询翻译字典来规避一些关键字属性</span>
+        translate_parameter <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>getTranslateParas()
+        <span style="color:#75715e"># for key, value in application_parameter.iteritems():</span>
+        <span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> application_parameter<span style="color:#f92672">.</span>items():  <span style="color:#75715e"># sudoz: Py3</span>
+            <span style="color:#66d9ef">if</span> key <span style="color:#f92672">in</span> translate_parameter:
+                application_parameter[translate_parameter[key]] <span style="color:#f92672">=</span> \
+                application_parameter[key]
+                <span style="color:#66d9ef">del</span> application_parameter[key]
+        <span style="color:#66d9ef">return</span> application_parameter
+</code></pre></div></div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/python">Python</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

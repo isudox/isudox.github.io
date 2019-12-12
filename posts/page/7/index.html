@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Posts - I sudo X</title>
+    
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="list">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+
+
+
+<header class="page-header">
+  <h1>Posts</h1>
+</header>
+
+
+
+
+
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>Hexo 小站轻松部署方案</h2>
+  </header>
+  <section class="entry-content">
+   <p>进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。
+Blog 仿佛已是古董，在一众微博微信席卷的现下，多少有点像长势萎靡无人问津的路边草。那为什么还要做 Blog？为什么不选用现成的空间、Blog 提供商？为什么还是静态 Blog，还要搭在 VPS 上？
+需要有这么多为什么吗？因为好玩，这就够了。具体好玩的元素有很多，在下面的记录中会有所提及，更多的还需要自己去发现。
+Why  选择自己搭建独立 Blog 的理由很简单，既然是自己的东西，就不需要放在别人口袋里； 选择静态 Blog 是因为无需数据库，支持 Markdown，文本文件便于 Git 管理；  静态 Blog 程序尽管小众，也还是有不少选择的，按语言不同门派各异，也是一江湖。比如 Ruby 系 Jekyll，Node.js 系 Hexo，Python 系 Pelican。
+什么？竟然没有世界上最好的语言！好吧，WordPress 正在冲你露大白牙……
+Jekyll、Hexo 和 Pelican 各有拥趸，各执一词。我不辩优劣，选 Hexo 只是因为平时用 JS 更多罢了。如果对语言有信仰，那就闭上眼睛遵从信仰吧。
+How Google 一下关键字 Hexo &#43; Blog，或者直接查看 Hexo 官方文档，都可以对 Hexo 的搭建过程有较为清晰的认知。我设想的方案是搭建一个由 GitHub 托管，并且能在 VPS 上实时发布部署的 Blog 程序，因此基本框架就是 Hexo &#43; GitHub &#43; VPS。
+Let&#39;s Hexo GitHub 网上已有的 Hexo 方案基本都是将 Hexo 生成的静态文件提交至 GitHub Pages，通过 GitHub Pages 实现 Blog 的撰写及更新。但有一不足，如果换一台电脑写，难道还要将 Hexo 源文件拷贝过来再生成静态博客？肯定不能这么做，对此我的建议很简单：在 GitHub 上的以 {username}....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>September 3, 2015</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2015-09-03-hexo-your-blog/"></a>
+</article>
+
+
+
+
+<footer class="page-footer">
+  <nav class="pagination">
+    
+    <a class="prev" href="/posts/page/6/">← Prev Page</a>
+    
+    
+  </nav>
+</footer>
+
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

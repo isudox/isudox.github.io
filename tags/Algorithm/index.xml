@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithm on I sudo X</title>
+    <link>https://isudox.com/tags/algorithm/</link>
+    <description>Recent content in Algorithm on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Mar 2019 21:54:41 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>LeetCode-39 Combination Sum</title>
+      <link>https://isudox.com/posts/2019-03-29-leetcode-39-combination-sum/</link>
+      <pubDate>Fri, 29 Mar 2019 21:54:41 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2019-03-29-leetcode-39-combination-sum/</guid>
+      <description>39. Combination Sum
+Medium
+ Problem Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+The same repeated number may be chosen from candidates unlimited number of times.
+Note:
+ All numbers (including target) will be positive integers. The solution set must not contain duplicate combinations.  Example 1:
+Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] Example 2:</description>
+    </item>
+    
+    <item>
+      <title>LeetCode-136 Single Number</title>
+      <link>https://isudox.com/posts/2019-03-26-leetcode-136-single-number/</link>
+      <pubDate>Tue, 26 Mar 2019 20:20:20 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2019-03-26-leetcode-136-single-number/</guid>
+      <description>136. Single Number
+Easy
+ Given a non-empty array of integers, every element appears twice except for one. Find that single one.
+Note:
+ Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+ Example 1:
+Input: [2,2,1] Output: 1 Example 2:
+Input: [4,1,2,1,2] Output: 4 Solution Actually it&#39;s quite simple to solve, but we should make clear that it requires O(N) complexity and no extra memory usage.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 26-30</title>
+      <link>https://isudox.com/posts/2016-10-17-leetcode-26-30/</link>
+      <pubDate>Mon, 17 Oct 2016 17:09:15 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-10-17-leetcode-26-30/</guid>
+      <description>三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。
+Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Array
+ 给定一个有序数组，去掉其中重复的元素，并返回新数组的长度。 不要为其他数组分配额外的空间，必须在给定的内存中完成。
+ 假设传入的数组是 [1, 1, 2]，得到的结果应该是 2。题意很简单，但是有两个注意点，一个是该数组是有序的，即从小到大排列，另一个是不允许分配新数组的存储空间，这就意味着不用创建新的数组来保存数据，也不能通过 Set 来过滤重复元素。
+因为第二点的限，只能在给定的数组上进行数值比较的同时，计算非重复元素的数量；因为第一点的设定，所以可以做到对数组只遍历一次。具体做法就是，在遍历数组元素时，比较前后两个元素，如果相等，则重复元素的数量加一，同时移动当前遍历位置，直到遍历到数组最末元素。
+编写 Java 解法如下：
+// Rejected × public class Solution { public int removeDuplicates(int[] nums) { int count = nums.length; int dup = 0; if (count &amp;lt; 2) return count; for (int i = 0; i &amp;lt; count - 1; i++) { if (nums[i] == nums[i + 1]) dup++; } return count - dup; } } 本地测试结果是正确的，但是提交的 LeetCode 上却被否决，因为上面的方法只计算出了非重复元素的个数 n，没有考虑把有序数组前 n 位修改成正确的有序非重复元素。因此在遍历的同时，需要修改发现重复的位置上的元素。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 21-25</title>
+      <link>https://isudox.com/posts/2016-07-08-leetcode-tour-5/</link>
+      <pubDate>Fri, 08 Jul 2016 21:25:43 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-07-08-leetcode-tour-5/</guid>
+      <description>本篇记录 LeetCode 算法部分第 21 至 25 题。
+Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
+ 将两个有序链表合并成一个新的有序链表。
+ 题目不复杂，取两个指针分别往下遍历两个链表的每个节点，逐次指向节点的值，取其较小值，并移动该指针，另一指针不动。继续往下比较，知道其中有一个指针到达末端为止。 循环解法：
+// MergeTwoSortedLists.java v1.0 // Definition for singly-linked list. // public class ListNode { // int val; // ListNode next; // ListNode(int x) { val = x; } // } public class Solution { public ListNode mergeTwoLists(ListNode l1, ListNode l2) { ListNode res = new ListNode(0); ListNode temp = res; while (l1 !</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 16-20</title>
+      <link>https://isudox.com/posts/2016-07-04-leetcode-tour-4/</link>
+      <pubDate>Mon, 04 Jul 2016 15:06:59 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-07-04-leetcode-tour-4/</guid>
+      <description>本篇记录 LeetCode 算法部分第 16-20 题。
+3Sum Closest 第 16 题 3Sum Closest
+ 给定一个包含 n 个整型数的数组 S，找出 S 中的三个数，使得三者求和的结果和目标值最接近。返回求和结果，假定 S 中一定存在唯一解。 举例：数组 S = { -1 2 1 -4 }，目标值 target = 1。最接近目标值的求和结果为 (-1 + 2 + 1 = 2)
+ 这题是第 15 题的延伸。沿用前一题的思路，先对数组进行排序，取 a(i) + a(i+k) + a(n) 求和，如果结果和目标值一致，则直接将求和结果返回；如果结果大于目标值，则表明需要减小下标 n 的值，逐次减小，每次比较当前求和结果与目标值的差值和前一次求和比较的差值，取绝对值较小的保留，同时保留当前的求和结果；如果结果小于目标值，则需要增大下标 (i+k)。Java 代码如下
+// ThreeSumClosest.java v1.0 public class Solution { public int threeSumClosest(int[] nums, int target) { int sum = Integer.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 11-15</title>
+      <link>https://isudox.com/posts/2016-06-15-leetcode-tour-3/</link>
+      <pubDate>Wed, 15 Jun 2016 20:18:15 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-06-15-leetcode-tour-3/</guid>
+      <description>继上篇 LeetCode 探险第二弹，第三弹记录第 11 到 15 题。
+Container With Most Water 第 11 题 Container With Most Water
+ 给出 n 个非负整数 a1, a2, &amp;hellip;, an，每个数指向一个坐标点 (i, ai)。该 n 个坐标点画出了 n 条纵线，即从 (i, ai) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。
+ 假设待求的这两条线段的坐标分别为(i, 0)-(i, ai) 和 (j, 0)-(j, aj)，那么容器的底座长度 L=Math.abs(i - j)，高度 H=Math.min(ai, aj)，容积 V=L*H。
+最笨也是最直接的办法就是在循环里暴力枚举。把所有能组成的容器都测量一遍，不多说了，直接撸代码：
+// ContainerWithMostWater.java v1.0 public class Solution { public int maxArea(int[] height) { int maxV = 0, curV = 0; int count = height.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 6-10</title>
+      <link>https://isudox.com/posts/2016-05-17-leetcode-tour-2/</link>
+      <pubDate>Tue, 17 May 2016 21:14:04 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-05-17-leetcode-tour-2/</guid>
+      <description>接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。
+ZigZag Conversion 第 6 题 ZigZag Conversion
+ 字符串 &amp;quot;PAYPALISHIRING&amp;quot; 是由如下排列的字符串通过 ZigZag 形式读取所得。
+ P A H N A P L S I I G Y I R
+&amp;gt; 如果按行读取则为 `&amp;quot;PAHNAPLSIIGYIR&amp;quot;` &amp;gt; 请编写代码将给定行数的 zigzag 形式字符串转换为行形式的字符串： &amp;gt; ``` string convert(string text, int nRows);  比如 convert(&amp;quot;PAYPALISHIRING&amp;quot;, 3) 得到 &amp;quot;PAHNAPLSIIGYIR&amp;quot;
+ 这道 ZigZag 题很好玩，让我想起小时候做过的奥数题。从 ZigZag 型字符串中找规律，可以看到第一行和最后一行很容易挑出来，因为其字符的步进是固定的，即 2*(nRows-1)。然而中间的行的规律就不那么规则了，其步进间距是跳跃的，如果继续按 2*(nRows-1) 步进查找的话，会漏掉步进间距小于该值的字符。但是仔细观察除掉首行和末行的 ZigZag 排列字符串，可以发现它仍然是 ZigZag 字符串，只不过行数再减小，与之相应的步进间距也在变化，但始终符合 2*(nRows-1) 的规律。找到这个特性后，在步进查找时把中间行组成的 ZigZag 字符串的步进间距也作查询，就不会漏掉了。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 1-5</title>
+      <link>https://isudox.com/posts/2015-11-23-leetcode-1st-week/</link>
+      <pubDate>Mon, 23 Nov 2015 20:50:27 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2015-11-23-leetcode-1st-week/</guid>
+      <description>上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。
+Two Sum 第 1 题 Two Sum 算是简单题，题意大致为：
+ 给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。 伪代码： nums = [2, 7, 11, 15], target = 9 nums[0] + nums[1] = 2 + 7 = 9 return [0, 1]
+ 这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答
+// TwoSum.java public class Solution { public int[] twoSum(int[] nums, int target) { int len = nums.length; int[] res = new int[2]; if (len &amp;lt; 2) { return res; } for (int i = 0; i &amp;lt; len; i++) { for (int j = i + 1; j &amp;lt; len; j++) { if (nums[i] + nums[j] == target) { res[0] = i + 1; res[1] = j + 1; break; } } } return res; } } # two_sum.</description>
+    </item>
+    
+  </channel>
+</rss>

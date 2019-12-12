@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Posts - I sudo X</title>
+    
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="list">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+
+
+
+<header class="page-header">
+  <h1>Posts</h1>
+</header>
+
+
+
+
+
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>探索 Spring MVC 重定向和转发</h2>
+  </header>
+  <section class="entry-content">
+   <p>最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。
+比如客户端的请求进到 Controller 方法中，我们会判断当前用户状态，可能会跳转到用户中心页，也可能会跳转到等待页，又或者错误页。类似的场景很多，都需要用到请求的重定向和转发。Sping MVC 实现重定向或转发的方法有很多，我先大致梳理下，然后再通过源码加深理解。
+常用处理方式 Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 ModelAndView 对象，又或者是 RedirectView 对象，下面逐一说明。
+String 重定向 是 return 映射到另一个 Controller 方法的字符串。如果有请求参数，就拼接在 RequestMapping 映射的字符串后面。
+// 返回字符串映射的方式 @RequestMapping(&#34;hello&#34;) public String hello(HttpServletRequest req, HttpServletResponse resp) { doSomething(); return &#34;redirect:/bye&#34;; // return &#34;redirect:/bye?username=sudoz&#34;; } ModelAndView 重定向 另一种方法是通过返回 ModelAndView 对象来实现跳转。类似的，如果有请求参数，也可以通过类似 GET 参数拼接的方式：
+// 返回 ModelAndView 对象 @RequestMapping(&#34;hello&#34;) public ModelAndView hello(HttpServletRequest req, HttpServletResponse resp) { doSomething(); return new ModelAndView(&#34;redirect:/bye&#34;); // return new ModelAndView(&#34;redirect:/bye?...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>February 16, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2017-02-16-spring-mvc-redirect-forward/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>读 Flask 源码：源码结构</h2>
+  </header>
+  <section class="entry-content">
+   <p>打算对 Flask 的学习做个整理，以 Flask 的 GitHub 代码库的 master 分支为参考。其实早期的 0.3 版还是单文件，整个 flask.py 加上注释也只有 1426 行代码，非常简洁，很适合作为 Python 源码学习的教材。
+拿到源码先不着急，就像读书一样，不妨浏览下目录，以便有个全局的了解。Flask 的源码有一个非常好的优点，就是它的注释非常完备，即使不看源码，只看注释，也能有个大概的理解。
+从 Flask 根目录下的 setup.py 可以看到，Flask 依赖的组件主要有 3 个：
+ Werkzeug：一个 HTTP 和 WSGI 的工具集； Jinja2：Python 的前端模板引擎； itsdangerous：处理并传递可信数据的辅助函数集；  Flask 的核心代码都在 flask 目录下，其目录结构如下：
+flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.py 导入模块 ├── __main__.py 命令行运行 ├── _compat.py Py2/3 兼容性模块 ├── app.py 核心模块 ├── blueprints.py 蓝图模块 ├── cli.py 命令行支持模块 ├── config.py flask 配置模块 ├── ctx....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>February 14, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2017-02-14-explore-flask-source-code-structure/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>Spring Boot 学习笔记 1：起手式 Hello World</h2>
+  </header>
+  <section class="entry-content">
+   <p>Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convention over configuration)的设计范式。从零搭建 Spring Boot 项目几乎是傻瓜化的，因为框架把大量配置自动完成了。
+Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 Spring Boot 项目初始化工具，为开发者实现一个基本的项目骨架。很多 Java IDE 也集成了这个工具，以 Intellij IDEA 为例，新建项目，选择 Spring Initializr，进入如下组件选择面板
+其中 Core 包含了像 AOP Cashe 这些核心组件，Web 包含了 SpringMVC Thymeleaf 等 Web 开发组件，还有数据库相关，配置中心相关等一系列组件……因为是 Hello World 程序演示，就不选组件了，直接点下一步，创建空项目。空项目结构如下图。
+ DemonApplication.java：是应用程序的启动引导类（bootstrap class），也是主要的 Spring 配置类； DemoApplicationTest.java：集成 JUnit 的测试类； application.properties：配置应用程序和 Spring Boot 的属性；  OK，到此为止，第一个 Spring Boot 项目就创建完成了！是的，几乎什么都不需要做，一个能编译能运行的 Spring 项目已经搭建好了，真是幸福到泪奔啊o(&gt;_&lt;)o 但是空项目什么效果都看不到，所以接下来就往里面填充内容，实现一个简单的 Web 应用。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>February 10, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2017-02-10-spring-boot-note-1/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>通过反射统一 RPC 调用入口</h2>
+  </header>
+  <section class="entry-content">
+   <p>最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一个专属的 Porcessor 去处理服务调用的结果。当然好处就是功能区分清晰，不好的地方就是当 Processor 多了后维护起来不太方便。一种思路就是利用反射思想，为 Processor 中的 RPC 调用添加统一入口，通过服务名和方法名对调用进行定位。
+代理的思路很简单，但真的非常实用，在实际开发中，合理使用代理，能精简很多固有代码。从代理的统一入口进入，根据传入的远程服务名和方法名，自动定位到需要被远程调用的方法，再传入入参并调用该方法，就能代理过多的 Processor 调用 RPC。
+代理入口的代码如下：
+@Service(value = &#34;rpcEntry&#34;) public class RpcEntry { @Resource private Map&lt;String, Object&gt; serviceMap; // 远程服务的 k-v 映射  private final Map&lt;String, Method&gt; actions = new HashMap&lt;&gt;(); // 存储方法调用  public Result process(String invokeStr, Object[] args) { String serviceName = methodKey.split(&#34;\\.&#34;)[0]; if (!actions.containsKey(invokeStr)) { Object service = serviceMap.get(serviceName); if (service != null) { for (Method m : service.getClass().getMethods()) { actions....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>February 6, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2017-02-06-rpc-uni-entry-with-reflection/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>Travis CI 持续部署静态站方案</h2>
+  </header>
+  <section class="entry-content">
+   <p>这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓库会设置 hook，使得有新的 Commit 被 Push 上来后，自动把 Nginx 下的站点目录进行 Pull 更新。这种方案只是一开始的设置比较麻烦，之后就能一劳永逸，但我觉得还可以再抢救下。
+初步方案 既然核心目标都是一键部署，为什么不利用持续集成，那就用 Travis CI 吧，和 GitHub 无缝结合。
+先来梳理下整个部署思路：
+ 源码文件 Push 到 GitHub Page source 分支; Travis-CI 在 GitHub Page source 分支更新后，自动构建生成站点文件； Travis-CI 将站点文件推送到 GtiHub Page master 分支，使得 username.github.io 更新； VPS 从 GitHub Page master 分支拉取更新；  也就是说，整个部署过程只需要将写好源码文件 Push 到 GitHub 相应分支，后面的操作全部交给 Travis-CI 处理。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>January 24, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2017-01-24-deploy-site-with-travis-ci/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>Docker 容器化应用</h2>
+  </header>
+  <section class="entry-content">
+   <p>最近看了一篇博文，大受启发，也想着手尝试把自己 VPS 上的应用容器化，一方面尝试下新的开发方式，另一方面也便于应用迁移。
+Dockerfile Docker 通过 dockerfile 配置来把应用构建成镜像，dockerfile 是一个包含了配置和创建应用的全部命令的文本。Docker 官网上有对 dockerfile 的详细说明文档
+看了文档后，对其使用有大致的了解，对不是太复杂的应用的容器化，已经能实践了，下面对 dockerfile 的编写和使用简单总结下。
+编写 dockerfile FROM FROM 指令会设置要构建的镜像所依赖的基础镜像，比如应用是运行在 Ubuntu 系统上，那么就用 FROM 指定依赖镜像为 Ubuntu，FROM 必须是第一条非注释指令。
+FROM&lt;image&gt;# tag 可选FROM&lt;image&gt;:&lt;tag&gt;MAINTAINER 该指令设置镜像的作者信息。
+MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一条命令，单条命令可以通过 \ 反斜杠换行。RUN 支持两种格式：
+ RUN &lt;cmd&gt;：shell 格式，直接运行一条完整的 shell 命令，默认使用 /bin/sh -c 执行该 shell 命令； RUN [&#34;executable&#34;, &#34;param1&#34;, &#34;param2&#34;]： exec 格式，第一个参数是可执行文件，后面跟参数； 参考下面的例子：  RUN /bin/bash -c &#39;source $HOME/.bashrc; echo $HOME&#39;RUN [&#34;/bin/bash&#34;, &#34;-c&#34;, &#34;echo hello&#34;]CMD CMD 也是执行命令的指令，和 RUN 的区别在于，RUN 发生在镜像构建过程中，CMD 发生在容器启动时。dockerfile 中只能存在一条有效的 CMD 指令，如果编写了多条，则只有最后一条生效。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>January 16, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2017-01-16-dockerize-applications/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>展望 2017</h2>
+  </header>
+  <section class="entry-content">
+   <p>看完李安的《推手》，迎来了 2017 年的第一天。这算是新的一年里的开篇吧，就不写代码了，看社区里很多同行在做过 2016 年的总结，或是新一年的期望。对过去一年，我似乎很难整理出一条清晰的逻辑去完整的复盘和总结，总体来讲，自己并不是很满意，当然也有令我激动的地方，比如遇到了 Kiki 啊……自认为在毕业后的一年里没有取得自己想要的进步，没有达到我想达到的层次，新的一年里还得加油啊。既然不做总结了，展望还是要有的，万一做到了呢？
+ 博客的 Markdown 解析器好像不支持 checkbox 语法，尴尬
+  锻炼身体，体重达到 65 kg 以上，用肌肉武装自己； 学习英语，雅思争取拿到满意的成绩； 提升阅读量，重拾中学时的阅读热情。目标每个月都能啃掉一本书； 向 Kiki 学吉他，光看 Live 有什么劲啊； 养一条狗，陪它长大； 好好写博客，向大牛看齐，写出有深度有干货的技术博客，好好混 GitHub，写出自己满意的开源作品； 为爱自己的人，为自己爱的人，赚钱！赚更多钱！！赚好多钱！！！  嗯，就是这样。其实上面有些是 2016 年的计划，当然这就意味着我没做到，只能延期一年，希望明年这时候会是另外一个状态。
+最后，既然是程序员，自然要用程序员的方式辞旧迎新——
+&lt;/2016&gt; &lt;2017&gt; ...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>January 1, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2017-01-01-todo-list-2017/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>2016 前端补习 Yarn 篇</h2>
+  </header>
+  <section class="entry-content">
+   <p>目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w&#43; stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。
+基础操作 如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。
+初始化新项目：
+# same as npm init yarn init 执行该命令时，会询问项目名称，入口文件，作者等信息，确认后自动创建包管理文件 package.json，以后每次对包的增删更新都会同步到 package.json 中。
+安装依赖包：
+# same as npm install [package] yarn add [package] yarn add [package]@[version] yarn add [package]@[tag] 另外，该命令可以通过标识参数来指定依赖类型：
+ yarn add --dev 会把依赖包添加进 devDependencies 字段； yarn add --peer 会把依赖包添加进 peerDependencies 字段； yarn add --optional 会把依赖包添加进 optionalDependencies 字段；  更新依赖包：...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 27, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-12-27-yarn-front-end-development-trends-in-2016/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>2016 前端补习 Webpack 篇</h2>
+  </header>
+  <section class="entry-content">
+   <p>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。
+ 因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。
+ Webpack 基础命令 Hello World Webpack 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：
+# globally install yarn global add webpack@2.1.0-beta.20 # locally install yarn add webpack@2.1.0-beta.20 -D 安装完后，就可以在控制台使用 webpack 命令了。在目录下执行 webpack，首先需要配置 webpack.config.js 文件，由该配置文件来控制 webpack 的操作。参考阮一峰老师 GitHub 上的示例如下：
+// webpack.config.js module.exports = { entry: &#39;./main.js&#39;, output: { filename: &#39;bundle.js&#39; } }; 然后执行 webpack 命令就可以按照配置文件的设置，把目录下的 main.js 打包成 bundle.js。
+核心概念 Webpack 有 4 个核心概念必须要了解：Entry、Output、Loaders 和 Plugins。
+Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告诉 webpack 这张图表的入口位置并循着依赖关系去打包，webpack 通过对 webpack configuration object 设置 entry 属性来定义 Entry，参考下面的代码：...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 26, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-12-26-webpack-front-end-development-trends-in-2016/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>CORS 跨域调试记录</h2>
+  </header>
+  <section class="entry-content">
+   <p>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运用中会存在不同的状况，只是看文档理解概念并不能真正成为实战派。
+这次联调采用前后端分离的方式，后端由 Spring MVC 提供数据接口，前端通过异步的方式做数据渲染，和以往不同的是，由于前端开发全部交给深圳的凹凸实验室，所以静态文件都跑在独立的一个域名上，就是京东的通天塔项目。因此所有来自前端的请求都成了跨域请求。
+JSONP 确实是通过一种巧妙的伎俩解决了跨域请求被浏览器拒绝的问题，但是它并不能解决 POST 跨域，联调的接口是跨域上传头像，采用 POST 发送 FormData 对象的方式。所以由服务端 CORS 来处理。
+对于服务端，Spring MVC 设置 CORS 很简单，如果 springframework 版本是 4.2 及以上，Spring MVC 可以直接由注解 @CrossOrigin 对标记的控制器方法设置 CORS。例如下面的示例代码：
+@CrossOrigin(origins = &#34;http://localhost:9000&#34;) @GetMapping(&#34;/greeting&#34;) public Greeting greeting(@RequestParam(required=false, defaultValue=&#34;World&#34;) String name) { System.out.println(&#34;==== in greeting ====&#34;); return new Greeting(counter.incrementAndGet(), String.format(template, name)); } @CrossOrigin 注解可以通过设置 origins、methods、maxAge、allowHeaders、allowCredentials 等参数来确定 CORS 接受跨域的来源域，请求类型，请求头等。如果 origins 设置为星号，则对所有来源域的请求都允许跨域，methods 设置为 POST 就只允许请求类型为 POST 的跨域请求。
+前端正常发送异步请求，类似如下代码：
+var formData = new FormData(); formData....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>November 12, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-11-12-cors-in-action/"></a>
+</article>
+
+
+
+
+<footer class="page-footer">
+  <nav class="pagination">
+    
+    <a class="prev" href="/posts/">← Prev Page</a>
+    
+    
+    <a class="next" href="/posts/page/3/">Next Page →</a>
+    
+  </nav>
+</footer>
+
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

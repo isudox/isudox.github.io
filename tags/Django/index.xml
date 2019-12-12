@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Django on I sudo X</title>
+    <link>https://isudox.com/tags/django/</link>
+    <description>Recent content in Django on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 01 Jun 2016 17:24:27 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/tags/django/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Django 部署的非最佳实践</title>
+      <link>https://isudox.com/posts/2016-06-01-non-best-practice-of-django-deployment/</link>
+      <pubDate>Wed, 01 Jun 2016 17:24:27 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-06-01-non-best-practice-of-django-deployment/</guid>
+      <description>上周末接到急差，要重新部署之前开发的 Django 项目。磕磕绊绊遇到很多预想不到的问题，也发现自己对 Django 应用的部署依旧很生疏，遂记一篇水文。
+一些题外话 Django 工程结构 在 Django 官方文档里，新建 Django 工程用下面的命令完成：
+django-admin startproject mysite 这样创建的工程根目录下，会生成一个和项目名称同名的子目录，存放 settings.py wsgi.py 等文件。这样做肯定没问题，但是没必要，也不优雅。对此 Kenneth Reitz 的建议是，在命令的后面加一 . 号：
+django-admin.py start-project mysite . 这样，Django 工程的配置文件就存放在根目录下了。
+虚拟环境 virtualenv 一般在测试服务器上，用 virtualenv 把不同版本的环境隔离开来是首选的方案。此外还有一个工具 virtualenvwrapper，来管理由 virtualenv 虚拟出来的 Python 环境，非常实用。
+pip 安装 virtualenvwrapper 后，需要设置几个全局环境变量。可以把下面的配置添加进 shell 的配置文件里，比如我用的 zsh，那么就是添加进 .zshrc 文件：
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.4 export WORKON_HOME=$HOME/.virtualenvs source /usr/local/bin/virtualenvwrapper.sh 分别指定默认的 Python 版本和 Python 虚拟环境的目录。设置后，就可以非常方便的通过 workon 命令切换已安装的 Python 虚拟环境，而无需定向到虚拟环境的路径。
+导出 pip 列表 在有了 Python 虚拟环境后，还得有快速安装 pip 包的方法，pip 提供了导出 pip 列表的功能 freeze，以及快速安装工程所需 pip 包的功能 install：</description>
+    </item>
+    
+    <item>
+      <title>[译] 使用 Django 认证系统</title>
+      <link>https://isudox.com/posts/2016-03-22-using-the-django-authentication-system-zh/</link>
+      <pubDate>Tue, 22 Mar 2016 22:31:20 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-03-22-using-the-django-authentication-system-zh/</guid>
+      <description>译自 Django Documentation，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。
+ 本文介绍了 Django 认证系统在默认配置下的使用。默认配置已经发展到能够满足大多数项目需求，处理相当数量的任务，而且具备严谨的密码和权限实现。对于有自定义验证需求的项目，Django 支持扩展验证。 Django 认证系统提供认证和授权功能，由于两部分功能有耦合，因此通常简称为认证系统。
+User 对象 User 对象是认证系统的核心。该对象一般抽象表示与网站进行交互的用户，被用来进行权限控制，信息注册，关联内容及其创建者。Django 框架中只存在一种 User 类，像superusers，staff只是具有一些特殊属性的 User 对象，而不是不同类的 User 对象。
+默认的 user 有如下主要属性：
+ username password email first_name last_name  全面的参考请阅读完整 API 文档，下文更偏业务导向。
+创建 users 创建 user 最直接的方式是调用内置的 create_user() 辅助方法：
+&amp;gt;&amp;gt;&amp;gt; from django.contrib.auth.models import User &amp;gt;&amp;gt;&amp;gt; user = User.objects.create_user(&amp;#39;john&amp;#39;, &amp;#39;lennon@thebeatles.com&amp;#39;, &amp;#39;johnpassword&amp;#39;) # At this point, user is a User object that has already been saved # to the database.</description>
+    </item>
+    
+  </channel>
+</rss>

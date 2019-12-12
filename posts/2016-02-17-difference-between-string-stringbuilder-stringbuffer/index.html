@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>String, StringBuilder, StringBuffer 区别 - I sudo X</title>
+    
+    <meta name="description" content="今天下午浏览代码时看到 IDEA 给出了一段提示： StringBuffer variables may be declared as StringBuilder.
+回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场景的差异。遂谷歌之，看到阿里的 Android 大牛 Trinea 在 Github 上提的 issue，正好是关于它们之间区别的讨论。我也凑个热闹，查漏补缺。
+CharSequence 首先，String、StringBuilder 和 StringBuffer 都是实现的 CharSequence 接口。下面是 CharSequence 的源码：
+package java.lang; public interface CharSequence { int length(); char charAt(int index); CharSequence subSequence(int start, int end); public String toString(); } CharSequence 抽象了 char 序列，提供了求序列长度的方法 length()，获取指定位置字符的方法 charAt()，截取子序列的方法 subSequence() 和转换为 String 型的方法 toString()。实际运用中，我们很少直接用等到 CharSequence，因为它的实现 String、StringBuffer 和 StringBuilder 满足绝大多数使用场景。
+String 先看 JDK 里的源码：">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">String, StringBuilder, StringBuffer 区别</h1>
+    <div class="post-meta">February 17, 2016</div>
+  </header>
+  <div class="post-content"><p>今天下午浏览代码时看到 IDEA 给出了一段提示：
+StringBuffer variables may be declared as StringBuilder.</p>
+<p>回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场景的差异。遂谷歌之，看到阿里的 Android 大牛 Trinea 在 Github 上提的 <a href="https://github.com/android-cn/android-discuss/issues/5">issue</a>，正好是关于它们之间区别的讨论。我也凑个热闹，查漏补缺。</p>
+<!-- raw HTML omitted -->
+<h4 id="charsequence">CharSequence</h4>
+<p>首先，String、StringBuilder 和 StringBuffer 都是实现的 CharSequence 接口。下面是 CharSequence 的源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> java.lang<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CharSequence</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    CharSequence <span style="color:#a6e22e">subSequence</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> start<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> end<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p>CharSequence 抽象了 char 序列，提供了求序列长度的方法 length()，获取指定位置字符的方法 charAt()，截取子序列的方法 subSequence() 和转换为 String 型的方法 toString()。实际运用中，我们很少直接用等到 CharSequence，因为它的实现 String、StringBuffer 和 StringBuilder 满足绝大多数使用场景。</p>
+<h4 id="string">String</h4>
+<p>先看 JDK 里的源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> java.lang<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">String</span>
+    <span style="color:#66d9ef">implements</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Serializable</span><span style="color:#f92672">,</span> Comparable<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span><span style="color:#f92672">,</span> CharSequence <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/** The value is used for character storage. */</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">char</span> value<span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">/** Cache the hash code for the string */</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> hash<span style="color:#f92672">;</span> <span style="color:#75715e">// Default to 0
+</span></code></pre></div><p>String 具有 immutable 特性，即不可变，一旦创建后就无法再被更改。String 变量被存储在内存的常量字符串池中。因为不可变对象都是线程安全的，所以 String 也是线程安全的。对 String 变量进行拼接、截取等操作后，原有的字符串对象保持不变，操作后得到的结果返回给新的 String 对象。值相同的 String 对象共享同一段内存池区域，即引用同一块内存地址。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    String nameA <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhangsan&#34;</span><span style="color:#f92672">;</span>
+    String nameB <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;lisi&#34;</span><span style="color:#f92672">;</span>
+    String nameC <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;lisi&#34;</span><span style="color:#f92672">;</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>nameB <span style="color:#f92672">=</span><span style="color:#f92672">=</span> nameC<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>但如果是通过 new 创建的 String 对象被分配在 heap 中，即使值一样，所引用的内存空间也是不同的。这里涉及到操作符 <code>==</code> 和方法 <code>equals()</code> 的区别，直接用代码说话：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    String a <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    String b <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    String c <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">;</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>a <span style="color:#f92672">=</span><span style="color:#f92672">=</span> b<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// false
+</span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> b<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>a <span style="color:#f92672">=</span><span style="color:#f92672">=</span> c<span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// false
+</span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> c<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p><code>==</code> 比较了对象所引用的内存地址，地址相同则返回 true；<code>Objects.equals()</code> 方法则只是比较了对象的值。因此上面代码中字符串 a 和 c 虽然值相同，但是引用的地址不一样，所以在比较 <code>==</code> 时返回了 false。</p>
+<p>关于上面的涉及到的 String 对象在内存中的分配，我在后边的一篇<a href="/2016/06/22/memory-model-of-string-in-java/">博客</a>中做了更新。</p>
+<h4 id="stringbuilder--stringbuffer">StringBuilder 和 StringBuffer</h4>
+<p>StringBuilder 和 StringBuffer 比较类似，就放在一起比较。二者都是继承了类 AbstractStringBuilder，和 String 不同，它们都是 mutable 的，随时可以改变值。StringBuffer 拥有和 StringBuilder 部分相同的方法，下面截取了 JDK 的源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StringBuffer</span> <span style="color:#66d9ef">extends</span> AbstractStringBuilder
+        <span style="color:#66d9ef">implements</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Serializable</span><span style="color:#f92672">,</span> CharSequence <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">synchronized</span> StringBuffer <span style="color:#a6e22e">insert</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">char</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">insert</span><span style="color:#f92672">(</span>offset<span style="color:#f92672">,</span> c<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StringBuilder</span> <span style="color:#66d9ef">extends</span> AbstractStringBuilder
+        <span style="color:#66d9ef">implements</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Serializable</span><span style="color:#f92672">,</span> CharSequence <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> StringBuilder <span style="color:#a6e22e">insert</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">char</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">insert</span><span style="color:#f92672">(</span>offset<span style="color:#f92672">,</span> c<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><p>可以看到在 StringBuffer 的方法里加入了关键字 synchronized 修饰，表明 StringBuffer 是线程安全的，相反的，StringBuilder 就是非线程安全。也正因此，StringBuffer 的处理效率不如 StringBuilder。到这，就算是理解了为什么 IDEA 会给出建议性的提示，把 StringBuffer 变量声明为 StringBuilder 变量。</p>
+<h4 id="heading">结论</h4>
+<p>把上面的异同汇总在下面的表格里</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">String</th>
+<th align="center">StringBuilder</th>
+<th align="center">StringBuffer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">内存区</td>
+<td align="center">常量 String 池</td>
+<td align="center">堆</td>
+<td align="center">堆</td>
+</tr>
+<tr>
+<td align="center">线程安全</td>
+<td align="center">是</td>
+<td align="center">否</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">可变性</td>
+<td align="center">否</td>
+<td align="center">是</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">性能</td>
+<td align="center">快</td>
+<td align="center">快</td>
+<td align="center">慢</td>
+</tr>
+</tbody>
+</table>
+<p>参考的应用场景</p>
+<ul>
+<li>String: 如果不需要改变字符串的值，考虑使用 String 变量；</li>
+<li>StringBuilder: 如果需要改变字符串的值，且只会被一个线程访问，可以使用 StringBuilder 变量；</li>
+<li>StringBuffer: 如果需要改变字符串的值，且可能被多个线程访问，使用 StringBuffer 变量以保证线程安全；</li>
+</ul>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/java">Java</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

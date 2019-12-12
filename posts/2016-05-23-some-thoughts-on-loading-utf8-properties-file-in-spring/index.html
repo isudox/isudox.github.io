@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Spring 加载含中文 properties 文件的思考 - I sudo X</title>
+    
+    <meta name="description" content="在公司项目的中间件代码里看到有些配置文件里有很多 &quot;\uXXXX&quot; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是 UTF-8 编码，配置文件里的中文字符为什么还会被转码？
+编码那些事儿 Spring 读取 .properties 文件并将配置内容加载进 Properties 类，文档中明确写明
+ &hellip; the input/output stream is encoded in ISO 8859-1 character encoding. Characters that cannot be directly represented in this encoding can be written using Unicode escapes as defined in section 3.3 of The Java™ Language Specification; only a single &lsquo;u&rsquo; character is allowed in an escape sequence. The native2ascii tool can be used to convert property files to and from other character encodings.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Spring 加载含中文 properties 文件的思考</h1>
+    <div class="post-meta">May 23, 2016</div>
+  </header>
+  <div class="post-content"><p>在公司项目的中间件代码里看到有些配置文件里有很多 <code>&quot;\uXXXX&quot;</code> 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是 UTF-8 编码，配置文件里的中文字符为什么还会被转码？</p>
+<!-- raw HTML omitted -->
+<h3 id="heading">编码那些事儿</h3>
+<p>Spring 读取 <code>.properties</code> 文件并将配置内容加载进 <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Properties.html">Properties</a> 类，文档中明确写明</p>
+<blockquote>
+<p>&hellip; the input/output stream is encoded in ISO 8859-1 character encoding. Characters that cannot be directly represented in this encoding can be written using Unicode escapes as defined in section 3.3 of The Java™ Language Specification; only a single &lsquo;u&rsquo; character is allowed in an escape sequence. The native2ascii tool can be used to convert property files to and from other character encodings.</p>
+</blockquote>
+<p>Java 的 I/O 流是由 ISO 8859-1 编码的，如果要让 Java I/O 读写 ISO 8859-1 标准以外的字符，就需要把这些字符用 Unicode 编码。也就是转码成上述的 <code>&quot;\uXXXX&quot;</code> 形式。JDK 提供了转码工具 <code>../bin/native2ascii</code>。比如项目里需要配置包含中文的属性值，就只能把中文内容转码成 Unicode 编码。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">native2ascii –encoding UTF-8 foo_utf8.properties foo.properties
+</code></pre></div><p>上面的 foo_utf8.properties 是由 UTF-8 编码保存的配置文件，foo.properties 是将非 ISO 8859-1 字符转码为 Unicode 后的配置文件，也就是提供给 Spring 解析的配置文件。</p>
+<pre><code>// foo_utf8.properties
+city=北京
+company=京东
+
+// foo.properties
+city=\u5317\u4eac
+company=\u4eac\u4e1c
+</code></pre><h3 id="java--utf-8">Java 读取 UTF-8</h3>
+<p>虽然明白了这其中的蹊跷，但是包含中文的配置文件一定得转码吗，仔细阅读 Properties Class 的源码后，还是有更优雅的解决方案，原来 Sun 公司都已经帮我们设计好了。
+Properties 类调用 load() 方法加载配置文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Properties Class source code
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> java.util<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>Reader reader<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+    load0<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> LineReader<span style="color:#f92672">(</span>reader<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>InputStream inStream<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+    load0<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> LineReader<span style="color:#f92672">(</span>inStream<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">load0</span> <span style="color:#f92672">(</span>LineReader lr<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">char</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> convtBuf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">[</span>1024<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> limit<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> keyLen<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> valueStart<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">char</span> c<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">boolean</span> hasSep<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">boolean</span> precedingBackslash<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#f92672">(</span>limit <span style="color:#f92672">=</span> lr<span style="color:#f92672">.</span><span style="color:#a6e22e">readLine</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        c <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        keyLen <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        valueStart <span style="color:#f92672">=</span> limit<span style="color:#f92672">;</span>
+        hasSep <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+
+        <span style="color:#75715e">//System.out.println(&#34;line=&lt;&#34; + new String(lineBuf, 0, limit) + &#34;&gt;&#34;);
+</span><span style="color:#75715e"></span>        precedingBackslash <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>keyLen <span style="color:#f92672">&lt;</span> limit<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            c <span style="color:#f92672">=</span> lr<span style="color:#f92672">.</span><span style="color:#a6e22e">lineBuf</span><span style="color:#f92672">[</span>keyLen<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+            <span style="color:#75715e">//need check if escaped.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">(</span>c <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;=&#39;</span> <span style="color:#f92672">|</span><span style="color:#f92672">|</span>  c <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;:&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#f92672">!</span>precedingBackslash<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                valueStart <span style="color:#f92672">=</span> keyLen <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
+                hasSep <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">(</span>c <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">|</span><span style="color:#f92672">|</span> c <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\t&#39;</span> <span style="color:#f92672">|</span><span style="color:#f92672">|</span>  c <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\f&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#f92672">!</span>precedingBackslash<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                valueStart <span style="color:#f92672">=</span> keyLen <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\\&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                precedingBackslash <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>precedingBackslash<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                precedingBackslash <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            keyLen<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>valueStart <span style="color:#f92672">&lt;</span> limit<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            c <span style="color:#f92672">=</span> lr<span style="color:#f92672">.</span><span style="color:#a6e22e">lineBuf</span><span style="color:#f92672">[</span>valueStart<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> c <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\t&#39;</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span>  c <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\f&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>hasSep <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;=&#39;</span> <span style="color:#f92672">|</span><span style="color:#f92672">|</span>  c <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;:&#39;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    hasSep <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+            valueStart<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        String key <span style="color:#f92672">=</span> loadConvert<span style="color:#f92672">(</span>lr<span style="color:#f92672">.</span><span style="color:#a6e22e">lineBuf</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> keyLen<span style="color:#f92672">,</span> convtBuf<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        String value <span style="color:#f92672">=</span> loadConvert<span style="color:#f92672">(</span>lr<span style="color:#f92672">.</span><span style="color:#a6e22e">lineBuf</span><span style="color:#f92672">,</span> valueStart<span style="color:#f92672">,</span> limit <span style="color:#f92672">-</span> valueStart<span style="color:#f92672">,</span> convtBuf<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        put<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">loadConvert</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">char</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> in<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> off<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> len<span style="color:#f92672">,</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> convtBuf<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>convtBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;</span> len<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> newLen <span style="color:#f92672">=</span> len <span style="color:#f92672">*</span> 2<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>newLen <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            newLen <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        convtBuf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">[</span>newLen<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">char</span> aChar<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">char</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> out <span style="color:#f92672">=</span> convtBuf<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> outLen <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> end <span style="color:#f92672">=</span> off <span style="color:#f92672">+</span> len<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>off <span style="color:#f92672">&lt;</span> end<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        aChar <span style="color:#f92672">=</span> in<span style="color:#f92672">[</span>off<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>aChar <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\\&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            aChar <span style="color:#f92672">=</span> in<span style="color:#f92672">[</span>off<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>aChar <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;u&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// Read the xxxx
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">int</span> value<span style="color:#f92672">=</span>0<span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span>0<span style="color:#f92672">;</span> i<span style="color:#f92672">&lt;</span>4<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    aChar <span style="color:#f92672">=</span> in<span style="color:#f92672">[</span>off<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>aChar<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                      <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;1&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;2&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;3&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;4&#39;</span><span style="color:#f92672">:</span>
+                      <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;5&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;6&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;7&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;8&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;9&#39;</span><span style="color:#f92672">:</span>
+                         value <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> 4<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> aChar <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">;</span>
+                         <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                      <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;b&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;c&#39;</span><span style="color:#f92672">:</span>
+                      <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;d&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;e&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;f&#39;</span><span style="color:#f92672">:</span>
+                         value <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> 4<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> 10 <span style="color:#f92672">+</span> aChar <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">;</span>
+                         <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                      <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;B&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;C&#39;</span><span style="color:#f92672">:</span>
+                      <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;D&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;E&#39;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;F&#39;</span><span style="color:#f92672">:</span>
+                         value <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>value <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> 4<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> 10 <span style="color:#f92672">+</span> aChar <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">;</span>
+                         <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                      <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+                          <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>
+                                       <span style="color:#e6db74">&#34;Malformed \\uxxxx encoding.&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                 <span style="color:#f92672">}</span>
+                out<span style="color:#f92672">[</span>outLen<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">char</span><span style="color:#f92672">)</span>value<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>aChar <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;t&#39;</span><span style="color:#f92672">)</span> aChar <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\t&#39;</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>aChar <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;r&#39;</span><span style="color:#f92672">)</span> aChar <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\r&#39;</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>aChar <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;n&#39;</span><span style="color:#f92672">)</span> aChar <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\n&#39;</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>aChar <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;f&#39;</span><span style="color:#f92672">)</span> aChar <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\f&#39;</span><span style="color:#f92672">;</span>
+                out<span style="color:#f92672">[</span>outLen<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span> <span style="color:#f92672">=</span> aChar<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            out<span style="color:#f92672">[</span>outLen<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">]</span> <span style="color:#f92672">=</span> aChar<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> String <span style="color:#f92672">(</span>out<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> outLen<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>我从 Properties Class 的源码里抄录了加载配置文件的关键代码。不难读懂代码的含义，简单说明下，load() 方法是通过调用 load0() 方法来按行读取配置文件，并装配成 key - value 的键值对，在 load0() 内部调用了 loadConvert() 方法，用来将 Unicode 字符转换成原始的格式。其中，load() 方法被重载实现，可以传入 Reader 参数，或者 InputStream 参数。</p>
+<p>这里就涉及到Java I/O 里 Reader/Writer 和 InputStream/OutputStream 的差异了，Reader 类用于读取文本数据（char、String 流），InputStream 类则用于读取二进制数据（byte 流）。Reader 类可以指定 Charset 参数来设置编码格式，如 UTF-8 等。因此只需要指定 Reader 对象的 charset，就可以无痛解析带中文的配置文件了，只是有一点要指出， FileReader 的构造函数是假定使用的编码格式是正确的（即默认的ISO 8859-1），不支持指定文件编码格式，因此还是需要借助 InputStream 类。示例代码如下，很简单：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ReadUTF8Props.java
+</span><span style="color:#75715e"></span>Properties properties <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+InputStream inputStream <span style="color:#f92672">=</span> getClass<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;foo_utf8.properties&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+    InputStreamReader isr <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InputStreamReader<span style="color:#f92672">(</span>inputStream<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        properties<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>isr<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+        isr<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+    inputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>到这儿，总算对这个问题有了一点点深入的认识。</p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/java">Java</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/spring">Spring</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

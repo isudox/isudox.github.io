@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>敏捷开发实战：AOP &#43; 反射 - I sudo X</title>
+    
+    <meta name="description" content="双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。
+如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！
+Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。
+写法一 后端部分 假设创建的 AOP 类为 DemoAspect，在 Spring 的配置文件中，将其注册到 aop 配置中：
+&lt;bean id=&#34;demoAspect&#34; class=&#34;com.isudox.aspect.DemoAspect&#34;/&gt; &lt;aop:aspectj-autoproxy&gt; &lt;aop:include name=&#34;demoAspect&#34;/&gt; &lt;/aop:aspectj-autoproxy&gt; 把流程改造相关的服务 bean 再次声明一份，修改其 id 和新流程的分组，以作为新流程所需服务的 bean（配置就省略了）。下面用 Java 的方式来声明切面和织入的方法：
+@Aspect public class DemoAspect { @Resource private CartService cartService2; @Around(&#34;bean(cartService)&#34;) public Object advice(ProceedingJoinPoint joinPoint) throws Throwable { Object result; try { MethodSignature signature = (MethodSignature) joinPoint.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">敏捷开发实战：AOP &#43; 反射</h1>
+    <div class="post-meta">October 11, 2016</div>
+  </header>
+  <div class="post-content"><p>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。</p>
+<!-- raw HTML omitted -->
+<p>如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！</p>
+<p>Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。</p>
+<h3 id="heading">写法一</h3>
+<h4 id="heading-1">后端部分</h4>
+<p>假设创建的 AOP 类为 <code>DemoAspect</code>，在 Spring 的配置文件中，将其注册到 aop 配置中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;demoAspect&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;com.isudox.aspect.DemoAspect&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;aop:aspectj-autoproxy</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;aop:include</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;demoAspect&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/aop:aspectj-autoproxy&gt;</span>
+</code></pre></div><p>把流程改造相关的服务 bean 再次声明一份，修改其 id 和新流程的分组，以作为新流程所需服务的 bean（配置就省略了）。下面用 Java 的方式来声明切面和织入的方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Aspect</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DemoAspect</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Resource</span>
+    <span style="color:#66d9ef">private</span> CartService cartService2<span style="color:#f92672">;</span>
+
+    <span style="color:#a6e22e">@Around</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bean(cartService)&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">advice</span><span style="color:#f92672">(</span>ProceedingJoinPoint joinPoint<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+        Object result<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            MethodSignature signature <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>MethodSignature<span style="color:#f92672">)</span> joinPoint<span style="color:#f92672">.</span><span style="color:#a6e22e">getSignature</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            Method method <span style="color:#f92672">=</span> signature<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            String clazz <span style="color:#f92672">=</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">getDeclaringClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args <span style="color:#f92672">=</span> joinPoint<span style="color:#f92672">.</span><span style="color:#a6e22e">getArgs</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// 新的流程
+</span><span style="color:#75715e"></span>                BeanClass bean <span style="color:#f92672">=</span> getBean<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                result <span style="color:#f92672">=</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>bean<span style="color:#f92672">,</span> args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// 既定流程
+</span><span style="color:#75715e"></span>                result <span style="color:#f92672">=</span> joinPoint<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> e<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>思路很简单，<code>@Aspect</code> 注解将 DemoAspect 声明为一个 Aspect，<code>@Around(&quot;bean(cartService)&quot;)</code> 注解则将织入方法 <code>advice</code> 声明为织入名为 cartService 的 bean 的方法，意在运行时修改 cartService 里所有方法的行为。</p>
+<h4 id="heading-2">前端部分</h4>
+<p>虽然后端完成了对流程调用的拆分，但是前端是复用的同一个工程，也就是说，还需要对来自同一个页面的请求进行分离，这样才能在上面的 Java 代码中完成 <code>if-else</code> 条件。具体就是区别哪些请求是调用原有的购物流程，哪些请求是调用新的预约流程。</p>
+<p>思路很简单，先在页面模板上种下一个隐藏域作为不同业务流程的区分，如果业务是预约流程，就拦截所有来自这个页面的 Ajax 请求，修改其请求参数，然后再放行。其实就是前端的拦截器，而 jQuery 自带能拦截 Ajax 请求的神器方法—— <code>jQuery.ajaxPrefilter()</code>，参考 jQuery 的 API <a href="http://api.jquery.com/jquery.ajaxprefilter/">文档</a>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajaxPrefilter</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">options</span>, <span style="color:#a6e22e">originalOptions</span>, <span style="color:#a6e22e">jqXHR</span>) {
+  <span style="color:#75715e">// Modify options, control originalOptions, store jqXHR, etc
+</span><span style="color:#75715e"></span>});
+</code></pre></div><p><code>jQuery.ajaxPrefilter()</code> 必须传入一个 <code>handler</code> 函数，用来完成对被拦截到的 Ajax 请求的自定义。<code>handler</code> 方法内包含 3 个参数：</p>
+<ul>
+<li><code>option</code> 从请求中获取到的参数字典；</li>
+<li><code>originalOptions</code> 是原始传给 <code>$.ajax()</code> 方法的字典对象，没有被修改过，也就是说，不包含由 <code>$.ajaxSetup</code> 设置的参数（如果有的话）；</li>
+<li><code>jqXHR</code> 是请求的 jqXHR 对象；</li>
+</ul>
+<p>所以，前端的 Ajax 请求拦截器可以这么写：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 拦截 Ajax 请求，并修改请求参数，再放行
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajaxPrefilter</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">options</span>, <span style="color:#a6e22e">originalOptions</span>, <span style="color:#a6e22e">jqXHR</span>) {
+    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#hidden_type&#39;</span>).<span style="color:#a6e22e">val</span>() <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;xyz&#39;</span>) {
+        <span style="color:#a6e22e">options</span>.<span style="color:#a6e22e">data</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&amp;type=xyz&#39;</span>;
+    }
+});
+</code></pre></div><p>上面还提到了 <code>$.ajaxSetup</code> 方法，它和 <code>$.ajaxPrefilter</code> 的区别可以参考 stackoverflow 上的这篇问答 <a href="http://stackoverflow.com/questions/29843732/ajaxprefilter-vs-ajaxsetup-jquery-ajax">$.ajaxPrefilter() Vs $.ajaxSetup() - jQuery Ajax</a>。简单总结下，<code>$.ajaxSetup</code> 用来对页面上的 Ajax 请求设置预设值，比如预设 url 参数，这是在 Ajax 请求发出前；<code>$.ajaxPrefilter</code> 用来修改页面上的 Ajax 请求里的参数，比如像上面一个增加一个参数，这是在请求发出后。这有点类似单元测试里的 <code>setup()</code> 和 <code>tear_down()</code>。</p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/java">Java</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/spring">Spring</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Canvas on I sudo X</title>
+    <link>https://isudox.com/tags/canvas/</link>
+    <description>Recent content in Canvas on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 18 Apr 2016 19:55:14 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/tags/canvas/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>移动端仿微信朋友圈发布图文</title>
+      <link>https://isudox.com/posts/2016-04-18-imitate-wechat-moment-on-mobile-device/</link>
+      <pubDate>Mon, 18 Apr 2016 19:55:14 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-04-18-imitate-wechat-moment-on-mobile-device/</guid>
+      <description>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。
+由于微信朋友圈的火爆和用户基础，因此 JD 的这个项目中类朋友圈的原型设计基本也是抄袭的微信，只不过换成 HTML5 的样式，所以原型图就不贴出来了……要实现的功能大致等于微信朋友圈，用户通过手机相册或摄像头上传图片，发布到京东 App 的一个版块里，由于一期不开发社交功能，因此没有朋友圈留言功能（电商 APP 不务正业，我也是无力吐槽）。 从项目前端开始讲吧。
+前端 在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 WebUploader 组件，或者 jQuery-File-Upload，再久远些还有用 Flash 做的文件上传插件，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像朋友圈发状态一次上传好几张图片，客户端不做处理的话，无论是传输时间还是流量损耗都是不能接受的。因此移动端需要在上传前默认对大体积图片进行压缩处理，后面会完整说明。
+input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别于 PC 端上，移动设备除了调用文件浏览器外，还可以调用摄像头进行拍照上传，需要加入 capture 参数
+&amp;lt;input type=&amp;#34;file&amp;#34; name=&amp;#34;file&amp;#34; accept=&amp;#34;image/*&amp;#34; capture=&amp;#34;camera&amp;#34;&amp;gt; 但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。
+关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。
+&amp;lt;!--图片添加按钮 --&amp;gt; &amp;lt;ul id=&amp;#34;previewer&amp;#34; class=&amp;#34;upload-list&amp;#34;&amp;gt; &amp;lt;li id=&amp;#34;select-image&amp;#34; class=&amp;#34;add-pic-btn&amp;#34;&amp;gt;&amp;lt;a href=&amp;#34;javascript:;&amp;#34; onclick=&amp;#34;clickBrowse();&amp;#34;&amp;gt;+&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;!</description>
+    </item>
+    
+  </channel>
+</rss>

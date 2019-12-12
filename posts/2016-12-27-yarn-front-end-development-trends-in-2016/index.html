@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>2016 前端补习 Yarn 篇 - I sudo X</title>
+    
+    <meta name="description" content="目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w&#43; stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。
+基础操作 如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。
+初始化新项目：
+# same as npm init yarn init 执行该命令时，会询问项目名称，入口文件，作者等信息，确认后自动创建包管理文件 package.json，以后每次对包的增删更新都会同步到 package.json 中。
+安装依赖包：
+# same as npm install [package] yarn add [package] yarn add [package]@[version] yarn add [package]@[tag] 另外，该命令可以通过标识参数来指定依赖类型：
+ yarn add --dev 会把依赖包添加进 devDependencies 字段； yarn add --peer 会把依赖包添加进 peerDependencies 字段； yarn add --optional 会把依赖包添加进 optionalDependencies 字段；  更新依赖包：">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">2016 前端补习 Yarn 篇</h1>
+    <div class="post-meta">December 27, 2016</div>
+  </header>
+  <div class="post-content"><p>目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w+ stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。</p>
+<!-- raw HTML omitted -->
+<h2 id="heading">基础操作</h2>
+<p>如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。</p>
+<p>初始化新项目：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm init</span>
+yarn init
+</code></pre></div><p>执行该命令时，会询问项目名称，入口文件，作者等信息，确认后自动创建包管理文件 <code>package.json</code>，以后每次对包的增删更新都会同步到 <code>package.json</code> 中。</p>
+<p>安装依赖包：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm install [package]</span>
+yarn add <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>
+yarn add <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>@<span style="color:#f92672">[</span>version<span style="color:#f92672">]</span>
+yarn add <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>@<span style="color:#f92672">[</span>tag<span style="color:#f92672">]</span>
+</code></pre></div><p>另外，该命令可以通过标识参数来指定依赖类型：</p>
+<ul>
+<li><code>yarn add --dev</code> 会把依赖包添加进 <code>devDependencies</code> 字段；</li>
+<li><code>yarn add --peer</code> 会把依赖包添加进 <code>peerDependencies</code> 字段；</li>
+<li><code>yarn add --optional</code> 会把依赖包添加进 <code>optionalDependencies</code> 字段；</li>
+</ul>
+<p>更新依赖包：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm upgrade [package]</span>
+yarn upgrade <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>
+yarn upgrade <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>@<span style="color:#f92672">[</span>version<span style="color:#f92672">]</span>
+yarn upgrade <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>@<span style="color:#f92672">[</span>tag<span style="color:#f92672">]</span>
+</code></pre></div><p>卸载依赖包：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm uninstall [package]</span>
+yarn remove <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>
+</code></pre></div><p>根据 <code>package.json</code> 安装所有依赖包：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm install</span>
+yarn install
+</code></pre></div><p>该命令也支持通过标识参数来实现额外的功能：</p>
+<ul>
+<li><code>yarn install --flat</code> 每个包都只允许安装唯一的版本，第一次运行时会提示用户确认版本；</li>
+<li><code>yarn install --force</code> 强制联网下载所有包，即使之前下载过；</li>
+<li><code>yarn install --production</code> 使用该标识符或者环境变量 <code>NODE_ENV</code> 为 <code>production</code> 时，Yarn 会忽略 <code>devDependencies</code> 中的依赖包；</li>
+</ul>
+<p>除了 <code>package.json</code> 外，Yarn 还维护了 <code>yarn.lock</code> 来精确匹配所有依赖包的版本号，来弥补 <code>package.json</code> 管理依赖包版本时的不精确问题。因此，如果使用 Yarn，需要把 <code>yarn.lock</code> 添加进版本管理中。</p>
+<p>Yarn 还有其他一些比较常用的命令：</p>
+<ul>
+<li><code>yarn clean</code> 命令会清理掉不需要的依赖包，释放 <code>node_modules</code> 的空间。在执行该命令后，Yarn 会在项目根目录下创建 <code>.yarnclean</code> 文件，它也应该添加到版本管理中；</li>
+<li><code>yarn config set &lt;key&gt; &lt;value&gt; [-g|--global]</code> 命令会设置默认的 Yarn 信息，相应的，读取的命令是 <code>yarn config get &lt;key&gt;</code>。可以设置的 <code>key</code> 可以由 <code>yarn config list</code> 命令查看到；</li>
+<li><code>yarn global</code> 是一个前缀命令，可以加在 <code>add</code>、<code>remove</code> 等命令上，使得作用在全局上，类似 npm 的 <code>--global</code> 参数；</li>
+<li><code>yarn info &lt;package&gt;</code> 命令用来查看依赖包的详细信息；</li>
+<li><code>yarn login</code> 和 <code>yarn logout</code> 命令分别用来登录和登出 npm 的账户；</li>
+<li><code>yarn run [script] [-- &lt;args&gt;]</code> 命令用来执行 <code>package.json</code> 配置的 <code>scripts</code> 脚本命令，和 <code>npm run [script]</code> 一样；</li>
+<li><code>yarn why [package]</code> 命令检查安装该依赖包的原因，并列出依赖该包的其他包；</li>
+</ul>
+<h2 id="npm-">npm 命令比较</h2>
+<table>
+<thead>
+<tr>
+<th align="center">npm</th>
+<th align="center">Yarn</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">npm install</td>
+<td align="center">yarn install</td>
+</tr>
+<tr>
+<td align="center">(N/A)</td>
+<td align="center">yarn install &ndash;flat</td>
+</tr>
+<tr>
+<td align="center">(N/A)</td>
+<td align="center">yarn install &ndash;har</td>
+</tr>
+<tr>
+<td align="center">(N/A)</td>
+<td align="center">yarn install &ndash;no-lockfile</td>
+</tr>
+<tr>
+<td align="center">(N/A)</td>
+<td align="center">yarn install &ndash;pure-lockfile</td>
+</tr>
+<tr>
+<td align="center">npm install [package]</td>
+<td align="center">(N/A)</td>
+</tr>
+<tr>
+<td align="center">npm install &ndash;save [package]</td>
+<td align="center">yarn add [package]</td>
+</tr>
+<tr>
+<td align="center">npm install &ndash;save-dev [package]</td>
+<td align="center">yarn add [package] [&ndash;dev/-D]</td>
+</tr>
+<tr>
+<td align="center">(N/A)</td>
+<td align="center">yarn add [package] [&ndash;peer/-P]</td>
+</tr>
+<tr>
+<td align="center">npm install &ndash;save-optional [package]</td>
+<td align="center">yarn add [package] [&ndash;optional/-O]</td>
+</tr>
+<tr>
+<td align="center">npm install &ndash;save-exact [package]</td>
+<td align="center">yarn add [package] [&ndash;exact/-E]</td>
+</tr>
+<tr>
+<td align="center">(N/A)</td>
+<td align="center">yarn add [package] [&ndash;tilde/-T]</td>
+</tr>
+<tr>
+<td align="center">npm install &ndash;global [package]</td>
+<td align="center">yarn global add [package]</td>
+</tr>
+<tr>
+<td align="center">npm rebuild</td>
+<td align="center">yarn install &ndash;force</td>
+</tr>
+<tr>
+<td align="center">npm uninstall [package]</td>
+<td align="center">(N/A)</td>
+</tr>
+<tr>
+<td align="center">npm uninstall &ndash;save [package]</td>
+<td align="center">yarn remove [package]</td>
+</tr>
+<tr>
+<td align="center">npm uninstall &ndash;save-dev [package]</td>
+<td align="center">yarn remove [package]</td>
+</tr>
+<tr>
+<td align="center">npm uninstall &ndash;save-optional [package]</td>
+<td align="center">yarn remove [package]</td>
+</tr>
+<tr>
+<td align="center">npm cache clean</td>
+<td align="center">yarn cache clean</td>
+</tr>
+<tr>
+<td align="center">rm -rf node_modules &amp;&amp; npm install</td>
+<td align="center">yarn upgrade</td>
+</tr>
+</tbody>
+</table>
+<h2 id="packagejson-">package.json 依赖配置</h2>
+<h3 id="heading-1">功能区分管理</h3>
+<p>有的依赖包是为了编译构建工程，而有的包视为了运行，因此不同功能的包在 <code>package.json</code> 中被分离到不同的依赖集合中：<code>dependencies</code>、<code>devDependencies</code>、<code>optionalDependencies</code> 和 <code>peerDependencies</code>。</p>
+<p>参考 Yarn 文档里的示例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;my-project&#34;</span>,
+  <span style="color:#f92672">&#34;dependencies&#34;</span>: {
+    <span style="color:#f92672">&#34;package-a&#34;</span>: <span style="color:#e6db74">&#34;^1.0.0&#34;</span>
+  },
+  <span style="color:#f92672">&#34;devDependencies&#34;</span>: {
+    <span style="color:#f92672">&#34;package-b&#34;</span>: <span style="color:#e6db74">&#34;^1.2.1&#34;</span>
+  },
+  <span style="color:#f92672">&#34;peerDependencies&#34;</span>: {
+    <span style="color:#f92672">&#34;package-c&#34;</span>: <span style="color:#e6db74">&#34;^2.5.4&#34;</span>
+  },
+  <span style="color:#f92672">&#34;optionalDependencies&#34;</span>: {
+    <span style="color:#f92672">&#34;package-d&#34;</span>: <span style="color:#e6db74">&#34;^3.1.0&#34;</span>
+  }
+}
+</code></pre></div><p>用的最多的应该是 <code>dependencies</code> 和 <code>devDependencies</code>，下面按照官方文档具体说明：</p>
+<ul>
+<li><code>dependencies</code>：记录运行程序时所需的依赖包；</li>
+<li><code>devDependencies</code>：这是开发的依赖包，是开发构建时所需的依赖包，但在运行时不需要；</li>
+<li><code>peerDependencies</code>：只有当开发者需要发布自己的包时，才需要配置；</li>
+<li><code>optionalDependencies</code>：顾名思义就是可选的依赖包，即使安装失败，也不会影响；</li>
+<li><code>bundledDependencies</code>：是项目内部的包，而不是从 npm 上安装；</li>
+</ul>
+<h3 id="heading-2">版本号管理</h3>
+<p><code>package.json</code> 也对依赖包的版本做了管理，版本号遵循 <code>major.minor.patch</code> 的规则，如果是 beta 版，则会在版本号后追加 <code>-beta.x</code>。除了明确指定版本号，还可以通过操作符实现指定版本号范围。</p>
+<p>最简单易懂的就是 <code>=</code>、<code>&gt;</code>、<code>&lt;=</code> 等符号，这个不多讲，还有两个特殊的符号 <code>~</code> 和 <code>^</code>：</p>
+<ul>
+<li><code>~</code> 符：当版本号带有 <code>minor</code> 版本时，<code>~</code> 表示允许 <code>patch</code> 版本在 <code>minor</code> 保持不变时，递增变化。比如 <code>~3.1.4</code> 等同 <code>&gt;=3.1.4 &lt;3.2.0</code>；<code>~3.1</code> 等同于 <code>3.1.x</code>。当 <code>~</code> 后的版本号只有 <code>major</code> 时，只允许在 <code>major</code> 不变时，<code>minor</code> 的变化，比如 <code>~3</code> 等同于 <code>3.x</code>。</li>
+<li><code>^</code> 符：允许版本号在不改变第一个非零版本位的范围变动，比如 <code>^3.1.4</code> 表示 <code>&gt;=3.1.4 &lt;4.0.0</code>，<code>^0.4.2</code> 表示 <code>&gt;=0.4.2 &lt;0.5.0</code>， <code>^0.0.2</code> 表示 <code>&gt;=0.0.2 &lt;0.0.3</code>。Yarn 在安装依赖包时，默认使用 <code>^</code> 来设置版本号。</li>
+</ul>
+<p>还有逻辑符号，用空格表示 <code>and</code> 关系，<code>||</code> 表示 <code>or</code> 关系，比如 <code>&gt;=2.0.0 &lt;3.1.4</code> 的意思是版本号大于等于 <code>2.0.0</code> 且小于 <code>3.1.4</code>。连字符 <code>-</code> 很有用，直接表示起止范围，上面这个版本范围用 <code>-</code> 符表示的话就是 <code>2.0.0 - 3.1.4</code>。</p>
+<p>Yarn 的内容不多，使用也很简单，花半小时操练下命令就都了解了。</p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>Yarn - <a href="https://yarnpkg.com/en/docs">Docs</a></li>
+</ul>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/frontend">Frontend</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

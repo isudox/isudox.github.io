@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on I sudo X</title>
+    <link>https://isudox.com/categories/</link>
+    <description>Recent content in Categories on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Mar 2019 21:54:41 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Coding</title>
+      <link>https://isudox.com/categories/coding/</link>
+      <pubDate>Fri, 29 Mar 2019 21:54:41 +0000</pubDate>
+      
+      <guid>https://isudox.com/categories/coding/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Translation</title>
+      <link>https://isudox.com/categories/translation/</link>
+      <pubDate>Sat, 18 Feb 2017 14:51:10 +0000</pubDate>
+      
+      <guid>https://isudox.com/categories/translation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Life</title>
+      <link>https://isudox.com/categories/life/</link>
+      <pubDate>Sun, 01 Jan 2017 00:39:29 +0000</pubDate>
+      
+      <guid>https://isudox.com/categories/life/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DevOps</title>
+      <link>https://isudox.com/categories/devops/</link>
+      <pubDate>Mon, 29 Aug 2016 13:45:50 +0000</pubDate>
+      
+      <guid>https://isudox.com/categories/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Database</title>
+      <link>https://isudox.com/categories/database/</link>
+      <pubDate>Fri, 22 Jul 2016 10:49:49 +0000</pubDate>
+      
+      <guid>https://isudox.com/categories/database/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://isudox.com/categories/linux/</link>
+      <pubDate>Mon, 09 May 2016 23:27:07 +0000</pubDate>
+      
+      <guid>https://isudox.com/categories/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web</title>
+      <link>https://isudox.com/categories/web/</link>
+      <pubDate>Fri, 18 Mar 2016 16:53:47 +0000</pubDate>
+      
+      <guid>https://isudox.com/categories/web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Toy</title>
+      <link>https://isudox.com/categories/toy/</link>
+      <pubDate>Thu, 29 Oct 2015 22:37:14 +0000</pubDate>
+      
+      <guid>https://isudox.com/categories/toy/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

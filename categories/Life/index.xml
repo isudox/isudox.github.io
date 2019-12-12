@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Life on I sudo X</title>
+    <link>https://isudox.com/categories/life/</link>
+    <description>Recent content in Life on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Jan 2017 00:39:29 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/categories/life/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>展望 2017</title>
+      <link>https://isudox.com/posts/2017-01-01-todo-list-2017/</link>
+      <pubDate>Sun, 01 Jan 2017 00:39:29 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2017-01-01-todo-list-2017/</guid>
+      <description>看完李安的《推手》，迎来了 2017 年的第一天。这算是新的一年里的开篇吧，就不写代码了，看社区里很多同行在做过 2016 年的总结，或是新一年的期望。对过去一年，我似乎很难整理出一条清晰的逻辑去完整的复盘和总结，总体来讲，自己并不是很满意，当然也有令我激动的地方，比如遇到了 Kiki 啊……自认为在毕业后的一年里没有取得自己想要的进步，没有达到我想达到的层次，新的一年里还得加油啊。既然不做总结了，展望还是要有的，万一做到了呢？
+ 博客的 Markdown 解析器好像不支持 checkbox 语法，尴尬
+  锻炼身体，体重达到 65 kg 以上，用肌肉武装自己； 学习英语，雅思争取拿到满意的成绩； 提升阅读量，重拾中学时的阅读热情。目标每个月都能啃掉一本书； 向 Kiki 学吉他，光看 Live 有什么劲啊； 养一条狗，陪它长大； 好好写博客，向大牛看齐，写出有深度有干货的技术博客，好好混 GitHub，写出自己满意的开源作品； 为爱自己的人，为自己爱的人，赚钱！赚更多钱！！赚好多钱！！！  嗯，就是这样。其实上面有些是 2016 年的计划，当然这就意味着我没做到，只能延期一年，希望明年这时候会是另外一个状态。
+最后，既然是程序员，自然要用程序员的方式辞旧迎新——
+&amp;lt;/2016&amp;gt; &amp;lt;2017&amp;gt; </description>
+    </item>
+    
+  </channel>
+</rss>

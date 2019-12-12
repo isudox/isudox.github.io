@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on I sudo X</title>
+    <link>https://isudox.com/tags/java/</link>
+    <description>Recent content in Java on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Jul 2017 11:10:03 +0000</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Java 8 Stream API 和函数式编程</title>
+      <link>https://isudox.com/posts/2017-07-12-java-8-streams-api-fp-intro/</link>
+      <pubDate>Wed, 12 Jul 2017 11:10:03 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2017-07-12-java-8-streams-api-fp-intro/</guid>
+      <description>流式操作我们在很多地方都使用过，比如 Shell 操作时经常用到的 ps aux | grep xxx、Python 中的 mapreduce 方法。Java 8 也引入了 Stream API，并且加入 Lambda 表达式，使得函数也可以成为像类一样的一等公民。
+在引出主题前，先看一道简单的算法题，分别用 Java 和 Python 来实现。
+ 给定的一个整型数组，将其中每个元素变为它的平方。
+ public class Solution { public List&amp;lt;Integer&amp;gt; square(List&amp;lt;Integer&amp;gt; nums) { List&amp;lt;Integer&amp;gt; res = new ArrayList&amp;lt;&amp;gt;(); for (Integer n : nums) { res.add(n * n); } return res; } } class Solution(object): def square(self, nums): return [i ** 2 for i in nums] 上面两个实现都是对这个问题最直接的解法，遍历数组中每个元素，同时计算其平方。对于 Python 的算法，如果了解过 lambda 表达式的话，还可以想出下面这种写法──</description>
+    </item>
+    
+    <item>
+      <title>Spring AOP 那些事儿</title>
+      <link>https://isudox.com/posts/2017-05-24-spring-aop-guide/</link>
+      <pubDate>Wed, 24 May 2017 19:25:56 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2017-05-24-spring-aop-guide/</guid>
+      <description>AOP 即 Aspect-Oriented Programming，面向切面编程，是对 OOP 编程思想的补充。OOP 核心是继承、封装、多态，是实现 OOP 模块化的基础。当 OOP 达到一定规模后，对于遍布各处的横向代码的处理就开始捉襟见肘，而 AOP 正好弥补了这个不足。
+引入 AOP 下图是很常见的编程场景──
+我们经常会遇到需要在多个方法中实现相同的一部分功能，面向过程的办法就是像图示在每个方法里都复制粘贴相同的一段代码，但是如果要改动就要改动 N 处代码。在有了 OOP 思想后，我们就进阶了一大步，可以将相同的代码段抽离出来，避免了到处改动的问题。
+一般像上图去实现代码就能应付大多数场景了。但随着软件规模的升级，有些问题就开始凸显了。首先共同功能的实现需要在各个方法中显示的去调用；其次，共同功能的控制权分散在代码各处；再次，对共同功能的依赖加重了类之间的耦合，降低了可重用性，如果共同功能并非各个方法的核心功能，那么就不应该耦合进各个对象中。AOP 则可以解决这些问题。
+AOP 把系统功能分为两部分：核心关注点，横切关注点。核心关注点是代码的主要逻辑；横切进多个模块，但不是模块主要逻辑的就是横切关注点。不是简单的把公共模块抽离出来，而是把那些与具体业务无关的，却为业务模块所共同调用的逻辑或责任封装起来，减少冗余代码，降低模块间耦合度，提升可维护性。
+基本概念 什么是 AOP 《Sping 实战》中对 AOP 有一段非常形象的描述──
+ 每家每户都需要用电，电力公司会安装电表会记录用电量，会派员工查电表。但是如果没有电表也没有人来查看用电量，相信大多数家庭都不会去记录电量并缴费，因为这不是家庭重点关注的问题。软件开发中，类似记录用电量这种散布于应用中多处的功能被称为横切关注点（cross-cutting concern），从概念上是与应用的业务逻辑相分离的（但往往会直接嵌入到业务逻辑中）。把横切关注点与业务逻辑相分离正是 AOP 所要解决的问题。
+ 知道 AOP 大致是做什么的后，再来了解下 AOP 的专用术语：
+ 切面 Aspect：横切关注点模块化的类； 连接点 Join point：程序的执行点，比如方法的执行，或者异常的处理。在 Spring AOP 中，连接点总是表示方法执行； 通知 Advice：切面在某个具体的连接点上执行的动作。且可以定义动作执行的时机，比如 around、before、after 等。包括 Spring 在内的许多 AOP 框架，都会把通知模块化成拦截器，围绕连接点构建拦截链； 切点 Poincut：匹配通知所要执行的一个或多个连接点。通常明确指定或者使用正则表达式匹配类名.方法。 引入 Introduction：即向已有的类添加新方法或属性。Spring AOP 允许向被通知的类添加新的接口（和其实现）。 目标对象 Target objection：被一个或多个切面通知的类。因为在 Spring 中，AOP 是通过运行时代理实现的，所以目标对象总是代理对象。 AOP 代理：由 AOP 框架创建的为实现 aspect 的对象，在 Spring 中，AOP 代理是 JDK 动态代理或 CGLIB 代理。 织入 Weaving：把切面应用到目标对象并创建新的代理对象的过程。切面在指定的连接点被织入到目标对象中。织入可以在对象生命周期的编译期、类加载期、运行期完成。Spring AOP 因为采用动态代理，所以是在运行期完成织入。  代码演示 @Component public class PrinterServiceImpl implements PrinterService { public void run(String message) { System.</description>
+    </item>
+    
+    <item>
+      <title>探索 Spring MVC 重定向和转发</title>
+      <link>https://isudox.com/posts/2017-02-16-spring-mvc-redirect-forward/</link>
+      <pubDate>Thu, 16 Feb 2017 11:35:09 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2017-02-16-spring-mvc-redirect-forward/</guid>
+      <description>最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。
+比如客户端的请求进到 Controller 方法中，我们会判断当前用户状态，可能会跳转到用户中心页，也可能会跳转到等待页，又或者错误页。类似的场景很多，都需要用到请求的重定向和转发。Sping MVC 实现重定向或转发的方法有很多，我先大致梳理下，然后再通过源码加深理解。
+常用处理方式 Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 ModelAndView 对象，又或者是 RedirectView 对象，下面逐一说明。
+String 重定向 是 return 映射到另一个 Controller 方法的字符串。如果有请求参数，就拼接在 RequestMapping 映射的字符串后面。
+// 返回字符串映射的方式 @RequestMapping(&amp;#34;hello&amp;#34;) public String hello(HttpServletRequest req, HttpServletResponse resp) { doSomething(); return &amp;#34;redirect:/bye&amp;#34;; // return &amp;#34;redirect:/bye?username=sudoz&amp;#34;; } ModelAndView 重定向 另一种方法是通过返回 ModelAndView 对象来实现跳转。类似的，如果有请求参数，也可以通过类似 GET 参数拼接的方式：
+// 返回 ModelAndView 对象 @RequestMapping(&amp;#34;hello&amp;#34;) public ModelAndView hello(HttpServletRequest req, HttpServletResponse resp) { doSomething(); return new ModelAndView(&amp;#34;redirect:/bye&amp;#34;); // return new ModelAndView(&amp;#34;redirect:/bye?</description>
+    </item>
+    
+    <item>
+      <title>Spring Boot 学习笔记 1：起手式 Hello World</title>
+      <link>https://isudox.com/posts/2017-02-10-spring-boot-note-1/</link>
+      <pubDate>Fri, 10 Feb 2017 23:59:24 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2017-02-10-spring-boot-note-1/</guid>
+      <description>Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convention over configuration)的设计范式。从零搭建 Spring Boot 项目几乎是傻瓜化的，因为框架把大量配置自动完成了。
+Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 Spring Boot 项目初始化工具，为开发者实现一个基本的项目骨架。很多 Java IDE 也集成了这个工具，以 Intellij IDEA 为例，新建项目，选择 Spring Initializr，进入如下组件选择面板
+其中 Core 包含了像 AOP Cashe 这些核心组件，Web 包含了 SpringMVC Thymeleaf 等 Web 开发组件，还有数据库相关，配置中心相关等一系列组件……因为是 Hello World 程序演示，就不选组件了，直接点下一步，创建空项目。空项目结构如下图。
+ DemonApplication.java：是应用程序的启动引导类（bootstrap class），也是主要的 Spring 配置类； DemoApplicationTest.java：集成 JUnit 的测试类； application.properties：配置应用程序和 Spring Boot 的属性；  OK，到此为止，第一个 Spring Boot 项目就创建完成了！是的，几乎什么都不需要做，一个能编译能运行的 Spring 项目已经搭建好了，真是幸福到泪奔啊o(&amp;gt;_&amp;lt;)o 但是空项目什么效果都看不到，所以接下来就往里面填充内容，实现一个简单的 Web 应用。</description>
+    </item>
+    
+    <item>
+      <title>通过反射统一 RPC 调用入口</title>
+      <link>https://isudox.com/posts/2017-02-06-rpc-uni-entry-with-reflection/</link>
+      <pubDate>Mon, 06 Feb 2017 15:18:55 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2017-02-06-rpc-uni-entry-with-reflection/</guid>
+      <description>最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一个专属的 Porcessor 去处理服务调用的结果。当然好处就是功能区分清晰，不好的地方就是当 Processor 多了后维护起来不太方便。一种思路就是利用反射思想，为 Processor 中的 RPC 调用添加统一入口，通过服务名和方法名对调用进行定位。
+代理的思路很简单，但真的非常实用，在实际开发中，合理使用代理，能精简很多固有代码。从代理的统一入口进入，根据传入的远程服务名和方法名，自动定位到需要被远程调用的方法，再传入入参并调用该方法，就能代理过多的 Processor 调用 RPC。
+代理入口的代码如下：
+@Service(value = &amp;#34;rpcEntry&amp;#34;) public class RpcEntry { @Resource private Map&amp;lt;String, Object&amp;gt; serviceMap; // 远程服务的 k-v 映射  private final Map&amp;lt;String, Method&amp;gt; actions = new HashMap&amp;lt;&amp;gt;(); // 存储方法调用  public Result process(String invokeStr, Object[] args) { String serviceName = methodKey.split(&amp;#34;\\.&amp;#34;)[0]; if (!actions.containsKey(invokeStr)) { Object service = serviceMap.get(serviceName); if (service != null) { for (Method m : service.getClass().getMethods()) { actions.</description>
+    </item>
+    
+    <item>
+      <title>敏捷开发实战：AOP &#43; 反射</title>
+      <link>https://isudox.com/posts/2016-10-11-spring-aop-with-reflection/</link>
+      <pubDate>Tue, 11 Oct 2016 11:40:04 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-10-11-spring-aop-with-reflection/</guid>
+      <description>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。
+如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！
+Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。
+写法一 后端部分 假设创建的 AOP 类为 DemoAspect，在 Spring 的配置文件中，将其注册到 aop 配置中：
+&amp;lt;bean id=&amp;#34;demoAspect&amp;#34; class=&amp;#34;com.isudox.aspect.DemoAspect&amp;#34;/&amp;gt; &amp;lt;aop:aspectj-autoproxy&amp;gt; &amp;lt;aop:include name=&amp;#34;demoAspect&amp;#34;/&amp;gt; &amp;lt;/aop:aspectj-autoproxy&amp;gt; 把流程改造相关的服务 bean 再次声明一份，修改其 id 和新流程的分组，以作为新流程所需服务的 bean（配置就省略了）。下面用 Java 的方式来声明切面和织入的方法：
+@Aspect public class DemoAspect { @Resource private CartService cartService2; @Around(&amp;#34;bean(cartService)&amp;#34;) public Object advice(ProceedingJoinPoint joinPoint) throws Throwable { Object result; try { MethodSignature signature = (MethodSignature) joinPoint.</description>
+    </item>
+    
+    <item>
+      <title>JUnit &#43; Mockito 单元测试的风云际会</title>
+      <link>https://isudox.com/posts/2016-10-10-unit-test-with-junit-mockito/</link>
+      <pubDate>Mon, 10 Oct 2016 22:12:35 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-10-10-unit-test-with-junit-mockito/</guid>
+      <description>JUnit 是 2015 年 Java 开发者引用最多的库，是 Java 单元测试框架里无可争议的 No.1。JUnit 基本上能覆盖大部分接口的测试，但如果待测接口依赖外部服务，比如我之前写的这篇小文里描述的情况，JUnit 就可能捉襟见肘了。而 Mockito 在 Mock 数据方面功能强大，正好弥补了 JUnit 在这方面的不足。风云合璧，摩诃无量。
+上面其实已经点到 JUnit 和 Mockito 的不同了，虽然二者都是运用在单元测试中，但 JUnit 侧重对接口的运行状态和结果的测试，而 Mockito 侧重 &amp;ldquo;Mock&amp;rdquo; 数据，即对对象的模拟，尤其是不容易构造的复杂对象。
+JUnit + Mockito 组合的优势是显而易见的，对于服务化的系统，有了这个组合，就能实现各上下游模块并行开发，同时进行单元测试验证可用性，减少串行联调的时间。
+JUnit  PS: 虽然 JUnit5 已经发布，但目前使用最多的还是 JUnit4，所以本文仍然基于 JUnit4。
+ 利用 Maven 初始化一个简单的 Java 应用：
+mvn archetype:generate -DgroupId=com.isudox -DartifactId=test-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false Maven 会自动创建好类文件和测试类，路径如下：
+test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源码路径 ├── main ---- 类文件 │ └── java │ └── com │ └── isudox │ └── App.</description>
+    </item>
+    
+    <item>
+      <title>Java 常用容器小结</title>
+      <link>https://isudox.com/posts/2016-09-13-java-collections-overview/</link>
+      <pubDate>Tue, 13 Sep 2016 20:15:58 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-09-13-java-collections-overview/</guid>
+      <description>无论是什么编程语言，容器都是非常重要的概念，在 Java 的实际开发中更是无处不在，各种 List、Set、Map。很多时候就是随着编程的惯性用了 ArrayList 或者 HashMap，但是并没对其特性和适用场景作更多的思考。开发者对 Java 容器的讨论比较多，我自己从源码的角度做个粗浅的整理。
+Collection java.util 包中的基于 Collection 接口的有 List、Set 和 Queue，下面这张图清楚的显示了 Collection 接口的向下实现和继承关系。
+Collection 接口继承了 Iterable 接口，表明所有 Collection 的实现都是可迭代的。Collection 提供最基础的接口方法，如 add()、remove()、contains()、isEmpty()、hashCode() 等。
+List  An ordered collection (also known as a sequence). The user of this interface has precise control over where in the list each element is inserted. The user can access elements by their integer index (position in the list), and search for elements in the list.</description>
+    </item>
+    
+    <item>
+      <title>JDK 8 中 HashMap 的工作原理</title>
+      <link>https://isudox.com/posts/2016-08-08-how-hashmap-works-in-jdk8/</link>
+      <pubDate>Mon, 08 Aug 2016 17:31:32 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-08-08-how-hashmap-works-in-jdk8/</guid>
+      <description>Java 容器类中，HashMap 是一个绕不开的重点，无论是实际开发还是求职面试。由于对 JDK 6 下 HashMap 的讨论已经很多了，而且 JDK 8 对 HashMap 做了比较大的改进，本文仅对 JDK 8 中 HashMap 的实现和工作原理做一点粗浅的讨论。
+ 文中 Java 代码均基于 OpenJDK 8
+ 引入 为了便于切入话题，先写一段最简单的 HashMap 样例代码：
+public class HashMapTest { public static void main(String[] args) { HashMap&amp;lt;String, String&amp;gt; map = new HashMap&amp;lt;&amp;gt;(); map.put(&amp;#34;China&amp;#34;, &amp;#34;Beijing&amp;#34;); map.put(&amp;#34;Japan&amp;#34;, &amp;#34;Tokyo&amp;#34;); map.put(&amp;#34;Korea&amp;#34;, &amp;#34;Seoul&amp;#34;); for (String country : map.keySet()) { // set a break point  String capital = map.get(country); System.out.println(country + &amp;#34;--&amp;#34; + capital); } } } 在 for 循环处进入断点，查看变量，IntelliJ IDEA 中显示如下： 变量 map 包含 table 属性和 entrySet 属性。其中，table 属性是一个长度为 16 的 Map.</description>
+    </item>
+    
+    <item>
+      <title>Spring MVC 集成 Thymeleaf</title>
+      <link>https://isudox.com/posts/2016-07-06-integrating-thymeleaf-with-spring-mvc/</link>
+      <pubDate>Wed, 06 Jul 2016 15:25:45 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-07-06-integrating-thymeleaf-with-spring-mvc/</guid>
+      <description>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
+和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
+模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
+&amp;lt;form:inputText name=&amp;#34;userName&amp;#34; value=&amp;#34;${user.name}&amp;#34; /&amp;gt; 而 Thymeleaf 模板标准语言会这样写：
+&amp;lt;input type=&amp;#34;text&amp;#34; name=&amp;#34;userName&amp;#34; value=&amp;#34;James Carrot&amp;#34; th:value=&amp;#34;${user.name}&amp;#34; /&amp;gt; 浏览器能直接识别上述 Thymeleaf 的 input 标签，而且还能在加载模板引擎后，由后端返回的数据渲染 value 值。也就是这一特性，可以让前后端工程师在同一个模板文件上协作开发，避免了从静态页面到模板页面的转换，前后端并行开发，这就是未来的趋势，也被称作 Natural Templating，页面即模板，模板即页面。
+标准表达式语法 基本表达式 Thymeleaf 模板方言里最重要的就是它的标准表达式语法了。Thymeleaf 的表达式有：
+  简单表达式：
+ 变量表达式：${.</description>
+    </item>
+    
+    <item>
+      <title>Java String 的内存模型</title>
+      <link>https://isudox.com/posts/2016-06-22-memory-model-of-string-in-java-language/</link>
+      <pubDate>Wed, 22 Jun 2016 13:00:53 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-06-22-memory-model-of-string-in-java-language/</guid>
+      <description>在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。
+字符串比较 字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：
+String s1 = &amp;#34;hello,world!&amp;#34;; // 通过字面值 String s2 = new String(&amp;#34;hello,world!&amp;#34;); // 通过 new 关键字 字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：
+public class Debug { public static void main(String[] args) { String s1 = &amp;#34;hello,world!&amp;#34;; String s2 = new String(&amp;#34;hello,world!&amp;#34;); System.out.println(s1 == s2); // false  System.out.println(Objects.equals(s1, s2)); // true  } } 值都是 &amp;ldquo;hello,world!&amp;rdquo; 的字符串，然而两种比较的方式所得到的结果却不相同。字符串 s1 是通过字面值创建，字符串 s2 是通过关键字 new 创建，在分析这两种创建字符串方式的区别之前，先比较下 == 操作符和 equals() 方法在进行字符串比较时的差异。</description>
+    </item>
+    
+    <item>
+      <title>责任链模式的实际运用</title>
+      <link>https://isudox.com/posts/2016-06-06-using-chain-of-responsibility-pattern/</link>
+      <pubDate>Mon, 06 Jun 2016 18:23:51 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-06-06-using-chain-of-responsibility-pattern/</guid>
+      <description>加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，review 自己写的代码时，好像一直在 repeat yourself。代码不应该那样写，把复杂业务拆分，松耦合，利用设计模式将业务代码简化，而不是一味的去用过程编程的思维去实现业务逻辑，又苦又累毫无乐趣。
+重构之前 趁着 JD 618 大促的机会，把陪伴计划项目部分业务重构了下。前期开发时因为业务需求多、时间紧张，没有对业务逻辑深入的分析，代码拿上来就写，导致逻辑的紧耦合、难以更改，难以扩展，面对新增的业务只能从头再写而无法做到有效复用。
+要做到代码的合理复用，直接有效的途径就是把业务逻辑拆分细化，颗粒度最细的拆分就是将业务逻辑拆分成原子操作，但这样做会导致代码过于细碎，未免过犹不及。业务松耦合，并非零耦合。让每一个细分业务只负责单一逻辑，通过灵活可配的组合实现复杂逻辑，这是实现松耦合，提高扩展性行之有效的办法。
+以这次的小范围重构为例，京东陪伴计划项目包含大量的优惠券促销业务，其逻辑涉及到诸多信息，比如宝贝档案、风险控制、券卡类别库存、会员信息、领取时间等多个维度。重构前的代码把优惠券业务里所涉及的多维度逻辑统统杂糅在一个接口实现里。这样的处理很草率，唯一的好处就是，在从零到一编写代码的过程中，思维可以很清楚的沿着业务逻辑线性写下去，说白了就是无脑编程。试想一下，如果优惠券部分的业务发生改变或者新增维度信息，很难灵活应变，而且代码冗余，牵扯面大，很难灵活扩展。
+原味责任链模式 责任链模式的基本思想是通过连锁处理单元，链式的处理客户端请求。链是由一系列处理单元自由组成的集合，可以是直线、环、树状结构，不同的处理单元将业务逻辑解耦。责任链上的每个处理单元或节点，都是客户端请求的潜在处理者，且客户端请求必定会在责任链上被处理。 标准的责任链结构，其节点包含处理方法 handle()，后一节点的引用 nextHandler，因此可以灵活配置责任链的每个节点，从而实现复杂业务的组合。 客户端的请求从责任链的根节点开始，依次往下执行，如果当前节点能胜任处理工作，则完成任务，否则将请求往下传递，直到到达能处理该请求的节点。下面编写一段简单的 Java 示例代码：
+先来一段又臭又长的代码，举个栗子
+public class BullshitCode { public static void main(String[] args) { int cmd = Integer.parseInt(args[0]); switch (cmd) { case 1: System.out.println(&amp;#34;my name is sudoz&amp;#34;); break; case 2: System.out.println(&amp;#34;this is my site&amp;#34;); break; case 3: System.out.println(&amp;#34;any advice is welcome&amp;#34;); break; case 4: System.out.println(&amp;#34;reach me via e-mail at me@isudox.com&amp;#34;); break; default: break; } } } 上面的代码没有什么实际意义，只是一种很具有代表性的写法，通过一长串的 if-else 逻辑去处理业务，导致所有可能的处理缓解都堆积杂糅在一块，设想一下如果新增了业务需求，是不是再往里面插一个 if-else 了事？总是用这种方式去写代码会让程序越来越臃肿，难以维护和扩展，尤其是当你接手别人的代码发现以百行计的 if-else 语句块时，你一定会一脸懵逼看不下去，沃泽法克什么鬼？！ 升职加薪对码农而言，就像是马儿眼前的草，给不给草啊，难道又要马儿跑又要马儿不吃草，互联网公司好像还真这么想……说多了就是两行泪，上头的 Boss 和 HR 们层层把关，不是想加就能加。</description>
+    </item>
+    
+    <item>
+      <title>Spring 加载含中文 properties 文件的思考</title>
+      <link>https://isudox.com/posts/2016-05-23-some-thoughts-on-loading-utf8-properties-file-in-spring/</link>
+      <pubDate>Mon, 23 May 2016 15:17:18 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-05-23-some-thoughts-on-loading-utf8-properties-file-in-spring/</guid>
+      <description>在公司项目的中间件代码里看到有些配置文件里有很多 &amp;quot;\uXXXX&amp;quot; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是 UTF-8 编码，配置文件里的中文字符为什么还会被转码？
+编码那些事儿 Spring 读取 .properties 文件并将配置内容加载进 Properties 类，文档中明确写明
+ &amp;hellip; the input/output stream is encoded in ISO 8859-1 character encoding. Characters that cannot be directly represented in this encoding can be written using Unicode escapes as defined in section 3.3 of The Java™ Language Specification; only a single &amp;lsquo;u&amp;rsquo; character is allowed in an escape sequence. The native2ascii tool can be used to convert property files to and from other character encodings.</description>
+    </item>
+    
+    <item>
+      <title>[译] IntelliJ IDEA 快捷键操作</title>
+      <link>https://isudox.com/posts/2016-05-17-intellij-idea-keymap-zh/</link>
+      <pubDate>Tue, 17 May 2016 16:02:15 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-05-17-intellij-idea-keymap-zh/</guid>
+      <description>捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时去翻看手册，索性把官方的默认 Keymap 翻译成中文。
+编辑 Ctrl + Space: 基本代码补全（类、方法或变量名） Ctrl + Shift + Space: 智能代码补全（根据类型过滤待选的方法和变量列表） Ctrl + Shift + Enter: 补全语句 Ctrl + P: 参数信息（在方法内调用参数） Ctrl + Q: 快速查看文档 Shift + F1: 外部文档 Ctrl + F1: 显示光标所在处的错误或警告信息 Alt + Insert: 生成代码（Getters, Setters, Constructors, hashCode/equals, toString） Ctrl + O: 重写父类方法 Ctrl + I: 实现接口方法 Ctrl + Alt + T: 包裹代码（if..else, try..catch, for, synchronized, etc.） Ctrl + /: 注释/取消注释当前行 Ctrl + Shift + /: 注释/取消注释代码块 Ctrl + W: 层次递增地选中代码块 Ctrl + Shift + W: 对当前选中的代码块层次递减的回到之前的选中状态（Ctrl + W 的逆过程） Alt + Q: 上下文信息 Alt + Enter: 显示意图动作和快速修复 Ctrl + Alt + L: 格式化代码 Ctrl + Alt + O: 优化 imports Ctrl + Alt + I: 自动缩进行 Tab / Shift + Tab: 缩进/回退当前选中的行 Ctrl + X or Shift + Delete: 剪切当前行或选中的代码块到剪贴板 Ctrl + C or Ctrl + Insert: 复制当前行或选中的代码块到剪贴板 Ctrl + V or Shift + Insert: 从剪贴板黏贴 Ctrl + Shift + V: 从当前 buffers 中黏贴 Ctrl + D: 复制当前行或选中的代码段到后一位置 Ctrl + Y: 删除光标所在行 Ctrl + Shift + J: 智能行拼接 Ctrl + Enter: 智能行分拆 Shift + Enter: 新增一行 Ctrl + Shift + U: 变更光标所在单词或选中代码段的大小写 Ctrl + Shift + ] / [: 向上/向下选中代码直到代码块的结束/开始位置 Ctrl + Delete: 向后删除到单词尾 Ctrl + Backspace: 向前删除到单词头 Ctrl + NumPad+/-: 展开/并拢代码块 Ctrl + Shift + NumPad+: 展开全部代码 Ctrl + Shift + NumPad-: 收拢全部代码 Ctrl + F4: 关闭当前 tab Alt + Shift + Inert: 开启/关闭列选择模式</description>
+    </item>
+    
+    <item>
+      <title>Spring MVC 拦截器使用小结</title>
+      <link>https://isudox.com/posts/2016-05-10-summary-of-spring-mvc-interceptor/</link>
+      <pubDate>Tue, 10 May 2016 16:38:39 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-05-10-summary-of-spring-mvc-interceptor/</guid>
+      <description>之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。拦截器普遍用在用户登录验证上，也应用在其他需要对一些信息进行验证的场景下。
+实现拦截 请求流程 Spring MVC 请求的生命周期 图示给出了一次请求从发送到处理到接收响应的整个过程，非常标准的 M-V-C。
+接口实现 Spring MVC 拦截器由 HandlerInterceptor 实现。HandlerInterceptor 接口包含三个方法：
+public interface HandlerInterceptor { boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception; void postHandle(HttpServletRequest req, HttpServletResponse resp, Object handler, ModelAndView modelAndView) throws Exception; void afterCompletion(HttpServletRequest req, HttpServletResponse resp, Object handler, Exception ex) throws Exception; } 从这三个方法名就能看出各自执行的事件节点：分别在请求处理之前、请求处理之后但在渲染视图之前、请求完成之后。
+preHandle() 在请求进到 Controller 前就对请求进行预处理。如果处理结果返回 true 则请求放行并继续往下执行，进到 Controller 或 下一个拦截器中；如果处理结果为 false 则中断处理请求，直接返回响应。</description>
+    </item>
+    
+    <item>
+      <title>String, StringBuilder, StringBuffer 区别</title>
+      <link>https://isudox.com/posts/2016-02-17-difference-between-string-stringbuilder-stringbuffer/</link>
+      <pubDate>Wed, 17 Feb 2016 15:22:01 +0000</pubDate>
+      
+      <guid>https://isudox.com/posts/2016-02-17-difference-between-string-stringbuilder-stringbuffer/</guid>
+      <description>今天下午浏览代码时看到 IDEA 给出了一段提示： StringBuffer variables may be declared as StringBuilder.
+回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场景的差异。遂谷歌之，看到阿里的 Android 大牛 Trinea 在 Github 上提的 issue，正好是关于它们之间区别的讨论。我也凑个热闹，查漏补缺。
+CharSequence 首先，String、StringBuilder 和 StringBuffer 都是实现的 CharSequence 接口。下面是 CharSequence 的源码：
+package java.lang; public interface CharSequence { int length(); char charAt(int index); CharSequence subSequence(int start, int end); public String toString(); } CharSequence 抽象了 char 序列，提供了求序列长度的方法 length()，获取指定位置字符的方法 charAt()，截取子序列的方法 subSequence() 和转换为 String 型的方法 toString()。实际运用中，我们很少直接用等到 CharSequence，因为它的实现 String、StringBuffer 和 StringBuilder 满足绝大多数使用场景。
+String 先看 JDK 里的源码：</description>
+    </item>
+    
+  </channel>
+</rss>
