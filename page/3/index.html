@@ -92,6 +92,25 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>CORS 跨域调试记录</h2>
+  </header>
+  <section class="entry-content">
+   <p>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运用中会存在不同的状况，只是看文档理解概念并不能真正成为实战派。
+这次联调采用前后端分离的方式，后端由 Spring MVC 提供数据接口，前端通过异步的方式做数据渲染，和以往不同的是，由于前端开发全部交给深圳的凹凸实验室，所以静态文件都跑在独立的一个域名上，就是京东的通天塔项目。因此所有来自前端的请求都成了跨域请求。
+JSONP 确实是通过一种巧妙的伎俩解决了跨域请求被浏览器拒绝的问题，但是它并不能解决 POST 跨域，联调的接口是跨域上传头像，采用 POST 发送 FormData 对象的方式。所以由服务端 CORS 来处理。
+对于服务端，Spring MVC 设置 CORS 很简单，如果 springframework 版本是 4.2 及以上，Spring MVC 可以直接由注解 @CrossOrigin 对标记的控制器方法设置 CORS。例如下面的示例代码：
+@CrossOrigin(origins = &#34;http://localhost:9000&#34;) @GetMapping(&#34;/greeting&#34;) public Greeting greeting(@RequestParam(required=false, defaultValue=&#34;World&#34;) String name) { System.out.println(&#34;==== in greeting ====&#34;); return new Greeting(counter.incrementAndGet(), String.format(template, name)); } @CrossOrigin 注解可以通过设置 origins、methods、maxAge、allowHeaders、allowCredentials 等参数来确定 CORS 接受跨域的来源域，请求类型，请求头等。如果 origins 设置为星号，则对所有来源域的请求都允许跨域，methods 设置为 POST 就只允许请求类型为 POST 的跨域请求。
+前端正常发送异步请求，类似如下代码：
+var formData = new FormData(); formData....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>November 12, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-11-12-cors-in-action/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>理解 Python 生成器</h2>
   </header>
   <section class="entry-content">
@@ -245,23 +264,6 @@ $ python hello.py --help Usage: hello.py [OPTIONS] Simple program that greets NA
     <time>September 3, 2016</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/posts/2016-09-03-learning-python-package-click/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>Gunicorn 驱动工厂模式 Flask 应用</h2>
-  </header>
-  <section class="entry-content">
-   <p>之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— Gunicorn，并且利用工厂模式对不同开发环境进行了隔离。工厂模式下的 Flask 应用在用 Gunicorn 部署时，需要做一点针对性的改动。
-基础的 Flask 应用部署 先写一个最简单的 Flask 应用 hello：
-# hello.py from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#34;Hello World!&#34; if __name__ == &#39;__main__&#39;: app.run(host=&#39;0.0.0.0&#39;, port=5000) 然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。
-当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：
-gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明：...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>August 29, 2016</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-08-29-running-flask-with-gunicorn-in-application-factory/"></a>
 </article>
 
 

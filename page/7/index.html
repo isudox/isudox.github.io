@@ -92,6 +92,27 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>开启 Arch 之旅</h2>
+  </header>
+  <section class="entry-content">
+   <p>iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry…
+最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而言，这不啻一个新的玩点。
+在 V2EX 上混的时候，被多次安利 Arch Linux，传闻中的 K.I.S.S 风格，滚动升级，业界良心的 Wiki，强大的社区支持，让常在 Linux 下搬砖的我心生向往。于是就在别人轻抚刚发货的 iPhone 6S 的夜晚，开始第 N &#43; 1 次折腾。
+故事就在这样一个夜晚发生了…
+准备工作 Arch 的镜像很小，仅不到 700M，由于光驱已经退役，因此就用了 U 盘做启动。在 Linux 下用 dd 命令就可以将镜像文件烧写进 U 盘：
+$ dd bs=4M if=/path_archlinux.iso of=/dev/sdx &amp;&amp; sync 其中 sdx 为 /dev 下挂载的 U 盘文件符。片刻功夫，烧写完毕，准备工作就绪！
+躁起来吧，骚年 重启选择 U 盘启动，U 盘里的镜像文件释放展开，屏幕上显现启动列表，选择第一个 x86-64 进入 Arch 配置安装。前方没有任何图形，黑白两色的屏幕像极了窗外的夜。
+联网 相比 Debian、CentOS 这些动辄 3,4G 的安装镜像，Arch 有着诱人的小而美，也意味这很多包都需要联网下载。所以安装过程中，必须要联网。
+$ wifi-mune 输入 Wifi 密码，ping 测试。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>September 26, 2015</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2015-09-26-begin-arch-linux/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>Hexo 小站轻松部署方案</h2>
   </header>
   <section class="entry-content">

@@ -92,6 +92,32 @@
 
 <article class="first-entry">
   <header class="entry-header">
+    <h2>动手搭建一个梯子</h2>
+  </header>
+  <section class="entry-content">
+   <p>由于众所周知的原因，大陆的互联网在一定程度上受限的。这归功于北京某高校校长主导的防火墙项目，我们时不时会看到类似下面这种地图——
+出现防火墙后，不断的有技术去突破这个封锁，双方都从彼此身上吸取教训，升级迭代，如果有兴趣去了解的话，其实是一段非常有趣的历史。但实事求是的说，校长还是放了一马，毕竟没有祭出杀手锏才使得技术手段有突破高墙的可能。
+早期防火墙通过 DNS 劫持的方式，给客户端返回一个错误的 IP 来破坏客户端到目标域名的访问。在那个相对单纯的年代里，我们通常是用修改 hosts 的方式来固定访问正确的 IP。
+后来防火墙使用了 IP 黑名单，阻止客户端到服务端的通讯，像 Google YouTube 就在这个名单里。所以这时候的技术思路就是通过不在该黑名单里的第三方服务器做代理中转，把我们所要访问的内容辗转搬运到客户端。这就是目前绝大多数梯子的实现原理。
+下文会根据 shadowsocks 项目（以下简称 ss），来尝试说明如何造一把简单的梯子。
+ 代理服务器的最终目的：不被检测出客户端的真实访问网站，且不被检测出代理服务器在提供代理服务。
+ 首先基于上面的第一点，要让墙无法解析数据包里的内容，就是通过加密，比如 AES。而第二点，是决定一个代理服务器是否能藏匿起来，躲过墙的试探而不被封锁的关键。
+限于能力和时间，在这篇文章里我只能对第一点做一些展开。要实现代理的整个数据流如下所示——
+类似 shadowsocks 这类的工具，会在本地客户端和远程代理服务器上分别部署自己的 client 和 server，用来加解密数据包。 就 ss 而言，它的核心就两个部分，分别是 ss-local 和 ss-server，对应上图的 local-proxy 和 remote-proxy。
+本地客户端需要对请求进行加密，这是最基础的功能。ss-local 会在本地监听端口，本地发起的网络请求都会发送到这个端口进行加密处理，再转发到 ss-server 所在的代理服务器上。
+远程服务端接收来自 ss-local 的请求，解密出原始请求信息，并转发到真实的目标服务器上，在接收到响应后会再次对响应做加密，转发给 ss-local，ss-local 再做一次解密，拿到真实的响应信息。
+整个过程是非常标准清晰的对称加密的过程。
+Socks5 协议  socks5 是 socks 协议的第 5 版。参考 RPC 1928。
+ 另一个核心是通信协议，ss 基于 socks5 协议，为什么选择 socks5 而不是 HTTPS，一个比较重要的原因是 socks5 同时支持 TCP 和 UDP，而 UDP 往往是 IM 和游戏数据通信所采用的协议。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 13, 2019</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2019-12-10-proxy-is-a-ladder/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>LeetCode-39 Combination Sum</h2>
   </header>
   <section class="entry-content">
@@ -251,28 +277,6 @@ Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Go
     <time>April 6, 2017</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/posts/2017-04-06-thrift-learn-notes-idl/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>[译] 一个行之有效的 Git 分支模型</h2>
-  </header>
-  <section class="entry-content">
-   <p>原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。
- 上面是废话，下面是译文。
-  本文里，我会介绍一个在一年前就引入进多个项目（包括工作和个人项目）中的开发模型，实践表明该模型很成功。为此专门写篇文章的想法由来已久，但始终没挤出时间来做，直到现在。我不会细究项目的具体细节，仅仅是项目开发的分支策略和发布管理。
-该模型专注于使用 Git 作为代码版本管理工具。（另外，如果你对 Git 感兴趣，我司的 GitPrime 提供了一些很棒的软件性能实时数据分析功能）
-为什么使用 Git 关于 Git 相比于中心化的代码管理系统的优劣，可以从网上找到很多相关讨论。作为开发者，我选择 Git。Git 确实改变了开发者们对分支和合并的理解。在之前使用经典的 CVS/Subversion 时，新建分支和合并分支总是有点吓人（小心代码合并时的冲突，它们会咬你）。
-但是用 Git 时，这些日常工作流的主要操作都变得简便易行。举例来说，在 CVS/Subversion 的相关书籍中，分支和合并操作会在靠后的章节中介绍（面向高阶读者），而 Git 的书中，往往是前三章的基础操作里就会做说明。
-由于 Git 的简单性和重用性（repetitive），分支和合并不再是令人生畏的高危操作。版本管理工具应该更多的协助代码的新建分支和合并分支。
-闲言少叙，进入开发模型的正题吧。我要介绍的模型基本上只是团队里每个成员都要遵循的一组开发流程规范。
-去中心化也中心化 在分支模型下工作良好的代码库，实际上有一个真实的中心代码库。注意这个库被视为一个中心（因为 Git 是分布式的版本管理工具，所以从技术角度上说并不存在中心代码库）。我们将其视为为 origin，因为所有 Git 用户都熟悉这个名称。
-每个开发者对 origin 进行 pull 和 push 操作。但是除了中心化的 push-pull，每个开发者也可能会建立子团队并 pull 同个子团队里其他成员的代码改动。比如，和两个或更多开发者合作开发一个大的新功能时，避免过早的将开发进行过程中的代码 push 上去。上图中，有 Alice 和 Bob 的小团队，Clair 和 David 的小团队。...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>February 18, 2017</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-02-18-a-successful-git-branching-model-zh/"></a>
 </article>
 
 

@@ -94,6 +94,23 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>Gunicorn 驱动工厂模式 Flask 应用</h2>
+  </header>
+  <section class="entry-content">
+   <p>之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— Gunicorn，并且利用工厂模式对不同开发环境进行了隔离。工厂模式下的 Flask 应用在用 Gunicorn 部署时，需要做一点针对性的改动。
+基础的 Flask 应用部署 先写一个最简单的 Flask 应用 hello：
+# hello.py from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#34;Hello World!&#34; if __name__ == &#39;__main__&#39;: app.run(host=&#39;0.0.0.0&#39;, port=5000) 然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。
+当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：
+gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明：...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>August 29, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2016-08-29-running-flask-with-gunicorn-in-application-factory/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>JDK 8 中 HashMap 的工作原理</h2>
   </header>
   <section class="entry-content">
@@ -248,23 +265,6 @@ Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
     <time>July 6, 2016</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/posts/2016-07-06-integrating-thymeleaf-with-spring-mvc/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>LeetCode 16-20</h2>
-  </header>
-  <section class="entry-content">
-   <p>本篇记录 LeetCode 算法部分第 16-20 题。
-3Sum Closest 第 16 题 3Sum Closest
- 给定一个包含 n 个整型数的数组 S，找出 S 中的三个数，使得三者求和的结果和目标值最接近。返回求和结果，假定 S 中一定存在唯一解。 举例：数组 S = { -1 2 1 -4 }，目标值 target = 1。最接近目标值的求和结果为 (-1 &#43; 2 &#43; 1 = 2)
- 这题是第 15 题的延伸。沿用前一题的思路，先对数组进行排序，取 a(i) &#43; a(i&#43;k) &#43; a(n) 求和，如果结果和目标值一致，则直接将求和结果返回；如果结果大于目标值，则表明需要减小下标 n 的值，逐次减小，每次比较当前求和结果与目标值的差值和前一次求和比较的差值，取绝对值较小的保留，同时保留当前的求和结果；如果结果小于目标值，则需要增大下标 (i&#43;k)。Java 代码如下
-// ThreeSumClosest.java v1.0 public class Solution { public int threeSumClosest(int[] nums, int target) { int sum = Integer....</p>
-  </section>
-  <footer class="entry-footer">
-    <time>July 4, 2016</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-07-04-leetcode-tour-4/"></a>
 </article>
 
 

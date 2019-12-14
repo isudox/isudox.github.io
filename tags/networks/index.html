@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Networks - I sudo X</title>
+    
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.61.0" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="list">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+
+
+
+<header class="page-header">
+  <h1>Networks</h1>
+</header>
+
+
+
+
+
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>动手搭建一个梯子</h2>
+  </header>
+  <section class="entry-content">
+   <p>由于众所周知的原因，大陆的互联网在一定程度上受限的。这归功于北京某高校校长主导的防火墙项目，我们时不时会看到类似下面这种地图——
+出现防火墙后，不断的有技术去突破这个封锁，双方都从彼此身上吸取教训，升级迭代，如果有兴趣去了解的话，其实是一段非常有趣的历史。但实事求是的说，校长还是放了一马，毕竟没有祭出杀手锏才使得技术手段有突破高墙的可能。
+早期防火墙通过 DNS 劫持的方式，给客户端返回一个错误的 IP 来破坏客户端到目标域名的访问。在那个相对单纯的年代里，我们通常是用修改 hosts 的方式来固定访问正确的 IP。
+后来防火墙使用了 IP 黑名单，阻止客户端到服务端的通讯，像 Google YouTube 就在这个名单里。所以这时候的技术思路就是通过不在该黑名单里的第三方服务器做代理中转，把我们所要访问的内容辗转搬运到客户端。这就是目前绝大多数梯子的实现原理。
+下文会根据 shadowsocks 项目（以下简称 ss），来尝试说明如何造一把简单的梯子。
+ 代理服务器的最终目的：不被检测出客户端的真实访问网站，且不被检测出代理服务器在提供代理服务。
+ 首先基于上面的第一点，要让墙无法解析数据包里的内容，就是通过加密，比如 AES。而第二点，是决定一个代理服务器是否能藏匿起来，躲过墙的试探而不被封锁的关键。
+限于能力和时间，在这篇文章里我只能对第一点做一些展开。要实现代理的整个数据流如下所示——
+类似 shadowsocks 这类的工具，会在本地客户端和远程代理服务器上分别部署自己的 client 和 server，用来加解密数据包。 就 ss 而言，它的核心就两个部分，分别是 ss-local 和 ss-server，对应上图的 local-proxy 和 remote-proxy。
+本地客户端需要对请求进行加密，这是最基础的功能。ss-local 会在本地监听端口，本地发起的网络请求都会发送到这个端口进行加密处理，再转发到 ss-server 所在的代理服务器上。
+远程服务端接收来自 ss-local 的请求，解密出原始请求信息，并转发到真实的目标服务器上，在接收到响应后会再次对响应做加密，转发给 ss-local，ss-local 再做一次解密，拿到真实的响应信息。
+整个过程是非常标准清晰的对称加密的过程。
+Socks5 协议  socks5 是 socks 协议的第 5 版。参考 RPC 1928。
+ 另一个核心是通信协议，ss 基于 socks5 协议，为什么选择 socks5 而不是 HTTPS，一个比较重要的原因是 socks5 同时支持 TCP 和 UDP，而 UDP 往往是 IM 和游戏数据通信所采用的协议。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 13, 2019</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2019-12-10-proxy-is-a-ladder/"></a>
+</article>
+
+
+
+
+
+</main>
+<footer class="footer">
+  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

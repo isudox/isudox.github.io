@@ -92,6 +92,28 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>[译] 一个行之有效的 Git 分支模型</h2>
+  </header>
+  <section class="entry-content">
+   <p>原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。
+ 上面是废话，下面是译文。
+  本文里，我会介绍一个在一年前就引入进多个项目（包括工作和个人项目）中的开发模型，实践表明该模型很成功。为此专门写篇文章的想法由来已久，但始终没挤出时间来做，直到现在。我不会细究项目的具体细节，仅仅是项目开发的分支策略和发布管理。
+该模型专注于使用 Git 作为代码版本管理工具。（另外，如果你对 Git 感兴趣，我司的 GitPrime 提供了一些很棒的软件性能实时数据分析功能）
+为什么使用 Git 关于 Git 相比于中心化的代码管理系统的优劣，可以从网上找到很多相关讨论。作为开发者，我选择 Git。Git 确实改变了开发者们对分支和合并的理解。在之前使用经典的 CVS/Subversion 时，新建分支和合并分支总是有点吓人（小心代码合并时的冲突，它们会咬你）。
+但是用 Git 时，这些日常工作流的主要操作都变得简便易行。举例来说，在 CVS/Subversion 的相关书籍中，分支和合并操作会在靠后的章节中介绍（面向高阶读者），而 Git 的书中，往往是前三章的基础操作里就会做说明。
+由于 Git 的简单性和重用性（repetitive），分支和合并不再是令人生畏的高危操作。版本管理工具应该更多的协助代码的新建分支和合并分支。
+闲言少叙，进入开发模型的正题吧。我要介绍的模型基本上只是团队里每个成员都要遵循的一组开发流程规范。
+去中心化也中心化 在分支模型下工作良好的代码库，实际上有一个真实的中心代码库。注意这个库被视为一个中心（因为 Git 是分布式的版本管理工具，所以从技术角度上说并不存在中心代码库）。我们将其视为为 origin，因为所有 Git 用户都熟悉这个名称。
+每个开发者对 origin 进行 pull 和 push 操作。但是除了中心化的 push-pull，每个开发者也可能会建立子团队并 pull 同个子团队里其他成员的代码改动。比如，和两个或更多开发者合作开发一个大的新功能时，避免过早的将开发进行过程中的代码 push 上去。上图中，有 Alice 和 Bob 的小团队，Clair 和 David 的小团队。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>February 18, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/posts/2017-02-18-a-successful-git-branching-model-zh/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>探索 Spring MVC 重定向和转发</h2>
   </header>
   <section class="entry-content">
@@ -245,25 +267,6 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
     <time>December 26, 2016</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/posts/2016-12-26-webpack-front-end-development-trends-in-2016/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>CORS 跨域调试记录</h2>
-  </header>
-  <section class="entry-content">
-   <p>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运用中会存在不同的状况，只是看文档理解概念并不能真正成为实战派。
-这次联调采用前后端分离的方式，后端由 Spring MVC 提供数据接口，前端通过异步的方式做数据渲染，和以往不同的是，由于前端开发全部交给深圳的凹凸实验室，所以静态文件都跑在独立的一个域名上，就是京东的通天塔项目。因此所有来自前端的请求都成了跨域请求。
-JSONP 确实是通过一种巧妙的伎俩解决了跨域请求被浏览器拒绝的问题，但是它并不能解决 POST 跨域，联调的接口是跨域上传头像，采用 POST 发送 FormData 对象的方式。所以由服务端 CORS 来处理。
-对于服务端，Spring MVC 设置 CORS 很简单，如果 springframework 版本是 4.2 及以上，Spring MVC 可以直接由注解 @CrossOrigin 对标记的控制器方法设置 CORS。例如下面的示例代码：
-@CrossOrigin(origins = &#34;http://localhost:9000&#34;) @GetMapping(&#34;/greeting&#34;) public Greeting greeting(@RequestParam(required=false, defaultValue=&#34;World&#34;) String name) { System.out.println(&#34;==== in greeting ====&#34;); return new Greeting(counter.incrementAndGet(), String.format(template, name)); } @CrossOrigin 注解可以通过设置 origins、methods、maxAge、allowHeaders、allowCredentials 等参数来确定 CORS 接受跨域的来源域，请求类型，请求头等。如果 origins 设置为星号，则对所有来源域的请求都允许跨域，methods 设置为 POST 就只允许请求类型为 POST 的跨域请求。
-前端正常发送异步请求，类似如下代码：
-var formData = new FormData(); formData....</p>
-  </section>
-  <footer class="entry-footer">
-    <time>November 12, 2016</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-11-12-cors-in-action/"></a>
 </article>
 
 

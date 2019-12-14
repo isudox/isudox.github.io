@@ -3,6 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://isudox.com/</loc>
+    <lastmod>2019-12-13T10:14:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://isudox.com/tags/networks/</loc>
+    <lastmod>2019-12-13T10:14:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://isudox.com/posts/</loc>
+    <lastmod>2019-12-13T10:14:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://isudox.com/tags/</loc>
+    <lastmod>2019-12-13T10:14:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://isudox.com/posts/2019-12-10-proxy-is-a-ladder/</loc>
+    <lastmod>2019-12-13T10:14:44+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://isudox.com/tags/algorithm/</loc>
     <lastmod>2019-03-29T21:54:41+00:00</lastmod>
   </url>
@@ -18,27 +43,12 @@
   </url>
   
   <url>
-    <loc>https://isudox.com/</loc>
-    <lastmod>2019-03-29T21:54:41+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://isudox.com/tags/leetcode/</loc>
     <lastmod>2019-03-29T21:54:41+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://isudox.com/posts/2019-03-29-leetcode-39-combination-sum/</loc>
-    <lastmod>2019-03-29T21:54:41+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://isudox.com/posts/</loc>
-    <lastmod>2019-03-29T21:54:41+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://isudox.com/tags/</loc>
     <lastmod>2019-03-29T21:54:41+00:00</lastmod>
   </url>
   
