@@ -1,7 +1,8 @@
 ---
 title: "MySQL Binlog 解析组件 open-replicator 原理介绍"
 date: 2020-02-28T13:41:33+08:00
-draft: true
+tags:
+  - Database
 ---
 
 [open-replicator](https://github.com/whitesock/open-replicator) 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。

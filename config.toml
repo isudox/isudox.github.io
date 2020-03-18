@@ -2,3 +2,7 @@ baseURL = "https://isudox.com/"
 languageCode = "en-us"
 title = "I sudo X"
 theme = "nova"
+disqusShortname = "isudox"
+uglyurls = "false"
+[permalinks]
+  posts = "/:year/:month/:day/:filename/"
