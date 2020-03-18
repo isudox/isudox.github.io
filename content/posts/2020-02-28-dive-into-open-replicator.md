@@ -7,7 +7,6 @@ draft: true
 [open-replicator](https://github.com/whitesock/open-replicator) 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。
 
 在探索 open-replicator 原理前，可以先思考一个问题，如果是自己来开发这个组件该怎么做。
-
 open-replicator 的做法是参照 MySQL 主从复制的方式，像 slave 一样连接到 MySQL 实例，拉取 binlog 并解析，再通过回调进行处理。
 
 MySQL 主从复制的过程：
@@ -18,19 +17,19 @@ MySQL 主从复制的过程：
 
 类似的，open-replicator 的执行过程是：
 - 包装成 slave 连接到目标 MySQL，并发送 dump 请求；
-- master 收到 dump 请求，发送 binlog 到 open-replicator；
+- master 收到 dump 请求，返回 binlog 到 open-replicator；
 - open-replicator 解析 binlog；
 
 # 源码梳理
 
-![class_diagram](https://i.imgur.com/rKXcCa2.png)
+![类图](/images/open-replicator_class.svg)
 
 参考上面的类图，open-replicator 的入口就是 `OpenReplicator` 类，其主要的成员属性有：
 
 - `serverId`: 即 MySQL 配置中的 `server-id`，全局唯一；
 - `transport`: 和目标 MySQL 建立的 socket 通信；
 - `binlogParser`: binlog 的解析器，根据 eventType 适配对应的 parser；
-- `binlogEventListener`: 委托 binlog 事件的监听；
+- `binlogEventListener`: 委托 binlog 事件的监听处理；
 
 初始化 `OpenReplicator` 的示例代码：
 
@@ -51,7 +50,7 @@ or.setBinlogEventListener(new BinlogEventListener() {
 or.start();
 ```
 
-接下来了解下 `start()` 方法里都做了些什么工作。
+接下来了解下 `start()` 方法里都做了些哪些工作。
 
 ## 建立 socket 连接
 
@@ -63,7 +62,7 @@ if (this.transport == null)
 this.transport.connect(this.host, this.port);
 ```
 
-其中 `getDefaultTransport()` 方法设置成员参数，`connect()` 完成 socket 通信的建立。
+其中 `getDefaultTransport()` 方法设置成员参数，`connect()` 完成 socket 通信的建立——
 
 ```java
 this.socket = this.socketFactory.create(host, port);
@@ -74,6 +73,8 @@ if(this.level2BufferSize <= 0) {
     this.is = new TransportInputStreamImpl(new ActiveBufferedInputStream(this.socket.getInputStream(), this.level2BufferSize), this.level1BufferSize);
 }
 ```
+
+这里注意有一层逻辑判断，是否开启二级缓存，后面会提到其中的区别。
 
 ## 发送 binlog 请求
 
@@ -136,13 +137,13 @@ binlog event header payload 格式如下：
 
 ```
 length         field
-4              timestamp: 注，此时间戳为秒级
+4              timestamp: 注，此时间戳为秒
 1              event type
 4              server-id
 4              event-size: size of the event (header, post-header, body)
    if binlog-version > 1:
 4              log position: position of the next event
-2              flags: binlog 标识，参考 [官方文档](https://dev.mysql.com/doc/internals/en/binlog-event-flag.html)
+2              flags: binlog 标识，参考[官方文档](https://dev.mysql.com/doc/internals/en/binlog-event-flag.html)
 ```
 
 按上述 payload 格式，从 socket 中读取字节流并解析对应的属性值，完成 header 的解析。
@@ -152,7 +153,7 @@ length         field
 ### 解析 binlog event body
 
 从 binlog header 中获取到 `event type` 后，从之前注册的 `BinlogEventParser` 列表中找出匹配的解析器，实际的解析过程委托给解析器接口的对应实现。
-以 `WriteRowsEventV2Parser` 实现为例，其中 WRITE_ROWS_EVENTv2 的 payload 格式参考 [write-rows-eventv2](https://dev.mysql.com/doc/internals/en/rows-event.html#write-rows-eventv2)。
+以 `WriteRowsEventV2Parser` 实现为例，其中 `WRITE_ROWS_EVENTv2` 的 payload 格式参考 [write-rows-eventv2](https://dev.mysql.com/doc/internals/en/rows-event.html#write-rows-eventv2)。
 
 ```java
 public void parse(XInputStream is, BinlogEventV4Header header, BinlogParserContext context) throws IOException {
@@ -177,20 +178,17 @@ public void parse(XInputStream is, BinlogEventV4Header header, BinlogParserConte
 }
 ```
 
-按 payload 格式读取字节流并获取相应属性，再调用 `BinlogEventListener.onEvents()` 回调进行对应的处理。
+按 payload 格式读取字节流并获取相应属性，再调用 `BinlogEventListener#onEvents()` 回调进行对应的处理。
 
-buffalo-reader 的回调处理逻辑为
+举个例子，我们自定义的回调处理逻辑可以是如下
 
 ```java
 public void onEvents(BinlogEventV4 event) {
-    boolean isPut = false;
-    do {
-        try {
-            isPut = binlogEventQueue.offer(event, queueTimeoutMs, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
-            log.error("Failed to put binlog event to binlogEventQueue event: " + event, e);
-        }
-    } while (!isPut && !isShutdownRequested());
+    try {
+        blockingQueue.offer(event, timeout, TimeUnit.MILLISECONDS);
+    } catch (InterruptedException e) {
+        log.error("Failed to put binlog event to queue, event: " + event, e);
+    }
 }
 ```
 
@@ -198,7 +196,7 @@ public void onEvents(BinlogEventV4 event) {
 
 open-replicator 的核心逻辑如上过程，整体就是建立连接 -> 获取 binlog -> 解析 binlog -> 回调处理。整理下流程图——
 
-![80CEiq.png](https://s1.ax1x.com/2020/03/18/80CEiq.png)
+![流程图](/images/open-replicator_sequence.svg)
 
 # 细节分析
 
@@ -219,7 +217,7 @@ public void connect(String host, int port) throws Exception {
 }
 ```
 
-区别在于开启二级缓存后，是从封装的 `ActiveBufferedInputStream` 中获取流。`ActiveBufferedInputStream` 初始化是创建了一个线程去不断从 `socket` 的输入流里读取字节流，并存储在 `RingBuffer` 中，这个数据结构的容量即二级缓存的大小，所以 open-replicator 所谓的「二级缓存」即内存中的 `RingBuffer`。
+区别在于开启二级缓存后，是从封装的 `ActiveBufferedInputStream` 中获取流。`ActiveBufferedInputStream` 初始化是创建了一个线程去不断从 `socket` 的输入流里读取字节流，并存储在 `RingBuffer` 中，这个数据结构的容量即二级缓存的大小，所以 open-replicator 里所谓的「二级缓存」即内存中的 `RingBuffer`。
 
 ```java
 new Thread(new Runnable() {
@@ -244,8 +242,25 @@ new Thread(new Runnable() {
 
 ### RingBuffer 数据结构
 
-作者自己实现了 `RingBuffer` 的数据结构，本质上是一个有界的 FIFO 数组，由头尾两个指针表示数据的开始和结束，通过这两个指针的归零实现了逻辑上的环。`length` 是数组当前存储数据的长度，`capcity` 是最大容量。
+作者自己实现了 `RingBuffer` 的数据结构，本质上是一个有界的 FIFO 数组，由 head、tail 两个指针标识数据的开始和结束，通过这两个指针的归零实现了逻辑上的环状结构。`size` 是数组当前存储数据的长度，`capcity` 是最大容量。
 它的读写过程是：
 
-- 有数据写入时，插入到 `tail` 索引的位置，`tail` 后移所写入数据的长度，`length` 相应增加，当 `tail` 超过 `capcity` 时，`tail` = 0。当 `length` = `capacity` 时表示队列写满；
-- 有数据读取时，从 `head` 开始读取，`head` 后移读取数据的长度，`length` 相应减少，当 `head` 超过 `capcity` 时，`head` = 0，当 `length` = 0 时表示队列为空；
+- 有数据写入时，插入到 `tail` 索引的位置，`tail` 后移所写入数据的长度，`size` 相应增加，当 `tail` 超过 `capcity` 时，`tail` = 0。当 `size` = `capacity` 时表示队列写满；
+- 有数据读取时，从 `head` 开始读取，`head` 后移读取数据的长度，`size` 相应减少，当 `head` 超过 `capcity` 时，`head` = 0，当 `size` = 0 时表示队列为空；
+着重说下写操作。假设 header 指针标识写的位置，tail 指针标识读的位置，那么存在下面两个情况：
+
+1. head 指针在 tail 指针前面，即 head < tail，形如下图：
+![case1](https://i.imgur.com/oy4nkIK.png)
+那么 min(capcity - size, byte_steam.length) 为当前可写入字节流长度，即写入空白区域即可，写入完成后，移动 head 指针。
+
+2. head 指针在 tail 后面，即 head > tail，形如下图：
+![case2](https://i.imgur.com/xTBOY1z.png)
+可以写入的字节流长度为 min(capcity - head, min(capcity - size, byte_steam.length))，如果写入到末尾后还有可写入的字节，则写入到数组头部。数据更新后再移动 head 指针。
+
+总而言之，RingBuffer 需要保证，一定是读到已经写入的数据，写入不会覆盖未读取的数据，这是关键。
+
+## 生产使用存在的问题
+
+可以看到上面的 `RingBuffer` 只有在一个线程读，一个线程写的情况下才是线程安全的，如果生产-消费模型是有多个消费者，需要空间换时间，分别维护。
+
+另外，open-replicator 从组件功能的定位上已经实现的核心能力，基于 binlog 订阅转发和自定义处理的系统需要考虑更多生产环境面临的高可用问题，比如订阅的目标数据库宕掉的情况，这需要接入 open-replicator 的应用完成高可用方面的适配。
