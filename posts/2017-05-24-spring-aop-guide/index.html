@@ -24,7 +24,7 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -95,15 +95,15 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
   </header>
   <div class="post-content"><p>AOP 即 Aspect-Oriented Programming，<strong>面向切面编程</strong>，是对 OOP 编程思想的补充。OOP 核心是继承、封装、多态，是实现 OOP 模块化的基础。当 OOP 达到一定规模后，对于遍布各处的横向代码的处理就开始捉襟见肘，而 AOP 正好弥补了这个不足。</p>
 <!-- raw HTML omitted -->
-<h2 id="-aop">引入 AOP</h2>
+<h2 id="引入-aop">引入 AOP</h2>
 <p>下图是很常见的编程场景──</p>
 <p><img src="https://o70e8d1kb.qnssl.com/redundant_code.png" alt="redundant code"></p>
 <p>我们经常会遇到需要在多个方法中实现相同的一部分功能，面向过程的办法就是像图示在每个方法里都复制粘贴相同的一段代码，但是如果要改动就要改动 N 处代码。在有了 OOP 思想后，我们就进阶了一大步，可以将相同的代码段抽离出来，避免了到处改动的问题。</p>
 <p><img src="https://o70e8d1kb.qnssl.com/clean_code.png" alt="clean code"></p>
 <p>一般像上图去实现代码就能应付大多数场景了。但随着软件规模的升级，有些问题就开始凸显了。首先共同功能的实现需要在各个方法中显示的去调用；其次，共同功能的控制权分散在代码各处；再次，对共同功能的依赖加重了类之间的耦合，降低了可重用性，如果共同功能并非各个方法的核心功能，那么就不应该耦合进各个对象中。AOP 则可以解决这些问题。</p>
 <p>AOP 把系统功能分为两部分：<strong>核心关注点</strong>，<strong>横切关注点</strong>。核心关注点是代码的主要逻辑；横切进多个模块，但不是模块主要逻辑的就是横切关注点。不是简单的把公共模块抽离出来，而是把那些与具体业务无关的，却为业务模块所共同调用的逻辑或责任封装起来，减少冗余代码，降低模块间耦合度，提升可维护性。</p>
-<h2 id="heading">基本概念</h2>
-<h3 id="-aop-1">什么是 AOP</h3>
+<h2 id="基本概念">基本概念</h2>
+<h3 id="什么是-aop">什么是 AOP</h3>
 <p>《Sping 实战》中对 AOP 有一段非常形象的描述──</p>
 <blockquote>
 <p>每家每户都需要用电，电力公司会安装电表会记录用电量，会派员工查电表。但是如果没有电表也没有人来查看用电量，相信大多数家庭都不会去记录电量并缴费，因为这不是家庭重点关注的问题。软件开发中，类似记录用电量这种散布于应用中多处的功能被称为<strong>横切关注点</strong>（cross-cutting concern），从概念上是与应用的业务逻辑相分离的（但往往会直接嵌入到业务逻辑中）。把横切关注点与业务逻辑相分离正是 AOP 所要解决的问题。</p>
@@ -119,12 +119,12 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 <li>AOP 代理：由 AOP 框架创建的为实现 aspect 的对象，在 Spring 中，AOP 代理是 JDK 动态代理或 CGLIB 代理。</li>
 <li>织入 Weaving：把切面应用到目标对象并创建新的代理对象的过程。切面在指定的连接点被织入到目标对象中。织入可以在对象生命周期的编译期、类加载期、运行期完成。Spring AOP 因为采用动态代理，所以是在<strong>运行期</strong>完成织入。</li>
 </ul>
-<h3 id="heading-1">代码演示</h3>
+<h3 id="代码演示">代码演示</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PrinterServiceImpl</span> <span style="color:#66d9ef">implements</span> PrinterService <span style="color:#f92672">{</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Your message: &#34;</span> <span style="color:#f92672">+</span> message<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Your message: &#34;</span> <span style="color:#f92672">+</span> message<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 日志切面
@@ -133,8 +133,8 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LogAspect</span> <span style="color:#f92672">{</span>
 
     <span style="color:#a6e22e">@AfterReturning</span><span style="color:#f92672">(</span>pointcut <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;execution(* com.isudox.service.impl.*.*(..))&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">log</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Job completed time: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">log</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Job completed time: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">());</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 事物切面
@@ -144,30 +144,30 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 
     <span style="color:#a6e22e">@Around</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;execution(* com.isudox.service.impl.*.*(..))&#34;</span><span style="color:#f92672">)</span>
     <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">transact</span><span style="color:#f92672">(</span>ProceedingJoinPoint joinPoint<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;----Transaction begins----&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Object result <span style="color:#f92672">=</span> joinPoint<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;----Transaction end----&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;----Transaction begins----&#34;</span><span style="color:#f92672">);</span>
+        Object result <span style="color:#f92672">=</span> joinPoint<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">();</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;----Transaction end----&#34;</span><span style="color:#f92672">);</span>
         <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> spring</span><span style="color:#75715e">-</span><span style="color:#75715e">aop</span><span style="color:#75715e">-</span><span style="color:#75715e">config.xml </span><span style="color:#75715e">--&gt;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- spring-aop-config.xml --&gt;</span>
 <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator&#34;</span><span style="color:#f92672">/&gt;</span>
 
 <span style="color:#f92672">&lt;context:component-scan</span> <span style="color:#a6e22e">base-package=</span><span style="color:#e6db74">&#34;com.isudox&#34;</span><span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;aop:aspectj-autoproxy</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;aop:aspectj-autoproxy/&gt;</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Main 方法
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ApplicationContext ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ClassPathXmlApplicationContext<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;spring-aop-config.xml&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        PrinterService printer <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;printerServiceImpl&#34;</span><span style="color:#f92672">,</span> PrinterService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        printer<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello AOP&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        ApplicationContext ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ClassPathXmlApplicationContext<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;spring-aop-config.xml&#34;</span><span style="color:#f92672">);</span>
+        PrinterService printer <span style="color:#f92672">=</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;printerServiceImpl&#34;</span><span style="color:#f92672">,</span> PrinterService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        printer<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello AOP&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 <span style="color:#75715e">// ----Transaction begins----
-</span><span style="color:#75715e"></span><span style="color:#75715e">// Your message: Hello AOP
-</span><span style="color:#75715e"></span><span style="color:#75715e">// ----Transaction end----
-</span><span style="color:#75715e"></span><span style="color:#75715e">// Job completed time: Thu Jun 01 16:27:37 CST 2017
-</span></code></pre></div><h2 id="heading-2">代理模式</h2>
+</span><span style="color:#75715e">// Your message: Hello AOP
+</span><span style="color:#75715e">// ----Transaction end----
+</span><span style="color:#75715e">// Job completed time: Thu Jun 01 16:27:37 CST 2017
+</span></code></pre></div><h2 id="代理模式">代理模式</h2>
 <p>AOP 有多种实现方案，比如 <a href="http://www.eclipse.org/aspectj/">AspectJ</a> 和 Spring AOP。前者需要安装 AspectJ 扩展库，在编译器生成 AOP 代理类，后者则是在运行时动态生成代理类。总之，AOP 的实现是基于代理模式，所以先简单介绍下这种经典的设计模式。</p>
 <blockquote>
 <p>通过在代理类中包裹切面，Spring 在运行期把切面织入到 Spring 管理的 bean 中。如下图所示，代理类封装了目标类，并拦截被通知方法的调用，再把调用转发给真正的目标 bean。当代理拦截到方法调用时，在调用目标 bean 方法之前，会执行切面逻辑。</p>
@@ -187,19 +187,19 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 </ul>
 <p><img src="https://o70e8d1kb.qnssl.com/proxy-uml.png" alt="代理模式 UML"></p>
 <p>根据代理类的生成时期，可以分为静态代理和动态代理，静态代理是在编译期生成代理类的 <code>.class</code> 文件，动态代理是在运行时通过反射动态生成代理类。</p>
-<h3 id="heading-3">静态代理</h3>
+<h3 id="静态代理">静态代理</h3>
 <p>参考 UML 图，我们可以用 Java 写一个简单的静态代理：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Manager 接口
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Manager</span> <span style="color:#f92672">{</span>
 
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String param<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String param<span style="color:#f92672">);</span>
 
 <span style="color:#f92672">}</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 具体的 Manager 实现
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DepartmentManager</span> <span style="color:#66d9ef">implements</span> Manager <span style="color:#f92672">{</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Today Plan: &#34;</span> <span style="color:#f92672">+</span> param<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Today Plan: &#34;</span> <span style="color:#f92672">+</span> param<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
     
 <span style="color:#f92672">}</span>
@@ -213,7 +213,7 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
     <span style="color:#f92672">}</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">manager</span><span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>param<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">manager</span><span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>param<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
 <span style="color:#f92672">}</span>
@@ -221,10 +221,10 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ManagerProxyTest</span> <span style="color:#f92672">{</span>
 
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        Manager manager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DepartmentManager<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Manager proxy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ManagerProxy<span style="color:#f92672">(</span>manager<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Monthly Review&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Manager manager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DepartmentManager<span style="color:#f92672">();</span>
+        Manager proxy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ManagerProxy<span style="color:#f92672">(</span>manager<span style="color:#f92672">);</span>
+        proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Monthly Review&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
     <span style="color:#75715e">// ----console output:-----
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// Today Plan: Monthly Review
@@ -239,17 +239,17 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
     <span style="color:#f92672">}</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>String param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        preHandle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">manager</span><span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>param<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        postHandle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        preHandle<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">manager</span><span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>param<span style="color:#f92672">);</span>
+        postHandle<span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Position: &#34;</span> <span style="color:#f92672">+</span> manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Position: &#34;</span> <span style="color:#f92672">+</span> manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">());</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postHandle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SimpleDateFormat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;YYYY/MM/dd&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postHandle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SimpleDateFormat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;YYYY/MM/dd&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">()));</span>
     <span style="color:#f92672">}</span>
     <span style="color:#75715e">// ----console output:-----
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// Position: DepartmentManager
@@ -257,9 +257,9 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// 2017/05/24
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>静态代理有其不足的地方，如果有 N 个真实对象，就需要指定 N 个代理类来代理；如果主题接口增加了方法，那么所有实现类和代理类都需要实现这个新方法。这无疑增加了代码维护的难度。另外，如果事先并不知道被代理的真实对象是什么，该如何实现代理。动态代理可以代理多个真实对象，并且可以动态指定，虽然在程序性能上不如静态代理，但在灵活性上显著优于静态代理。</p>
-<h3 id="heading-4">动态代理</h3>
+<h3 id="动态代理">动态代理</h3>
 <p>创建动态代理的方式有多种，可以通过 JDK 内置的 <code>java.lang.reflect</code> 包、<a href="https://github.com/cglib/cglib">CGLIB</a> 实现。JDK 实现动态处理相对简单，核心是利用反射，先介绍 JDK 的动态代理实现。</p>
-<h4 id="jdk-">JDK 动态代理</h4>
+<h4 id="jdk-动态代理">JDK 动态代理</h4>
 <p>JDK 实现动态代理的过程如下：</p>
 <ol>
 <li>在运行期通过反射创建实现主题接口的代理类；</li>
@@ -273,18 +273,18 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 </ul>
 <p><code>Proxy.newProxyInstance()</code> 第一个参数是加载该代理类到 JVM 的类加载器；第二个参数是代理类需要实现的接口；第三个参数是调用处理器的实现。方法源码精简如下：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Object <span style="color:#a6e22e">newProxyInstance</span><span style="color:#f92672">(</span>ClassLoader loader<span style="color:#f92672">,</span>
-                                      Class<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> interfaces<span style="color:#f92672">,</span>
+                                      Class<span style="color:#f92672">&lt;?&gt;[]</span> interfaces<span style="color:#f92672">,</span>
                                       InvocationHandler h<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     
     <span style="color:#75715e">// 由类加载器和接口创建指定的代理类
-</span><span style="color:#75715e"></span>    Class<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> cl <span style="color:#f92672">=</span> getProxyClass0<span style="color:#f92672">(</span>loader<span style="color:#f92672">,</span> interfacess<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>    Class<span style="color:#f92672">&lt;?&gt;</span> cl <span style="color:#f92672">=</span> getProxyClass0<span style="color:#f92672">(</span>loader<span style="color:#f92672">,</span> interfacess<span style="color:#f92672">);</span>
     <span style="color:#75715e">// 获得代理类的带参构造函数
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">final</span> Constructor<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> cons <span style="color:#f92672">=</span> cl<span style="color:#f92672">.</span><span style="color:#a6e22e">getConstructor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Class<span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#f92672">{</span>InvocationHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">final</span> Constructor<span style="color:#f92672">&lt;?&gt;</span> cons <span style="color:#f92672">=</span> cl<span style="color:#f92672">.</span><span style="color:#a6e22e">getConstructor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Class<span style="color:#f92672">[]</span> <span style="color:#f92672">{</span>InvocationHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">});</span>
     <span style="color:#75715e">// 创建代理对象实例，参数为调用处理器
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> cons<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">{</span>h<span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> cons<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[]{</span>h<span style="color:#f92672">});</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>InvocationHandler</code> 中只有一个 <code>invoke()</code> 方法，第一个参数是代理类实例；第二个参数是被调用的方法；第三个参数是被调用方法的入参──</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>Object proxy<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>Object proxy<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable<span style="color:#f92672">;</span>
 </code></pre></div><p>实现一个动态代理的简单例子：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 动态代理类
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JdkDynamicProxyy</span> <span style="color:#f92672">{</span>
@@ -295,42 +295,42 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">manager</span> <span style="color:#f92672">=</span> manager<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span> Proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">newProxyInstance</span><span style="color:#f92672">(</span>
-                manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
-                manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getInterfaces</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
-                <span style="color:#66d9ef">new</span> InvocationHandler<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>Object proxy<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span>
+                manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(),</span>
+                manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getInterfaces</span><span style="color:#f92672">(),</span>
+                <span style="color:#66d9ef">new</span> InvocationHandler<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>Object proxy<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span>
                             <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
-                        preHandle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                        Object result <span style="color:#f92672">=</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>manager<span style="color:#f92672">,</span> args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                        postHandle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                        preHandle<span style="color:#f92672">();</span>
+                        Object result <span style="color:#f92672">=</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>manager<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+                        postHandle<span style="color:#f92672">();</span>
                         <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
                     <span style="color:#f92672">}</span>
                 <span style="color:#f92672">}</span>
-        <span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Position: &#34;</span> <span style="color:#f92672">+</span> manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Position: &#34;</span> <span style="color:#f92672">+</span> manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">());</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postHandle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SimpleDateFormat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;YYYY/MM/dd&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postHandle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SimpleDateFormat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;YYYY/MM/dd&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">()));</span>
     <span style="color:#f92672">}</span>
 
 <span style="color:#f92672">}</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 动态代理测试
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JdkDynamicProxyTest</span> <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        Manager manager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DepartmentManager<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Manager manager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DepartmentManager<span style="color:#f92672">();</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
 
-        Manager proxy <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Manager<span style="color:#f92672">)</span> <span style="color:#66d9ef">new</span> JdkDynamicProxyy<span style="color:#f92672">(</span>manager<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Manager proxy <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Manager<span style="color:#f92672">)</span> <span style="color:#66d9ef">new</span> JdkDynamicProxyy<span style="color:#f92672">(</span>manager<span style="color:#f92672">).</span><span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">();</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
 
-        proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Monthly Review&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Monthly Review&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
     <span style="color:#75715e">// ----console output----
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// class com.isudox.proxy.DepartmentManager
@@ -340,7 +340,7 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// 2017/05/24
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>从运行结果可以看出，创建的动态代理类工作正常。</p>
-<h4 id="cglib-">CGLIB 动态代理</h4>
+<h4 id="cglib-动态代理">CGLIB 动态代理</h4>
 <p>CGLIB 又被称作子类代理，它的动态代理实现方式是通过转换字节码生成新的子类，从而扩展真实对象的功能。当需要被代理的真实对象是单纯的类时，就可以使用 CGLIB 子类代理来实现动态代理，当然对接口实现类也同样支持。</p>
 <p>CGLIB 包下有 <code>MethodInterceptor</code> 接口，起到拦截方法调用的作用。CGLIB 动态代理类需要实现该接口，重写 <code>intercept()</code> 方法，把被调用的方法和入参传入给真实对象。</p>
 <p>还用到 CGLIB 包下的 <code>Enhancer</code> 类，通过 <code>setSuperclass()</code> 设置父类，通过 <code>setCallback()</code> 设置回调方法，类似 <code>Proxy</code> 的 <code>invoke()</code> 方法。</p>
@@ -354,43 +354,43 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">target</span> <span style="color:#f92672">=</span> target<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Enhancer enhancer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Enhancer<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuperclass</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setCallback</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        Enhancer enhancer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Enhancer<span style="color:#f92672">();</span>
+        enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuperclass</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
+        enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setCallback</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">intercept</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span>
-                            Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> objects<span style="color:#f92672">,</span>
+                            Object<span style="color:#f92672">[]</span> objects<span style="color:#f92672">,</span>
                             MethodProxy methodProxy<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
 
-        preHandle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Object result <span style="color:#f92672">=</span> methodProxy<span style="color:#f92672">.</span><span style="color:#a6e22e">invokeSuper</span><span style="color:#f92672">(</span>o<span style="color:#f92672">,</span> objects<span style="color:#f92672">)</span><span style="color:#f92672">;</span>  <span style="color:#75715e">// 调用父类即被代理类的方法
-</span><span style="color:#75715e"></span>        postHandle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        preHandle<span style="color:#f92672">();</span>
+        Object result <span style="color:#f92672">=</span> methodProxy<span style="color:#f92672">.</span><span style="color:#a6e22e">invokeSuper</span><span style="color:#f92672">(</span>o<span style="color:#f92672">,</span> objects<span style="color:#f92672">);</span>  <span style="color:#75715e">// 调用父类即被代理类的方法
+</span><span style="color:#75715e"></span>        postHandle<span style="color:#f92672">();</span>
         <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Position: &#34;</span> <span style="color:#f92672">+</span> target<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Position: &#34;</span> <span style="color:#f92672">+</span> target<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">());</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postHandle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SimpleDateFormat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;YYYY/MM/dd&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postHandle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SimpleDateFormat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;YYYY/MM/dd&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">()));</span>
     <span style="color:#f92672">}</span>
     
 <span style="color:#f92672">}</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 测试
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CglibDynamicProxyTest</span> <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">intercept</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        Manager manager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DepartmentManager<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">intercept</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Manager manager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DepartmentManager<span style="color:#f92672">();</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>manager<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
 
-        Manager proxy <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Manager<span style="color:#f92672">)</span> <span style="color:#66d9ef">new</span> CglibDynamicProxy<span style="color:#f92672">(</span>manager<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Manager proxy <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Manager<span style="color:#f92672">)</span> <span style="color:#66d9ef">new</span> CglibDynamicProxy<span style="color:#f92672">(</span>manager<span style="color:#f92672">).</span><span style="color:#a6e22e">getProxyInstant</span><span style="color:#f92672">();</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
 
-        proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Monthly Review&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Monthly Review&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
     <span style="color:#75715e">// ----console output----
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// class com.isudox.proxy.DepartmentManager
@@ -400,7 +400,7 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// 2017/05/24
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>从运行结果可以看出，代码里的 <code>proxy</code> 实例是被代理的真实对象的子类，这是和 JDK 动态代理明显不同的地方，因此 CGLIB 可以实现对非接口实现类的动态代理。</p>
-<h3 id="heading-5">小结</h3>
+<h3 id="小结">小结</h3>
 <p>对代理模式做个简单的小结──</p>
 <ol>
 <li>Subject 定义 ReaelSubject 和 Proxy 的公共接口，目的是让 Proxy 可以代替 RealSubject；</li>
@@ -408,7 +408,7 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
 <li>Proxy 会需持有目标对象的引用，使得代理可以访问到目标实体；</li>
 <li>Proxy 对外提供和目标对象接口一致的实现，即直接通过代理替代目标实体；</li>
 </ol>
-<h2 id="spring-aop-">Spring AOP 实现</h2>
+<h2 id="spring-aop-实现">Spring AOP 实现</h2>
 <p>在了解了动态代理的实现过程后，就可以深入源码对 Spring AOP 的实现原理一探究竟了。引用官方文档里的一段话──</p>
 <blockquote>
 <p>Spring AOP defaults to using standard JDK dynamic proxies for AOP proxies. This enables any <strong>interface (or set of interfaces)</strong> to be proxied.
@@ -420,76 +420,76 @@ Spring AOP can also use CGLIB proxies. This is necessary to proxy classes rather
 <p><img src="https://o70e8d1kb.qnssl.com/spring-aop-breakpoint.jpeg" alt=""></p>
 <p>因为目标对象实现了接口，Spring AOP 使用了内部封装的 <code>JdkDynamicAopProxy</code> 类实现动态代理，底层还是 JDK 动态代理。来看下它的源码──</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JdkDynamicAopProxy</span> <span style="color:#66d9ef">implements</span> AopProxy<span style="color:#f92672">,</span> InvocationHandler<span style="color:#f92672">,</span> Serializable <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>Serializable</code> 无需赘述了，先来看 <code>AopProxy</code>：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AopProxy</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// 通过 AopProxy 默认的类加载器获取新的代理对象
-</span><span style="color:#75715e"></span>    Object <span style="color:#a6e22e">getProxy</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>    Object <span style="color:#a6e22e">getProxy</span><span style="color:#f92672">();</span>
     <span style="color:#75715e">// 通过指定的类加载获取新的代理对象
-</span><span style="color:#75715e"></span>    Object <span style="color:#a6e22e">getProxy</span><span style="color:#f92672">(</span>ClassLoader classLoader<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>    Object <span style="color:#a6e22e">getProxy</span><span style="color:#f92672">(</span>ClassLoader classLoader<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>再来看 <code>JdkDynamicAopProxy</code> 对 <code>AopProxy</code> 的实现：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
-<span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getProxy</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> getProxy<span style="color:#f92672">(</span>ClassUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getDefaultClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getProxy</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> getProxy<span style="color:#f92672">(</span>ClassUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getDefaultClassLoader</span><span style="color:#f92672">());</span>
 <span style="color:#f92672">}</span>
 
 <span style="color:#a6e22e">@Override</span>
 <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getProxy</span><span style="color:#f92672">(</span>ClassLoader classLoader<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isDebugEnabled</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Creating JDK dynamic proxy: target source is &#34;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getTargetSource</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isDebugEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Creating JDK dynamic proxy: target source is &#34;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getTargetSource</span><span style="color:#f92672">());</span>
     <span style="color:#f92672">}</span>
-    Class<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> proxiedInterfaces <span style="color:#f92672">=</span> AopProxyUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">completeProxiedInterfaces</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    findDefinedEqualsAndHashCodeMethods<span style="color:#f92672">(</span>proxiedInterfaces<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    Class<span style="color:#f92672">&lt;?&gt;[]</span> proxiedInterfaces <span style="color:#f92672">=</span> AopProxyUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">completeProxiedInterfaces</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+    findDefinedEqualsAndHashCodeMethods<span style="color:#f92672">(</span>proxiedInterfaces<span style="color:#f92672">);</span>
     <span style="color:#75715e">// 调用 JDK Proxy 生成代理对象实例
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> Proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">newProxyInstance</span><span style="color:#f92672">(</span>classLoader<span style="color:#f92672">,</span> proxiedInterfaces<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> Proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">newProxyInstance</span><span style="color:#f92672">(</span>classLoader<span style="color:#f92672">,</span> proxiedInterfaces<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>参考前文讲的 JDK 动态代理，<code>Proxy.newProxyInstance()</code> 方法传入类加载器，被代理的接口，以及 InvocationHandler 实现，生成动态代理对象的实例。</p>
 <p><code>JdkDynamicAopProxy</code> 中对 <code>InvocationHandler.invoke()</code> 的实现本质上和前面的实例代码也是一样的。</p>
 <h3 id="cglibaopproxy">CglibAopProxy</h3>
 <p>从源码中还能看到，在 Spring AOP 中，<code>AopProxy</code> 还有一个实现，就是 <code>CglibAopProxy</code>，这个类封装了 CGLIB 创建动态代理的实现。其定义如下：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CglibAopProxy</span> <span style="color:#66d9ef">implements</span> AopProxy<span style="color:#f92672">,</span> Serializable <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>奇怪的是，这似乎和之前自己实现的 <code>CglibDynamicProxy</code> 不一样，它没有实现 CGLIB 的 <code>MethodInterceptor</code>。这里有一点需要注意，代理类实例实际上是由 <code>Enhancer.create()</code> 生成的，而在构建 <code>Enhancer</code> 实例时，需要通过 <code>Enhancer.setCallback()</code> 设置回调方法，这个回调方法是 <code>MethodInterceptor</code> 的具体实现。所以只需要将回调方法实现 <code>MethodInterceptor</code> 即可。具体看源码是怎么做的：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
 <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getProxy</span><span style="color:#f92672">(</span>ClassLoader classLoader<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// 配置 CGLIB Enhancer
-</span><span style="color:#75715e"></span>    Enhancer enhancer <span style="color:#f92672">=</span> createEnhancer<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuperclass</span><span style="color:#f92672">(</span>proxySuperClass<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setInterfaces</span><span style="color:#f92672">(</span>AopProxyUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">completeProxiedInterfaces</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setNamingPolicy</span><span style="color:#f92672">(</span>SpringNamingPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setStrategy</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ClassLoaderAwareUndeclaredThrowableStrategy<span style="color:#f92672">(</span>classLoader<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>    Enhancer enhancer <span style="color:#f92672">=</span> createEnhancer<span style="color:#f92672">();</span>
+    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuperclass</span><span style="color:#f92672">(</span>proxySuperClass<span style="color:#f92672">);</span>
+    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setInterfaces</span><span style="color:#f92672">(</span>AopProxyUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">completeProxiedInterfaces</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">));</span>
+    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setNamingPolicy</span><span style="color:#f92672">(</span>SpringNamingPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">);</span>
+    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setStrategy</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ClassLoaderAwareUndeclaredThrowableStrategy<span style="color:#f92672">(</span>classLoader<span style="color:#f92672">));</span>
 
     <span style="color:#75715e">// 获取回调方法，即 MethodInterceptor 的实现
-</span><span style="color:#75715e"></span>    Callback<span style="color:#f92672">[</span><span style="color:#f92672">]</span> callbacks <span style="color:#f92672">=</span> getCallbacks<span style="color:#f92672">(</span>rootClass<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+</span><span style="color:#75715e"></span>    Callback<span style="color:#f92672">[]</span> callbacks <span style="color:#f92672">=</span> getCallbacks<span style="color:#f92672">(</span>rootClass<span style="color:#f92672">);</span>
+    <span style="color:#f92672">...</span>
     <span style="color:#75715e">// 生成代理类并创建代理实例
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> createProxyClassAndInstance<span style="color:#f92672">(</span>enhancer<span style="color:#f92672">,</span> callbacks<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> createProxyClassAndInstance<span style="color:#f92672">(</span>enhancer<span style="color:#f92672">,</span> callbacks<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 
-<span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">createProxyClassAndInstance</span><span style="color:#f92672">(</span>Enhancer enhancer<span style="color:#f92672">,</span> Callback<span style="color:#f92672">[</span><span style="color:#f92672">]</span> callbacks<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setInterceptDuringConstruction</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">createProxyClassAndInstance</span><span style="color:#f92672">(</span>Enhancer enhancer<span style="color:#f92672">,</span> Callback<span style="color:#f92672">[]</span> callbacks<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setInterceptDuringConstruction</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
     <span style="color:#75715e">// 在这设置了回调方法 callbacks
-</span><span style="color:#75715e"></span>    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setCallbacks</span><span style="color:#f92672">(</span>callbacks<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgs</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span>
+</span><span style="color:#75715e"></span>    enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">setCallbacks</span><span style="color:#f92672">(</span>callbacks<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgs</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span>
             enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgTypes</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">constructorArgs</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
-            enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            enhancer<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">());</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>从源码中可以发现，<code>CglibDynamicProxy</code> 是通过调用 <code>getCallbacks()</code> 来获取回调方法的，再看它的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> Callback<span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#a6e22e">getCallbacks</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> rootClass<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> Callback<span style="color:#f92672">[]</span> <span style="color:#a6e22e">getCallbacks</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;?&gt;</span> rootClass<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    <span style="color:#f92672">...</span>
     <span style="color:#75715e">// Choose an &#34;aop&#34; interceptor (used for AOP calls).
-</span><span style="color:#75715e"></span>	Callback aopInterceptor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DynamicAdvisedInterceptor<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+</span><span style="color:#75715e"></span>	Callback aopInterceptor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DynamicAdvisedInterceptor<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">advised</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">...</span>
 <span style="color:#f92672">}</span>
 
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DynamicAdvisedInterceptor</span> <span style="color:#66d9ef">implements</span> MethodInterceptor<span style="color:#f92672">,</span> Serializable <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">intercept</span><span style="color:#f92672">(</span>Object proxy<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">,</span> MethodProxy methodProxy<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">intercept</span><span style="color:#f92672">(</span>Object proxy<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">,</span> MethodProxy methodProxy<span style="color:#f92672">)</span>
             <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
-        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        <span style="color:#f92672">...</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>DynamicAdvisedInterceptor</code> 确实是实现了 <code>MethodInterceptor</code>。</p>
@@ -500,13 +500,13 @@ A: 因为 Java 是单继承的，每个代理类都继承了 Proxy 类，因此�
 A: JDK 在创建动态代理类时，内部的过程可以简单理解为下面的过程，所以只要是对代理类方法的调用，都会经过 <code>invoke()</code> 处理。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">$Proxy1</span> <span style="color:#66d9ef">extends</span> Proxy <span style="color:#66d9ef">implements</span> Subject<span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> InvocationHandler h<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">$Proxy1</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">$Proxy1</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
     <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">$Proxy1</span><span style="color:#f92672">(</span>InvocationHandler h<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">h</span> <span style="color:#f92672">=</span> h<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">request</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Method method <span style="color:#f92672">=</span> Subject<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Class<span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">int</span><span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Integer<span style="color:#f92672">)</span> h<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> method<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">new</span> Integer<span style="color:#f92672">(</span>i<span style="color:#f92672">)</span><span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Method method <span style="color:#f92672">=</span> Subject<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Class<span style="color:#f92672">[]</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">int</span><span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">});</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Integer<span style="color:#f92672">)</span> h<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> method<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[]</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">new</span> Integer<span style="color:#f92672">(</span>i<span style="color:#f92672">)});</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Q: 代理模式和装饰器模式的区别？
@@ -540,7 +540,7 @@ A: 这两种设计模式非常相似，都是用一个类包装目标类，但�
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

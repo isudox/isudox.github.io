@@ -16,7 +16,7 @@
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -103,7 +103,7 @@
 input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别于 PC 端上，移动设备除了调用文件浏览器外，还可以调用摄像头进行拍照上传，需要加入 capture 参数
 &lt;input type=&#34;file&#34; name=&#34;file&#34; accept=&#34;image/*&#34; capture=&#34;camera&#34;&gt; 但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。
 关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。
-&lt;!--图片添加按钮 --&gt; &lt;ul id=&#34;previewer&#34; class=&#34;upload-list&#34;&gt; &lt;li id=&#34;select-image&#34; class=&#34;add-pic-btn&#34;&gt;&lt;a href=&#34;javascript:;&#34; onclick=&#34;clickBrowse();&#34;&gt;&#43;&lt;/a&gt;&lt;/li&gt; &lt;!...</p>
+&lt;!-- 图片添加按钮 --&gt; &lt;ul id=&#34;previewer&#34; class=&#34;upload-list&#34;&gt; &lt;li id=&#34;select-image&#34; class=&#34;add-pic-btn&#34;&gt;&lt;a href=&#34;javascript:;&#34; onclick=&#34;clickBrowse();&#34;&gt;&#43;&lt;/a&gt;&lt;/li&gt; &lt;!...</p>
   </section>
   <footer class="entry-footer">
     <time>April 18, 2016</time>
@@ -117,7 +117,7 @@ input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别�
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

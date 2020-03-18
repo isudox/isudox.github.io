@@ -21,7 +21,7 @@
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -92,7 +92,7 @@
   </header>
   <div class="post-content"><p>小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题抄袭过来，嘿嘿。</p>
 <!-- raw HTML omitted -->
-<h3 id="heading">头像旋转</h3>
+<h3 id="头像旋转">头像旋转</h3>
 <p><a href="https://github.com/A-limon/pacman">Pacman</a> 主题布局非常大气，最有心的设计在我看来就是底栏的可旋转的圆形头像，非常可爱。相比之下，鄙人小站侧边栏头像就显得很呆板了。那就抄过来！
 可以知道，这是一个鼠标的 <code>hover</code> 事件，因此先找到位于 <code>source/css/_common/components/sidebar/sidebar-author.syl</code> 模板文件里侧边栏头像的样式 <code>.site-author-image</code></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">site-author-image</span> {
@@ -118,7 +118,7 @@
     <span style="color:#960050;background-color:#1e0010">-</span><span style="color:#66d9ef">transform</span>: rotate(<span style="color:#ae81ff">360</span><span style="color:#66d9ef">deg</span>);
 }
 </code></pre></div><p>OK，成就达成。</p>
-<h3 id="heading-1">侧边滚动条</h3>
+<h3 id="侧边滚动条">侧边滚动条</h3>
 <p><a href="https://github.com/litten/hexo-theme-yilia">Yilia</a> 也是 GitHub 上非常受欢迎的一款 Hexo 主题， 虽然我用的不是 Yilia 主题，但是不妨碍我喜欢它的侧边滚动条，灰色系的性冷淡风很契合我的小站。所以我就把这个样式挪到了我的小站里。
 为了不影响小站原主题的样式，最好不要直接在原有样式上做修改。在 <code>source/css/_custom</code> 里的 <code>custom.stl</code> 模板文件里编写对滚动条的自定义样式。不过有一点，自定义的滚动条只支持 webkit 内核的浏览器，比如 Firefox 和 IE 就爱莫能助了。当然，在 Chrome 上的体验完美！</p>
 <pre><code class="language-styl" data-lang="styl">// Custom styles.
@@ -175,7 +175,7 @@
 }
 </code></pre><p>前后对比
 <img src="https://o70e8d1kb.qnssl.com/scrollbars.png" alt=""></p>
-<h3 id="heading-2">顶部阅读进度条</h3>
+<h3 id="顶部阅读进度条">顶部阅读进度条</h3>
 <p>阅读进度条的宽度是随着页面上下滚动而变化的。当滚动条在顶部时，阅读进度条宽度为浏览器宽度的 0%，当滚动条在页面底部时，阅读进度条宽度为浏览器宽度的 100%。很简单，写好进度条的样式和高度计算的脚本就能轻松实现。
 先在 <code>layout/_partials/header.swig</code> 模板文件里加上进度条的 div：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;top-scroll-bar&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
@@ -209,7 +209,7 @@
   &lt;script type=&quot;text/javascript&quot; src=&quot;{{ url_for(theme.js) }}/{{ common }}?v={{ theme.version }}&quot;&gt;&lt;/script&gt;
 {% endfor %}
 </code></pre><p>测试下，可以看到页面顶部出现了一道性感的阅读进度条。</p>
-<h3 id="heading-3">页面加载进度条</h3>
+<h3 id="页面加载进度条">页面加载进度条</h3>
 <p>前一段时间 GitHub 做了一次较大的更新，个人页面的连续 commit 提交天数被去掉了，还有在打开仓库文件时可以看到页面顶部增加了一条发光发亮的加载进度条。通过 Chrome 控制台可以看到，这条加载进度条是由下面的 HTML 代码展示的：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;js-pjax-loader-bar&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pjax-loader-bar&#34;</span>&gt;
   &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;progress&#34;</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width: 100%;&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
@@ -251,7 +251,7 @@
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

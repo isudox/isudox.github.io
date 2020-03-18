@@ -19,7 +19,7 @@ Context 的实现 Flask 提供了 4 个 Context：
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -90,7 +90,7 @@ Context 的实现 Flask 提供了 4 个 Context：
   </header>
   <div class="post-content"><p>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那么它可以独立运行了；如果程序需要外部环境的支持，Context 的存在就有意义。比如 Flask Web 开发中常用的 <code>current_app</code>、<code>request</code> 都是 Context，可以在不同方法中调用，并且实现通信及交互。</p>
 <!-- raw HTML omitted -->
-<h3 id="context-">Context 的实现</h3>
+<h3 id="context-的实现">Context 的实现</h3>
 <p>Flask 提供了 4 个 Context：</p>
 <table>
 <thead>
@@ -134,15 +134,15 @@ Context 的实现 Flask 提供了 4 个 Context：
 _request_ctx_stack <span style="color:#f92672">=</span> LocalStack()
 _app_ctx_stack <span style="color:#f92672">=</span> LocalStack()
 </code></pre></div><p><code>_request_ctx_stack</code> 和 <code>_app_ctx_stack</code> 分别是 Flask 保存 request context 和 application context 的全局栈，由 Werkzeug 库的 <code>LocalStack</code> 和 <code>LocalProxy</code> 创建实例。</p>
-<h4 id="localstack--localproxy">LocalStack 和 LocalProxy</h4>
+<h4 id="localstack-和-localproxy">LocalStack 和 LocalProxy</h4>
 <p>在认识 LocalStack 之前，先来了解 <code>local.py</code> 中的 Local 类，Local 类内由 <code>__slots__</code> 确定了唯二两个属性：<code>__storage__</code> 和 <code>__ident_func__</code>，其中，<code>__ident_func__</code> 属性是获取当前线程标识符的方法调用，<code>__storage__</code> 属性是字典，其 key 就是当前线程的标识符。参看源码：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># werkzeug.local.Local</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Local</span>(object):
-    __slots__ <span style="color:#f92672">=</span> (<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__storage__</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__ident_func__</span><span style="color:#e6db74">&#39;</span>)
+    __slots__ <span style="color:#f92672">=</span> (<span style="color:#e6db74">&#39;__storage__&#39;</span>, <span style="color:#e6db74">&#39;__ident_func__&#39;</span>)
 
     <span style="color:#66d9ef">def</span> __init__(self):
-        object<span style="color:#f92672">.</span>__setattr__(self, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__storage__</span><span style="color:#e6db74">&#39;</span>, {})
-        object<span style="color:#f92672">.</span>__setattr__(self, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__ident_func__</span><span style="color:#e6db74">&#39;</span>, get_ident)
+        object<span style="color:#f92672">.</span>__setattr__(self, <span style="color:#e6db74">&#39;__storage__&#39;</span>, {})
+        object<span style="color:#f92672">.</span>__setattr__(self, <span style="color:#e6db74">&#39;__ident_func__&#39;</span>, get_ident)
 
     <span style="color:#66d9ef">def</span> __getattr__(self, name):
         <span style="color:#66d9ef">try</span>:
@@ -164,14 +164,14 @@ _app_ctx_stack <span style="color:#f92672">=</span> LocalStack()
         self<span style="color:#f92672">.</span>_local <span style="color:#f92672">=</span> Local()
 
     <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">push</span>(self, obj):
-        rv <span style="color:#f92672">=</span> getattr(self<span style="color:#f92672">.</span>_local, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">stack</span><span style="color:#e6db74">&#39;</span>, None)
+        rv <span style="color:#f92672">=</span> getattr(self<span style="color:#f92672">.</span>_local, <span style="color:#e6db74">&#39;stack&#39;</span>, None)
         <span style="color:#66d9ef">if</span> rv <span style="color:#f92672">is</span> None:
             self<span style="color:#f92672">.</span>_local<span style="color:#f92672">.</span>stack <span style="color:#f92672">=</span> rv <span style="color:#f92672">=</span> []
         rv<span style="color:#f92672">.</span>append(obj)
         <span style="color:#66d9ef">return</span> rv
 
     <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">pop</span>(self):
-        stack <span style="color:#f92672">=</span> getattr(self<span style="color:#f92672">.</span>_local, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">stack</span><span style="color:#e6db74">&#39;</span>, None)
+        stack <span style="color:#f92672">=</span> getattr(self<span style="color:#f92672">.</span>_local, <span style="color:#e6db74">&#39;stack&#39;</span>, None)
         <span style="color:#66d9ef">if</span> stack <span style="color:#f92672">is</span> None:
             <span style="color:#66d9ef">return</span> None
         <span style="color:#66d9ef">elif</span> len(stack) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
@@ -201,32 +201,32 @@ _app_ctx_stack <span style="color:#f92672">=</span> LocalStack()
 </code></pre><p>LocalProxy 类是 werkzeug local 的代理，LocalProxy 类的构造函数必须传入一个可调用的参数（方法），通过调用得到的结果就是 LocalStack 实例化的栈的栈顶元素。<code>__local</code> 就是被代理的对象，对 LocalProxy 对象的操作都会作用于实际被代理的对象上。参考源码：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># werkzeug.local.LocalProxy</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LocalProxy</span>(object):
-    __slots__ <span style="color:#f92672">=</span> (<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__local</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__dict__</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__name__</span><span style="color:#e6db74">&#39;</span>)
+    __slots__ <span style="color:#f92672">=</span> (<span style="color:#e6db74">&#39;__local&#39;</span>, <span style="color:#e6db74">&#39;__dict__&#39;</span>, <span style="color:#e6db74">&#39;__name__&#39;</span>)
 
     <span style="color:#66d9ef">def</span> __init__(self, local, name<span style="color:#f92672">=</span>None):
-        object<span style="color:#f92672">.</span>__setattr__(self, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">_LocalProxy__local</span><span style="color:#e6db74">&#39;</span>, local)
-        object<span style="color:#f92672">.</span>__setattr__(self, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__name__</span><span style="color:#e6db74">&#39;</span>, name)
+        object<span style="color:#f92672">.</span>__setattr__(self, <span style="color:#e6db74">&#39;_LocalProxy__local&#39;</span>, local)
+        object<span style="color:#f92672">.</span>__setattr__(self, <span style="color:#e6db74">&#39;__name__&#39;</span>, name)
 
     <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_get_current_object</span>(self):
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> hasattr(self<span style="color:#f92672">.</span>__local, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__release_local__</span><span style="color:#e6db74">&#39;</span>):
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> hasattr(self<span style="color:#f92672">.</span>__local, <span style="color:#e6db74">&#39;__release_local__&#39;</span>):
             <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>__local()
         <span style="color:#66d9ef">try</span>:
             <span style="color:#66d9ef">return</span> getattr(self<span style="color:#f92672">.</span>__local, self<span style="color:#f92672">.</span>__name__)
         <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">AttributeError</span>:
-            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">RuntimeError</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">no object bound to </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>__name__)
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">RuntimeError</span>(<span style="color:#e6db74">&#39;no object bound to </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>__name__)
 
     <span style="color:#66d9ef">def</span> __getattr__(self, name):
-        <span style="color:#66d9ef">if</span> name <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__members__</span><span style="color:#e6db74">&#39;</span>:
+        <span style="color:#66d9ef">if</span> name <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__members__&#39;</span>:
             <span style="color:#66d9ef">return</span> dir(self<span style="color:#f92672">.</span>_get_current_object())
         <span style="color:#66d9ef">return</span> getattr(self<span style="color:#f92672">.</span>_get_current_object(), name)
-</code></pre></div><h4 id="request--session">request 和 session</h4>
+</code></pre></div><h4 id="request-和-session">request 和 session</h4>
 <p>Flask 对 <code>request</code> 的定义如下：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_lookup_req_object</span>(name):
     top <span style="color:#f92672">=</span> _request_ctx_stack<span style="color:#f92672">.</span>top
     <span style="color:#66d9ef">if</span> top <span style="color:#f92672">is</span> None:
         <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">RuntimeError</span>(_request_ctx_err_msg)
     <span style="color:#66d9ef">return</span> getattr(top, name)
-request <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_object, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">request</span><span style="color:#e6db74">&#39;</span>))
+request <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_object, <span style="color:#e6db74">&#39;request&#39;</span>))
 </code></pre></div><p>由偏函数 <code>partial()</code> 将属性名 &ldquo;request&rdquo; 传入 <code>_lookup_req_object()</code> 得到可调用的方法，该方法的执行结果就是 LocalProxy 代理的 <code>_request_ctx_stack</code> 栈顶元素 <code>RequestContext</code> 实例。</p>
 <p><code>RequestContext</code> 包含了 Request 的所有相关信息，它在请求开始时被创建并被推入到 <code>_request_ctx_stack</code> 栈中，在请求结束后出栈。
 参考源码：</p>
@@ -241,7 +241,7 @@ request <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_obje
         self<span style="color:#f92672">.</span>_implicit_app_ctx_stack <span style="color:#f92672">=</span> []
 
     <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">push</span>(self):
-        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">部分省略</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        <span style="color:#e6db74">&#34;&#34;&#34;部分省略&#34;&#34;&#34;</span>
         app_ctx <span style="color:#f92672">=</span> _app_ctx_stack<span style="color:#f92672">.</span>top
         <span style="color:#66d9ef">if</span> app_ctx <span style="color:#f92672">is</span> None <span style="color:#f92672">or</span> app_ctx<span style="color:#f92672">.</span>app <span style="color:#f92672">!=</span> self<span style="color:#f92672">.</span>app:
             app_ctx <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>app<span style="color:#f92672">.</span>app_context()
@@ -253,12 +253,12 @@ request <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_obje
         _request_ctx_stack<span style="color:#f92672">.</span>push(self)
     
     <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">pop</span>(self, exc<span style="color:#f92672">=</span>_sentinel):
-        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">省略</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        <span style="color:#e6db74">&#34;&#34;&#34;省略&#34;&#34;&#34;</span>
 </code></pre></div><p>这里需要留意 <code>push()</code> 方法，它首先会找出 <code>_app_ctx_stack</code> 栈顶元素 <code>AppContext</code>，如果栈顶元素为空，或者当前 app 不是栈顶 Context 所属的 app（AppContext 对应所属的 Flask app，这种情况存在于 Flask 应用包含多个 app 时），则将当前的 <code>AppContext</code> 入栈到当前 app 的 <code>_app_ctx_stack</code> 中，之后再将 <code>RequestContext</code> 入栈到 <code>_request_ctx_stack</code> 栈中。这就完成了 Request Context 和 Application Context 的关联。</p>
 <p>RequestContext 中 <code>session</code> 初始化为 <code>None</code>，当 RequestContext 入栈时，<code>session</code> 被赋值：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># flask.ctx.RequestContext</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequestContext</span>(object):
-    <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">部分省略</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+    <span style="color:#e6db74">&#34;&#34;&#34;部分省略&#34;&#34;&#34;</span>
     <span style="color:#66d9ef">def</span> __init__(self, app, environ, request<span style="color:#f92672">=</span>None):
         self<span style="color:#f92672">.</span>session <span style="color:#f92672">=</span> None
 
@@ -269,10 +269,10 @@ request <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_obje
 </code></pre></div><p><code>app.open_session()</code> 方法会通过 Flask app 从 <code>SecureCookieSessionInterface</code> 实例中打开或创建 session。</p>
 <p>正因为 <code>request</code> 和 <code>session</code> 都是 RequestContext 的属性，所以是由如下方式从 Flask app 中获取：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># flask.globals</span>
-request <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_object, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">request</span><span style="color:#e6db74">&#39;</span>))
-session <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_object, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">session</span><span style="color:#e6db74">&#39;</span>))
+request <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_object, <span style="color:#e6db74">&#39;request&#39;</span>))
+session <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_req_object, <span style="color:#e6db74">&#39;session&#39;</span>))
 </code></pre></div><p>偏函数 <code>partial</code> 把属性名传入可调用的 <code>_lookup_req_object</code> 方法中，分别得到当前 Flask app 的 RequestContext 实例中的 <code>request</code> 和 <code>session</code>。</p>
-<h4 id="current-app--g">current_app 和 g</h4>
+<h4 id="current_app-和-g">current_app 和 g</h4>
 <p>继续看 <code>flask.local</code> 中对 <code>current_app</code> 的定义：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_find_app</span>():
     top <span style="color:#f92672">=</span> _app_ctx_stack<span style="color:#f92672">.</span>top
@@ -299,7 +299,7 @@ app_ctx<span style="color:#f92672">.</span>pop()  <span style="color:#75715e"># 
     <span style="color:#66d9ef">if</span> top <span style="color:#f92672">is</span> None:
         <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">RuntimeError</span>(_app_ctx_err_msg)
     <span style="color:#66d9ef">return</span> getattr(top, name)
-g <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_app_object, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">g</span><span style="color:#e6db74">&#39;</span>))
+g <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_app_object, <span style="color:#e6db74">&#39;g&#39;</span>))
 </code></pre></div><p><code>g</code> 其实就是通过 LocalProxy 代理得到 <code>_app_ctx_stack</code> 栈顶元素 AppContext 内属性为 &ldquo;g&rdquo; 的对象。从 <code>flask.ctx</code> 中回溯对属性 &ldquo;g&rdquo; 的定义：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># flask.ctx.AppContext</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppContext</span>(object):
@@ -321,7 +321,7 @@ g <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_app_object, <s
     g <span style="color:#f92672">=</span> property(_get_g, _set_g)
     <span style="color:#66d9ef">del</span> _get_g, _set_g
 </code></pre></div><p>也就是说，在每次客户端请求时，生成的 RequestContext 都可以对 <code>flask.g</code> 进行读写，因此在每次处理请求时，<code>flask.g</code> 可以作为临时存储的对象。</p>
-<h4 id="heading">小结</h4>
+<h4 id="小结">小结</h4>
 <p>啰啰嗦嗦抄了一大堆源码，写了一大堆废话，归结下来其实就几条结论——</p>
 <p>AppContext 是基于 <code>app = Flask(__name__)</code> 创建的 Flask app 层面上的 Context。对于同一个 Flask app 下的成员，都拥有同一个 AppContext。</p>
 <p>RequestContext 的生命周期在 AppContext 生命周期内，每个请求都会生成一个 RequestContext，不同的 RequestContext 对应一个 AppContext。</p>
@@ -354,7 +354,7 @@ g <span style="color:#f92672">=</span> LocalProxy(partial(_lookup_app_object, <s
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

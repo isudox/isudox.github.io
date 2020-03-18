@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -93,7 +93,7 @@
   </header>
   <div class="post-content"><p>目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w+ stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。</p>
 <!-- raw HTML omitted -->
-<h2 id="heading">基础操作</h2>
+<h2 id="基础操作">基础操作</h2>
 <p>如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。</p>
 <p>初始化新项目：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm init</span>
@@ -138,7 +138,7 @@ yarn install
 <li><code>yarn run [script] [-- &lt;args&gt;]</code> 命令用来执行 <code>package.json</code> 配置的 <code>scripts</code> 脚本命令，和 <code>npm run [script]</code> 一样；</li>
 <li><code>yarn why [package]</code> 命令检查安装该依赖包的原因，并列出依赖该包的其他包；</li>
 </ul>
-<h2 id="npm-">npm 命令比较</h2>
+<h2 id="npm-命令比较">npm 命令比较</h2>
 <table>
 <thead>
 <tr>
@@ -229,8 +229,8 @@ yarn install
 </tr>
 </tbody>
 </table>
-<h2 id="packagejson-">package.json 依赖配置</h2>
-<h3 id="heading-1">功能区分管理</h3>
+<h2 id="packagejson-依赖配置">package.json 依赖配置</h2>
+<h3 id="功能区分管理">功能区分管理</h3>
 <p>有的依赖包是为了编译构建工程，而有的包视为了运行，因此不同功能的包在 <code>package.json</code> 中被分离到不同的依赖集合中：<code>dependencies</code>、<code>devDependencies</code>、<code>optionalDependencies</code> 和 <code>peerDependencies</code>。</p>
 <p>参考 Yarn 文档里的示例：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
@@ -256,7 +256,7 @@ yarn install
 <li><code>optionalDependencies</code>：顾名思义就是可选的依赖包，即使安装失败，也不会影响；</li>
 <li><code>bundledDependencies</code>：是项目内部的包，而不是从 npm 上安装；</li>
 </ul>
-<h3 id="heading-2">版本号管理</h3>
+<h3 id="版本号管理">版本号管理</h3>
 <p><code>package.json</code> 也对依赖包的版本做了管理，版本号遵循 <code>major.minor.patch</code> 的规则，如果是 beta 版，则会在版本号后追加 <code>-beta.x</code>。除了明确指定版本号，还可以通过操作符实现指定版本号范围。</p>
 <p>最简单易懂的就是 <code>=</code>、<code>&gt;</code>、<code>&lt;=</code> 等符号，这个不多讲，还有两个特殊的符号 <code>~</code> 和 <code>^</code>：</p>
 <ul>
@@ -289,7 +289,7 @@ yarn install
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

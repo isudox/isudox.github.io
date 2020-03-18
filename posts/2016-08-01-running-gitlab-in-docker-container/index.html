@@ -20,7 +20,7 @@ root 2885 1 0 09:40 ? 00:00:10 /usr/bin/dockerd --raw-logs root 2897 2885 0 09:4
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -92,8 +92,8 @@ root 2885 1 0 09:40 ? 00:00:10 /usr/bin/dockerd --raw-logs root 2897 2885 0 09:4
   <div class="post-content"><p>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 <a href="https://about.gitlab.com/">GitLab</a>。顺便实践了一把 Docker 的应用部署。</p>
 <!-- raw HTML omitted -->
 <p>GitLab 的外部依赖很多，有 Nginx、Rails、Postgres、Redis、MySQL、unicorn、Go 等。如果单独安装各个依赖，一大堆的配置会让人抓狂。如果用官网提供的 omni 集成包，除非是全新的服务器，否则很大可能就导致依赖的重复安装，比如进程里有多个 Nginx、MySQL，很容易把服务器环境弄得很乱。像 GitLab 这样的程序，其实很适合用 Docker 来部署，一则和实机环境隔离开，另外运行性能相当好。</p>
-<h3 id="-docker-">安装 Docker 环境</h3>
-<h4 id="heading">安装配置</h4>
+<h3 id="安装-docker-环境">安装 Docker 环境</h3>
+<h4 id="安装配置">安装配置</h4>
 <p>惯例，以 Debian 8 为参考，把 Docker 官方维护的 deb 包添加到系统的 APT 源内，创建文件 <code>/etc/apt/sources.list.d/docker.list</code>：</p>
 <pre><code>deb https://apt.dockerproject.org/repo debian-jessie main
 </code></pre><p>更新源，安装 <code>docker-engine</code> 包，执行 <code>ps -ef | grep docker</code> 查看 Docker 的进程，</p>
@@ -104,7 +104,7 @@ sudoz    21053  6463  0 14:54 pts/0    00:00:00 grep --color=auto --exclude-dir=
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo groupadd docker
 sudo sudo usermod -aG docker <span style="color:#66d9ef">$(</span>whoami<span style="color:#66d9ef">)</span>
 sudo service docker restart
-</code></pre></div><h4 id="heading-1">基础操作</h4>
+</code></pre></div><h4 id="基础操作">基础操作</h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker search <span style="color:#f92672">[</span>image<span style="color:#f92672">]</span>
 </code></pre></div><p>在 Docker Hub 上搜索相关的镜像，并返回镜像的状态和信息；</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker pull <span style="color:#f92672">[</span>image<span style="color:#f92672">]</span>
@@ -122,7 +122,7 @@ sudo service docker restart
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker rmi <span style="color:#f92672">[</span>image<span style="color:#f92672">]</span>
 </code></pre></div><p>删除指定的 Docker 镜像；</p>
 <p>目前为止，这些命令已经够用了。还有一些命令的参数没有展开，用到的时候再具体解释。</p>
-<h3 id="docker--gitlab">Docker 运行 GitLab</h3>
+<h3 id="docker-运行-gitlab">Docker 运行 GitLab</h3>
 <p>Docker Hub 上维护的 GitLab 镜像有好几个，我没有选官方维护的镜像，而是 <a href="https://hub.docker.com/r/sameersbn/gitlab/">sameersbn/gitlab</a> 镜像，这个镜像相比官方的更灵活。</p>
 <p>安装很简单，参考上面给出的 Docker 命令，先下载镜像。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker pull sameersbn/gitlab:8.10.2
@@ -159,9 +159,9 @@ sudo service docker restart
 <p>对比手动运行的命令参数和配置文件的参数，两者是一致的。</p>
 <p>Docker 容器挂载的共享目录在容器删除时并不会一并被删除，这里需要留意，如果 <code>/srv/gitlab</code> 里的文件不需要的话，可以手动删除，以免再次运行容器时发生前后配置差异的冲突。</p>
 <p>GitLab 容器运行起来后，通过 <code>docker logs -f [container]</code> 来查看运行时日志，运行正常的话，就能访问 http://localhost:10080 看到 GitLab 了。当然这只是在本地运行，如果要部署到服务器上，还需要再做些工作。我的目标是通过 git 子域名访问 Docker 容器内的 GitLab，同时支持 HTTPS 访问。</p>
-<h3 id="nginx--docker-">Nginx 反代 Docker 容器</h3>
+<h3 id="nginx-反代-docker-容器">Nginx 反代 Docker 容器</h3>
 <p>要实现上面的目标，需要用到 Nginx 的反向代理，用 Nginx 作为负载的前端，将访问请求代理到 Docker 容器的外部端口上，从访问者的角度上看，就好像直接通过域名访问到 GitLab 一样。</p>
-<h4 id="-gitlab-ssl-">开启 GitLab SSL 支持</h4>
+<h4 id="开启-gitlab-ssl-支持">开启 GitLab SSL 支持</h4>
 <p>Docker GitLab 的 <code>--publish</code> 参数设置了 10080:80 的端口号，这表明容器内部的 80 端口映射到宿主机的 10080 端口上，因此访问 Docker 容器的外部端口来访问容器内的应用。</p>
 <p>如果是通过上述方式访问 GitLab，那么 SSL 的配置是在 Docker 内部完成，这里不做说明了，我的想法是通过外部负载，比如 Nginx，转发请求到 Docker 容器的端口上。</p>
 <p>首先得为 GitLab 的域名准备好 SSL 证书，这个在上一篇水文中已经写了。设置 Docker 容器的环境变量 <code>GITLAB_HTTPS=true</code>，使得 GitLab 支持 HTTPS，将环境变量 <code>GITLAB_PORT</code> 改为 443，把环境变量 <code>GITLAB_HOST</code> 设置为和 SSL 证书相匹配的域名，这样 GitLab 容器的运行命令变成如下：</p>
@@ -171,7 +171,7 @@ sudo service docker restart
 </span><span style="color:#ae81ff"></span>    --env <span style="color:#e6db74">&#39;GITLAB_HTTPS=true&#39;</span> --env <span style="color:#e6db74">&#39;GITLAB_HOST=git.isudox.com&#39;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    --volume /srv/docker/gitlab/gitlab:/home/git/data <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    sameersbn/gitlab:8.10.2
-</code></pre></div><h4 id="-docker">反向代理到 Docker</h4>
+</code></pre></div><h4 id="反向代理到-docker">反向代理到 Docker</h4>
 <p>GitLab 容器正常启动后，还需要 Nginx 把请求反向代理到容器上。如果只是把 HTTP 的请求反代到 GitLab 并不麻烦，但需要同时把 HTTP 重定向 HTTPS。且看下面的 Nginx 配置：</p>
 <pre><code class="language-conf" data-lang="conf">upstream gitlab {
     server 45.33.47.109:10080 fail_timeout=0;
@@ -240,40 +240,40 @@ server {
 &lt;html&gt;&lt;body&gt;You are being &lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://45.33.47.109:10080/users/sign_in&#34;</span>&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;
 </code></pre></div><p>验收下最终的成果，<a href="http://git.isudox.com">GitLab</a></p>
 <p>最后，贴上我的 <code>docker-composer.yml</code> 配置，仅作备忘。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">version: <span style="color:#e6db74">&#39;2&#39;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#39;2&#39;</span>
 
-services:
-  redis:
-    restart: always
-    image: sameersbn/redis:latest
-    command:
+<span style="color:#66d9ef">services</span>:
+  <span style="color:#66d9ef">redis</span>:
+    <span style="color:#66d9ef">restart</span>: always
+    <span style="color:#66d9ef">image</span>: sameersbn/redis:latest
+    <span style="color:#66d9ef">command</span>:
     - --loglevel warning
-    volumes:
+    <span style="color:#66d9ef">volumes</span>:
     - /srv/docker/gitlab/redis:/var/lib/redis:Z
 
-  postgresql:
-    restart: always
-    image: sameersbn/postgresql:<span style="color:#ae81ff">9.4</span><span style="color:#ae81ff">-24</span>
-    volumes:
+  <span style="color:#66d9ef">postgresql</span>:
+    <span style="color:#66d9ef">restart</span>: always
+    <span style="color:#66d9ef">image</span>: sameersbn/postgresql:<span style="color:#ae81ff">9.4-24</span>
+    <span style="color:#66d9ef">volumes</span>:
     - /srv/docker/gitlab/postgresql:/var/lib/postgresql:Z
-    environment:
+    <span style="color:#66d9ef">environment</span>:
     - DB_USER=gitlab
     - DB_PASS=helloworld
     - DB_NAME=gitlabhq_production
     - DB_EXTENSION=pg_trgm
 
-  gitlab:
-    restart: always
-    image: sameersbn/gitlab:<span style="color:#ae81ff">8.10</span><span style="color:#ae81ff">.3</span>
-    depends_on:
+  <span style="color:#66d9ef">gitlab</span>:
+    <span style="color:#66d9ef">restart</span>: always
+    <span style="color:#66d9ef">image</span>: sameersbn/gitlab:<span style="color:#ae81ff">8.10.3</span>
+    <span style="color:#66d9ef">depends_on</span>:
     - redis
     - postgresql
-    ports:
+    <span style="color:#66d9ef">ports</span>:
     - <span style="color:#e6db74">&#34;10080:80&#34;</span>
     - <span style="color:#e6db74">&#34;10022:22&#34;</span>
-    volumes:
+    <span style="color:#66d9ef">volumes</span>:
     - /srv/docker/gitlab/gitlab:/home/git/data:Z
-    environment:
+    <span style="color:#66d9ef">environment</span>:
     - DEBUG=<span style="color:#66d9ef">false</span>
 
     - DB_ADAPTER=postgresql
@@ -350,7 +350,7 @@ services:
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

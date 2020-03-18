@@ -25,7 +25,7 @@
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -103,24 +103,24 @@
 <p>本文里，我会介绍一个在一年前就引入进多个项目（包括工作和个人项目）中的开发模型，实践表明该模型很成功。为此专门写篇文章的想法由来已久，但始终没挤出时间来做，直到现在。我不会细究项目的具体细节，仅仅是项目开发的分支策略和发布管理。</p>
 <!-- raw HTML omitted -->
 <p>该模型专注于使用 <a href="https://git-scm.com/">Git</a> 作为代码版本管理工具。（另外，如果你对 Git 感兴趣，我司的 GitPrime 提供了一些很棒的软件性能实时数据分析功能）</p>
-<h2 id="-git">为什么使用 Git</h2>
+<h2 id="为什么使用-git">为什么使用 Git</h2>
 <p>关于 Git 相比于中心化的代码管理系统的优劣，可以从网上找到很多相关讨论。作为开发者，我选择 Git。Git 确实改变了开发者们对分支和合并的理解。在之前使用经典的 CVS/Subversion 时，新建分支和合并分支总是有点吓人（小心代码合并时的冲突，它们会咬你）。</p>
 <p>但是用 Git 时，这些日常工作流的主要操作都变得简便易行。举例来说，在 CVS/Subversion 的相关书籍中，分支和合并操作会在靠后的章节中介绍（面向高阶读者），而 Git 的书中，往往是前三章的基础操作里就会做说明。</p>
 <p>由于 Git 的简单性和重用性（repetitive），分支和合并不再是令人生畏的高危操作。版本管理工具应该更多的协助代码的新建分支和合并分支。</p>
 <p>闲言少叙，进入开发模型的正题吧。我要介绍的模型基本上只是团队里每个成员都要遵循的一组开发流程规范。</p>
-<h2 id="heading">去中心化也中心化</h2>
+<h2 id="去中心化也中心化">去中心化也中心化</h2>
 <p>在分支模型下工作良好的代码库，实际上有一个真实的中心代码库。注意这个库被视为一个中心（因为 Git 是分布式的版本管理工具，所以从技术角度上说并不存在中心代码库）。我们将其视为为 origin，因为所有 Git 用户都熟悉这个名称。</p>
 <!-- raw HTML omitted -->
 <p>每个开发者对 origin 进行 pull 和 push 操作。但是除了中心化的 push-pull，每个开发者也可能会建立子团队并 pull 同个子团队里其他成员的代码改动。比如，和两个或更多开发者合作开发一个大的新功能时，避免过早的将开发进行过程中的代码 push 上去。上图中，有 Alice 和 Bob 的小团队，Clair 和 David 的小团队。</p>
 <p>本质上说，这实际上就像是 Alice 定义了一个 Git 远程分支，名叫 bob，并指向 Bob 的代码库，反之亦然。</p>
-<h2 id="heading-1">主干分支</h2>
+<h2 id="主干分支">主干分支</h2>
 <!-- raw HTML omitted -->
 <p>Git 用户应该对 origin 上的 <code>master</code> 分支很熟悉。此外，另一个分支命名为 <code>develop</code>。</p>
 <p>我们将 <code>origin/master</code> 分支作为一个主干分支，使得它的 HEAD 指针始终指向可发布的生产状态（production-ready state）。</p>
 <p><code>origin/develop</code> 分支作为另一主干分支，而它的 HEAD 指针始终指向为下一发版而做的最新开发改动。有人把这成为 integration 分支。通常这就是 nightly 版本发布的出处。</p>
 <p>当 <code>develop</code> 分支上的代码开发到 stable 状态并且已经可以发布时，所有的改动都应该 merge 到 <code>master</code> 分支上，然后打上发布版本号的标签。后面会继续讲如何执行这一系列操作。</p>
 <p>因此，每次把改动合并到 <code>master</code> 分支上后，就生成了一个新的可发布的生产状态。我们对合并到 <code>master</code> 分支的行为把控严格，所以理论上，每当 <code>master</code> 分支上有 commit 操作时，我们可以通过 Git hook 脚本实现自动构建并把应用推送到生产服务器上。</p>
-<h2 id="heading-2">辅助分支</h2>
+<h2 id="辅助分支">辅助分支</h2>
 <p>主干分支之外，我们的开发模型使用了很多辅助分支来帮助团队成员间的并行开发，减轻功能跟踪的成本，预备新版的发布，协助快速修复已发布版本的问题。和主干分支不同，这些辅助分支只有有限的生命期，最终会被移除。</p>
 <p>我们可能会用到的辅助分支有：</p>
 <ul>
@@ -130,7 +130,7 @@
 </ul>
 <p>上面的每个辅助分支都有一个特定的目标，且严格限制哪些是起源分支，哪些是合并的目标分支。我们一会儿会详细解释。</p>
 <p>这些辅助分支并不特别，分支的类型是按照我们如何使用它们而划分的，也就是普通的 Git 分支而已。</p>
-<h3 id="feature-">Feature 分支</h3>
+<h3 id="feature-分支">Feature 分支</h3>
 <!-- raw HTML omitted -->
 <p>Feature 分支，或者叫 topic 分支，是用来为未来的发版而开发新 features 的分支。当开始 feature 的开发时，。Feature 分支的本质它会在 feature 的开发期内存在，但最终会合并回 <code>develop</code> 分支（以明确的将 feature 添加进即将 release 的版本中），或者被直接丢弃掉（在令人失望的情况下）。</p>
 <p>Feature 分支通常只存在于开发者的 repo 中，而不会在中心库 origin repo 中。</p>
@@ -152,7 +152,7 @@ $ git push origin develop
 <!-- raw HTML omitted -->
 <p>右边的案例中，无法从 Git 历史中找到是哪些 commit 实现了 feature，你必须要手工的去检查所有的 log 信息。撤销一个 feature 对后一案例而言简直是头疼，而如果使用了 &ndash;no-ff 标志，则很容易完成。</p>
 <p>是的，它会付出创建更多的 commit 的代价，但所得更多。</p>
-<h3 id="release-">Release 分支</h3>
+<h3 id="release-分支">Release 分支</h3>
 <p>从 <code>develop</code> 分支派生；
 必须 merge 回 <code>develop</code> 分支和 <code>master</code> 分支；
 分支命名惯例：release-*</p>
@@ -190,7 +190,7 @@ Merge made by recursive.
 现在，我们已经彻底完成工作并且 release 分支已经可以被移除了：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch -d release-1.2
 Deleted branch release-1.2 <span style="color:#f92672">(</span>was ff452fe<span style="color:#f92672">)</span>.
-</code></pre></div><h3 id="hotfix-">Hotfix 分支</h3>
+</code></pre></div><h3 id="hotfix-分支">Hotfix 分支</h3>
 <!-- raw HTML omitted -->
 <p>Hotfix 分支和 release 分支很类似，都是为发布新的生产版本而准备，虽然是计划外的。其存在的必要性是由于当前生产版本处于需要紧急修复的状态。当生产版本发生严重 bug 时，就必须立即修复，hotfix 分支可以从生产版本的 <code>master</code> 分支上的相应 Tag 派生出来。</p>
 <p>实质上，在 <code>develop</code> 分支上开发的人员可以继续，另一边，其他人员则可以快速的进行生产版本的修复工作。</p>
@@ -227,7 +227,7 @@ Merge made by recursive.
 <p>最后，移除已经完成历史使命的分支：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch -d hotfix-1.2.1
 Deleted branch hotfix-1.2.1 <span style="color:#f92672">(</span>was abbe5d6<span style="color:#f92672">)</span>.
-</code></pre></div><h2 id="heading-3">总结</h2>
+</code></pre></div><h2 id="总结">总结</h2>
 <p>这个分支模型虽然没什么令人耳目一新的东西，不过文章一开始给出的那张大图已经呈现了它对我们项目的裨益。它构造了一个优雅的模型，易于理解，并允许团队成员对分支的派生和发布有共同的认识。</p>
 </div>
   
@@ -248,7 +248,7 @@ Deleted branch hotfix-1.2.1 <span style="color:#f92672">(</span>was abbe5d6<span
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

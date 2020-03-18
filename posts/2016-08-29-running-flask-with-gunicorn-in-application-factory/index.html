@@ -20,7 +20,7 @@ gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明�
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -91,7 +91,7 @@ gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明�
   </header>
   <div class="post-content"><p>之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— <a href="http://gunicorn.org/">Gunicorn</a>，并且利用工厂模式对不同开发环境进行了隔离。工厂模式下的 Flask 应用在用 Gunicorn 部署时，需要做一点针对性的改动。</p>
 <!-- raw HTML omitted -->
-<h3 id="-flask-">基础的 Flask 应用部署</h3>
+<h3 id="基础的-flask-应用部署">基础的 Flask 应用部署</h3>
 <p>先写一个最简单的 Flask 应用 hello：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># hello.py</span>
 <span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask
@@ -99,13 +99,13 @@ gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明�
 app <span style="color:#f92672">=</span> Flask(__name__)
 
 
-<span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">&#39;</span>)
+<span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>)
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hello_world</span>():
-    <span style="color:#66d9ef">return</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Hello World!</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span>
 
 
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__main__</span><span style="color:#e6db74">&#39;</span>:
-    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">0.0.0.0</span><span style="color:#e6db74">&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
 </code></pre></div><p>然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。</p>
 <p>当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">gunicorn <span style="color:#f92672">-</span>w <span style="color:#ae81ff">4</span> <span style="color:#f92672">-</span>b <span style="color:#ae81ff">127.0</span><span style="color:#f92672">.</span><span style="color:#ae81ff">0.1</span>:<span style="color:#ae81ff">5000</span> hello:app
@@ -137,22 +137,22 @@ app <span style="color:#f92672">=</span> Flask(__name__)
     }
 }
 </code></pre><p>这样就实现了 Client &lt;-&gt; Nginx &lt;-&gt; Server port / socket &lt;-&gt; Gunicorn &lt;-&gt; Flask 整个请求响应链路。</p>
-<h3 id="heading">工厂模式的部署</h3>
+<h3 id="工厂模式的部署">工厂模式的部署</h3>
 <p>上面给了最简单的应用部署方案，学习练手没问题，实际开发部署就得多考虑一些问题。一个主要的问题就是多环境配置，这个在上一篇关于 Django 非最佳实践里涉及到了，但是当时的方案很挫，只是通过配置文件的替换来解决。利用工厂模式来解决这个问题是更正确合理的方法。</p>
 <p>先把上面的 hello 程序做的再复杂一点，把 Flask 的 <a href="http://flask.pocoo.org/docs/0.11/blueprints/#blueprints">Blueprints</a> 集成进来：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># blueprint.py</span>
 <span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Blueprint, render_template, abort
 <span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> TemplateNotFound
 
-simple_page <span style="color:#f92672">=</span> Blueprint(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">simple_page</span><span style="color:#e6db74">&#39;</span>, __name__, template_folder<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">templates</span><span style="color:#e6db74">&#39;</span>,
-                        static_folder<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">static</span><span style="color:#e6db74">&#39;</span>)
+simple_page <span style="color:#f92672">=</span> Blueprint(<span style="color:#e6db74">&#39;simple_page&#39;</span>, __name__, template_folder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;templates&#39;</span>,
+                        static_folder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;static&#39;</span>)
 
 
-<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">&#39;</span>, defaults<span style="color:#f92672">=</span>{<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">page</span><span style="color:#e6db74">&#39;</span>: <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">index</span><span style="color:#e6db74">&#39;</span>})
-<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/&lt;page&gt;</span><span style="color:#e6db74">&#39;</span>)
+<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>, defaults<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;page&#39;</span>: <span style="color:#e6db74">&#39;index&#39;</span>})
+<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74">&#39;/&lt;page&gt;&#39;</span>)
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show</span>(page):
     <span style="color:#66d9ef">try</span>:
-        <span style="color:#66d9ef">return</span> render_template(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">pages/$s.html</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> page)
+        <span style="color:#66d9ef">return</span> render_template(<span style="color:#e6db74">&#39;pages/$s.html&#39;</span> <span style="color:#f92672">%</span> page)
     <span style="color:#66d9ef">except</span> TemplateNotFound:
         abort(<span style="color:#ae81ff">404</span>)
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># hello.py</span>
@@ -163,8 +163,8 @@ app <span style="color:#f92672">=</span> Flask(__name__)
 app<span style="color:#f92672">.</span>register_blueprint(simple_page)
 
 
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__main__</span><span style="color:#e6db74">&#39;</span>:
-    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">0.0.0.0</span><span style="color:#e6db74">&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
 </code></pre></div><p>Flask 的 Blueprints 有很强大的功能，当项目变的比较大型时尤为重要，这里不作展开。上面的代码是通用的一种简单开发模式，就是在创建应用实例时将 Blueprints 注册进来。工厂模式并不是这么处理，相比这种简单模式，工厂模式会把 app 的创建转移到一个专门的方法中，就是所谓的工厂，然后根据要生产的产品类型，创建不同的实例。
 这样处理的好处是显而易见的——</p>
 <ul>
@@ -186,24 +186,24 @@ app<span style="color:#f92672">.</span>register_blueprint(simple_page)
     <span style="color:#66d9ef">return</span> app
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> manage <span style="color:#f92672">import</span> create_app
 
-app <span style="color:#f92672">=</span> create_app(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">config.py</span><span style="color:#e6db74">&#39;</span>)
+app <span style="color:#f92672">=</span> create_app(<span style="color:#e6db74">&#39;config.py&#39;</span>)
 
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__main__</span><span style="color:#e6db74">&#39;</span>:
-    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">0.0.0.0</span><span style="color:#e6db74">&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
 </code></pre></div><p>根据传入的不同 config，创建不通的 app 实例。创建工厂后，有一点需要留意，就是在 Blueprints 内没法访问 app 对象实例了，因为当 Blueprints 注册时 app 对实例尚未被创建，但也有解决办法，就是通过 Flask 的 current_app：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># blueprints.py</span>
 <span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Blueprint, render_template, abort, current_app
 <span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> TemplateNotFound
 
-simple_page <span style="color:#f92672">=</span> Blueprint(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">simple_page</span><span style="color:#e6db74">&#39;</span>, __name__, template_folder<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">templates</span><span style="color:#e6db74">&#39;</span>,
-                        static_folder<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">static</span><span style="color:#e6db74">&#39;</span>)
+simple_page <span style="color:#f92672">=</span> Blueprint(<span style="color:#e6db74">&#39;simple_page&#39;</span>, __name__, template_folder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;templates&#39;</span>,
+                        static_folder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;static&#39;</span>)
 
 
-<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">&#39;</span>, defaults<span style="color:#f92672">=</span>{<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">page</span><span style="color:#e6db74">&#39;</span>: <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">index</span><span style="color:#e6db74">&#39;</span>})
-<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">/&lt;page&gt;</span><span style="color:#e6db74">&#39;</span>)
+<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>, defaults<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;page&#39;</span>: <span style="color:#e6db74">&#39;index&#39;</span>})
+<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74">&#39;/&lt;page&gt;&#39;</span>)
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show</span>(page):
     <span style="color:#66d9ef">try</span>:
-        <span style="color:#66d9ef">return</span> render_template(current_app<span style="color:#f92672">.</span>config[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">INDEX_TEMPLATE</span><span style="color:#e6db74">&#39;</span>])
+        <span style="color:#66d9ef">return</span> render_template(current_app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;INDEX_TEMPLATE&#39;</span>])
     <span style="color:#66d9ef">except</span> TemplateNotFound:
         abort(<span style="color:#ae81ff">404</span>)
 </code></pre></div><p>在实现基本的工厂模式后，再回来对 Gunicorn 和 Nginx 进行配置。上面用的是 Server Port，接下来就改为 socket。
@@ -250,7 +250,7 @@ Nginx conf 配置：</p>
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

@@ -8,7 +8,7 @@
     <title>开始使用 PostgreSQL - I sudo X</title>
     
     <meta name="description" content="最近开始做的一个课余项目用 Flask &#43; PostgreSQL &#43; Bootstrap 快速开发。之前本地开发和生产部署都用 MySQL，而 PostgreSQL 是关系型数据库阵营中的另一大高手。这俩的口号放在一起看相当好玩。
-一个自称 &ldquo;The world&#39;s most popular open source database&rdquo;，另一个自称 &ldquo;The world&#39;s most advanced open source database&rdquo;。论针锋相对，我就服这俩。→_→
+一个自称 &ldquo;The world&rsquo;s most popular open source database&rdquo;，另一个自称 &ldquo;The world&rsquo;s most advanced open source database&rdquo;。论针锋相对，我就服这俩。→_→
 至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细，顺便还拉上了 SQLite。 SQLite vs MySQL vs PostgreSQL: A Comparison Of Relational Database Management Systems
 菜鸟入门三板斧，安装、配置和使用——
 安装 服务器端我习惯用 Debian 系统。Debian/Ubuntu 内置的 APT 源已经包含了 PostgreSQL，但版本上会稍滞后于 PostgreSQL 最新版本。如果像我一样激进的，可以把 PostgreSQL 官方维护的 APT 源加进 Debian/Ubuntu 的 APT 列表中。比如在 Debian 系统下，新建文件 /etc/apt/sources.list.d/pgdg.list，添加源地址和版本，再导入该源的签名。
@@ -21,7 +21,7 @@ deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main wget --quiet -O - 
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -93,11 +93,11 @@ deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main wget --quiet -O - 
   <div class="post-content"><p>最近开始做的一个课余项目用 Flask + PostgreSQL + Bootstrap 快速开发。之前本地开发和生产部署都用 <a href="https://www.mysql.com/">MySQL</a>，而 <a href="https://www.postgresql.org/">PostgreSQL</a> 是关系型数据库阵营中的另一大高手。这俩的口号放在一起看相当好玩。</p>
 <!-- raw HTML omitted -->
 <p><img src="https://o70e8d1kb.qnssl.com/mysql-vs-postgresql.png" alt=""></p>
-<p>一个自称 &ldquo;The world's most popular open source database&rdquo;，另一个自称 &ldquo;The world's most advanced open source database&rdquo;。论针锋相对，我就服这俩。→_→</p>
+<p>一个自称 &ldquo;The world&rsquo;s most popular open source database&rdquo;，另一个自称 &ldquo;The world&rsquo;s most advanced open source database&rdquo;。论针锋相对，我就服这俩。→_→</p>
 <p>至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细，顺便还拉上了 SQLite。
 <a href="https://www.digitalocean.com/community/tutorials/sqlite-vs-mysql-vs-postgresql-a-comparison-of-relational-database-management-systems">SQLite vs MySQL vs PostgreSQL: A Comparison Of Relational Database Management Systems</a></p>
 <p>菜鸟入门三板斧，安装、配置和使用——</p>
-<h3 id="heading">安装</h3>
+<h3 id="安装">安装</h3>
 <p>服务器端我习惯用 Debian 系统。Debian/Ubuntu 内置的 APT 源已经包含了 PostgreSQL，但版本上会稍滞后于 PostgreSQL 最新版本。如果像我一样激进的，可以把 PostgreSQL 官方维护的 APT 源加进 Debian/Ubuntu 的 APT 列表中。比如在 Debian 系统下，新建文件 <code>/etc/apt/sources.list.d/pgdg.list</code>，添加源地址和版本，再导入该源的签名。</p>
 <pre><code>deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main
 </code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
@@ -112,8 +112,8 @@ sudo apt update <span style="color:#f92672">&amp;&amp;</span> sudo apt install p
 <li>pgadmin3: 图形化工具集（服务器端无需安装）</li>
 </ul>
 <p>安装后查看服务运行状况 <code>sudo service postgresql status</code>，查看守护进程运行状况 <code>ps -ef | grep postgres</code>。PostgreSQL 默认监听 5432 端口。</p>
-<h3 id="heading-1">配置</h3>
-<h4 id="heading-2">创建用户/角色</h4>
+<h3 id="配置">配置</h3>
+<h4 id="创建用户角色">创建用户/角色</h4>
 <p>PostgreSQL 会自动创建名为 <code>postgres</code> 的 Linux 用户，用来操作 PostgreSQL 数据库。先修改 <code>postgres</code> 的用户密码，<code>sudo passwd postgres</code>；再切换至 <code>postgres</code> 用户，<code>su - postgres</code>，输入刚才设置的用户密码，成功切换后可以看到 <code>postgres</code> 的用户目录为 <code>/var/lib/postgresql</code>；
 执行 <code>psql</code> 命令进入 PostgreSQL 命令控制台：</p>
 <pre><code>psql (9.5.3)
@@ -126,7 +126,7 @@ postgres=#
 </code></pre></div><p>反之，如果要删除数据库用户，执行 <code>dropuser</code>。</p>
 <p>同上，再为新建的数据库用户设置密码。这样，在使用 PostgreSQL 数据库 shell 时就无需切换到 <code>postgres</code> 用户了，可以直接在当前 Linux 用户下执行一系列 PostgreSQL 的操作，如新建数据库 <code>createdb</code> 命令等。</p>
 <p>上面提到的各种用户名都快要绕晕了。梳理一遍，Linux 用户 <code>postgres</code> 和数据库用户 <code>postgres</code> 是完全同的两个概念。Linux 用户是用来连接数据库的，而数据库用户是用来完成数据库的管理任务。对 PostgreSQL 而言，数据库用户和 Linux 用户是彼此对应的，Linux 用户默认连接与其同名的数据库。例如，Linux 用户 <code>postgres</code> 执行 <code>psql</code> 默认会连接到 <code>postgres</code> 数据库用户下的 <code>postgres</code> 数据库；同样的，如果已经创建和当前 Linux 用户同名的数据库用户 <code>${USER}</code>，那么执行 <code>psql</code> 会尝试连接名为 <code>${USER}</code> 的数据库。</p>
-<h4 id="heading-3">创建数据库</h4>
+<h4 id="创建数据库">创建数据库</h4>
 <p>创建 PostgreSQL 数据库的操作很简单，<code>createdb mytestdb</code>；连接到指定数据库，<code>psql mytestdb</code>，就进入到 PostgreSQL 客户端控制台，大致罗列几个常用命令：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">psql <span style="color:#f92672">(</span>9.5.3<span style="color:#f92672">)</span>
 Type <span style="color:#e6db74">&#34;help&#34;</span> <span style="color:#66d9ef">for</span> help.
@@ -135,7 +135,7 @@ mytestdb<span style="color:#f92672">=</span>#
 </code></pre></div><p>将数据库的所有权限赋予给数据库用户</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">ALL</span> <span style="color:#66d9ef">ON</span> mytestdb.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> dbuser;
 </code></pre></div><p>在控制台里输入 <code>\h</code> 查看所有可使用命令的帮助文档，或者指定要查询的命令 <code>\h command</code>。</p>
-<h4 id="heading-4">配置本地访问</h4>
+<h4 id="配置本地访问">配置本地访问</h4>
 <p>默认设置下，PostgreSQL 的数据库连接会在当前系统用户拥有该数据库权限的情况下被被认证通过。当特定系统用户在系统本地运行程序时会很实用，但如果需要更安全的配置，就要通过验证密码来访问数据库。</p>
 <p>先切换到 Linux 用户 <code>postgres</code>，修改配置文件 <code>/etc/postgresql/9.x/main/pg_hba.conf</code>，在 <code># &quot;local&quot; is for Unix domain socket connections only</code> 这行可以见到如下配置：</p>
 <pre><code># &quot;local&quot; is for Unix domain socket connections only
@@ -146,14 +146,14 @@ local    all        all             peer
 host    all             all              0.0.0.0/0              md5
 </code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">postgres@Dev:~$ psql -U sudoz -W testdb
 Password <span style="color:#66d9ef">for</span> user sudoz:
-</code></pre></div><h4 id="heading-5">配置远程访问</h4>
+</code></pre></div><h4 id="配置远程访问">配置远程访问</h4>
 <p>默认配置的 PostgreSQL 会监听来自 <code>localhost</code> 的访问连接，但它不建议修改配置去监听来自公网 IP 的连接。如果需要同图形化的工具来远程访问服务器上的 PostgreSQL 数据库，就得修改配置文件 <code>/etc/postgresql/9.x/main/postgresql.conf</code>，当然，也需要切换到 <code>postgres</code> 系统用户去操作，因为这些配置文件的所属用户和组都是 <code>postgres</code> 的。修改 <code>listen_addresses = 'localhost'</code> 行，默认设置是只监听本地，把 <code>localhost</code> 替换为 <code>*</code>，或者添加指定 IP 地址，<code>localhost,my_remote_server_ip_address</code>，就可以将远程访问加入白名单中。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">listen_addresses <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">*</span><span style="color:#e6db74">&#39;</span>    <span style="color:#75715e"># what IP address(es) to listen on;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">listen_addresses <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;*&#39;</span>    <span style="color:#75715e"># what IP address(es) to listen on;</span>
                           <span style="color:#75715e"># comma-separated list of addresses;</span>
                           <span style="color:#75715e"># defaults to &#39;localhost&#39;; use &#39;*&#39; for all</span>
                           <span style="color:#75715e"># (change requires restart)</span>
-</code></pre></div><h3 id="heading-6">使用</h3>
-<h4 id="heading-7">常用控制台命令</h4>
+</code></pre></div><h3 id="使用">使用</h3>
+<h4 id="常用控制台命令">常用控制台命令</h4>
 <p>由 <code>psql</code> 进入到 PostgreSQL 客户端控制台，大致罗列几个常用命令：</p>
 <ul>
 <li><code>\?</code> 查看全部 psql 命令</li>
@@ -168,35 +168,35 @@ Password <span style="color:#66d9ef">for</span> user sudoz:
 <li><code>\password</code> 修改指定数据库用户的密码</li>
 <li><code>\conninfo</code> 查看当前数据库和连接信息</li>
 </ul>
-<h4 id="heading-8">数据库操作</h4>
+<h4 id="数据库操作">数据库操作</h4>
 <p>和 MySQL 支持扩展的 SQL 标准不同，PostgreSQL 严格遵循完备的 ANSI-SQL 标准，因此 PostgreSQL 的数据库操作规范且通用。下面就写几条常用的 SQL 语句。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">创</span><span style="color:#960050;background-color:#1e0010">建</span><span style="color:#960050;background-color:#1e0010">新</span><span style="color:#960050;background-color:#1e0010">表</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">创建新表</span>
 <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> playground (
     equip_id serial <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>,
     <span style="color:#66d9ef">type</span> varchar (<span style="color:#ae81ff">50</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
     color varchar (<span style="color:#ae81ff">25</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-    <span style="color:#66d9ef">location</span> varchar(<span style="color:#ae81ff">25</span>) <span style="color:#66d9ef">check</span> (<span style="color:#66d9ef">location</span> <span style="color:#66d9ef">in</span> (<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">north</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">south</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">west</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">east</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">northeast</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">southeast</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">southwest</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">northwest</span><span style="color:#e6db74">&#39;</span>)),
+    <span style="color:#66d9ef">location</span> varchar(<span style="color:#ae81ff">25</span>) <span style="color:#66d9ef">check</span> (<span style="color:#66d9ef">location</span> <span style="color:#66d9ef">in</span> (<span style="color:#e6db74">&#39;north&#39;</span>, <span style="color:#e6db74">&#39;south&#39;</span>, <span style="color:#e6db74">&#39;west&#39;</span>, <span style="color:#e6db74">&#39;east&#39;</span>, <span style="color:#e6db74">&#39;northeast&#39;</span>, <span style="color:#e6db74">&#39;southeast&#39;</span>, <span style="color:#e6db74">&#39;southwest&#39;</span>, <span style="color:#e6db74">&#39;northwest&#39;</span>)),
     install_date date
 );
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">插</span><span style="color:#960050;background-color:#1e0010">入</span><span style="color:#960050;background-color:#1e0010">数</span><span style="color:#960050;background-color:#1e0010">据</span>
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> playground (<span style="color:#66d9ef">type</span>, color, <span style="color:#66d9ef">location</span>, install_date) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">slide</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">blue</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">south</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">2014-04-28</span><span style="color:#e6db74">&#39;</span>);
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">选</span><span style="color:#960050;background-color:#1e0010">择</span><span style="color:#960050;background-color:#1e0010">记</span><span style="color:#960050;background-color:#1e0010">录</span>
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">插入数据</span>
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> playground (<span style="color:#66d9ef">type</span>, color, <span style="color:#66d9ef">location</span>, install_date) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;slide&#39;</span>, <span style="color:#e6db74">&#39;blue&#39;</span>, <span style="color:#e6db74">&#39;south&#39;</span>, <span style="color:#e6db74">&#39;2014-04-28&#39;</span>);
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">选择记录</span>
 <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> playground;
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">更</span><span style="color:#960050;background-color:#1e0010">新</span><span style="color:#960050;background-color:#1e0010">数</span><span style="color:#960050;background-color:#1e0010">据</span>
-<span style="color:#66d9ef">UPDATE</span> playground <span style="color:#66d9ef">set</span> color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">blue</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">WHERE</span> equip_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">删</span><span style="color:#960050;background-color:#1e0010">除</span><span style="color:#960050;background-color:#1e0010">记</span><span style="color:#960050;background-color:#1e0010">录</span>
-<span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> playground <span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">slide</span><span style="color:#e6db74">&#39;</span>;
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">添</span><span style="color:#960050;background-color:#1e0010">加</span><span style="color:#960050;background-color:#1e0010">栏</span><span style="color:#960050;background-color:#1e0010">位</span>
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">更新数据</span>
+<span style="color:#66d9ef">UPDATE</span> playground <span style="color:#66d9ef">set</span> color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;blue&#39;</span> <span style="color:#66d9ef">WHERE</span> equip_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">删除记录</span>
+<span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> playground <span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;slide&#39;</span>;
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">添加栏位</span>
 <span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> playground <span style="color:#66d9ef">ADD</span> email VARCHAR(<span style="color:#ae81ff">40</span>);
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">更</span><span style="color:#960050;background-color:#1e0010">新</span><span style="color:#960050;background-color:#1e0010">结</span><span style="color:#960050;background-color:#1e0010">构</span>
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">更新结构</span>
 <span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> playground <span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">COLUMN</span> email <span style="color:#66d9ef">SET</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>;
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">更</span><span style="color:#960050;background-color:#1e0010">名</span><span style="color:#960050;background-color:#1e0010">栏</span><span style="color:#960050;background-color:#1e0010">位</span>
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">更名栏位</span>
 <span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> playground <span style="color:#66d9ef">RENAME</span> <span style="color:#66d9ef">COLUMN</span> email <span style="color:#66d9ef">TO</span> mail;
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">删</span><span style="color:#960050;background-color:#1e0010">除</span><span style="color:#960050;background-color:#1e0010">栏</span><span style="color:#960050;background-color:#1e0010">位</span>
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">删除栏位</span>
 <span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> playground <span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">COLUMN</span> email;
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">表</span><span style="color:#960050;background-color:#1e0010">格</span><span style="color:#960050;background-color:#1e0010">更</span><span style="color:#960050;background-color:#1e0010">名</span>
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">表格更名</span>
 <span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> playground <span style="color:#66d9ef">RENAME</span> <span style="color:#66d9ef">TO</span> ground;
-<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">删</span><span style="color:#960050;background-color:#1e0010">除</span><span style="color:#960050;background-color:#1e0010">表</span><span style="color:#960050;background-color:#1e0010">格</span>
+<span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">删除表格</span>
 <span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> ground;
 </code></pre></div><p>好啦，PostgreSQL 初级入门就写到这，后续开发过程中会总结更多使用经验，持续更新。</p>
 </div>
@@ -218,7 +218,7 @@ Password <span style="color:#66d9ef">for</span> user sudoz:
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

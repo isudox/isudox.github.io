@@ -29,7 +29,7 @@ Socks5 协议  socks5 是 socks 协议的第 5 版。参考 RPC 1928。
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -114,7 +114,7 @@ Socks5 协议  socks5 是 socks 协议的第 5 版。参考 RPC 1928。
 <p>本地客户端需要对请求进行加密，这是最基础的功能。ss-local 会在本地监听端口，本地发起的网络请求都会发送到这个端口进行加密处理，再转发到 ss-server 所在的代理服务器上。</p>
 <p>远程服务端接收来自 ss-local 的请求，解密出原始请求信息，并转发到真实的目标服务器上，在接收到响应后会再次对响应做加密，转发给 ss-local，ss-local 再做一次解密，拿到真实的响应信息。</p>
 <p>整个过程是非常标准清晰的对称加密的过程。</p>
-<h1 id="socks5-">Socks5 协议</h1>
+<h1 id="socks5-协议">Socks5 协议</h1>
 <blockquote>
 <p>socks5 是 socks 协议的第 5 版。参考 <a href="https://tools.ietf.org/html/rfc1928">RPC 1928</a>。</p>
 </blockquote>
@@ -130,7 +130,7 @@ Socks5 协议  socks5 是 socks 协议的第 5 版。参考 RPC 1928。
 +----+----------+----------+
 </code></pre><ul>
 <li>
-<p>VER: 占 1 字节，表示 socks 协议版本，如果是 sock5 则该值为 X'05&rsquo;;</p>
+<p>VER: 占 1 字节，表示 socks 协议版本，如果是 sock5 则该值为 X&rsquo;05&rsquo;;</p>
 </li>
 <li>
 <p>NMETHODS: 占 1 字节，表示 METHODS 字段的长度；</p>
@@ -180,36 +180,36 @@ server -&gt; client:   X'05'   X'FF'
 </code></pre><p>各字段含义和枚举值为：</p>
 <ul>
 <li>
-<p>VER protocol version: X'05&rsquo;，协议版本号；</p>
+<p>VER protocol version: X&rsquo;05&rsquo;，协议版本号；</p>
 </li>
 <li>
 <p>CMD</p>
 <ul>
 <li>
-<p>CONNECT X'01&rsquo;，建立 TCP 连接；</p>
+<p>CONNECT X&rsquo;01&rsquo;，建立 TCP 连接；</p>
 </li>
 <li>
-<p>BIND X'02&rsquo;，端口绑定；</p>
+<p>BIND X&rsquo;02&rsquo;，端口绑定；</p>
 </li>
 <li>
-<p>UDP ASSOCIATE X'03&rsquo;，建立 UDP 连接；</p>
+<p>UDP ASSOCIATE X&rsquo;03&rsquo;，建立 UDP 连接；</p>
 </li>
 </ul>
 </li>
 <li>
-<p>RSV RESERVED，保留字 X'00&rsquo;；</p>
+<p>RSV RESERVED，保留字 X&rsquo;00&rsquo;；</p>
 </li>
 <li>
 <p>ATYP address type of following address，地址类型</p>
 </li>
 <li>
-<p>IPv4 address: X'01&rsquo;，IPv4；</p>
+<p>IPv4 address: X&rsquo;01&rsquo;，IPv4；</p>
 </li>
 <li>
-<p>DOMAINNAME: X'03&rsquo;，域名；</p>
+<p>DOMAINNAME: X&rsquo;03&rsquo;，域名；</p>
 </li>
 <li>
-<p>IPv6 address: X'04&rsquo;，IPv6；</p>
+<p>IPv6 address: X&rsquo;04&rsquo;，IPv6；</p>
 </li>
 <li>
 <p>DST.ADDR desired destination address，目标地址（域名/IPv4/IPv6）；</p>
@@ -230,10 +230,10 @@ server -&gt; client:   X'05'   X'FF'
 </code></pre><p>其中，</p>
 <ul>
 <li>
-<p>REP 字段表示请求处理结果，X'00&rsquo; 为成功；其他枚举值均为失败，比如 0X'01&rsquo; 是 SOCKS server 失败，X'07&rsquo; 是命令不支持；</p>
+<p>REP 字段表示请求处理结果，X&rsquo;00&rsquo; 为成功；其他枚举值均为失败，比如 0X&rsquo;01&rsquo; 是 SOCKS server 失败，X&rsquo;07&rsquo; 是命令不支持；</p>
 </li>
 <li>
-<p>RSV 保留字必须是 X'00&rsquo;；</p>
+<p>RSV 保留字必须是 X&rsquo;00&rsquo;；</p>
 </li>
 </ul>
 <p>这个阶段，client 和 server 之间的请求-响应可能是如下情形，以访问 127.0.0.1:8080 为例：</p>
@@ -241,7 +241,7 @@ server -&gt; client:   X'05'   X'FF'
 client -&gt; server:   X'05'   X'01'   X'00'   X'01'   X'7F' X'00' X'00' X'01'     X'1F' X'90'
                     VER     REP     RSV     ATYP    BND.ADDR                    BND.PORT
 server -&gt; client:   X'05'   X'00'   X'00'   X'01'   X'00' X'00' X'00' X'00'     X'10' X'10'
-</code></pre><h1 id="heading">加密</h1>
+</code></pre><h1 id="加密">加密</h1>
 <blockquote>
 <p>加密的目的是为了不让墙发现请求的具体信息，常用的有工业界广泛使用的 AES。</p>
 </blockquote>
@@ -284,7 +284,7 @@ server -&gt; client:   X'05'   X'00'   X'00'   X'01'   X'00' X'00' X'00' X'00'  
 <p>这个操作相对简单，其依据的原理是 X ⊕ X = 0，X ⊕ 0 = X。加密过程中，每轮的输入与轮子密钥异或一次；因此，解密时再异或上该轮的轮子密钥即可恢复。即：</p>
 <pre><code>encrypt: input ⊕ round_key = output, decrypt: output ⊕ round_key = input
 （input ⊕ round_key ⊕ round_key = input ⊕ 0 = input）
-</code></pre><h1 id="socks5-proxy-">socks5 proxy 的简陋实现</h1>
+</code></pre><h1 id="socks5-proxy-的简陋实现">socks5 proxy 的简陋实现</h1>
 <p>这里没有用 AES 加密，二是最简单的码表映射。</p>
 <p>按 socks 协议，本地的 socks server 的处理逻辑如下（远端的 socks server 类似，加解密顺序有区别）：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle</span>(self):
@@ -292,13 +292,13 @@ server -&gt; client:   X'05'   X'00'   X'00'   X'01'   X'00' X'00' X'00' X'00'  
     sock <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>connection
     sock<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">262</span>)
     <span style="color:#75715e"># 返回给本地 socks 客户端 0x05 0x00，确定 socks 协议和连接方法</span>
-    sock<span style="color:#f92672">.</span>send(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x05</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>)
+    sock<span style="color:#f92672">.</span>send(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x05\x00</span><span style="color:#e6db74">&#34;</span>)
     <span style="color:#75715e"># 再读 4 字节，分别是 VER CMD RSV ATYP 字段</span>
     data <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>rfile<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">4</span>)
     <span style="color:#75715e"># 取 CMD 字段的值, X&#39;01&#39; 为建立 TCP 连接</span>
     mode <span style="color:#f92672">=</span> ord(data[<span style="color:#ae81ff">1</span>])
     <span style="color:#66d9ef">if</span> mode <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span>:
-      logging<span style="color:#f92672">.</span>warn(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">cmd != 1, not tcp connection.</span><span style="color:#e6db74">&#39;</span>)
+      logging<span style="color:#f92672">.</span>warn(<span style="color:#e6db74">&#39;cmd != 1, not tcp connection.&#39;</span>)
       <span style="color:#66d9ef">return</span>
     <span style="color:#75715e"># 取 ATYP 字段，确定地址类型</span>
     atyp <span style="color:#f92672">=</span> ord(data[<span style="color:#ae81ff">3</span>])
@@ -307,22 +307,22 @@ server -&gt; client:   X'05'   X'00'   X'00'   X'01'   X'00' X'00' X'00' X'00'  
       <span style="color:#75715e"># IPv4</span>
       addr_ip <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>rfile<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">4</span>)
       addr <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>inet_ntoa(addr_ip)
-      addr_to_send <span style="color:#f92672">+</span><span style="color:#f92672">=</span> addr_ip
+      addr_to_send <span style="color:#f92672">+=</span> addr_ip
       <span style="color:#66d9ef">elif</span> atyp <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>:
         <span style="color:#75715e"># 域名</span>
         addr_len <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>rfile<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">1</span>)
         addr <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>rfile<span style="color:#f92672">.</span>read(ord(addr_len))
-        addr_to_send <span style="color:#f92672">+</span><span style="color:#f92672">=</span> addr_len <span style="color:#f92672">+</span> addr
+        addr_to_send <span style="color:#f92672">+=</span> addr_len <span style="color:#f92672">+</span> addr
         <span style="color:#66d9ef">else</span>:
-          logging<span style="color:#f92672">.</span>warn(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">atype not support</span><span style="color:#e6db74">&#39;</span>)
+          logging<span style="color:#f92672">.</span>warn(<span style="color:#e6db74">&#39;atype not support&#39;</span>)
           <span style="color:#66d9ef">return</span>
         addr_port <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>rfile<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">2</span>)
         <span style="color:#75715e"># 目标地址 = ATYP + 长度 + IP/域名 + 端口</span>
-        addr_to_send <span style="color:#f92672">+</span><span style="color:#f92672">=</span> addr_port
-        port <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&gt;H</span><span style="color:#e6db74">&#39;</span>, addr_port)
+        addr_to_send <span style="color:#f92672">+=</span> addr_port
+        port <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;&gt;H&#39;</span>, addr_port)
         <span style="color:#75715e"># 组装返回给 socks 客户端的 reply 消息</span>
-        reply <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x05</span><span style="color:#ae81ff">\x00</span><span style="color:#ae81ff">\x00</span><span style="color:#ae81ff">\x01</span><span style="color:#e6db74">&#34;</span>
-        reply <span style="color:#f92672">+</span><span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>inet_aton(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">0.0.0.0</span><span style="color:#e6db74">&#39;</span>) <span style="color:#f92672">+</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&gt;H</span><span style="color:#e6db74">&#34;</span>, <span style="color:#ae81ff">2222</span>)
+        reply <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x05\x00\x00\x01</span><span style="color:#e6db74">&#34;</span>
+        reply <span style="color:#f92672">+=</span> socket<span style="color:#f92672">.</span>inet_aton(<span style="color:#e6db74">&#39;0.0.0.0&#39;</span>) <span style="color:#f92672">+</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#34;&gt;H&#34;</span>, <span style="color:#ae81ff">2222</span>)
         self<span style="color:#f92672">.</span>wfile<span style="color:#f92672">.</span>write(reply)
 
         remote <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM)
@@ -340,8 +340,8 @@ server -&gt; client:   X'05'   X'00'   X'00'   X'01'   X'00' X'00' X'00' X'00'  
 </li>
 </ul>
 <p>参考下面的示例——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">encrypt_table <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>join(utils<span style="color:#f92672">.</span>init_table(KEY))
-decrypt_table <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>maketrans(encrypt_table, string<span style="color:#f92672">.</span>maketrans(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span>))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">encrypt_table <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(utils<span style="color:#f92672">.</span>init_table(KEY))
+decrypt_table <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>maketrans(encrypt_table, string<span style="color:#f92672">.</span>maketrans(<span style="color:#e6db74">&#39;&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>))
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_tcp</span>(self, sock, remote):
     <span style="color:#66d9ef">try</span>:
@@ -352,22 +352,22 @@ decrypt_table <span style="color:#f92672">=</span> string<span style="color:#f92
             <span style="color:#66d9ef">if</span> sock <span style="color:#f92672">in</span> r_fd:
                 <span style="color:#75715e"># 当前 socket 可读</span>
                 data <span style="color:#f92672">=</span> sock<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4096</span>)
-                <span style="color:#66d9ef">if</span> len(data) <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>:
+                <span style="color:#66d9ef">if</span> len(data) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>:
                     <span style="color:#66d9ef">break</span>
                 <span style="color:#75715e"># 加密</span>
                 result <span style="color:#f92672">=</span> utils<span style="color:#f92672">.</span>send_data(remote, self<span style="color:#f92672">.</span>enc(data))
                 <span style="color:#66d9ef">if</span> result <span style="color:#f92672">&lt;</span> len(data):
-                    <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">failed to send all data</span><span style="color:#e6db74">&#39;</span>)
+                    <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;failed to send all data&#39;</span>)
 
             <span style="color:#66d9ef">if</span> remote <span style="color:#f92672">in</span> r_fd:
                 <span style="color:#75715e"># 远程 socket 刻度</span>
                 data <span style="color:#f92672">=</span> remote<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4096</span>)
-                <span style="color:#66d9ef">if</span> len(data) <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>:
+                <span style="color:#66d9ef">if</span> len(data) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>:
                     <span style="color:#66d9ef">break</span>
                 <span style="color:#75715e"># 对接收到的加密信息进行解密</span>
                 result <span style="color:#f92672">=</span> utils<span style="color:#f92672">.</span>send_data(sock, self<span style="color:#f92672">.</span>dec(data))
                 <span style="color:#66d9ef">if</span> result <span style="color:#f92672">&lt;</span> len(data):
-                    <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">failed to send all data</span><span style="color:#e6db74">&#39;</span>)
+                    <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;failed to send all data&#39;</span>)
     <span style="color:#66d9ef">finally</span>:
         sock<span style="color:#f92672">.</span>close()
         remote<span style="color:#f92672">.</span>close()
@@ -396,7 +396,7 @@ decrypt_table <span style="color:#f92672">=</span> string<span style="color:#f92
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

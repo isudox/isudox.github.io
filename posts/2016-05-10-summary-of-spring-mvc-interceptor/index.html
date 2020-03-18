@@ -20,7 +20,7 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -91,12 +91,12 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
   </header>
   <div class="post-content"><p>之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。拦截器普遍用在用户登录验证上，也应用在其他需要对一些信息进行验证的场景下。</p>
 <!-- raw HTML omitted -->
-<h2 id="heading">实现拦截</h2>
-<h3 id="heading-1">请求流程</h3>
+<h2 id="实现拦截">实现拦截</h2>
+<h3 id="请求流程">请求流程</h3>
 <p>Spring MVC 请求的生命周期
 <img src="https://o70e8d1kb.qnssl.com/summary-of-spring-mvc-interceptor-1.png" alt=""></p>
 <p>图示给出了一次请求从发送到处理到接收响应的整个过程，非常标准的 M-V-C。</p>
-<h3 id="heading-2">接口实现</h3>
+<h3 id="接口实现">接口实现</h3>
 <p>Spring MVC 拦截器由 <code>HandlerInterceptor</code> 实现。<code>HandlerInterceptor</code> 接口包含三个方法：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">HandlerInterceptor</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> HttpServletResponse resp<span style="color:#f92672">,</span> Object handler<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">;</span>
@@ -115,15 +115,15 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> HttpServletResponse resp<span style="color:#f92672">,</span> Object obj<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
         <span style="color:#75715e">// hanle the request...
 </span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>OK<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>req<span style="color:#f92672">.</span><span style="color:#a6e22e">GetRuestURI</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>req<span style="color:#f92672">.</span><span style="color:#a6e22e">GetRuestURI</span><span style="color:#f92672">());</span>
             <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            resp<span style="color:#f92672">.</span><span style="color:#a6e22e">sendRedirect</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://isudox.com&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            resp<span style="color:#f92672">.</span><span style="color:#a6e22e">sendRedirect</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://isudox.com&#34;</span><span style="color:#f92672">);</span>
             <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><h3 id="heading-3">拦截配置</h3>
+</code></pre></div><h3 id="拦截配置">拦截配置</h3>
 <p>Spring MVC 配置文件通过 <code>mvc:interceptors</code> 标签声明并配置拦截器链，拦截的顺序由声明的顺序确定。其中，<code>mvc:mapping</code> 标签指定要拦截的 URL 以及忽略的 URL，支持通配符；<code>bean</code> 标签指定处理该 URL 的拦截器。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
 	<span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns:mvc=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/mvc&#34;</span>
@@ -133,14 +133,14 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
 </span><span style="color:#e6db74">        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 </span><span style="color:#e6db74">        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
 
-    <span style="color:#f92672">&lt;mvc:interceptors</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;mvc:interceptors&gt;</span>
         <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.web.servlet.i18n.LocaleChangeInterceptor&#34;</span> <span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;mvc:interceptor</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;mvc:interceptor&gt;</span>
             <span style="color:#f92672">&lt;mapping</span> <span style="color:#a6e22e">path=</span><span style="color:#e6db74">&#34;/**&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;exclude-mapping</span> <span style="color:#a6e22e">path=</span><span style="color:#e6db74">&#34;/admin/**&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.web.servlet.theme.ThemeChangeInterceptor&#34;</span> <span style="color:#f92672">/&gt;</span>
         <span style="color:#f92672">&lt;/mvc:interceptor&gt;</span>
-        <span style="color:#f92672">&lt;mvc:interceptor</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;mvc:interceptor&gt;</span>
             <span style="color:#f92672">&lt;mapping</span> <span style="color:#a6e22e">path=</span><span style="color:#e6db74">&#34;/secure/*&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.example.SecurityInterceptor&#34;</span> <span style="color:#f92672">/&gt;</span>
         <span style="color:#f92672">&lt;/mvc:interceptor&gt;</span>
@@ -154,25 +154,25 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
 
     <span style="color:#a6e22e">@Override</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addInterceptors</span><span style="color:#f92672">(</span>InterceptorRegistry registry<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        registry<span style="color:#f92672">.</span><span style="color:#a6e22e">addInterceptor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> LocaleInterceptor<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        registry<span style="color:#f92672">.</span><span style="color:#a6e22e">addInterceptor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ThemeInterceptor<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addPathPatterns</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/**&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">excludePathPatterns</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/admin/**&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        registry<span style="color:#f92672">.</span><span style="color:#a6e22e">addInterceptor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SecurityInterceptor<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addPathPatterns</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/secure/*&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        registry<span style="color:#f92672">.</span><span style="color:#a6e22e">addInterceptor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> LocaleInterceptor<span style="color:#f92672">());</span>
+        registry<span style="color:#f92672">.</span><span style="color:#a6e22e">addInterceptor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ThemeInterceptor<span style="color:#f92672">()).</span><span style="color:#a6e22e">addPathPatterns</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/**&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">excludePathPatterns</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/admin/**&#34;</span><span style="color:#f92672">);</span>
+        registry<span style="color:#f92672">.</span><span style="color:#a6e22e">addInterceptor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SecurityInterceptor<span style="color:#f92672">()).</span><span style="color:#a6e22e">addPathPatterns</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/secure/*&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
 <span style="color:#f92672">}</span>
-</code></pre></div><h2 id="ajax">Ajax请求</h2>
+</code></pre></div><h2 id="ajax请求">Ajax请求</h2>
 <p>对于拦截 Ajax 请求的场景，有些细节处理需要注意。拦截器通常需要获取请求来源页面的 URL，使其能在处理完成后能返回之前的页面，比如从某个页面跳转到登录页，登录后再跳转回之前浏览的页面。但如果是 Ajax 请求，比如在页面上点击一个按钮发起请求，改变局部页面元素或行为，这时候拦截器所需要的来源页 URL 被记录在请求头的 <code>referer</code> 中。</p>
 <p>首先判断一个请求是否为 Ajax。Ajax 请求的头部会带上 <code>X-Requested-With:XMLHttpRequest</code>。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAsyncRequest</span><span style="color:#f92672">(</span>HttpServletResponse request<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    String header <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeader</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;X-Requested-With&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">return</span> header <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#e6db74">&#34;XMLHttpRequest&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>header<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    String header <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeader</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;X-Requested-With&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> header <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#e6db74">&#34;XMLHttpRequest&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>header<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>获取 referer 信息</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> HttpServletResponse resp<span style="color:#f92672">,</span> Object obj<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    String referer <span style="color:#f92672">=</span> req<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeader</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Referer&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    JSONObject jsonObject <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    jsonObject<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;requestURI&#34;</span><span style="color:#f92672">,</span> URLEncoder<span style="color:#f92672">.</span><span style="color:#a6e22e">encode</span><span style="color:#f92672">(</span>referer<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    resp<span style="color:#f92672">.</span><span style="color:#a6e22e">getWriter</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>JSONObject<span style="color:#f92672">.</span><span style="color:#a6e22e">toJSONString</span><span style="color:#f92672">(</span>jsonObject<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    String referer <span style="color:#f92672">=</span> req<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeader</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Referer&#34;</span><span style="color:#f92672">);</span>
+    JSONObject jsonObject <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject<span style="color:#f92672">();</span>
+    jsonObject<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;requestURI&#34;</span><span style="color:#f92672">,</span> URLEncoder<span style="color:#f92672">.</span><span style="color:#a6e22e">encode</span><span style="color:#f92672">(</span>referer<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">));</span>
+    resp<span style="color:#f92672">.</span><span style="color:#a6e22e">getWriter</span><span style="color:#f92672">().</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>JSONObject<span style="color:#f92672">.</span><span style="color:#a6e22e">toJSONString</span><span style="color:#f92672">(</span>jsonObject<span style="color:#f92672">));</span>
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
 </code></pre></div></div>
   
@@ -196,7 +196,7 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

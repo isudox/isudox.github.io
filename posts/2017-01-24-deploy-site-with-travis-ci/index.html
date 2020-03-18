@@ -19,7 +19,7 @@
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -90,7 +90,7 @@
   </header>
   <div class="post-content"><p>这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓库会设置 hook，使得有新的 Commit 被 Push 上来后，自动把 Nginx 下的站点目录进行 Pull 更新。这种方案只是一开始的设置比较麻烦，之后就能一劳永逸，但我觉得还可以再抢救下。</p>
 <!-- raw HTML omitted -->
-<h2 id="heading">初步方案</h2>
+<h2 id="初步方案">初步方案</h2>
 <p>既然核心目标都是一键部署，为什么不利用持续集成，那就用 <a href="https://travis-ci.org/">Travis CI</a> 吧，和 GitHub 无缝结合。</p>
 <p>先来梳理下整个部署思路：</p>
 <ol>
@@ -100,8 +100,8 @@
 <li>VPS 从 GitHub Page <code>master</code> 分支拉取更新；</li>
 </ol>
 <p>也就是说，整个部署过程只需要将写好源码文件 Push 到 GitHub 相应分支，后面的操作全部交给 Travis-CI 处理。</p>
-<h2 id="heading-1">具体操作</h2>
-<h3 id="travis--github">Travis 关联 GitHub</h3>
+<h2 id="具体操作">具体操作</h2>
+<h3 id="travis-关联-github">Travis 关联 GitHub</h3>
 <p>首先要让 Travis 监听 GitHub 的更新，打开 Travis，选择要监听的 GitHub 仓库，选中后记得勾选 &ldquo;Build only if .travis.yml is present&rdquo; 和 &ldquo;Build pushes&rdquo; 两个选项。</p>
 <p>Travis 要有更改 GitHub 仓库的权限，因此还要到 GitHub 那为 Travis 设置权限 key。打开上面所关联的 GitHub 仓库的 Settings，在 Deploy keys 选项中，为 Travis 添加 SSH key。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 生成 ssh key 私钥公钥对，无需 passphrase</span>
@@ -149,31 +149,31 @@ npm install
 
 hexo generate
 hexo deploy
-</code></pre></div><h3 id="travisyml-">travis.yml 配置</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">language: node_js
+</code></pre></div><h3 id="travisyml-配置">travis.yml 配置</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">language</span>: node_js
 
-node_js:
+<span style="color:#66d9ef">node_js</span>:
   - <span style="color:#e6db74">&#39;6&#39;</span>
 
-sudo: <span style="color:#66d9ef">false</span>
+<span style="color:#66d9ef">sudo</span>: <span style="color:#66d9ef">false</span>
 
-cache:
-  apt: <span style="color:#66d9ef">true</span>
-  directories:
+<span style="color:#66d9ef">cache</span>:
+  <span style="color:#66d9ef">apt</span>: <span style="color:#66d9ef">true</span>
+  <span style="color:#66d9ef">directories</span>:
     - node_modules
 
-addons:
-  ssh_known_hosts: github.com
+<span style="color:#66d9ef">addons</span>:
+  <span style="color:#66d9ef">ssh_known_hosts</span>: github.com
 
-script:
+<span style="color:#66d9ef">script</span>:
   - npm run build
 
-deploy:
-  provider: script
-  script: .travis/deploy.sh
-  skip_cleanup: <span style="color:#66d9ef">true</span>
-  on:
-    branch: source
+<span style="color:#66d9ef">deploy</span>:
+  <span style="color:#66d9ef">provider</span>: script
+  <span style="color:#66d9ef">script</span>: .travis/deploy.sh
+  <span style="color:#66d9ef">skip_cleanup</span>: <span style="color:#66d9ef">true</span>
+  <span style="color:#66d9ef">on</span>:
+    <span style="color:#66d9ef">branch</span>: source
 </code></pre></div><p>Travis deploy script 参考如下——</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
 </span><span style="color:#75715e"></span>
@@ -199,7 +199,7 @@ npm run deploy
 </blockquote>
 <p>踩了好几个坑，足足 Push 了 7 次才调试成功</p>
 <p><img src="https://o70e8d1kb.qnssl.com/travis-build-success.png" alt=""></p>
-<h3 id="vps-">VPS 定时更新静态站内容</h3>
+<h3 id="vps-定时更新静态站内容">VPS 定时更新静态站内容</h3>
 <p>Travis CI 完成集成工作后，VPS 就能从 GitHub 上拉取更新了。之前我的方案是在 VPS 上也搭建一个 Git Repo，本地将改动同时 commit 到 GitHub 和 VPS 上的 Repo，触发 VPS Git Repo 的 Hook 事件，将更新拉取并复制静态站全部内容到 Nginx 站点路径下。这次改版不打算沿用之前的方案了，虽然这种 Hook 触发事件很及时高效。我打算使用 Linux 自带的 Crontab 定时任务功能。</p>
 <p>Crontab 的使用很简单，将可执行的脚本或命令通过 <code>crontab -e</code> 写入系统用户的定时任务中即可。我设置的是每小时执行一次 <code>git pull</code> 操作。写法如下：</p>
 <pre><code># m h  dom mon dow   command
@@ -224,7 +224,7 @@ npm run deploy
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

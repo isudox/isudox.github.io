@@ -22,7 +22,7 @@ test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源�
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -116,24 +116,24 @@ test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源�
                 └── isudox
                     └── AppTest.java
 </code></pre><p>在 pom.xml 中引入 JUnit4，</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> junit4 </span><span style="color:#75715e">--&gt;</span>
-    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.12<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies&gt;</span>
+    <span style="color:#75715e">&lt;!-- junit4 --&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>4.12<span style="color:#f92672">&lt;/version&gt;</span>
+        <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
     <span style="color:#f92672">&lt;/dependency&gt;</span>
 <span style="color:#f92672">&lt;/dependencies&gt;</span>
 </code></pre></div><p>引入 JUnit 依赖后，就能在测试类中，通过 JUnit 提供的注解和静态方法，对接口进行测试了。先编写一个简单的待测试类 Calculator.java</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// App.java
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Calculator</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span>String expression<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>expression <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Exception<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;null value&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>expression <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Exception<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;null value&#34;</span><span style="color:#f92672">);</span>
         <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String summand<span style="color:#f92672">:</span> expression<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\+&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
-            sum <span style="color:#f92672">+</span><span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>summand<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String summand<span style="color:#f92672">:</span> expression<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\+&#34;</span><span style="color:#f92672">))</span>
+            sum <span style="color:#f92672">+=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>summand<span style="color:#f92672">);</span>
         <span style="color:#66d9ef">return</span> sum<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
@@ -144,10 +144,10 @@ test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源�
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CalculatorTest</span> <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        Calculator calculator <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Calculator<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> calculator<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1+2+3&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        assertEquals<span style="color:#f92672">(</span>6<span style="color:#f92672">,</span> sum<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Calculator calculator <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Calculator<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> calculator<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1+2+3&#34;</span><span style="color:#f92672">);</span>
+        assertEquals<span style="color:#f92672">(</span>6<span style="color:#f92672">,</span> sum<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>执行 <code>mvn test</code>，反馈得接口运行正确。
@@ -164,47 +164,47 @@ test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源�
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CalculatorTest</span> <span style="color:#f92672">{</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CalculatorTest</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Constructor&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CalculatorTest</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Constructor&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@BeforeClass</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">beforeThis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;BeforeClass&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">beforeThis</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;BeforeClass&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@AfterClass</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterThis</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;AfterClass&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterThis</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;AfterClass&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@Before</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Before&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Before&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@After</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;After&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;After&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        Calculator calculator <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Calculator<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> calculator<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1+2+3&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        assertEquals<span style="color:#f92672">(</span>6<span style="color:#f92672">,</span> sum<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test evaluate&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        Calculator calculator <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Calculator<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> calculator<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1+2+3&#34;</span><span style="color:#f92672">);</span>
+        assertEquals<span style="color:#f92672">(</span>6<span style="color:#f92672">,</span> sum<span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test evaluate&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">idiot</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        assertTrue<span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test idiot&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">idiot</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        assertTrue<span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test idiot&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@Ignore</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ignoreMe</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Ignore&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ignoreMe</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Ignore&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 
 <span style="color:#f92672">}</span>
@@ -222,12 +222,12 @@ AfterClass
 </code></pre><p>另外，每个测试方法执行时都会实例化一次测试类，JUnit 这样处理的原因是保证每个测试方法彼此独立互不干扰。</p>
 <p>对于 <code>@Test</code> 注解标记的方法，<code>@Test</code> 支持两个参数的设置：<code>timeout</code> 和 <code>expected</code>。前者是设置待测方法的执行超时时间，后者是设置对待测方法期望的抛出异常。修改 <code>evaluate</code> 测试方法的注解：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span><span style="color:#f92672">(</span>timeout <span style="color:#f92672">=</span> 100<span style="color:#f92672">,</span> expected <span style="color:#f92672">=</span> Exception<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    Calculator calculator <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Calculator<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> calculator<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    assertEquals<span style="color:#f92672">(</span>6<span style="color:#f92672">,</span> sum<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test evaluate &#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    Calculator calculator <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Calculator<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> calculator<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+    assertEquals<span style="color:#f92672">(</span>6<span style="color:#f92672">,</span> sum<span style="color:#f92672">);</span>
+    i<span style="color:#f92672">++;</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test evaluate &#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Maven 运行测试，从结果可以看到，方法抛出了异常，测试通过。</p>
 <h3 id="mockito">Mockito</h3>
@@ -235,35 +235,35 @@ AfterClass
 <p><img src="https://o70e8d1kb.qnssl.com/mockito.webp" alt=""></p>
 <p>首先在 pom.xml 中导入 mockito 依赖，</p>
 <p>pom.xml 依赖中添加 Mockito：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.mockito<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>mockito-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.2.0<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.mockito<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>mockito-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.2.0<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>再静态导入 <code>org.mockito.Mockito.*;</code> 里的静态方法，这样就能在测试方法进行对象的 Mock。Mockito 支持通过静态方法 <code>mock()</code> 来 Mock 对象，或者通过 <code>@Mock</code> 注解，来创建 Mock 对象，但必须将其实例化。先演示下如何 Mock 对象：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import static</span> org.mockito.Mockito.*<span style="color:#f92672">;</span>
 
 <span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mockIterator</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Iterator i <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    when<span style="color:#f92672">(</span>i<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;world&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    String result <span style="color:#f92672">=</span> i<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">,</span> result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mockIterator</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    Iterator i <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+    when<span style="color:#f92672">(</span>i<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;world&#34;</span><span style="color:#f92672">);</span>
+    String result <span style="color:#f92672">=</span> i<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+    assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">,</span> result<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>mock 出来的对象拥有和源对象同样的方法和属性，<code>when()</code> 和 <code>thenReturn()</code> 方法是对源对象的配置，怎么理解，就是说在第一步 <code>mock()</code> 时，mock 出来的对象还不具备被 Mock 对象实例的行为特征，而 <code>when(...).thenReturn(...)</code> 就是根据条件去配置源对象的预期行为，即：当执行 <code>when()</code> 中的操作时，返回 <code>thenReturn()</code> 中的结果。比如上面的代码中，mock 出来的 <code>i</code> 实例在被遍历时会依次输出 &ldquo;hello&rdquo; 和 &ldquo;world&rdquo;，<code>assertEquals()</code> 就是对预期结果和实际结果的判断。</p>
 <p>同理，也可以 Mock 网络请求，比如 <code>HttpServletRequest</code> 里的参数，也可以通过上面的方式来设定被 Mock 的源对象的表现行为。</p>
 <p>对于 <code>when()</code> 不定条件，Mockito 定义了 <code>any()</code>、 <code>anyInt()</code>、<code>anyString()</code>、<code>anySet()</code> 等方法来匹配指定类型的不定输入，<code>anyInt()</code> 匹配 int 参数，<code>anyString()</code> 匹配 String 参数, <code>any()</code> 匹配 任意类型的参数。如果需要匹配自定义的类型，可以通过 <code>any(CustomedClass.class)</code> 来配置。</p>
 <p><code>thenReturn()</code> 返回的是一个确定值，这在模拟可见的行为时是没问题的，但有时候，我们需要得到一个复杂的不定输出的行为，比如返回一个回调方法，或者返回一个类实例，Mockito 可以通过 <code>thenAnswer()</code> 来实现。参考 StackOverflow 上的这篇问答 <a href="http://stackoverflow.com/questions/36615330/mockito-thenanswer-vs-thenreturn">Mockito : thenAnswer Vs thenReturn</a>。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">count</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    Duplicator counter <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Counter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    Answer<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> answer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Answer<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">count</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+    Duplicator counter <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Counter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+    Answer<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> answer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Answer<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">public</span> Integer <span style="color:#a6e22e">answer</span><span style="color:#f92672">(</span>InvocationOnMock invocationOnMock<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span><span style="color:#f92672">(</span>String<span style="color:#f92672">)</span> invocationOnMock<span style="color:#f92672">.</span><span style="color:#a6e22e">getArguments</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">((</span>String<span style="color:#f92672">)</span> invocationOnMock<span style="color:#f92672">.</span><span style="color:#a6e22e">getArguments</span><span style="color:#f92672">()[</span>0<span style="color:#f92672">]).</span><span style="color:#a6e22e">length</span><span style="color:#f92672">();</span>
         <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
-    when<span style="color:#f92672">(</span>counter<span style="color:#f92672">.</span><span style="color:#a6e22e">count</span><span style="color:#f92672">(</span>anyString<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">thenAnswer</span><span style="color:#f92672">(</span>answer<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">};</span>
+    when<span style="color:#f92672">(</span>counter<span style="color:#f92672">.</span><span style="color:#a6e22e">count</span><span style="color:#f92672">(</span>anyString<span style="color:#f92672">())).</span><span style="color:#a6e22e">thenAnswer</span><span style="color:#f92672">(</span>answer<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>InvocationOnMock</code> 接口提供了获取被测试方法的调用信息的几个重要方法：</p>
 <ul>
@@ -275,44 +275,44 @@ AfterClass
 </ul>
 <p>上面的例子已经说明了 Mockito 能跟踪被 Mock 对象所有的方法调用和它们的入参。除了对方法调用结果是否正确的测试，有时还需要验证一些方法的行为，比如验证方法被调用的次数，验证方法的入参等，Mockito 通过 <code>verify()</code> 方法实现这些场景的测试需求。这被称为“行为测试”。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testVerify</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Duplicator mock <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Duplicator<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    when<span style="color:#f92672">(</span>mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span>43<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testVerify</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    Duplicator mock <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Duplicator<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+    when<span style="color:#f92672">(</span>mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span>43<span style="color:#f92672">);</span>
 
-    mock<span style="color:#f92672">.</span><span style="color:#a6e22e">duplicate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Halo&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    mock<span style="color:#f92672">.</span><span style="color:#a6e22e">duplicate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Halo&#34;</span><span style="color:#f92672">);</span>
+    mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">();</span>
+    mock<span style="color:#f92672">.</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">();</span>
 
-    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">duplicate</span><span style="color:#f92672">(</span>Matchers<span style="color:#f92672">.</span><span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Halo&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> times<span style="color:#f92672">(</span>2<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> never<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">someMethod</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> atLeastOnce<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">someMethod</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> atLeast<span style="color:#f92672">(</span>2<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">someMethod</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> atMost<span style="color:#f92672">(</span>3<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">someMethod</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span><span style="color:#f92672">;</span>
+    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">).</span><span style="color:#a6e22e">duplicate</span><span style="color:#f92672">(</span>Matchers<span style="color:#f92672">.</span><span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Halo&#34;</span><span style="color:#f92672">));</span>
+    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> times<span style="color:#f92672">(</span>2<span style="color:#f92672">)).</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">();</span>
+    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> never<span style="color:#f92672">()).</span><span style="color:#a6e22e">someMethod</span><span style="color:#f92672">();</span>
+    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> atLeastOnce<span style="color:#f92672">()).</span><span style="color:#a6e22e">someMethod</span><span style="color:#f92672">();</span>
+    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> atLeast<span style="color:#f92672">(</span>2<span style="color:#f92672">)).</span><span style="color:#a6e22e">someMethod</span><span style="color:#f92672">();</span>
+    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">,</span> atMost<span style="color:#f92672">(</span>3<span style="color:#f92672">)).</span><span style="color:#a6e22e">someMethod</span><span style="color:#f92672">();;</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>verify()</code> 内的条件设置简洁明了，第一个参数是 mock 对象，第二个参数可选，作为状语描述，从方法的名称上就能知道具体的用法，不多赘述了。</p>
 <p>Mockito 支持通过 <code>@Spy</code> 注解或 <code>spy()</code> 方法包裹实际对象，除非明确指定对象，否则都会调用包裹后的对象。这种方式实现了对实际对象的部分自定义修改。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSpy</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> spyList <span style="color:#f92672">=</span> spy<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSpy</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> spyList <span style="color:#f92672">=</span> spy<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;());</span>
 
-    assertEquals<span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> spyList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    assertEquals<span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> spyList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
 
-    doReturn<span style="color:#f92672">(</span>100<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>spyList<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    assertEquals<span style="color:#f92672">(</span>100<span style="color:#f92672">,</span> spyList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    doReturn<span style="color:#f92672">(</span>100<span style="color:#f92672">).</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>spyList<span style="color:#f92672">).</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+    assertEquals<span style="color:#f92672">(</span>100<span style="color:#f92672">,</span> spyList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>上面的测试代码中，<code>spy()</code> 修改了 <code>ArrayList</code> 对象的 <code>size()</code>。但是如果只是在执行某个操作是返回一个期望值，用之前的 <code>mock()</code> 也能实现，<code>spy()</code> 存在的理由是什么，看下面的代码能解释二者之间的差异：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">differMockSpy</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    List mock <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>ArrayList<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    mock<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    assertEquals<span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> mock<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">differMockSpy</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    List mock <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>ArrayList<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+    mock<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">);</span>
+    verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">).</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">);</span>
+    assertEquals<span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> mock<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
 
-    List spy <span style="color:#f92672">=</span> spy<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    spy<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    verify<span style="color:#f92672">(</span>spy<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    assertEquals<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> spy<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    List spy <span style="color:#f92672">=</span> spy<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">());</span>
+    spy<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">);</span>
+    verify<span style="color:#f92672">(</span>spy<span style="color:#f92672">).</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">);</span>
+    assertEquals<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> spy<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>从上面的运行结果可以看出，<code>mock()</code> 传入的是类，创建出来的是一个裸的实例，只是为了跟踪该实例下的方法调用，而不会对实例有其他副作用产生；而 <code>spy()</code> 传入的是类实例，它会对该实例进行包裹，创建出来的实例和源实例相同，唯一的不同在于，<code>spy()</code> 包裹后的实例可以对实例内部进行自定义的改动。</p>
 <p>对于依赖注入，Mockito 支持通过 <code>@InjectMocks</code> 注解将被标记的对象自动注入，其依赖会由 mock 出来的对象实例来填充。Mockito 会依次尝试通过 constructor injection、 property injection 和 filed injection，注意，如果其中任一注入策略失败，Mockito 也不会报告错误，就必须自行解决依赖。</p>
@@ -328,22 +328,22 @@ AfterClass
     <span style="color:#a6e22e">@Mock</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;database&#34;</span><span style="color:#f92672">)</span>
     <span style="color:#66d9ef">private</span> ArticleDatabase dbMock<span style="color:#f92672">;</span> <span style="color:#75715e">// note the mock name attribute
 </span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Spy</span>
-    <span style="color:#66d9ef">private</span> UserProvider userProvider <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConsumerUserProvider<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> UserProvider userProvider <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConsumerUserProvider<span style="color:#f92672">();</span>
 
     <span style="color:#a6e22e">@InjectMocks</span>
     <span style="color:#66d9ef">private</span> ArticleManager manager<span style="color:#f92672">;</span>
 
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldDoSomething</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        manager<span style="color:#f92672">.</span><span style="color:#a6e22e">initiateArticle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        verify<span style="color:#f92672">(</span>database<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span>any<span style="color:#f92672">(</span>ArticleListener<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldDoSomething</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        manager<span style="color:#f92672">.</span><span style="color:#a6e22e">initiateArticle</span><span style="color:#f92672">();</span>
+        verify<span style="color:#f92672">(</span>database<span style="color:#f92672">).</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span>any<span style="color:#f92672">(</span>ArticleListener<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">));</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SampleBaseTestCase</span> <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Before</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initMocks</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        MockitoAnnotations<span style="color:#f92672">.</span><span style="color:#a6e22e">initMocks</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initMocks</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        MockitoAnnotations<span style="color:#f92672">.</span><span style="color:#a6e22e">initMocks</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>上面代码中，<code>@InjectMocks</code> 注解会把 mock 出来的 <code>dbMock</code> 和 <code>calculator</code> 注入进 <code>manager</code> 中。<code>ArticleManager</code> 可以只有一个有参构造函数，或者只有无参构造器，或者都有。需要注意的是，Mockito 无法实例化 inner class、local class、abstract class 和 interface。</p>
@@ -356,7 +356,7 @@ AfterClass
 </code></pre></div><p>Property setter injection 在下面的代码中完成：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArticleManager</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// no-arg constructor
-</span><span style="color:#75715e"></span>    ArticleManager<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>  <span style="color:#f92672">}</span>
+</span><span style="color:#75715e"></span>    ArticleManager<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>  <span style="color:#f92672">}</span>
 
     <span style="color:#75715e">// setter
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDatabase</span><span style="color:#f92672">(</span>ArticleDatabase database<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#f92672">}</span>
@@ -399,7 +399,7 @@ AfterClass
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

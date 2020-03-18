@@ -20,7 +20,7 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -91,7 +91,7 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
   </header>
   <div class="post-content"><p>这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 <code>redux-saga</code>，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 <code>generator</code>、<code>yield</code> 从思想上到写法上基本是一致的，之前也写过 Python 里的用法，这里也简单的写下我对动态语言里 <code>generator</code> 的学习和理解。</p>
 <!-- raw HTML omitted -->
-<h2 id="heading">通识</h2>
+<h2 id="通识">通识</h2>
 <p>首先，<code>generator</code> 本质上还是 <code>function</code>，只是行为略微特殊。
 普通 <code>function</code> 会在执行结束时通过 <code>return</code> 返回；
 <code>generator</code> 可以中断 <code>function</code> 的执行过程，并重新回到断点现场继续执行。具体实现就是通过 <code>yield</code> 将结果返回给调用方并中断，通过 <code>next()</code> 方法继续回到断点再执行到下一个 <code>yield</code> 断点处。
@@ -183,7 +183,7 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
     <span style="color:#66d9ef">yield</span> <span style="color:#ae81ff">0</span>
     a, b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>
 
-    <span style="color:#66d9ef">while</span> b <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> n:
+    <span style="color:#66d9ef">while</span> b <span style="color:#f92672">&lt;=</span> n:
         <span style="color:#66d9ef">yield</span> b
         b <span style="color:#f92672">=</span> b <span style="color:#f92672">+</span> a
         a <span style="color:#f92672">=</span> b <span style="color:#f92672">-</span> a
@@ -200,9 +200,9 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
         self<span style="color:#f92672">.</span>author <span style="color:#f92672">=</span> author
 
 
-book <span style="color:#f92672">=</span> Book(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Harry Potter</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">J.K Rowling</span><span style="color:#e6db74">&#39;</span>)
-book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">name</span><span style="color:#e6db74">&#39;</span>)
-book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">author</span><span style="color:#e6db74">&#39;</span>)
+book <span style="color:#f92672">=</span> Book(<span style="color:#e6db74">&#39;Harry Potter&#39;</span>, <span style="color:#e6db74">&#39;J.K Rowling&#39;</span>)
+book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6db74">&#39;name&#39;</span>)
+book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6db74">&#39;author&#39;</span>)
 </code></pre></div><p>我们并没有直接调用 <code>__init__</code> 方法，但 Python 解释能理解并调用 <code>__init__</code> 初始化对象。</p>
 </div>
   
@@ -226,7 +226,7 @@ book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6d
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

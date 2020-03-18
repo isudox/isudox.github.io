@@ -22,7 +22,7 @@ MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -96,7 +96,7 @@ MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一
 <h2 id="dockerfile">Dockerfile</h2>
 <p>Docker 通过 <code>dockerfile</code> 配置来把应用构建成镜像，<code>dockerfile</code> 是一个包含了配置和创建应用的全部命令的文本。Docker 官网上有对 <code>dockerfile</code> 的详细<a href="https://docs.docker.com/engine/reference/builder/">说明文档</a></p>
 <p>看了文档后，对其使用有大致的了解，对不是太复杂的应用的容器化，已经能实践了，下面对 <code>dockerfile</code> 的编写和使用简单总结下。</p>
-<h3 id="-dockerfile">编写 dockerfile</h3>
+<h3 id="编写-dockerfile">编写 dockerfile</h3>
 <h4 id="from">FROM</h4>
 <p><code>FROM</code> 指令会设置要构建的镜像所依赖的基础镜像，比如应用是运行在 Ubuntu 系统上，那么就用 FROM 指定依赖镜像为 Ubuntu，<code>FROM</code> 必须是第一条非注释指令。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> &lt;image&gt;</span><span style="color:#960050;background-color:#1e0010">
@@ -140,17 +140,17 @@ MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一
 <h4 id="expose">EXPOSE</h4>
 <p><code>EXPOSE</code> 指令设置容器运行时监听的端口号。<code>EXPOSE</code> 并不能直接使容器内端口被主机访问，如果要实现主机访问容器端口，必须通过 <code>-p</code> 标识来指定可访问的容器端口。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> &lt;port&gt; [&lt;port&gt;...]</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 映射一个端口</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> port1</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 相应的运行容器使用的命令</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span>docker run -p port1 image<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 映射多个端口</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> port1 port2 port3</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 相应的运行容器使用的命令</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span>docker run -p port1 -p port2 -p port3 image<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 还可以指定需要映射到宿主机器上的某个端口号  </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span>docker run -p host_port1:port1 -p host_port2:port2 -p host_port3:port3 image<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><h4 id="env">ENV</h4>
@@ -194,16 +194,16 @@ MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一
 <h4 id="arg">ARG</h4>
 <p><code>ARG</code> 指令规定了用户在通过 <code>docker build --build-arg &lt;varname&gt;=&lt;value&gt;</code> 构建镜像时允许传递的变量 varname。如果用户传递了 dockerfile 中未定义的变量，构建会报 “One or more build-args were not consumed, failing build.” 的错误信息。</p>
 <p><code>ARG</code> 也可以设置默认变量值，当设置了默认值后，用户如果在构建时没有传相应变量，则使用默认值，构建正常进行。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">ARG</span> &lt;name&gt;<span style="color:#f92672">[</span><span style="color:#f92672">=</span>&lt;default value&gt;<span style="color:#f92672">]</span><span style="color:#960050;background-color:#1e0010">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">ARG</span> &lt;name&gt;<span style="color:#f92672">[=</span>&lt;default value&gt;<span style="color:#f92672">]</span><span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>还有一个注意点，当 <code>ARG</code> 和 <code>ENV</code> 同时设置了一个变量时，<code>ENV</code> 的设置会覆盖 <code>ARG</code>。</p>
-<h3 id="dockerfile-">dockerfile 完整示例</h3>
+<h3 id="dockerfile-完整示例">dockerfile 完整示例</h3>
 <p>官网给了几个完整的 <code>dockerfile</code> 示例，例如 Firefox over VNC：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#75715e"># Firefox over VNC</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">#</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># VERSION               0.3</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install vnc, xvfb in order to create a &#39;fake&#39; display and firefox</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> apt-get install -y x11vnc xvfb firefox<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> mkdir ~/.vnc<span style="color:#960050;background-color:#1e0010">
@@ -211,10 +211,10 @@ MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> x11vnc -storepasswd <span style="color:#ae81ff">1234</span> ~/.vnc/passwd<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Autostart firefox (might not be the best way, but it does the trick)</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> bash -c <span style="color:#e6db74">&#39;echo &#34;firefox&#34; &gt;&gt; /.bashrc&#39;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 5900</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span>    [<span style="color:#e6db74">&#34;x11vnc&#34;</span>, <span style="color:#e6db74">&#34;-forever&#34;</span>, <span style="color:#e6db74">&#34;-usepw&#34;</span>, <span style="color:#e6db74">&#34;-create&#34;</span>]<span style="color:#960050;background-color:#1e0010">
-</span></code></pre></div><h2 id="heading">容器化应用实践</h2>
+</span></code></pre></div><h2 id="容器化应用实践">容器化应用实践</h2>
 <h3 id="shadowsocks-libev">shadowsocks-libev</h3>
 <p><a href="https://github.com/shadowsocks/shadowsocks-libev">shadowsocks-libev</a> 的容器化相对比较简单，对上面的指令初步了解后，再参考别人已有的镜像，实践编写 dockerfile 不算麻烦。</p>
 <p>我的 VPS 是 Debian 系统，<code>FROM</code> 可以设为 debian，不过还是选了非常了流行的小镜像 <a href="https://alpinelinux.org/">alpine</a>。然后根据 shadowsocks-libev README 编写安装的命令。</p>
@@ -225,7 +225,7 @@ sudo apt-get install --no-install-recommends build-essential autoconf libtool li
 sudo make install
 </code></pre></div><p>如果采用 Alpine 作为基础镜像的话，个别命令要改动，<code>apt-get install</code> 要替换成 <code>apk add</code>。用 <code>RUN</code> 指令完成源码的编译安装。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">ENV</span> DEP asciidoc autoconf build-base curl libtool linux-headers openssl-dev pcre-dev tar xmlto<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> set -ex <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    apk add --no-cache --virtual .build-deps $DEP <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    curl -sSL $URL | tar xz <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
@@ -238,7 +238,7 @@ sudo make install
 </span></code></pre></div><p>参考 shadowsocks 的启动参数，编写 <code>CMD</code> 或 <code>ENTRYPOINT</code> 指令：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">CMD</span> ss-server -s $ADDR <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>              -p $PORT <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>              -k <span style="color:#e6db74">${</span>PASSWORD<span style="color:#66d9ef">:-</span><span style="color:#66d9ef">$(</span>hostname<span style="color:#66d9ef">)</span><span style="color:#e6db74">}</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>              -k <span style="color:#e6db74">${</span>PASSWORD<span style="color:#66d9ef">:-$(</span>hostname<span style="color:#66d9ef">)</span><span style="color:#e6db74">}</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>              -m $METHOD <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>              -t $TIMEOUT <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>              --fast-open <span style="color:#ae81ff">\
@@ -254,14 +254,14 @@ sudo make install
 </code></pre></div><p>一劳永逸！</p>
 <h3 id="docker-compose">docker-compose</h3>
 <p>如果每次启动 Docker 镜像都要手敲一大段命令来给容器配置参数的话，还是不够简洁优雅，docker-compose 就解决了这个问题，直接把配置写成文本，由 docker-compose 来读取配置文件 <code>docker-compose.yml</code> 并启动容器，真正做到一次编写，到处运行。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">shadowsocks:
-  image: sudoz/shadowsocks-libev
-  ports:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">shadowsocks</span>:
+  <span style="color:#66d9ef">image</span>: sudoz/shadowsocks-libev
+  <span style="color:#66d9ef">ports</span>:
     - <span style="color:#e6db74">&#34;8388:8388&#34;</span>
-  environment:
+  <span style="color:#66d9ef">environment</span>:
     - METHOD=aes<span style="color:#ae81ff">-256</span>-cfb
     - PASSWORD=<span style="color:#ae81ff">123456</span>
-  restart: always
+  <span style="color:#66d9ef">restart</span>: always
 </code></pre></div><p>配置很明白，对应了 <code>docker run</code> 启动容器时的参数配置，现在只需要一行简单的命令来启动容器：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-compose up -d
 </code></pre></div><hr>
@@ -289,7 +289,7 @@ sudo make install
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

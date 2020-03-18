@@ -16,7 +16,7 @@
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -175,7 +175,7 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
 如何拦截数据？这就需要 AOP 大显身手了。Spring AOP 可以通过 BeanNameAutoProxyCreatoraaaa 自动代理目标 bean，属性 beanNames 和 interceptorNames 分别设置要代理的目标 bean 列表和拦截器数组。这样就很方便的实现了对目标 bean 的切入拦截。
 简单说下具体的实现流程：
  当线上运行时，通过拦截器对目标 bean 内部方法的拦截，将方法调用的结果持久化到结果文件中； 当本地运行时，拦截器就不走远程调用，而是直接从结果文件中读取真实的调用结果。  下面给出大致的拦截服务调用数据的代码：
-&lt;!--spring-aop-config.xml --&gt; &lt;beans&gt; &lt;!--method interceptor --&gt; &lt;bean id=&#34;rpcInterceptor&#34; class=&#34;com.isudox.utils.RpcInterceptor&#34;&gt; &lt;property name=&#34;mode&#34; value=&#34;online&#34;/&gt; &lt;property name=&#34;fileName&#34; value=&#34;/home/sudoz/dev/local-rpc-data.properties&#34;/&gt; &lt;/bean&gt; &lt;!--auto proxy --&gt; &lt;bean id=&#34;rpcAutoProxyCreator&#34; class=&#34;org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator&#34;&gt; &lt;property name=&#34;beanNames&#34;&gt; &lt;list&gt; &lt;value&gt;remoteService1&lt;/value&gt; &lt;value&gt;remoteService2&lt;/value&gt; &lt;value&gt;remoteService3&lt;/value&gt; &lt;value&gt;remoteService4&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;property name=&#34;interceptorNames&#34;&gt; &lt;list&gt; &lt;value&gt;rpcInterceptor&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;/beans&gt; import org....</p>
+&lt;!-- spring-aop-config.xml --&gt; &lt;beans&gt; &lt;!-- method interceptor --&gt; &lt;bean id=&#34;rpcInterceptor&#34; class=&#34;com.isudox.utils.RpcInterceptor&#34;&gt; &lt;property name=&#34;mode&#34; value=&#34;online&#34;/&gt; &lt;property name=&#34;fileName&#34; value=&#34;/home/sudoz/dev/local-rpc-data.properties&#34;/&gt; &lt;/bean&gt; &lt;!-- auto proxy --&gt; &lt;bean id=&#34;rpcAutoProxyCreator&#34; class=&#34;org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator&#34;&gt; &lt;property name=&#34;beanNames&#34;&gt; &lt;list&gt; &lt;value&gt;remoteService1&lt;/value&gt; &lt;value&gt;remoteService2&lt;/value&gt; &lt;value&gt;remoteService3&lt;/value&gt; &lt;value&gt;remoteService4&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;property name=&#34;interceptorNames&#34;&gt; &lt;list&gt; &lt;value&gt;rpcInterceptor&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;/beans&gt; import org....</p>
   </section>
   <footer class="entry-footer">
     <time>August 3, 2016</time>
@@ -241,7 +241,7 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

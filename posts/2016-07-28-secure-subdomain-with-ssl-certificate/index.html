@@ -21,7 +21,7 @@ git A 45.33.47.109 git AAAA 2600:3c01::f03c:91ff:fe18:68b6 添加完后等待 DN
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -93,7 +93,7 @@ git A 45.33.47.109 git AAAA 2600:3c01::f03c:91ff:fe18:68b6 添加完后等待 DN
   <div class="post-content"><p>今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。
 Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。</p>
 <!-- raw HTML omitted -->
-<h3 id="heading">解析子域名</h3>
+<h3 id="解析子域名">解析子域名</h3>
 <p>从域名提供商买到域名后，可以用在多个不同的网站上。比如经常可以看到类似这样的域名，<code>bss.example.com</code>，<code>blog.example.com</code>，其实这俩是彼此独立的网站，但是都访问到 <code>sample.com</code> 域名下，这就是在同一域名下部署多个网站的范例。</p>
 <p>域名和 IP 通过 DNS 关联在一起，所以无论常见多少个子域名，都是要通过 DNS 解析到关联 IP 的服务器上。如果要新增子域名，需要在提供 DNS 解析服务的提供商处建立一条解析，将子域名关联到根域名的 IP 上。</p>
 <p>本人小站的域名是从 Godaddy 上购买，但域名解析服务是并没有用 Godaddy 默认提供的服务，而是用了 Linode 提供的免费解析服务。但操作都是相同的，在 DNS 的 <code>zone file</code> 中添加一条 A/AAAA 记录：</p>
@@ -113,7 +113,7 @@ git        AAAA     2600:3c01::f03c:91ff:fe18:68b6
 
 </code></pre><p>在 Nginx 默认的网站根目录下新建 <code>git</code> 目录，写一个 <code>Hello, Git</code> 的 index.html，浏览器访问下，OK！</p>
 <p>如果后续还要新增其他子域名，可以类似的再写一个 Nginx conf 配置，或者直接用泛子域名解析的 conf 文件。</p>
-<h3 id="heading-1">安装证书</h3>
+<h3 id="安装证书">安装证书</h3>
 <p>接下来就是给子域名安装 SSL 证书。小站域名 <code>isudox.com</code> 绑定了 Comodo 颁发的证书，但从 Comodo 买的这张证书并不支持通配符域名，因此这张证书就没法用在二级域名 <code>&lt;subdomain.isudox.com&gt;</code>。那么还得再去申请一张证书。
 有钱的话，买什么样的证书都行；然而没钱，那就只能从下面几家能提供免费 SSL 证书的提供商里挑了。</p>
 <ul>
@@ -121,9 +121,9 @@ git        AAAA     2600:3c01::f03c:91ff:fe18:68b6
 <li><a href="https://www.startssl.com/">StartSSL</a></li>
 <li><a href="https://letsencrypt.org/">Let’s Encrypt</a></li>
 </ul>
-<p>其中，Let's Encrypt 的逼格应该是最高的，StartSSL 口碑比较好，WoSign 弃之。先述说 Let’s Encrypt 证书的申请。</p>
-<h4 id="lets-encrypt-">Let’s Encrypt 证书</h4>
-<p>Let's Encrypt 证书的申请需要一点点动手能力，它提供了一个官方的脚本生成工具 <a href="https://certbot.eff.org/">certbot</a>，只支持 Unix-liked 系统，把脚本下载本地，并添加执行权限。</p>
+<p>其中，Let&rsquo;s Encrypt 的逼格应该是最高的，StartSSL 口碑比较好，WoSign 弃之。先述说 Let’s Encrypt 证书的申请。</p>
+<h4 id="lets-encrypt-证书">Let’s Encrypt 证书</h4>
+<p>Let&rsquo;s Encrypt 证书的申请需要一点点动手能力，它提供了一个官方的脚本生成工具 <a href="https://certbot.eff.org/">certbot</a>，只支持 Unix-liked 系统，把脚本下载本地，并添加执行权限。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget https://dl.eff.org/certbot-auto
 chmod a+x certbot-auto
 </code></pre></div><p>certbot 支持几种不同的插件（apache、webroot、standalone、manual、nginx），用来获取和安装证书。但插件 nginx 还是试验阶段，可以使用 webroot 或 standalone 插件。区别是 webroot 插件用在已经运行着网站的服务器上，可以通过指定网站的目录来获取并安装证书：</p>
@@ -131,7 +131,7 @@ chmod a+x certbot-auto
 </code></pre></div><p>而 standalone 插件则用在本地机器上，通过指定网站的域名来获取和安装证书。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./certbot-auto certonly --standalone -d example.com -d www.example.com
 </code></pre></div><p>Let’s Encrypt 的证书有效期是三个月，可以用 <code>letsencrypt renew </code> 命令重新激活。最后就是将证书的路径写入到 Nginx conf 配置里。</p>
-<h4 id="startssl-">StartSSL 证书</h4>
+<h4 id="startssl-证书">StartSSL 证书</h4>
 <p>StartSSL 的证书生成就傻瓜多了，上手更容易，有效期也有一年之久。
 用 <code>openssL</code> 生成 .csr 文件，</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl req -newkey rsa:2048 -keyout git.isudox.com.key -out git.isudox.com.csr
@@ -178,7 +178,7 @@ server {
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

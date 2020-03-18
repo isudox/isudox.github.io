@@ -12,7 +12,7 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
 如何拦截数据？这就需要 AOP 大显身手了。Spring AOP 可以通过 BeanNameAutoProxyCreatoraaaa 自动代理目标 bean，属性 beanNames 和 interceptorNames 分别设置要代理的目标 bean 列表和拦截器数组。这样就很方便的实现了对目标 bean 的切入拦截。
 简单说下具体的实现流程：
  当线上运行时，通过拦截器对目标 bean 内部方法的拦截，将方法调用的结果持久化到结果文件中； 当本地运行时，拦截器就不走远程调用，而是直接从结果文件中读取真实的调用结果。  下面给出大致的拦截服务调用数据的代码：
-&lt;!--spring-aop-config.xml --&gt; &lt;beans&gt; &lt;!--method interceptor --&gt; &lt;bean id=&#34;rpcInterceptor&#34; class=&#34;com.isudox.utils.RpcInterceptor&#34;&gt; &lt;property name=&#34;mode&#34; value=&#34;online&#34;/&gt; &lt;property name=&#34;fileName&#34; value=&#34;/home/sudoz/dev/local-rpc-data.properties&#34;/&gt; &lt;/bean&gt; &lt;!--auto proxy --&gt; &lt;bean id=&#34;rpcAutoProxyCreator&#34; class=&#34;org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator&#34;&gt; &lt;property name=&#34;beanNames&#34;&gt; &lt;list&gt; &lt;value&gt;remoteService1&lt;/value&gt; &lt;value&gt;remoteService2&lt;/value&gt; &lt;value&gt;remoteService3&lt;/value&gt; &lt;value&gt;remoteService4&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;property name=&#34;interceptorNames&#34;&gt; &lt;list&gt; &lt;value&gt;rpcInterceptor&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;/beans&gt; import org.">
+&lt;!-- spring-aop-config.xml --&gt; &lt;beans&gt; &lt;!-- method interceptor --&gt; &lt;bean id=&#34;rpcInterceptor&#34; class=&#34;com.isudox.utils.RpcInterceptor&#34;&gt; &lt;property name=&#34;mode&#34; value=&#34;online&#34;/&gt; &lt;property name=&#34;fileName&#34; value=&#34;/home/sudoz/dev/local-rpc-data.properties&#34;/&gt; &lt;/bean&gt; &lt;!-- auto proxy --&gt; &lt;bean id=&#34;rpcAutoProxyCreator&#34; class=&#34;org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator&#34;&gt; &lt;property name=&#34;beanNames&#34;&gt; &lt;list&gt; &lt;value&gt;remoteService1&lt;/value&gt; &lt;value&gt;remoteService2&lt;/value&gt; &lt;value&gt;remoteService3&lt;/value&gt; &lt;value&gt;remoteService4&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;property name=&#34;interceptorNames&#34;&gt; &lt;list&gt; &lt;value&gt;rpcInterceptor&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;/beans&gt; import org.">
     <meta name="author" content="">
     
     <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
@@ -21,7 +21,7 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -100,27 +100,27 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
 <li>当本地运行时，拦截器就不走远程调用，而是直接从结果文件中读取真实的调用结果。</li>
 </ul>
 <p>下面给出大致的拦截服务调用数据的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> spring</span><span style="color:#75715e">-</span><span style="color:#75715e">aop</span><span style="color:#75715e">-</span><span style="color:#75715e">config.xml </span><span style="color:#75715e">--&gt;</span>
-<span style="color:#f92672">&lt;beans</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> method interceptor </span><span style="color:#75715e">--&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- spring-aop-config.xml --&gt;</span>
+<span style="color:#f92672">&lt;beans&gt;</span>
+  <span style="color:#75715e">&lt;!-- method interceptor --&gt;</span>
   <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;rpcInterceptor&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;com.isudox.utils.RpcInterceptor&#34;</span><span style="color:#f92672">&gt;</span>
     <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;mode&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;online&#34;</span><span style="color:#f92672">/&gt;</span>
     <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;fileName&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;/home/sudoz/dev/local-rpc-data.properties&#34;</span><span style="color:#f92672">/&gt;</span>
   <span style="color:#f92672">&lt;/bean&gt;</span>
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> auto proxy </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#75715e">&lt;!-- auto proxy --&gt;</span>
   <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;rpcAutoProxyCreator&#34;</span>
         <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator&#34;</span><span style="color:#f92672">&gt;</span>
     <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;beanNames&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;list</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>remoteService1<span style="color:#f92672">&lt;/value&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>remoteService2<span style="color:#f92672">&lt;/value&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>remoteService3<span style="color:#f92672">&lt;/value&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>remoteService4<span style="color:#f92672">&lt;/value&gt;</span>
+      <span style="color:#f92672">&lt;list&gt;</span>
+        <span style="color:#f92672">&lt;value&gt;</span>remoteService1<span style="color:#f92672">&lt;/value&gt;</span>
+        <span style="color:#f92672">&lt;value&gt;</span>remoteService2<span style="color:#f92672">&lt;/value&gt;</span>
+        <span style="color:#f92672">&lt;value&gt;</span>remoteService3<span style="color:#f92672">&lt;/value&gt;</span>
+        <span style="color:#f92672">&lt;value&gt;</span>remoteService4<span style="color:#f92672">&lt;/value&gt;</span>
       <span style="color:#f92672">&lt;/list&gt;</span>
     <span style="color:#f92672">&lt;/property&gt;</span>
     <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;interceptorNames&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;list</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;value</span><span style="color:#f92672">&gt;</span>rpcInterceptor<span style="color:#f92672">&lt;/value&gt;</span>
+      <span style="color:#f92672">&lt;list&gt;</span>
+        <span style="color:#f92672">&lt;value&gt;</span>rpcInterceptor<span style="color:#f92672">&lt;/value&gt;</span>
       <span style="color:#f92672">&lt;/list&gt;</span>
     <span style="color:#f92672">&lt;/property&gt;</span>
   <span style="color:#f92672">&lt;/bean&gt;</span>
@@ -131,7 +131,7 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RpcInterceptor</span> <span style="color:#66d9ef">implements</span> MethodInteceptors <span style="color:#f92672">{</span>
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>RpcInterceptor<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>RpcInterceptor<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 
     <span style="color:#66d9ef">private</span> String mode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;local&#34;</span><span style="color:#f92672">;</span>  <span style="color:#75715e">// local || online
 </span><span style="color:#75715e"></span>
@@ -141,28 +141,28 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
 
     <span style="color:#66d9ef">private</span> Properties rpcResultProperties<span style="color:#f92672">;</span>
     
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">RpcInterceptor</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">RpcInterceptor</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
     <span style="color:#a6e22e">@Override</span>
     <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>MethodInvocation invocation<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
         Object result<span style="color:#f92672">;</span>
-        String methodName <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Class<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span><span style="color:#f92672">&gt;</span> returnType <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getReturnType</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        String className <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getDeclaringClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getArguments</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        String methodName <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
+        Class<span style="color:#f92672">&lt;?&gt;</span> returnType <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getReturnType</span><span style="color:#f92672">();</span>
+        String className <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getDeclaringClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">();</span>
+        Object<span style="color:#f92672">[]</span> args <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getArguments</span><span style="color:#f92672">();</span>
         
         String key <span style="color:#f92672">=</span> className <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#f92672">+</span> methodName<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>getMode<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;local&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            String value <span style="color:#f92672">=</span> rpcResultProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isNotBlank</span><span style="color:#f92672">(</span>value<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                result <span style="color:#f92672">=</span> JSON<span style="color:#f92672">.</span><span style="color:#a6e22e">parseObject</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> returnType<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>getMode<span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;local&#34;</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            String value <span style="color:#f92672">=</span> rpcResultProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isNotBlank</span><span style="color:#f92672">(</span>value<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                result <span style="color:#f92672">=</span> JSON<span style="color:#f92672">.</span><span style="color:#a6e22e">parseObject</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> returnType<span style="color:#f92672">);</span>
             <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                result <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                result <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">();</span>
             <span style="color:#f92672">}</span>
         <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            result <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            String value <span style="color:#f92672">=</span> JSON<span style="color:#f92672">.</span><span style="color:#a6e22e">toJSONString</span><span style="color:#f92672">(</span>result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">appendRpcResult2File</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            result <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">();</span>
+            String value <span style="color:#f92672">=</span> JSON<span style="color:#f92672">.</span><span style="color:#a6e22e">toJSONString</span><span style="color:#f92672">(</span>result<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">appendRpcResult2File</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
         <span style="color:#f92672">}</span>
 
         <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
@@ -170,24 +170,24 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">appendRpcResult2File</span><span style="color:#f92672">(</span>String k<span style="color:#f92672">,</span> String v<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            Properties properties <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>rpcResultFile<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                FileInputStream fis <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileInputStream<span style="color:#f92672">(</span>rpcResultFile<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                properties<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>fis<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            Properties properties <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>rpcResultFile<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                FileInputStream fis <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileInputStream<span style="color:#f92672">(</span>rpcResultFile<span style="color:#f92672">);</span>
+                properties<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>fis<span style="color:#f92672">);</span>
             <span style="color:#f92672">}</span>
-            FileOutputStream fos <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span>rpcResultFile<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            properties<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span>k<span style="color:#f92672">,</span> v<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            properties<span style="color:#f92672">.</span><span style="color:#a6e22e">store</span><span style="color:#f92672">(</span>fos<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;blabla...&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            fos<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            FileOutputStream fos <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span>rpcResultFile<span style="color:#f92672">);</span>
+            properties<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span>k<span style="color:#f92672">,</span> v<span style="color:#f92672">);</span>
+            properties<span style="color:#f92672">.</span><span style="color:#a6e22e">store</span><span style="color:#f92672">(</span>fos<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;blabla...&#34;</span><span style="color:#f92672">);</span>
+            fos<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
         <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;appendRpcResult2File failed, {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;appendRpcResult2File failed, {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
         <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-            fos<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            fos<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
         <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMode</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMode</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span> mode<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
@@ -195,7 +195,7 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mode</span> <span style="color:#f92672">=</span> mode<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getfileName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getfileName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span> fileName<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
@@ -224,7 +224,7 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

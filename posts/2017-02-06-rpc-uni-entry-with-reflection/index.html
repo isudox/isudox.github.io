@@ -19,7 +19,7 @@
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
     
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.67.1" />
     
     <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
     
@@ -97,27 +97,27 @@
     <span style="color:#a6e22e">@Resource</span>
 	<span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> serviceMap<span style="color:#f92672">;</span>  <span style="color:#75715e">// 远程服务的 k-v 映射
 </span><span style="color:#75715e"></span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Method<span style="color:#f92672">&gt;</span> actions <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>  <span style="color:#75715e">// 存储方法调用
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Method<span style="color:#f92672">&gt;</span> actions <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>  <span style="color:#75715e">// 存储方法调用
 </span><span style="color:#75715e"></span>
-    <span style="color:#66d9ef">public</span> Result <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>String invokeStr<span style="color:#f92672">,</span> Object<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String serviceName <span style="color:#f92672">=</span> methodKey<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\.&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>actions<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>invokeStr<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            Object service <span style="color:#f92672">=</span> serviceMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>serviceName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>service <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Method m <span style="color:#f92672">:</span> service<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getMethods</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    actions<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%s.%s&#34;</span><span style="color:#f92672">,</span> serviceName<span style="color:#f92672">,</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> m<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> Result <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>String invokeStr<span style="color:#f92672">,</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String serviceName <span style="color:#f92672">=</span> methodKey<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\.&#34;</span><span style="color:#f92672">)[</span>0<span style="color:#f92672">];</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>actions<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>invokeStr<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            Object service <span style="color:#f92672">=</span> serviceMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>serviceName<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>service <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Method m <span style="color:#f92672">:</span> service<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMethods</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                    actions<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%s.%s&#34;</span><span style="color:#f92672">,</span> serviceName<span style="color:#f92672">,</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()),</span> m<span style="color:#f92672">);</span>
                 <span style="color:#f92672">}</span>
             <span style="color:#f92672">}</span>
         <span style="color:#f92672">}</span>
-        Method method <span style="color:#f92672">=</span> actions<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>invokeStr<span style="color:#f92672">)</span><span style="color:#f92672">;</span>  <span style="color:#75715e">// 定位要调用的方法
+        Method method <span style="color:#f92672">=</span> actions<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>invokeStr<span style="color:#f92672">);</span>  <span style="color:#75715e">// 定位要调用的方法
 </span><span style="color:#75715e"></span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>method <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            Object service <span style="color:#f92672">=</span> serviceMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>serviceName<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            Object res <span style="color:#f92672">=</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>service<span style="color:#f92672">,</span> args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>method <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Object service <span style="color:#f92672">=</span> serviceMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>serviceName<span style="color:#f92672">);</span>
+            Object res <span style="color:#f92672">=</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>service<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
 
             <span style="color:#75715e">// 对调用结果进行自定义处理
 </span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;调用的方法[%s]不存在，请确认。&#34;</span><span style="color:#f92672">,</span> methodKey<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;调用的方法[%s]不存在，请确认。&#34;</span><span style="color:#f92672">,</span> methodKey<span style="color:#f92672">));</span>
         <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
 
@@ -125,8 +125,8 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p>上面代码中的远程服务映射可以在 Spring 中配置：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;serviceMap&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.util.HashMap&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;constructor-arg</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;map</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;constructor-arg&gt;</span>
+    <span style="color:#f92672">&lt;map&gt;</span>
       <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;example1&#34;</span> <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;example1ServiceImpl&#34;</span> <span style="color:#f92672">/&gt;</span>
       <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;example2&#34;</span> <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;example2ServiceImpl&#34;</span> <span style="color:#f92672">/&gt;</span>
       <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;example3&#34;</span> <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;example3ServiceImpl&#34;</span> <span style="color:#f92672">/&gt;</span>
@@ -137,8 +137,8 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Resource</span>
 <span style="color:#66d9ef">private</span> RpcEntry rpcEntry<span style="color:#f92672">;</span>
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    rpcEntry<span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;example1.debug&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    rpcEntry<span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;example1.debug&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div></div>
   
@@ -162,7 +162,7 @@
 
 </main>
 <footer class="footer">
-  <span>&copy; 2019 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
