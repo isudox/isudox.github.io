@@ -1,7 +1,74 @@
-@startuml
-Class01 <|-- Class02
-Class03 *-- Class04
-Class05 o-- Class06
-Class07 .. Class08
-Class09 -- Class10
+@startuml "open-replicator class"
+class OpenReplicator {
+  # Transport transport
+  # BinlogParser binlogParser
+  # BinlogEventListener binlogEventListener
+  + start()
+  + stop()
+  # dumpBinlog()
+}
+
+OpenReplicator o-- Transport
+OpenReplicator o-- BinlogParser
+OpenReplicator o-- BinlogEventListener
+
+interface Transport {
+  + connect()
+  + disconnect()
+  + getContext()
+  + getInputStream()
+  + getOutputStream()
+}
+
+abstract AbstractTransport {
+  # Context context
+  + getContext()
+}
+
+class TransportImpl {
+  # Socket socket
+  # TransportInputStream is
+  # TransportOutputStream os
+  # level1BufferSize
+  # level2BufferSize
+  + connect()
+  + disconnect()
+  + getInputStream()
+  + getOutputStream()
+}
+
+Transport <|-- AbstractTransport
+AbstractTransport <|-- TransportImpl
+
+interface BinlogParser {
+  + start()
+  + stop()
+  + setEventListener()
+  + addParserListener()
+}
+
+abstract AbstractBinlogParser {
+  # BinlogEventFilter eventFilter
+  # BinlogEventListener eventListener
+  # BinlogEventParser[] parsers
+  # List<BinlogParserListener> parserListeners
+  + start()
+  + stop()
+  # {abstract} doParse()
+  # {abstract} doStart()
+}
+
+class ReplicationBasedBinlogParser {
+  # Transport transport
+  # String binlogFileName
+  # doParse()
+}
+
+BinlogParser <|-- AbstractBinlogParser
+AbstractBinlogParser <|-- ReplicationBasedBinlogParser
+
+interface BinlogEventListener {
+  + onEvents()
+}
+
 @enduml

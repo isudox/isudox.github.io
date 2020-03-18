@@ -1,0 +1,34 @@
+@startuml
+title oepn-replicator 时序
+actor user
+
+user -> data_generator: 构造数据
+data_generator -> quake: 调用 API
+activate quake
+alt success case
+    quake -> data_generator: foreign key
+    data_generator -> db: insert
+else failure case
+    quake -> data_generator: error
+end
+deactivate quake
+
+user -> experiment_manager: 配置实验过程
+experiment_manager -> monkey: 服务链路，压测场景，chaos 故障点
+activate monkey
+monkey -> experiment_manager: response
+deactivate monkey
+experiment_manager -> db: insert
+
+user -> experiment_manager: 制定实验任务
+experiment_manager -> monkey: 执行实验任务
+collections log
+monkey -> report: 数据采集
+activate monkey
+monkey -> experiment_manager: response
+deactivate monkey
+experiment_manager -> db: insert
+
+database db
+
+@enduml

@@ -1,0 +1,89 @@
+@startuml 类图
+
+class RequestsGenerator {
+    - GenCommand cmd
+    - ScriptParser parser
+}
+
+RequestsGenerator o-- GenCommand
+RequestsGenerator o-- ScriptParser
+
+class GenCommand {
+    - String name
+    - GenType type
+}
+
+GenCommand o-- GenType
+
+enum GenType {
+    FILE
+    SCRIPT
+}
+
+interface ScriptParser {
+}
+
+class GroovyParser {
+
+}
+ScriptParser <|-- GroovyParser
+
+class ChaosScene {
+
+}
+
+ChaosScene *-- PtestScene
+ChaosScene *-- MonkeyScene
+ChaosScene o-- ChaosTask
+
+class PtestScene {
+
+}
+
+class MonkeyScene {
+
+}
+
+
+class ChaosTask {
+    - ChaosScene chaosScene
+}
+
+ChaosTask *-- PtestTask
+ChaosTask *-- MonkeyTask
+ChaosTask o-- AbstractTaskHandler
+
+class PtestTask {
+
+}
+
+class MonkeyTask {
+
+}
+
+interface TaskHandler {
+    + handle()
+}
+
+abstract AbstractTaskHandler {
+    - ChaosTask task
+    # loadConfig()
+    # init()
+    # execute()
+}
+
+
+
+TaskHandler <|-- AbstractTaskHandler
+AbstractTaskHandler <|-- PtestTaskHanlder
+AbstractTaskHandler <|-- MonkeyTaskHandler
+
+class PtestTaskHanlder {
+
+}
+
+class MonkeyTaskHandler {
+
+}
+
+@enduml
