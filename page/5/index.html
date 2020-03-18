@@ -92,6 +92,26 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>Spring MVC 集成 Thymeleaf</h2>
+  </header>
+  <section class="entry-content">
+   <p>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
+和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
+模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
+&lt;form:inputText name=&#34;userName&#34; value=&#34;${user.name}&#34; /&gt; 而 Thymeleaf 模板标准语言会这样写：
+&lt;input type=&#34;text&#34; name=&#34;userName&#34; value=&#34;James Carrot&#34; th:value=&#34;${user.name}&#34; /&gt; 浏览器能直接识别上述 Thymeleaf 的 input 标签，而且还能在加载模板引擎后，由后端返回的数据渲染 value 值。也就是这一特性，可以让前后端工程师在同一个模板文件上协作开发，避免了从静态页面到模板页面的转换，前后端并行开发，这就是未来的趋势，也被称作 Natural Templating，页面即模板，模板即页面。
+标准表达式语法 基本表达式 Thymeleaf 模板方言里最重要的就是它的标准表达式语法了。Thymeleaf 的表达式有：
+  简单表达式：
+ 变量表达式：${....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>July 6, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>LeetCode 16-20</h2>
   </header>
   <section class="entry-content">
@@ -104,7 +124,7 @@
   <footer class="entry-footer">
     <time>July 4, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-07-04-leetcode-tour-4/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/07/04/leetcode-tour-4/"></a>
 </article>
 
 <article class="post-entry">
@@ -120,7 +140,7 @@ public class Debug { public static void main(String[] args) { String s1 = &#34;h
   <footer class="entry-footer">
     <time>June 22, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-06-22-memory-model-of-string-in-java-language/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/"></a>
 </article>
 
 <article class="post-entry">
@@ -138,7 +158,7 @@ Container With Most Water 第 11 题 Container With Most Water
   <footer class="entry-footer">
     <time>June 15, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-06-15-leetcode-tour-3/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/06/15/leetcode-tour-3/"></a>
 </article>
 
 <article class="post-entry">
@@ -157,7 +177,7 @@ public class BullshitCode { public static void main(String[] args) { int cmd = I
   <footer class="entry-footer">
     <time>June 6, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-06-06-using-chain-of-responsibility-pattern/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/06/06/using-chain-of-responsibility-pattern/"></a>
 </article>
 
 <article class="post-entry">
@@ -177,7 +197,7 @@ export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.4 export WORKON_HOME=$HOME/.vir
   <footer class="entry-footer">
     <time>June 1, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-06-01-non-best-practice-of-django-deployment/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/06/01/non-best-practice-of-django-deployment/"></a>
 </article>
 
 <article class="post-entry">
@@ -192,7 +212,7 @@ export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.4 export WORKON_HOME=$HOME/.vir
   <footer class="entry-footer">
     <time>May 23, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-05-23-some-thoughts-on-loading-utf8-properties-file-in-spring/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/"></a>
 </article>
 
 <article class="post-entry">
@@ -210,7 +230,7 @@ ZigZag Conversion 第 6 题 ZigZag Conversion
   <footer class="entry-footer">
     <time>May 17, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-05-17-leetcode-tour-2/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/05/17/leetcode-tour-2/"></a>
 </article>
 
 <article class="post-entry">
@@ -224,7 +244,7 @@ ZigZag Conversion 第 6 题 ZigZag Conversion
   <footer class="entry-footer">
     <time>May 17, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-05-17-intellij-idea-keymap-zh/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/05/17/intellij-idea-keymap-zh/"></a>
 </article>
 
 <article class="post-entry">
@@ -241,23 +261,7 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
   <footer class="entry-footer">
     <time>May 10, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-05-10-summary-of-spring-mvc-interceptor/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>通过代理安装 AUR 软件包</h2>
-  </header>
-  <section class="entry-content">
-   <p>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。
-这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。
-就以上面提到的 atom-editor 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为
-# Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt; # Contributor: John Reese &lt;jreese@noswap.com&gt; # Upstream URL: https://github.com/atom/atom # # For improvements/fixes to this package, please send a pull request: # https://github.com/sjug/atom-editor pkgname=atom-editor pkgver=1.7.3 pkgrel=1 pkgdesc=&#39;Chrome-based text editor from Github&#39; arch=(&#39;x86_64&#39; &#39;i686&#39;) url=&#39;https://github.com/atom/atom&#39; license=(&#39;MIT&#39;) depends=(&#39;alsa-lib&#39; &#39;desktop-file-utils&#39; &#39;gconf&#39; &#39;gtk2&#39; &#39;libgnome-keyring&#39; &#39;libnotify&#39; &#39;libxtst&#39; &#39;nodejs&#39; &#39;nss&#39; &#39;python2&#39;) optdepends=(&#39;gvfs: file deletion support&#39;) makedepends=(&#39;git&#39; &#39;npm&#39;) conflicts=(&#39;atom-editor-bin&#39; &#39;atom-editor-git&#39;) install=atom....</p>
-  </section>
-  <footer class="entry-footer">
-    <time>May 9, 2016</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-05-09-install-aur-packages-by-proxy/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/05/10/summary-of-spring-mvc-interceptor/"></a>
 </article>
 
 
@@ -281,7 +285,7 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
 <script src="https://isudox.com/highlight.min.js"></script>
 <script>

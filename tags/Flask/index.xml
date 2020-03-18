@@ -13,10 +13,10 @@
     
     <item>
       <title>读 Flask 源码：源码结构</title>
-      <link>https://isudox.com/posts/2017-02-14-explore-flask-source-code-structure/</link>
+      <link>https://isudox.com/2017/02/14/explore-flask-source-code-structure/</link>
       <pubDate>Tue, 14 Feb 2017 19:47:11 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-02-14-explore-flask-source-code-structure/</guid>
+      <guid>https://isudox.com/2017/02/14/explore-flask-source-code-structure/</guid>
       <description>打算对 Flask 的学习做个整理，以 Flask 的 GitHub 代码库的 master 分支为参考。其实早期的 0.3 版还是单文件，整个 flask.py 加上注释也只有 1426 行代码，非常简洁，很适合作为 Python 源码学习的教材。
 拿到源码先不着急，就像读书一样，不妨浏览下目录，以便有个全局的了解。Flask 的源码有一个非常好的优点，就是它的注释非常完备，即使不看源码，只看注释，也能有个大概的理解。
 从 Flask 根目录下的 setup.py 可以看到，Flask 依赖的组件主要有 3 个：
@@ -26,10 +26,10 @@ flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.p
     
     <item>
       <title>读 Flask 源码：Context</title>
-      <link>https://isudox.com/posts/2016-10-02-flask-context-guide/</link>
+      <link>https://isudox.com/2016/10/02/flask-context-guide/</link>
       <pubDate>Sun, 02 Oct 2016 20:11:40 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-10-02-flask-context-guide/</guid>
+      <guid>https://isudox.com/2016/10/02/flask-context-guide/</guid>
       <description>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那么它可以独立运行了；如果程序需要外部环境的支持，Context 的存在就有意义。比如 Flask Web 开发中常用的 current_app、request 都是 Context，可以在不同方法中调用，并且实现通信及交互。
 Context 的实现 Flask 提供了 4 个 Context：
    Context 类型 说明     flask.current_app Application Context 当前 app 的实例对象   flask.g Application Context 处理请求时用作临时存储的对象   flask.request Request Context 封装了 HTTP 请求中的内容   flask.session Request Context 存储了用户回话    这些 Context 分为 Application Context 和 Request Context 两类：
@@ -38,10 +38,10 @@ Context 的实现 Flask 提供了 4 个 Context：
     
     <item>
       <title>Gunicorn 驱动工厂模式 Flask 应用</title>
-      <link>https://isudox.com/posts/2016-08-29-running-flask-with-gunicorn-in-application-factory/</link>
+      <link>https://isudox.com/2016/08/29/running-flask-with-gunicorn-in-application-factory/</link>
       <pubDate>Mon, 29 Aug 2016 13:45:50 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-08-29-running-flask-with-gunicorn-in-application-factory/</guid>
+      <guid>https://isudox.com/2016/08/29/running-flask-with-gunicorn-in-application-factory/</guid>
       <description>之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— Gunicorn，并且利用工厂模式对不同开发环境进行了隔离。工厂模式下的 Flask 应用在用 Gunicorn 部署时，需要做一点针对性的改动。
 基础的 Flask 应用部署 先写一个最简单的 Flask 应用 hello：
 # hello.py from flask import Flask app = Flask(__name__) @app.route(&amp;#39;/&amp;#39;) def hello_world(): return &amp;#34;Hello World!&amp;#34; if __name__ == &amp;#39;__main__&amp;#39;: app.run(host=&amp;#39;0.0.0.0&amp;#39;, port=5000) 然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。

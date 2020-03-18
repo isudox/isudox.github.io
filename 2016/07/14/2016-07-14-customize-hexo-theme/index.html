@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Hexo 主题美化 - I sudo X</title>
+    
+    <meta name="description" content="小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题抄袭过来，嘿嘿。
+头像旋转 Pacman 主题布局非常大气，最有心的设计在我看来就是底栏的可旋转的圆形头像，非常可爱。相比之下，鄙人小站侧边栏头像就显得很呆板了。那就抄过来！ 可以知道，这是一个鼠标的 hover 事件，因此先找到位于 source/css/_common/components/sidebar/sidebar-author.syl 模板文件里侧边栏头像的样式 .site-author-image
+.site-author-image { display: block; margin: 0 auto; padding: $site-author-image-padding; max-width: $site-author-image-width; height: $site-author-image-height; border: $site-author-image-border-width solid $site-author-image-border-color; } 首先要做的事就是把原头像图通过 css 样式改成圆形头像。通过修改 border-radius 属性就可以改图片四个角的圆角程度。另外针对不同内核的浏览器也能分别指定。再加上属性变化的动画效果 transition。
+.site-author-image { border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; transition: 1.4s all; } 圆角效果完成后，再做 hover 动作。添加 .site-author-image:hover 样式，由 rotate() 方法实现，旋转 360°
+.site-author-image:hover { -webkit-transform: rotate(360deg); -moz-transform: rotate(360deg); -ms-transform: rotate(360deg); -transform: rotate(360deg); } OK，成就达成。
+侧边滚动条 Yilia 也是 GitHub 上非常受欢迎的一款 Hexo 主题， 虽然我用的不是 Yilia 主题，但是不妨碍我喜欢它的侧边滚动条，灰色系的性冷淡风很契合我的小站。所以我就把这个样式挪到了我的小站里。 为了不影响小站原主题的样式，最好不要直接在原有样式上做修改。在 source/css/_custom 里的 custom.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Hexo 主题美化</h1>
+    <div class="post-meta">July 14, 2016</div>
+  </header>
+  <div class="post-content"><p>小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题抄袭过来，嘿嘿。</p>
+<!-- raw HTML omitted -->
+<h3 id="头像旋转">头像旋转</h3>
+<p><a href="https://github.com/A-limon/pacman">Pacman</a> 主题布局非常大气，最有心的设计在我看来就是底栏的可旋转的圆形头像，非常可爱。相比之下，鄙人小站侧边栏头像就显得很呆板了。那就抄过来！
+可以知道，这是一个鼠标的 <code>hover</code> 事件，因此先找到位于 <code>source/css/_common/components/sidebar/sidebar-author.syl</code> 模板文件里侧边栏头像的样式 <code>.site-author-image</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">site-author-image</span> {
+    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">block</span>;
+    <span style="color:#66d9ef">margin</span>: <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">auto</span>;
+    <span style="color:#66d9ef">padding</span>: <span style="color:#960050;background-color:#1e0010">$</span>site-author-image-padding;
+    <span style="color:#66d9ef">max-width</span>: <span style="color:#960050;background-color:#1e0010">$</span>site-author-image-width;
+    <span style="color:#66d9ef">height</span>: <span style="color:#960050;background-color:#1e0010">$</span>site-author-image-height;
+    <span style="color:#66d9ef">border</span>: <span style="color:#960050;background-color:#1e0010">$</span>site-author-image-border-width <span style="color:#66d9ef">solid</span> <span style="color:#960050;background-color:#1e0010">$</span>site-author-image-border-color;
+}
+</code></pre></div><p>首先要做的事就是把原头像图通过 css 样式改成圆形头像。通过修改 <code>border-radius</code> 属性就可以改图片四个角的圆角程度。另外针对不同内核的浏览器也能分别指定。再加上属性变化的动画效果 <code>transition</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">site-author-image</span> {
+    <span style="color:#66d9ef">border-radius</span>: <span style="color:#ae81ff">50</span><span style="color:#66d9ef">%</span>;
+    <span style="color:#66d9ef">-webkit-</span><span style="color:#66d9ef">border-radius</span>: <span style="color:#ae81ff">50</span><span style="color:#66d9ef">%</span>;
+    <span style="color:#66d9ef">-moz-</span><span style="color:#66d9ef">border-radius</span>: <span style="color:#ae81ff">50</span><span style="color:#66d9ef">%</span>;
+    <span style="color:#66d9ef">transition</span>: <span style="color:#ae81ff">1.4</span><span style="color:#66d9ef">s</span> <span style="color:#66d9ef">all</span>;
+}
+</code></pre></div><p>圆角效果完成后，再做 <code>hover</code> 动作。添加 <code>.site-author-image:hover</code> 样式，由 <code>rotate()</code> 方法实现，旋转 360°</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">site-author-image</span>:<span style="color:#a6e22e">hover</span> {
+    <span style="color:#66d9ef">-webkit-</span><span style="color:#66d9ef">transform</span>: rotate(<span style="color:#ae81ff">360</span><span style="color:#66d9ef">deg</span>);
+    <span style="color:#66d9ef">-moz-</span><span style="color:#66d9ef">transform</span>: rotate(<span style="color:#ae81ff">360</span><span style="color:#66d9ef">deg</span>);
+    <span style="color:#66d9ef">-ms-</span><span style="color:#66d9ef">transform</span>: rotate(<span style="color:#ae81ff">360</span><span style="color:#66d9ef">deg</span>);
+    <span style="color:#960050;background-color:#1e0010">-</span><span style="color:#66d9ef">transform</span>: rotate(<span style="color:#ae81ff">360</span><span style="color:#66d9ef">deg</span>);
+}
+</code></pre></div><p>OK，成就达成。</p>
+<h3 id="侧边滚动条">侧边滚动条</h3>
+<p><a href="https://github.com/litten/hexo-theme-yilia">Yilia</a> 也是 GitHub 上非常受欢迎的一款 Hexo 主题， 虽然我用的不是 Yilia 主题，但是不妨碍我喜欢它的侧边滚动条，灰色系的性冷淡风很契合我的小站。所以我就把这个样式挪到了我的小站里。
+为了不影响小站原主题的样式，最好不要直接在原有样式上做修改。在 <code>source/css/_custom</code> 里的 <code>custom.stl</code> 模板文件里编写对滚动条的自定义样式。不过有一点，自定义的滚动条只支持 webkit 内核的浏览器，比如 Firefox 和 IE 就爱莫能助了。当然，在 Chrome 上的体验完美！</p>
+<pre><code class="language-styl" data-lang="styl">// Custom styles.
+::-webkit-scrollbar {
+  width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-button {
+	width: 0;
+	height: 0;
+}
+::-webkit-scrollbar-button:start:increment,::-webkit-scrollbar-button:end:decrement {
+	display: none;
+}
+::-webkit-scrollbar-corner {
+	display: block;
+}
+::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	background-color: rgba(0,0,0,.2);
+}
+::-webkit-scrollbar-thumb:hover {
+	border-radius: 8px;
+	background-color: rgba(0,0,0,.5);
+}
+::-webkit-scrollbar-track,::-webkit-scrollbar-thumb {
+	border-right: 1px solid transparent;
+	border-left: 1px solid transparent;
+}
+::-webkit-scrollbar-track:hover {
+	background-color: rgba(0,0,0,.15);
+}
+::-webkit-scrollbar-button:start {
+	width: 10px;
+	height: 10px;
+	background: url(../images/scrollbar_arrow.png) no-repeat 0 0;
+}
+::-webkit-scrollbar-button:start:hover {
+	background: url(../images/scrollbar_arrow.png) no-repeat -15px 0;
+}
+::-webkit-scrollbar-button:start:active {
+	background: url(../images/scrollbar_arrow.png) no-repeat -30px 0;
+}
+::-webkit-scrollbar-button:end {
+	width: 10px;
+	height: 10px;
+	background: url(../images/scrollbar_arrow.png) no-repeat 0 -18px;
+}
+::-webkit-scrollbar-button:end:hover {
+	background: url(../images/scrollbar_arrow.png) no-repeat -15px -18px;
+}
+::-webkit-scrollbar-button:end:active {
+	background: url(../images/scrollbar_arrow.png) no-repeat -30px -18px;
+}
+</code></pre><p>前后对比
+<img src="https://o70e8d1kb.qnssl.com/scrollbars.png" alt=""></p>
+<h3 id="顶部阅读进度条">顶部阅读进度条</h3>
+<p>阅读进度条的宽度是随着页面上下滚动而变化的。当滚动条在顶部时，阅读进度条宽度为浏览器宽度的 0%，当滚动条在页面底部时，阅读进度条宽度为浏览器宽度的 100%。很简单，写好进度条的样式和高度计算的脚本就能轻松实现。
+先在 <code>layout/_partials/header.swig</code> 模板文件里加上进度条的 div：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;top-scroll-bar&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+</code></pre></div><p>在自定义样式文件 <code>source/css/_custom/custom.styl</code> 中加上 <code>.top-scroll-bar</code> 的样式，还是一如既往采用克制的灰色系：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">top-scroll-bar</span> {
+    <span style="color:#66d9ef">position</span>: <span style="color:#66d9ef">fixed</span>;
+    <span style="color:#66d9ef">top</span>: <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">left</span>: <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">z-index</span>: <span style="color:#ae81ff">9999</span>;
+    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">none</span>;
+    <span style="color:#66d9ef">width</span>: <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">height</span>: <span style="color:#ae81ff">2</span><span style="color:#66d9ef">px</span>;
+    <span style="color:#66d9ef">background</span>: <span style="color:#ae81ff">#6d6d6d</span>;
+}
+</code></pre></div><p>然后在新建自定义的 js 脚本文件 <code>source/js/src/custom/custom.js</code>，计算当前高度的百分比：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">$</span>(document).<span style="color:#a6e22e">ready</span>(<span style="color:#66d9ef">function</span> () {
+  <span style="color:#a6e22e">$</span>(window).<span style="color:#a6e22e">scroll</span>(<span style="color:#66d9ef">function</span>(){
+    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;.top-scroll-bar&#34;</span>).<span style="color:#a6e22e">attr</span>(<span style="color:#e6db74">&#34;style&#34;</span>, <span style="color:#e6db74">&#34;width: &#34;</span> <span style="color:#f92672">+</span> (<span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">this</span>).<span style="color:#a6e22e">scrollTop</span>() <span style="color:#f92672">/</span> (<span style="color:#a6e22e">$</span>(document).<span style="color:#a6e22e">height</span>() <span style="color:#f92672">-</span> <span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">this</span>).<span style="color:#a6e22e">height</span>()) <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;%; display: block;&#34;</span>);
+  });
+});
+</code></pre></div><p>再在 <code>layout/_scripts/commons.swig</code> 中把该文件引入进页面的模板中：</p>
+<pre><code class="language-swig" data-lang="swig">{%
+  set js_commons = [
+    'src/utils.js',
+    'src/motion.js',
+    'src/custom/custom.js'
+  ]
+%}
+
+{% for common in js_commons %}
+  &lt;script type=&quot;text/javascript&quot; src=&quot;{{ url_for(theme.js) }}/{{ common }}?v={{ theme.version }}&quot;&gt;&lt;/script&gt;
+{% endfor %}
+</code></pre><p>测试下，可以看到页面顶部出现了一道性感的阅读进度条。</p>
+<h3 id="页面加载进度条">页面加载进度条</h3>
+<p>前一段时间 GitHub 做了一次较大的更新，个人页面的连续 commit 提交天数被去掉了，还有在打开仓库文件时可以看到页面顶部增加了一条发光发亮的加载进度条。通过 Chrome 控制台可以看到，这条加载进度条是由下面的 HTML 代码展示的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;js-pjax-loader-bar&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pjax-loader-bar&#34;</span>&gt;
+  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;progress&#34;</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width: 100%;&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">div</span>&gt;
+</code></pre></div><p>思路跟上面的阅读进度条一样。不过需要更改计算进度条宽度的依据，根据资源加载的完成度来改变进度条的宽度，并且当宽度为 100% 时自动隐藏。GitHub 上已经有轮子可用，就是 <a href="https://github.com/rstacruz/nprogress">nprogress</a>，提供了 <code>nprogress.css</code> 和 <code>nprogress.js</code> 两个文件。因为是第三方的库，所以把这两个文件加进 <code>source/vendor/nprogress/</code> 目录下。
+在 <code>layout/_partials/head.swig</code> 模板中加入 <code>nprogress.css</code>：</p>
+<pre><code>{% set nprogress_uri = url_for(theme.vendors._internal + '/nprogress/nprogress.css') %}
+&lt;link href=&quot;{{ nprogress_uri }}&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+</code></pre><p>在 <code>layout/_scripts/vendors.swig</code> 模板中加入 <code>nprogress.js</code>：</p>
+<pre><code>{% set js_vendors.nprogress   = 'nprogress/nprogress.js' %}
+</code></pre><p>这样就完成了对 nprogress 样式和脚本的引入。在 <code>custom.js</code> 里加入页面加载进度条的脚本：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">$</span>(document).<span style="color:#a6e22e">ready</span>(<span style="color:#66d9ef">function</span> () {
+    <span style="color:#75715e">// 页面加载进度条
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">NProgress</span>.<span style="color:#a6e22e">start</span>();
+    window.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+        <span style="color:#a6e22e">NProgress</span>.<span style="color:#a6e22e">done</span>();
+    };
+});
+</code></pre></div><p>大功告成 :)</p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/frontend">Frontend</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/hexo">Hexo</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

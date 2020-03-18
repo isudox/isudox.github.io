@@ -94,6 +94,22 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>通过代理安装 AUR 软件包</h2>
+  </header>
+  <section class="entry-content">
+   <p>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。
+这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。
+就以上面提到的 atom-editor 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为
+# Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt; # Contributor: John Reese &lt;jreese@noswap.com&gt; # Upstream URL: https://github.com/atom/atom # # For improvements/fixes to this package, please send a pull request: # https://github.com/sjug/atom-editor pkgname=atom-editor pkgver=1.7.3 pkgrel=1 pkgdesc=&#39;Chrome-based text editor from Github&#39; arch=(&#39;x86_64&#39; &#39;i686&#39;) url=&#39;https://github.com/atom/atom&#39; license=(&#39;MIT&#39;) depends=(&#39;alsa-lib&#39; &#39;desktop-file-utils&#39; &#39;gconf&#39; &#39;gtk2&#39; &#39;libgnome-keyring&#39; &#39;libnotify&#39; &#39;libxtst&#39; &#39;nodejs&#39; &#39;nss&#39; &#39;python2&#39;) optdepends=(&#39;gvfs: file deletion support&#39;) makedepends=(&#39;git&#39; &#39;npm&#39;) conflicts=(&#39;atom-editor-bin&#39; &#39;atom-editor-git&#39;) install=atom....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>May 9, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/2016/05/09/install-aur-packages-by-proxy/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>移动端仿微信朋友圈发布图文</h2>
   </header>
   <section class="entry-content">
@@ -108,7 +124,7 @@ input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别�
   <footer class="entry-footer">
     <time>April 18, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-04-18-imitate-wechat-moment-on-mobile-device/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/"></a>
 </article>
 
 <article class="post-entry">
@@ -127,7 +143,7 @@ User 对象 User 对象是认证系统的核心。该对象一般抽象表示与
   <footer class="entry-footer">
     <time>March 22, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-03-22-using-the-django-authentication-system-zh/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/03/22/using-the-django-authentication-system-zh/"></a>
 </article>
 
 <article class="post-entry">
@@ -143,7 +159,7 @@ deb http://nginx.org/packages/debian/ codename nginx deb-src http://nginx....</p
   <footer class="entry-footer">
     <time>March 18, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-03-18-enable-http-2-on-nginx/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/03/18/enable-http-2-on-nginx/"></a>
 </article>
 
 <article class="post-entry">
@@ -156,7 +172,7 @@ deb http://nginx.org/packages/debian/ codename nginx deb-src http://nginx....</p
   <footer class="entry-footer">
     <time>March 17, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-03-17-front-end-optimization/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/03/17/front-end-optimization/"></a>
 </article>
 
 <article class="post-entry">
@@ -174,7 +190,7 @@ tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├�
   <footer class="entry-footer">
     <time>March 10, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-03-10-git-general-practice/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/03/10/git-general-practice/"></a>
 </article>
 
 <article class="post-entry">
@@ -191,7 +207,7 @@ String 先看 JDK 里的源码：...</p>
   <footer class="entry-footer">
     <time>February 17, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-02-17-difference-between-string-stringbuilder-stringbuffer/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/02/17/difference-between-string-stringbuilder-stringbuffer/"></a>
 </article>
 
 <article class="post-entry">
@@ -209,7 +225,7 @@ String 先看 JDK 里的源码：...</p>
   <footer class="entry-footer">
     <time>February 2, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-02-02-migrate-alidayu-to-py3-from-py2/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/02/02/migrate-alidayu-to-py3-from-py2/"></a>
 </article>
 
 <article class="post-entry">
@@ -226,7 +242,7 @@ Two Sum 第 1 题 Two Sum 算是简单题，题意大致为：
   <footer class="entry-footer">
     <time>November 23, 2015</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2015-11-23-leetcode-1st-week/"></a>
+  <a class="entry-link" href="https://isudox.com/2015/11/23/leetcode-1st-week/"></a>
 </article>
 
 <article class="post-entry">
@@ -244,23 +260,7 @@ HHKB，即 Happy Hacking Keyboard，透着复古气息的 Geek 范儿。如此�
   <footer class="entry-footer">
     <time>October 29, 2015</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2015-10-29-my-hhkb-pro2-type-s/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>小记 JavaScript 全局变量的一些思考</h2>
-  </header>
-  <section class="entry-content">
-   <p>毕业来 JD 后完成的第一个任务是写选号中心的前端。由于和 PM 没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用 JavaScript 全局变量，带来便利的同时也有意想不到的坑，更不应滥用，很多时候全局变量并不是一个好选择。
-一个很重要的原因就是，页面所引用的 JS 文件里所有变量和函数都是在同一个域(scope)中运行，重名的变量和函数被覆盖，bug 将随之而来。如果仅仅只是一个展示页或由个人独立开发的项目，这个问题或许并不明显，但对于团队开发，组件化开发而言，全局变量会是深埋的地雷，你不知道什么时候自己会踩上，或者下一时刻会是谁踩上。举个简单的栗子：
-// example1.js var vim_fan = true; var emacs_fan = false; function judge() { if (vim_fan &amp;&amp; emacs_fan) { alert(&#34;You must be burned!&#34;); } } // example2.js var emacs_fan = 1; 如果 HTML 页面里引用了这两个 JS 文件，那么这个既加入 Vim 党又加入 Emacs 党的人将被烧死。然而这种情况是不应该存在的。这就是 JavaScript 全局变量的隐患，尤其是在公司里团队开发，当你调用已有的组件时，往往是黑箱操作，当全局变量出现冲突时，就会引发未知错误。
-JavaScript 语法太过灵活，有时无意中就声明了一个全局变量，比如忘了加 var，或者像这样赋值 var a = b = 1;（值是传递了，但变量的生存期没有传递，b 变成了全局变量）。 对应的解决办法也很简单，同时也是很好的 JavaScript 编码习惯，因为同一域下的 JS 文件都不重名，当需要在当前 JS 文件里调用全局变量时，创建以该 JS 文件名命名的全局对象，在全局对象中添加属性。这样即使在同一域下其他 JS 文件中有同名属性，由于所属对象不同，也不会发生冲突。相当于是在一个域里各自圈地，互不相扰。...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>October 25, 2015</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2015-10-25-js-global-variables/"></a>
+  <a class="entry-link" href="https://isudox.com/2015/10/29/my-hhkb-pro2-type-s/"></a>
 </article>
 
 
@@ -284,7 +284,7 @@ JavaScript 语法太过灵活，有时无意中就声明了一个全局变量，
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
 <script src="https://isudox.com/highlight.min.js"></script>
 <script>

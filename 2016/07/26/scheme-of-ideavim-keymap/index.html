@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>JetBrains IDE Vim 模式的方案 - I sudo X</title>
+    
+    <meta name="description" content="之前的一篇博客翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 Ideavim，模拟 Vim 编辑器的操作。
+在安装 ideavim 插件后，IDE 可能会处在几种不同的模式下：
+ Vim 模拟器关闭模式（Vim Emulator off） Vim 模拟器开启模式（Vim Emulator on） Vim 命令模式（Command mode） Vim 插入模式（Insert mode） Vim 末行命令模式（Last line mode）  当关闭 Vim 模拟器时，IDE 的 Keymap 会恢复到安装 Ideavim 之前的状态，因此最好是在自己自定义设置并熟悉 IDE 自带的 keymap 后安装 Ideavim 插件。开启/关闭 Vim 模拟器的快捷键可以北自定义，默认的切换快捷键是 Ctrl &#43; Alt &#43; V，这个切换方式和 IDE 自带的快捷键冲突，可以考虑改成更合适的映射。我把切换 Vim 开关状态的快捷键修改成了 Ctrl &#43; ;，这样，如果 Caps 键映射成 Ctrl 键，左手右手一个慢动作，可以很方便的开启/关闭 Vim 模拟器。
+Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模拟器开启后，IDE 就拥有了 Vim 编辑器的强大功能（不是全部，但也很强大了）。Vim 的三个模式基本都耳熟能详了，命令模式下的键盘动作会被识别为命令，而不是字符输入，比如 a 进入 append 输入，i 进入 insert 输入，x 删除光标所在的字符，X 删除光标之前的字符，dd 删除光标所在行，yy 复制当前行，p 粘贴等。插入模式就是正常的文本输入编辑，Esc 键退出插入模式，或者 Ctrl &#43; [。末行命令模式是从命令模式下按 : 键进入，可以执行保存、退出、set:options 等操作。">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">JetBrains IDE Vim 模式的方案</h1>
+    <div class="post-meta">July 26, 2016</div>
+  </header>
+  <div class="post-content"><p>之前的一篇<a href="/2016/05/17/intellij-idea-keymap-zh/">博客</a>翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 <a href="https://github.com/JetBrains/ideavim">Ideavim</a>，模拟 Vim 编辑器的操作。</p>
+<!-- raw HTML omitted -->
+<p>在安装 ideavim 插件后，IDE 可能会处在几种不同的模式下：</p>
+<ul>
+<li>Vim 模拟器关闭模式（Vim Emulator off）</li>
+<li>Vim 模拟器开启模式（Vim Emulator on）</li>
+<li>Vim 命令模式（Command mode）</li>
+<li>Vim 插入模式（Insert mode）</li>
+<li>Vim 末行命令模式（Last line mode）</li>
+</ul>
+<p>当关闭 Vim 模拟器时，IDE 的 Keymap 会恢复到安装 Ideavim 之前的状态，因此最好是在自己自定义设置并熟悉 IDE 自带的 keymap 后安装 Ideavim 插件。开启/关闭 Vim 模拟器的快捷键可以北自定义，默认的切换快捷键是 <code>Ctrl</code> + <code>Alt</code> + <code>V</code>，这个切换方式和 IDE 自带的快捷键冲突，可以考虑改成更合适的映射。我把切换 Vim 开关状态的快捷键修改成了 <code>Ctrl</code> + <code>;</code>，这样，如果 <code>Caps</code> 键映射成 <code>Ctrl</code> 键，左手右手一个慢动作，可以很方便的开启/关闭 Vim 模拟器。</p>
+<p>Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模拟器开启后，IDE 就拥有了 Vim 编辑器的强大功能（不是全部，但也很强大了）。Vim 的三个模式基本都耳熟能详了，命令模式下的键盘动作会被识别为命令，而不是字符输入，比如 <code>a</code> 进入 append 输入，<code>i</code> 进入 insert 输入，<code>x</code> 删除光标所在的字符，<code>X</code> 删除光标之前的字符，<code>dd</code> 删除光标所在行，<code>yy</code> 复制当前行，<code>p</code> 粘贴等。插入模式就是正常的文本输入编辑，<code>Esc</code> 键退出插入模式，或者 <code>Ctrl</code> + <code>[</code>。末行命令模式是从命令模式下按 <code>:</code> 键进入，可以执行保存、退出、<code>set:options</code> 等操作。</p>
+<p>Vim 模拟器的很多快捷键都和 IDE 默认的快捷键有冲突，比如常用的 <code>Ctrl</code> + <code>C</code>，IDE 在第一次检测到快捷键冲突时会弹框让用户选择该快捷键的功能是 IDE 默认还是 Vim 模式，我的选择是尽量把冲突的快捷键定义为 Vim 模式，然后去修改 IDE 的默认快捷键。下面列了一张 vim 和 IDEA 快捷键的冲突表，并标注了自己的取舍修改方案——</p>
+<blockquote>
+<p>注：<code>Ctrl</code> <code>Alt</code> <code>Shift</code> 键下面用了缩写，比如 C + A 表示 Ctrl + A， C_A + A 表示 Ctrl + Alt + A，C_S + A 表示 Ctrl + Shift + A；
+标记有 √ 符的表示采用该快捷键，被<!-- raw HTML omitted -->标记划掉<!-- raw HTML omitted -->则表示舍去该方案，如果 Vim 内置快捷键中不包含该功能，则提供建议的替代方案来实现原功能；</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">JetBrains IDE 功能</th>
+<th align="center">Vim 功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Ctrl+2</td>
+<td align="center">Project Directory √</td>
+<td align="center"><!-- raw HTML omitted -->空缺<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+Shift+2</td>
+<td align="center">插入/取消标记 2 √</td>
+<td align="center"><!-- raw HTML omitted -->空缺<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+Shift+6</td>
+<td align="center">插入/取消标记 6 √</td>
+<td align="center"><!-- raw HTML omitted -->空缺<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+A</td>
+<td align="center">全选 √</td>
+<td align="center"><!-- raw HTML omitted -->光标所在数字递增<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+B</td>
+<td align="center">跳转至引用 √</td>
+<td align="center"><!-- raw HTML omitted -->向上翻一屏<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+C</td>
+<td align="center"><!-- raw HTML omitted -->复制<!-- raw HTML omitted --></td>
+<td align="center">退出插入模式 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+D</td>
+<td align="center"><!-- raw HTML omitted -->复写当前行<!-- raw HTML omitted --></td>
+<td align="center">向下翻半屏 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+E</td>
+<td align="center"><!-- raw HTML omitted -->打开最近的文档<!-- raw HTML omitted --> <strong>（改成 C_A + R）</strong></td>
+<td align="center">向下滚动行 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+F</td>
+<td align="center">查找 √</td>
+<td align="center"><!-- raw HTML omitted -->向下翻一屏<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+G</td>
+<td align="center"><!-- raw HTML omitted -->跳转到指定行<!-- raw HTML omitted --></td>
+<td align="center">打印当前文件名 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+H</td>
+<td align="center"><!-- raw HTML omitted -->当前类型的继承关系<!-- raw HTML omitted --> <strong>（改为 Alt + H）</strong></td>
+<td align="center">光标退格 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+I</td>
+<td align="center"><!-- raw HTML omitted -->Implement 方法<!-- raw HTML omitted --> <strong>（改为 Alt + I）</strong></td>
+<td align="center">跳转到 <a href="http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations">Jump List</a> 下一个位置 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+M</td>
+<td align="center"><!-- raw HTML omitted -->光标所在行滚动到屏幕中央<!-- raw HTML omitted --> <strong>（改为 Alt + M）</strong></td>
+<td align="center">移动到下一行的首个非空字符 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+N</td>
+<td align="center"><!-- raw HTML omitted -->查找指定 Class<!-- raw HTML omitted --> <strong>（改为 Alt + N）</strong></td>
+<td align="center">移动到下一行，光标相对位置不变 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+O</td>
+<td align="center"><!-- raw HTML omitted -->Override 方法<!-- raw HTML omitted --> <strong>（改为 Alt + O）</strong></td>
+<td align="center">跳转到 <a href="http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations">Jump List</a> 上一位置 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+P</td>
+<td align="center"><!-- raw HTML omitted -->Show/Hide path text<!-- raw HTML omitted --> <strong>（改为 Alt + P）</strong></td>
+<td align="center">移动到上一行，光标相对位置不变 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+Q</td>
+<td align="center"><!-- raw HTML omitted -->Quick Documentation<!-- raw HTML omitted --> <strong>（改为 C_A + Q）</strong></td>
+<td align="center">代替 Ctrl-V 开启 Visual</td>
+</tr>
+<tr>
+<td align="center">Ctrl+R</td>
+<td align="center"><!-- raw HTML omitted -->替换文本<!-- raw HTML omitted --> <strong>（改为 Alt + R）</strong></td>
+<td align="center">恢复上一次修改 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+S</td>
+<td align="center">保存全部改动 √</td>
+<td align="center"><!-- raw HTML omitted -->分割窗口<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+T</td>
+<td align="center"><!-- raw HTML omitted -->更新工程<!-- raw HTML omitted --> <strong>（改为 Alt + T）</strong></td>
+<td align="center">跳转到 <a href="http://vim.wikia.com/wiki/Browsing_programs_with_tags">Tag Stack</a> 上一位置 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+U</td>
+<td align="center"><!-- raw HTML omitted -->跳转至父类方法<!-- raw HTML omitted --> <strong>（改为 Alt + U）</strong></td>
+<td align="center">向上翻半屏 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+V</td>
+<td align="center">粘贴 √</td>
+<td align="center"><!-- raw HTML omitted -->开启 Visual 模式<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+W</td>
+<td align="center"><!-- raw HTML omitted -->智能选中<!-- raw HTML omitted --> <strong>（改为 Alt + W）</strong></td>
+<td align="center">窗口命令，后接具体指令</td>
+</tr>
+<tr>
+<td align="center">Ctrl+X</td>
+<td align="center">剪切 √</td>
+<td align="center"><!-- raw HTML omitted -->光标所在数字递减<!-- raw HTML omitted --></td>
+</tr>
+<tr>
+<td align="center">Ctrl+Y</td>
+<td align="center"><!-- raw HTML omitted -->删除光标所在行<!-- raw HTML omitted --></td>
+<td align="center">向上滚动行 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+[</td>
+<td align="center"><!-- raw HTML omitted -->光标移动到代码块的起始位置<!-- raw HTML omitted --> <strong>（改为 Alt + [）</strong></td>
+<td align="center">退出插入模式 √</td>
+</tr>
+<tr>
+<td align="center">Ctrl+]</td>
+<td align="center"><!-- raw HTML omitted -->光标移动到代码块的结束位置<!-- raw HTML omitted --> <strong>（改为 Alt + ]）</strong></td>
+<td align="center">跳转到关键字的声明处 √</td>
+</tr>
+</tbody>
+</table>
+<p>上述所有冲突的快捷键尽量保留 Vim 功能，而 IDE 原有的快捷键功能会被覆盖掉。其中部分被覆盖掉的 IDE 快捷键非常有用，建议重新绑定新的快捷键映射。比如 Ctrl+H 原来绑定的查看当前类型的继承关系，Ctrl+W 智能选中，都是非常好用的功能，而且在 Vim 中没有提供的。</p>
+<p><img src="https://o70e8d1kb.qnssl.com/ideavim-keymap.png" alt="ideavim-conflict-keymap"></p>
+<p>还有一个细节可能会造成困扰，就是当 Vim 模拟器关闭时，光标是呈竖条状；Vim 模拟器开启时，光标在命令模式时呈竖块状，在插入模式时呈竖条状。这就导致一个问题，当光标是竖条状时，怎么知道当前是处在 Vim 模拟器关闭状态，还是 Vim 模拟器的插入模式呢？
+暂时还没想到特别聪明的办法，不过笨一点可以在不知道当前是那个编辑状态时，按 Esc 键，如果光标变成竖块状，就证明 Vim 模拟器是开启状态，否则就是关闭状态。</p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/vim">Vim</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/jetbrains">JetBrains</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

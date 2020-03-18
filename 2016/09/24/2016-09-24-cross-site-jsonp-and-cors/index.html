@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>跨域请求之 JSONP 和 CORS - I sudo X</title>
+    
+    <meta name="description" content="Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。
+首先理清一个经常会被混淆的概念，AJAX(Asynchronous JavaScript and XML) 和跨域请求是两个不同的概念，AJAX 是异步请求和解析处理 XML 文档的方式，它在服务器端没有提供支持（CORS 是一种解决方案）的前提下，也是无法跨域的。
+跨域请求 跨域请求，顾名思义，就是从 A 地址向非同源的 B 地址发起了请求。参考 MDN 上对同源的定义:
+ 如果两个页面拥有相同的协议（protocol），端口（如果指定）和主机，那么这两个页面就属于同一个源（origin）。
+ MDN 给了同源检测的示例，如果是相对 http://store.company.com/dir/page.html，那么
+   URL 结果 原因     http://store.company.com/dir2/other.html 成功    http://store.company.com/dir/inner/another.html 成功    https://store.company.com/secure.html 失败 协议不同   http://store.company.com:81/dir/etc.html 失败 端口不同   http://news.company.com/dir/other.html 失败 主机名不同    严格的说，浏览器并不是拒绝所有的跨域请求，否则如果想从百度搜索结果页跳转到其他页面就是个伪命题，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：
+ 通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向； 通常浏览器允许跨域资源嵌入（Cross-origin embedding），如 img、script 标签； 通常浏览器不允许跨域读操作（Cross-origin reads）。  对于跨域资源的嵌入，实际开发中用的非常频繁，从外部引入 js、css、img 这些静态文件，都是被浏览器接受的。">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">跨域请求之 JSONP 和 CORS</h1>
+    <div class="post-meta">September 24, 2016</div>
+  </header>
+  <div class="post-content"><p>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>(JSON with Padding) 和 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a>(Cross-Origin Resource Sharing)。</p>
+<!-- raw HTML omitted -->
+<p>首先理清一个经常会被混淆的概念，AJAX(Asynchronous JavaScript and XML) 和跨域请求是两个不同的概念，AJAX 是异步请求和解析处理 XML 文档的方式，它在服务器端没有提供支持（CORS 是一种解决方案）的前提下，也是无法跨域的。</p>
+<h3 id="跨域请求">跨域请求</h3>
+<p>跨域请求，顾名思义，就是从 A 地址向非同源的 B 地址发起了请求。参考 MDN 上对同源的定义:</p>
+<blockquote>
+<p>如果两个页面拥有相同的协议（protocol），端口（如果指定）和主机，那么这两个页面就属于同一个源（origin）。</p>
+</blockquote>
+<p>MDN 给了同源检测的示例，如果是相对 <a href="http://store.company.com/dir/page.html">http://store.company.com/dir/page.html</a>，那么</p>
+<table>
+<thead>
+<tr>
+<th align="center">URL</th>
+<th align="center">结果</th>
+<th align="center">原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><a href="http://store.company.com/dir2/other.html">http://store.company.com/dir2/other.html</a></td>
+<td align="center">成功</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a href="http://store.company.com/dir/inner/another.html">http://store.company.com/dir/inner/another.html</a></td>
+<td align="center">成功</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a href="https://store.company.com/secure.html">https://store.company.com/secure.html</a></td>
+<td align="center">失败</td>
+<td align="center">协议不同</td>
+</tr>
+<tr>
+<td align="center"><a href="http://store.company.com">http://store.company.com</a>:81/dir/etc.html</td>
+<td align="center">失败</td>
+<td align="center">端口不同</td>
+</tr>
+<tr>
+<td align="center"><a href="http://news.company.com/dir/other.html">http://news.company.com/dir/other.html</a></td>
+<td align="center">失败</td>
+<td align="center">主机名不同</td>
+</tr>
+</tbody>
+</table>
+<p>严格的说，浏览器并不是拒绝所有的跨域请求，否则如果想从百度搜索结果页跳转到其他页面就是个伪命题，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：</p>
+<ul>
+<li>通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向；</li>
+<li>通常浏览器允许跨域资源嵌入（Cross-origin embedding），如 <code>img</code>、<code>script</code> 标签；</li>
+<li>通常浏览器不允许跨域读操作（Cross-origin reads）。</li>
+</ul>
+<p>对于跨域资源的嵌入，实际开发中用的非常频繁，从外部引入 js、css、img 这些静态文件，都是被浏览器接受的。</p>
+<p>下面对浏览器的同源策略做个测试，探探究竟。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// cross-origin request
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://search.jd.com/Search?keyword=python&amp;enc=utf-8&amp;wq=python&#34;</span>;
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">request</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#a6e22e">url</span>);
+<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">send</span>(<span style="color:#66d9ef">null</span>);
+</code></pre></div><p>浏览器控制台会出现错误信息（信息中的 Origin 为 null 是因为我是用浏览器直接打开 html，而不是通过 http server 访问 html）：</p>
+<blockquote>
+<p>XMLHttpRequest cannot load <a href="http://search.jd.com/Search?keyword=python&amp;enc=utf-8&amp;wq=python">http://search.jd.com/Search?keyword=python&amp;enc=utf-8&amp;wq=python</a>. No &lsquo;Access-Control-Allow-Origin&rsquo; header is present on the requested resource. Origin &lsquo;null&rsquo; is therefore not allowed access.</p>
+</blockquote>
+<p>该请求来源的 Origin 不在可允许范围内，这种情况就是跨域请求被拒。下面是一个简单的本地 http server：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// local http server writtern by Node.js
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">8080</span>; 
+
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">handleRequest</span>(<span style="color:#a6e22e">request</span>, <span style="color:#a6e22e">response</span>){
+    <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">end</span>(<span style="color:#e6db74">&#39;Hello&#39;</span>);
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;request url: &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">url</span>);
+}
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">createServer</span>(<span style="color:#a6e22e">handleRequest</span>);
+<span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#a6e22e">PORT</span>, <span style="color:#66d9ef">function</span>(){
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Server listening on: http://localhost:%s&#34;</span>, <span style="color:#a6e22e">port</span>);
+});
+</code></pre></div><p><code>node simple-server.js</code> 运行，把请求的 URL 改成 http://localhost:8080，可以看到命令行终端输出日志，这就表明，请求实际上是从浏览器发出了，服务器也接收到了请求，但是浏览器在读取跨域返回的数据时被拒绝了。这就印证了 MDN 文档上说明的，浏览器不允许跨域读操作。</p>
+<h3 id="jsonp">JSONP</h3>
+<p>JSONP 并不在 HTML 的标准里，而是开发者为了实现跨域请求而创造的一个 trick。在 HTML 中，可以通过 &ldquo;src&rdquo;、&ldquo;img&rdquo; 标签引入非同源的静态资源，这就给 JSONP 的实现提供了可能。</p>
+<p>JSONP 的实现很简单，需要客户端和服务端配合。客户端在 HTML 中动态生成 <code>script</code> 标签，在 &ldquo;src&rdquo; 中引入请求的 URL + 回调函数，这样请求服务器返回的数据会交由回调函数处理，这样就实现了跨域读请求；服务端在接收到客户端请求后，首先取得客户端要回调的函数名，再生成 JavaScript 代码段返回给浏览器，浏览器在获取到返回结果后直接调用回调函数完成任务。</p>
+<p>手写一段简陋的 JS 代码演示下 JSONP 的整个流程：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">handleCallback</span>(<span style="color:#a6e22e">result</span>) {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">message</span>);
+}
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">jsonp</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;script&#39;</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ele</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;demo&#39;</span>);
+<span style="color:#a6e22e">jsonp</span>.<span style="color:#a6e22e">type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;text/javascript&#39;</span>;
+<span style="color:#a6e22e">jsonp</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://localhost:8080?callback=handleCallback&#39;</span>;
+<span style="color:#a6e22e">ele</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">jsonp</span>);
+<span style="color:#a6e22e">ele</span>.<span style="color:#a6e22e">removeChild</span>(<span style="color:#a6e22e">jsonp</span>);
+</code></pre></div><p>JSONP 只支持 GET 请求，而且需要服务器端来配合，如果服务器端返回一段恶意代码，客户端也会毅然决然的执行……JSONP 是一个伟大的创造，但还不够好。</p>
+<h3 id="cors">CORS</h3>
+<p>CORS 是W3C 推荐的一种新的官方方案，能是服务器支持 XMLHttpRequest 的跨域请求。CORS 实现起来非常方便，只需要增加一些 HTTP 头，让服务器能声明允许的访问来源。</p>
+<p>浏览器对 CORS 的使用场景做了区分，有简单请求和非简单请求之分。MDN 对简单请求的定义条件是：</p>
+<ul>
+<li>只使用 GET, HEAD 或者 POST 请求方法。如果使用 POST 向服务器端传送数据，则数据类型(Content-Type)只能是 application/x-www-form-urlencoded, multipart/form-data 或 text/plain中的一种；</li>
+<li>不会使用自定义请求头；</li>
+</ul>
+<p>浏览器（支持 CORS）对简单的跨域请求，会在请求头里加上 <code>Origin</code> 字段，向服务器说明请求源信息，包括协议、域名和端口，由服务器判断请求源是否在允许的域中。</p>
+<p>编写一个简单请求，跨域获取信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://ipinfo.io/54.169.237.109/json?token=iplocation.net&#34;</span>;
+<span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajax</span>({
+    <span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">url</span>
+});
+</code></pre></div><p>查看请求头信息：</p>
+<pre><code>Accept:*/*
+Accept-Encoding:gzip, deflate, sdch, br
+Accept-Language:zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4
+Cache-Control:max-age=0
+Connection:keep-alive
+DNT:1
+Host:ipinfo.io
+Origin:https://isudox.com
+Referer:https://isudox.com/test.html
+User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/52.0.2743.116 Chrome/52.0.2743.116 Safari/537.36
+</code></pre><p>浏览器自动给请求头添加了 <code>Origin</code> 字段，请求的服务端如果允许来自该 <code>Origin</code> 来源的请求，就会在响应头中添加 <code>Access-Control-Allow-Origin</code> 字段，参考上面请求的响应头：</p>
+<pre><code>Access-Control-Allow-Origin:*
+Connection:keep-alive
+Content-Encoding:gzip
+Content-Length:231
+Content-Type:application/json; charset=utf-8
+Server:nginx/1.8.1
+X-Content-Type-Options:nosniff
+</code></pre><p><code>Access-Control-Allow-Origin</code> 字段表明服务器接受来自任何请求源的跨域请求。因此，通过客户端的 <code>Origin</code> 和 服务端的 <code>Access-Control-Allow-Origin</code> 实现了跨域的 XMLHttpRequest 请求。</p>
+<p>MDN 对非简单请求的定义条件为</p>
+<ul>
+<li>以 GET、HEAD、或者 POST 以外的方法发起，或者是请求数据为 application/x-www-form-urlencoded, multipart/form-data 或者 text/plain 以外的数据类型；</li>
+<li>使用自定义请求头（比如添加诸如 X-PINGOTHER）</li>
+</ul>
+<p>非简单请求会先向服务器发送一个 <code>OPTIONS</code> 的“预请求”（preflight），来确认该跨域请求是否能被服务端允许，如果允许，则继续发送费简单请求，否则，XMLHttpRequest 的 onerror 回调函数会捕获到错误信息。</p>
+<p>编写一个非简单请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://aruner.net/resources/access-control-with-post-preflight/&#39;</span>;
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#39;POST&#39;</span>, <span style="color:#a6e22e">url</span>, <span style="color:#66d9ef">true</span>);
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">setRequestHeader</span>(<span style="color:#e6db74">&#39;X-PINGOTHER&#39;</span>, <span style="color:#e6db74">&#39;pingpong&#39;</span>);
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">setRequestHeader</span>(<span style="color:#e6db74">&#39;Content-Type&#39;</span>, <span style="color:#e6db74">&#39;application/xml&#39;</span>);
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>(); 
+</code></pre></div><p>预请求的请求头：</p>
+<pre><code>OPTIONS /resources/post-here/ HTTP/1.1
+Host: bar.com
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Connection: keep-alive
+Origin: http://foo.example
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: X-PINGOTHER
+</code></pre><p>预请求由 <code>OPTIONS</code> 请求发出，<code>Access-Control-Request-Method</code> 字段标识跨域请求的方式，<code>Access-Control-Request-Headers</code> 字段标识跨域请求的自定义请求头名称，再加上 <code>Origin</code> 字段，服务端就能判断还没正式发过来的跨域请求是否是安全可允许的。</p>
+<p>如果服务端允许该跨域请求，其响应头类似如下形式：</p>
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 01 Dec 2008 01:15:39 GMT
+Server: Apache/2.0.61 (Unix)
+Access-Control-Allow-Origin: http://foo.com
+Access-Control-Allow-Methods: POST, GET, OPTIONS
+Access-Control-Allow-Headers: X-PINGOTHER
+Access-Control-Max-Age: 1728000
+Vary: Accept-Encoding, Origin
+Content-Encoding: gzip
+Content-Length: 0
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+Content-Type: text/plain
+</code></pre><p>其中，响应头中的 <code>Access-Control-*</code> 字段的具体含义如下：</p>
+<ul>
+<li><code>Access-Control-Allow-Origin</code> 标识可接受的跨域请求源；</li>
+<li><code>Access-Control-Allow-Methods</code> 标识可接受的跨域请求方法；</li>
+<li><code>Access-Control-Allow-Headers</code> 标识可接受的跨域请求自定义头；</li>
+<li><code>Access-Control-Max-Age</code> 标识本次预请求的有效时间（秒），期间内无需再发送预请求；</li>
+</ul>
+<p>如果拒绝该跨域请求，错误信息也会被 <code>onerror</code> 回调捕获。</p>
+<p>XMLHttpRequest 请求可以发送凭证请求（HTTP Cookies 和验证信息），通常不会跨域发送凭证信息，但也有一些情况需要打通不同的登录态，可以把 XMLHttpRequest 的 <code>withCredentials</code> 设置为 <code>true</code>，这样浏览器就能跨域发送凭证信息。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
+<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">withCredentials</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</code></pre></div><p>服务端返回的响应头中的 <code>Access-Control-Allow-Credentials</code> 字段存在且为 <code>true</code> 时，浏览器才会将响应结果传递给客户端程序。另外，<code>Access-Control-Allow-Origin</code> 必须指定请求源的域名，否则响应失败。</p>
+<pre><code>HTTP/1.1 200 OK
+Access-Control-Allow-Origin: http://foo.com
+Access-Control-Allow-Credentials: true
+Set-Cookie: pageAccess=3; expires=Wed, 31-Dec-2008 01:34:53 GMT
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+Content-Type: text/plain
+</code></pre><hr>
+<p>参考：</p>
+<ul>
+<li>Mozilla Developer Network</li>
+<li>阮一峰的网络日志</li>
+</ul>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/frontend">Frontend</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/javascript">JavaScript</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

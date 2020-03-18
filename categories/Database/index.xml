@@ -13,10 +13,10 @@
     
     <item>
       <title>开始使用 PostgreSQL</title>
-      <link>https://isudox.com/posts/2016-07-22-guide-for-postgresql-beginners/</link>
+      <link>https://isudox.com/2016/07/22/guide-for-postgresql-beginners/</link>
       <pubDate>Fri, 22 Jul 2016 10:49:49 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-07-22-guide-for-postgresql-beginners/</guid>
+      <guid>https://isudox.com/2016/07/22/guide-for-postgresql-beginners/</guid>
       <description>最近开始做的一个课余项目用 Flask + PostgreSQL + Bootstrap 快速开发。之前本地开发和生产部署都用 MySQL，而 PostgreSQL 是关系型数据库阵营中的另一大高手。这俩的口号放在一起看相当好玩。
 一个自称 &amp;ldquo;The world&amp;rsquo;s most popular open source database&amp;rdquo;，另一个自称 &amp;ldquo;The world&amp;rsquo;s most advanced open source database&amp;rdquo;。论针锋相对，我就服这俩。→_→
 至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细，顺便还拉上了 SQLite。 SQLite vs MySQL vs PostgreSQL: A Comparison Of Relational Database Management Systems

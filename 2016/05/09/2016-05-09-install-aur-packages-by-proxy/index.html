@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>通过代理安装 AUR 软件包 - I sudo X</title>
+    
+    <meta name="description" content="Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。
+这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。
+就以上面提到的 atom-editor 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为
+# Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt; # Contributor: John Reese &lt;jreese@noswap.com&gt; # Upstream URL: https://github.com/atom/atom # # For improvements/fixes to this package, please send a pull request: # https://github.com/sjug/atom-editor pkgname=atom-editor pkgver=1.7.3 pkgrel=1 pkgdesc=&#39;Chrome-based text editor from Github&#39; arch=(&#39;x86_64&#39; &#39;i686&#39;) url=&#39;https://github.com/atom/atom&#39; license=(&#39;MIT&#39;) depends=(&#39;alsa-lib&#39; &#39;desktop-file-utils&#39; &#39;gconf&#39; &#39;gtk2&#39; &#39;libgnome-keyring&#39; &#39;libnotify&#39; &#39;libxtst&#39; &#39;nodejs&#39; &#39;nss&#39; &#39;python2&#39;) optdepends=(&#39;gvfs: file deletion support&#39;) makedepends=(&#39;git&#39; &#39;npm&#39;) conflicts=(&#39;atom-editor-bin&#39; &#39;atom-editor-git&#39;) install=atom.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">通过代理安装 AUR 软件包</h1>
+    <div class="post-meta">May 9, 2016</div>
+  </header>
+  <div class="post-content"><p>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 <a href="https://wiki.archlinux.org/index.php/Arch_User_Repository">AUR</a>(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。</p>
+<!-- raw HTML omitted -->
+<p>这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。</p>
+<p>就以上面提到的 <a href="https://aur.archlinux.org/packages/atom-editor/">atom-editor</a> 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为</p>
+<pre><code># Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt;
+# Contributor: John Reese &lt;jreese@noswap.com&gt;
+# Upstream URL: https://github.com/atom/atom
+#
+# For improvements/fixes to this package, please send a pull request:
+# https://github.com/sjug/atom-editor
+
+pkgname=atom-editor
+pkgver=1.7.3
+pkgrel=1
+pkgdesc='Chrome-based text editor from Github'
+arch=('x86_64' 'i686')
+url='https://github.com/atom/atom'
+license=('MIT')
+depends=('alsa-lib' 'desktop-file-utils' 'gconf' 'gtk2' 'libgnome-keyring' 'libnotify' 'libxtst' 'nodejs' 'nss' 'python2')
+optdepends=('gvfs: file deletion support')
+makedepends=('git' 'npm')
+conflicts=('atom-editor-bin' 'atom-editor-git')
+install=atom.install
+source=(&quot;https://github.com/atom/atom/archive/v${pkgver}.tar.gz&quot;
+        'package.patch')
+sha256sums=('5074b59ddaca5525eb48098dee6fe63013799cbc77749add314b9e1bc894b8f4'
+            'ab27ab817f67043e98298d525efb6a417dea07f4012b6dfb7cf6a538f9b50bab')
+
+prepare() {
+  cd &quot;atom-$pkgver&quot;
+
+  patch -Np0 -i &quot;$srcdir/package.patch&quot;
+
+  sed -i -e &quot;/exception-reporting/d&quot; \
+      -e &quot;/metrics/d&quot; package.json
+
+  sed -e &quot;s/&lt;%= description %&gt;/$pkgdesc/&quot; \
+    -e &quot;s|&lt;%= appName %&gt;|Atom|&quot;\
+    -e &quot;s|&lt;%= installDir %&gt;/share/&lt;%= appFileName %&gt;|/usr/bin|&quot;\
+    -e &quot;s|&lt;%= iconPath %&gt;|atom|&quot;\
+    resources/linux/atom.desktop.in &gt; resources/linux/Atom.desktop
+}
+
+build() {
+  cd &quot;$srcdir/atom-$pkgver&quot;
+
+  export PYTHON=python2
+  script/build --build-dir &quot;$srcdir/atom-build&quot;
+}
+
+package() {
+  cd &quot;$srcdir/atom-$pkgver&quot;
+
+  script/grunt install --build-dir &quot;$srcdir/atom-build&quot; --install-dir &quot;$pkgdir/usr&quot;
+
+  install -Dm644 resources/linux/Atom.desktop &quot;$pkgdir/usr/share/applications/atom.desktop&quot;
+  install -Dm644 resources/app-icons/stable/png/1024.png &quot;$pkgdir/usr/share/pixmaps/atom.png&quot;
+  install -Dm644 LICENSE.md &quot;$pkgdir/usr/share/licenses/$pkgname/LICENSE.md&quot;
+}
+</code></pre><p>脚本内容很清晰，注明了软件包的说明，下载路径，依赖/冲突关系和安装命令。很显然，安装失败的原因就是因为国内网络无法连接上 atom 的安装包下载地址 <a href="https://github.com/atom/atom/archive/v1.7.3.tar.gz">https://github.com/atom/atom/archive/v1.7.3.tar.gz</a>。
+AUR 包的安装需要在包目录下执行</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">makepkg -sri
+</code></pre></div><p>因此得修改 makepkg 的配置，使得 makepkg 在调用下载程序时能通过 Proxy 翻过防火墙的阻碍。makepkg 的配置文件位于 <code>/etc/makepkg.conf</code>，找到 DLAGENT 字段</p>
+<pre><code>#-- The download utilities that makepkg should use to acquire sources
+#  Format: 'protocol::agent'
+DLAGENTS=('ftp::/usr/bin/curl -fC - --ftp-pasv --retry 3 --retry-delay 3 -o %o %u'
+          'http::/usr/bin/curl -fLC - --retry 3 --retry-delay 3 -o %o %u'
+          'https::/usr/bin/curl -fLC - --retry 3 --retry-delay 3 -o %o %u'
+          'rsync::/usr/bin/rsync --no-motd -z %u %o'
+          'scp::/usr/bin/scp -C %u %o')
+</code></pre><p>DLAGENT 顾名思义就是 Download Agent 的意思，这个字段指定了不同网络协议的下载工具和下载参数，默认是调用 curl 下载。现在只需要让 curl 通过 Proxy 而非直连的方式去下载 PKGBUILD 里设置的软件包即可。查看 curl 命令的参数用法</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -h | grep socks
+     --socks4 HOST<span style="color:#f92672">[</span>:PORT<span style="color:#f92672">]</span>  SOCKS4 proxy on given host + port
+     --socks4a HOST<span style="color:#f92672">[</span>:PORT<span style="color:#f92672">]</span>  SOCKS4a proxy on given host + port
+     --socks5 HOST<span style="color:#f92672">[</span>:PORT<span style="color:#f92672">]</span>  SOCKS5 proxy on given host + port
+     --socks5-hostname HOST<span style="color:#f92672">[</span>:PORT<span style="color:#f92672">]</span>  SOCKS5 proxy, pass host name to proxy
+     --socks5-gssapi-service NAME  SOCKS5 proxy service name <span style="color:#66d9ef">for</span> GSS-API
+     --socks5-gssapi-nec  Compatibility with NEC SOCKS5 server
+</code></pre></div><p>因为我搭的 Proxy 是通过 socks5，所以在 makepkg.conf 配置文件里的 DLAGENT 字段中加上 <code>--socks5 127.0.0.1:1080</code> 参数就行了。最后测试一把：</p>
+<p><img src="https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-1.png" alt="Imgur"></p>
+<p><img src="https://o70e8d1kb.qnssl.com/install-aur-packages-by-proxy-2.png" alt="Imgur"></p>
+<p>大功告成，喜大普奔！</p>
+<p>另外，也可以自定义下载工具，比如 axel 就是很好的替代选择，可以设置多线程下载，速度非常快。</p>
+<p>没有自由，何谈快乐！</p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/proxy">Proxy</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

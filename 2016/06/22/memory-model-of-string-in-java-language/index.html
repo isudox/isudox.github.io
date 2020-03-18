@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Java String 的内存模型 - I sudo X</title>
+    
+    <meta name="description" content="在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。
+字符串比较 字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：
+String s1 = &#34;hello,world!&#34;; // 通过字面值 String s2 = new String(&#34;hello,world!&#34;); // 通过 new 关键字 字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：
+public class Debug { public static void main(String[] args) { String s1 = &#34;hello,world!&#34;; String s2 = new String(&#34;hello,world!&#34;); System.out.println(s1 == s2); // false  System.out.println(Objects.equals(s1, s2)); // true  } } 值都是 &ldquo;hello,world!&rdquo; 的字符串，然而两种比较的方式所得到的结果却不相同。字符串 s1 是通过字面值创建，字符串 s2 是通过关键字 new 创建，在分析这两种创建字符串方式的区别之前，先比较下 == 操作符和 equals() 方法在进行字符串比较时的差异。">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Java String 的内存模型</h1>
+    <div class="post-meta">June 22, 2016</div>
+  </header>
+  <div class="post-content"><p>在之前写的一篇博客中(<a href="/2016/02/17/difference-between-string-stringbuilder-stringbuffer/">String, StringBuilder, StringBuffer 区别</a>)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。</p>
+<!-- raw HTML omitted -->
+<h4 id="字符串比较">字符串比较</h4>
+<p>字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 通过字面值
+</span><span style="color:#75715e"></span>String s2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">);</span> <span style="color:#75715e">// 通过 new 关键字
+</span></code></pre></div><p>字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Debug</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">;</span>
+        String s2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s2<span style="color:#f92672">);</span> <span style="color:#75715e">// false
+</span><span style="color:#75715e"></span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>s1<span style="color:#f92672">,</span> s2<span style="color:#f92672">));</span> <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>值都是 &ldquo;hello,world!&rdquo; 的字符串，然而两种比较的方式所得到的结果却不相同。字符串 s1 是通过字面值创建，字符串 s2 是通过关键字 new 创建，在分析这两种创建字符串方式的区别之前，先比较下 <code>==</code> 操作符和 <code>equals()</code> 方法在进行字符串比较时的差异。</p>
+<p><code>==</code> 操作符比较的是两个对象的引用是否指向同一内存地址，如果内存地址相同，则返回 true；<code>equals()</code> 比较的只是两个字符串对象的引用指向的内存地址所存储的字面值，而忽略内存地址是否相同。这样再去看上面的代码，从输出结果逆推，s1 和 s2 的引用的值都是 &ldquo;hello,world!&quot;，因此调用 <code>equals()</code> 比较返回 true 不难理解，那 s1 和 s2 内存地址不同，又该怎么解释，下面就进入正题，探讨 Java 里 String 在内存中的存储模型。</p>
+<h4 id="内存模型">内存模型</h4>
+<p>内存有栈和堆这两个概念：</p>
+<ul>
+<li>栈 <a href="https://en.wikipedia.org/wiki/Stack-based_memory_allocation">statck</a>: 栈区是内存中遵循先进后出（LIFO）原则的一块存储区域。在现代计算机系统中，每个线程在内存中都保有自己的一段栈空间。栈区存储基本类型，int, short, long, byte, float, double, boolean, char（注意，不包括 String，String 不是基本类型），以及对象的引用，比如 <code>int a = 1;</code> a 和 1 都存储在栈区，<code>Date date = new Date();</code> date 存储在栈区， new Date() 的对象则存储在堆区。线程中方法的调用也记录在栈区中，使得方法的结果能返回到正确的位置。栈区内存由系统自动分配并释放；</li>
+<li>堆 <a href="https://en.wikipedia.org/wiki/Memory_management#HEAP">heap</a>: 堆区存放由用户通过 new 操作创建的对象。系统不会自动释放堆区内存，比如 C++ 中执行 <code>new</code> 分配内存，执行 <code>delete</code> 释放被占用的内存。Java 因为 GC 机制，由 JVM 承担了手动释放内存的操作。</li>
+</ul>
+<p>栈因为严格遵循 LIFO， 其存取速度明显快于堆区。但栈区的数据和生命周期是在编译时就确定的，而堆区则可以在运行时动态分配内存空间。</p>
+<p>下图展示了堆区和栈区存储内容的差异，图片来自 vikashazrati.files.wordpress.com
+<img src="https://o70e8d1kb.qnssl.com/stacknheap.png" alt=""></p>
+<p>用接近系统底层的 C++ 语言程序简单演示下堆区和栈区分配内存的示例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// example.cpp
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">foo</span>()
+{
+    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>pBuffer; <span style="color:#75715e">// 没有分配空间，除了指针本身，它被分配在了栈区
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> b <span style="color:#f92672">=</span> true; <span style="color:#75715e">// 分配在栈区
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span>(b)
+    {
+        <span style="color:#75715e">// 在栈区分配 500 byte 空间
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">char</span> buffer[<span style="color:#ae81ff">500</span>];
+        <span style="color:#75715e">// 在堆区分配 500 byte 空间
+</span><span style="color:#75715e"></span>        pBuffer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">char</span>[<span style="color:#ae81ff">500</span>];
+    } <span style="color:#75715e">// buffer 的内存被释放, pBuffer 的还存在
+</span><span style="color:#75715e"></span>} <span style="color:#75715e">// 如果没有执行 delete[] pBuffer，就会发生内存泄漏;
+</span></code></pre></div><p>通过字面值和 <code>new</code> 关键字创建字符串对象引用 s1、s2 和字符串 &ldquo;hello,world!&rdquo; 分别都存储在内存什么地方，一个个分析。
+字符串 &ldquo;hello,world!&rdquo; 在堆区申请空间存储，因为字符串是常量具有不可变性，它被存储在堆区的一块名叫 &ldquo;String Constant Pool&rdquo; 的字符串常量池中，字符串常量池中的字符串只存在一份，即如果常量池中已存在 &ldquo;hello,world!&quot;，那么 s1 不会在常量池中申请新的空间，而是直接把引用指向已存在的字符串内存地址。另外，s1 是字符串 &ldquo;hello,world!&rdquo; 的引用，存储在栈区。前面讲到，由关键字 <code>new</code> 创建的对象被分配在了堆区，但和字面值赋值不同的是，<code>new</code> 出来的对象不只是在分配在堆区的字符串常量池，在 <code>new</code> 一个新的 String 对象时，首先会在堆区创建该 String 对象，并让栈区的对象引用指向它，然后在常量池中查询是否已存在相同内容的字符串，如果有，就将堆区的空间和常量池中的空间通过 <code>String.inter()</code> 关联起来，如果没有，则在常量池中申请空间存放该字符串对象，再做关联。参考下面的代码和实例图。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;abc&#34;</span><span style="color:#f92672">;</span> 
+String s2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;xyz&#34;</span><span style="color:#f92672">;</span>
+String s3 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;123&#34;</span><span style="color:#f92672">;</span>
+String s4 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">;</span>
+
+String s5 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;abc&#34;</span><span style="color:#f92672">);</span>
+<span style="color:#66d9ef">char</span><span style="color:#f92672">[]</span> c <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#39;J&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;V&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">};</span>
+String s6 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+String s7 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> StringBuffer<span style="color:#f92672">());</span>
+</code></pre></div><p><img src="https://o70e8d1kb.qnssl.com/String-Constant-Pool.png" alt=""></p>
+<h4 id="测试结果">测试结果</h4>
+<p>梳理了那么多理论，还是要用实践来印证。测试下面的代码，看看结果如何——</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestString</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 由字面值创建字符串
+</span><span style="color:#75715e"></span>        String s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">;</span>
+        String s2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s2<span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>s1<span style="color:#f92672">,</span> s2<span style="color:#f92672">));</span>
+        <span style="color:#75715e">// 由 new 关键字创建字符串
+</span><span style="color:#75715e"></span>        String s3 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">);</span>
+        String s4 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s3 <span style="color:#f92672">==</span> s4<span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>s3<span style="color:#f92672">,</span> s4<span style="color:#f92672">));</span>
+
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s3<span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s3<span style="color:#f92672">.</span><span style="color:#a6e22e">intern</span><span style="color:#f92672">());</span>
+
+        String s5 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,&#34;</span><span style="color:#f92672">;</span>
+        String s6 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;world!&#34;</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s5 <span style="color:#f92672">+</span> s6<span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;hello,&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;world!&#34;</span><span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s3 <span style="color:#f92672">==</span> s5 <span style="color:#f92672">+</span> s6<span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> <span style="color:#f92672">(</span>s5 <span style="color:#f92672">+</span> s6<span style="color:#f92672">).</span><span style="color:#a6e22e">intern</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// output: true true false true false true false true false true
+</span></code></pre></div></div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/java">Java</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/memory">Memory</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

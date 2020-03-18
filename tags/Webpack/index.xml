@@ -13,10 +13,10 @@
     
     <item>
       <title>2016 前端补习 Webpack 篇</title>
-      <link>https://isudox.com/posts/2016-12-26-webpack-front-end-development-trends-in-2016/</link>
+      <link>https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/</link>
       <pubDate>Mon, 26 Dec 2016 10:40:41 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-12-26-webpack-front-end-development-trends-in-2016/</guid>
+      <guid>https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/</guid>
       <description>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。
  因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。
  Webpack 基础命令 Hello World Webpack 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：

@@ -13,10 +13,10 @@
     
     <item>
       <title>扔掉鼠标，开始键盘流编程</title>
-      <link>https://isudox.com/posts/2017-06-25-coding-with-keyboard-no-mouse/</link>
+      <link>https://isudox.com/2017/06/25/coding-with-keyboard-no-mouse/</link>
       <pubDate>Sun, 25 Jun 2017 22:40:10 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-06-25-coding-with-keyboard-no-mouse/</guid>
+      <guid>https://isudox.com/2017/06/25/coding-with-keyboard-no-mouse/</guid>
       <description>之前曾和朋友讨论，为什么很多程序员舍得买千元价位的键盘，却很少愿意买个同级别的鼠标……最后一致认为原因在于代码是键盘敲出来的，不是鼠标点出来的。如果以后编程简化到拖拽下控件就搞定，那价值天平恐怕就能向鼠标倾斜了。
 在开始尝试键盘流编程前，需要达成一个共识──
  不依赖鼠标的编程，不仅很酷，更重要的是非常高效。
@@ -30,10 +30,10 @@ IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以�
     
     <item>
       <title>JetBrains IDE Vim 模式的方案</title>
-      <link>https://isudox.com/posts/2016-07-26-scheme-of-ideavim-keymap/</link>
+      <link>https://isudox.com/2016/07/26/scheme-of-ideavim-keymap/</link>
       <pubDate>Tue, 26 Jul 2016 16:47:03 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-07-26-scheme-of-ideavim-keymap/</guid>
+      <guid>https://isudox.com/2016/07/26/scheme-of-ideavim-keymap/</guid>
       <description>之前的一篇博客翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 Ideavim，模拟 Vim 编辑器的操作。
 在安装 ideavim 插件后，IDE 可能会处在几种不同的模式下：
  Vim 模拟器关闭模式（Vim Emulator off） Vim 模拟器开启模式（Vim Emulator on） Vim 命令模式（Command mode） Vim 插入模式（Insert mode） Vim 末行命令模式（Last line mode）  当关闭 Vim 模拟器时，IDE 的 Keymap 会恢复到安装 Ideavim 之前的状态，因此最好是在自己自定义设置并熟悉 IDE 自带的 keymap 后安装 Ideavim 插件。开启/关闭 Vim 模拟器的快捷键可以北自定义，默认的切换快捷键是 Ctrl + Alt + V，这个切换方式和 IDE 自带的快捷键冲突，可以考虑改成更合适的映射。我把切换 Vim 开关状态的快捷键修改成了 Ctrl + ;，这样，如果 Caps 键映射成 Ctrl 键，左手右手一个慢动作，可以很方便的开启/关闭 Vim 模拟器。

@@ -94,6 +94,22 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>小记 JavaScript 全局变量的一些思考</h2>
+  </header>
+  <section class="entry-content">
+   <p>毕业来 JD 后完成的第一个任务是写选号中心的前端。由于和 PM 没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用 JavaScript 全局变量，带来便利的同时也有意想不到的坑，更不应滥用，很多时候全局变量并不是一个好选择。
+一个很重要的原因就是，页面所引用的 JS 文件里所有变量和函数都是在同一个域(scope)中运行，重名的变量和函数被覆盖，bug 将随之而来。如果仅仅只是一个展示页或由个人独立开发的项目，这个问题或许并不明显，但对于团队开发，组件化开发而言，全局变量会是深埋的地雷，你不知道什么时候自己会踩上，或者下一时刻会是谁踩上。举个简单的栗子：
+// example1.js var vim_fan = true; var emacs_fan = false; function judge() { if (vim_fan &amp;&amp; emacs_fan) { alert(&#34;You must be burned!&#34;); } } // example2.js var emacs_fan = 1; 如果 HTML 页面里引用了这两个 JS 文件，那么这个既加入 Vim 党又加入 Emacs 党的人将被烧死。然而这种情况是不应该存在的。这就是 JavaScript 全局变量的隐患，尤其是在公司里团队开发，当你调用已有的组件时，往往是黑箱操作，当全局变量出现冲突时，就会引发未知错误。
+JavaScript 语法太过灵活，有时无意中就声明了一个全局变量，比如忘了加 var，或者像这样赋值 var a = b = 1;（值是传递了，但变量的生存期没有传递，b 变成了全局变量）。 对应的解决办法也很简单，同时也是很好的 JavaScript 编码习惯，因为同一域下的 JS 文件都不重名，当需要在当前 JS 文件里调用全局变量时，创建以该 JS 文件名命名的全局对象，在全局对象中添加属性。这样即使在同一域下其他 JS 文件中有同名属性，由于所属对象不同，也不会发生冲突。相当于是在一个域里各自圈地，互不相扰。...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>October 25, 2015</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/2015/10/25/js-global-variables/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>开启 Arch 之旅</h2>
   </header>
   <section class="entry-content">
@@ -110,7 +126,7 @@ $ wifi-mune 输入 Wifi 密码，ping 测试。...</p>
   <footer class="entry-footer">
     <time>September 26, 2015</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2015-09-26-begin-arch-linux/"></a>
+  <a class="entry-link" href="https://isudox.com/2015/09/26/begin-arch-linux/"></a>
 </article>
 
 <article class="post-entry">
@@ -130,7 +146,7 @@ Let’s Hexo GitHub 网上已有的 Hexo 方案基本都是将 Hexo 生成的静
   <footer class="entry-footer">
     <time>September 3, 2015</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2015-09-03-hexo-your-blog/"></a>
+  <a class="entry-link" href="https://isudox.com/2015/09/03/hexo-your-blog/"></a>
 </article>
 
 
@@ -152,7 +168,7 @@ Let’s Hexo GitHub 网上已有的 Hexo 方案基本都是将 Hexo 生成的静
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
 <script src="https://isudox.com/highlight.min.js"></script>
 <script>

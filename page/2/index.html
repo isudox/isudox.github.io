@@ -92,6 +92,24 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>Thrift 学习笔记：IDL</h2>
+  </header>
+  <section class="entry-content">
+   <p>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的是自己改写的 Thrift，这两天也在看相关的文档，汇总成学习笔记。
+Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Google 的 protobuf，Thrift 是典型的 C/S 架构，RPC 客户端和服务端间需要定义 IDL(Interface Description Language) 来实现跨语言通信。本文是对 Thrift IDL 学习的总结。
+基础类型 参考官方文档，Thrift IDL 的基础类型覆盖了绝大多数编程语言的关键类型，共有以下 7 种：
+ bool：布尔值，true 或 false byte：8-bit 有符号整数 i16：16-bit 有符号整数 i32：32-bit 有符号整数 i64：64-bit 有符号整数 double：64-bit 浮点数 string：UTF-8 编码的字符串  文档中说明了，IDL 并没有包含无符号整型，这是由于很多编程语言并没有原生的无符号整型数。
+特殊类型 Thrift IDL 支持 binary 类型，它是未编码字节序列，是 string 类型的特殊形式。binary 类型提高了和 Java 的互操作性，Thrift 计划在某个时候将其提升为基础类型。
+结构体 Thrift 结构体定义了公共对象，基本等同于面向对象语言中的类，但没有继承特性。一个结构体有一组强类型的字段，每个字段都有唯一名称标识符。Thrift 接口文件中的结构体类型，编译后会转换成一个类，类的属性就是结构体中的各个类型字段，而类的方法就是对这些类型字段进行处理的相关函数。结构体类型的关键字是 struct，参考下面的 IDL 代码：...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>April 6, 2017</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/2017/04/06/thrift-learn-notes-idl/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>[译] 一个行之有效的 Git 分支模型</h2>
   </header>
   <section class="entry-content">
@@ -109,7 +127,7 @@
   <footer class="entry-footer">
     <time>February 18, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-02-18-a-successful-git-branching-model-zh/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/"></a>
 </article>
 
 <article class="post-entry">
@@ -127,7 +145,7 @@ String 重定向 是 return 映射到另一个 Controller 方法的字符串。�
   <footer class="entry-footer">
     <time>February 16, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-02-16-spring-mvc-redirect-forward/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/02/16/spring-mvc-redirect-forward/"></a>
 </article>
 
 <article class="post-entry">
@@ -144,7 +162,7 @@ flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.p
   <footer class="entry-footer">
     <time>February 14, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-02-14-explore-flask-source-code-structure/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/02/14/explore-flask-source-code-structure/"></a>
 </article>
 
 <article class="post-entry">
@@ -160,7 +178,7 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
   <footer class="entry-footer">
     <time>February 10, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-02-10-spring-boot-note-1/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/02/10/spring-boot-note-1/"></a>
 </article>
 
 <article class="post-entry">
@@ -176,7 +194,7 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
   <footer class="entry-footer">
     <time>February 6, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-02-06-rpc-uni-entry-with-reflection/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/02/06/rpc-uni-entry-with-reflection/"></a>
 </article>
 
 <article class="post-entry">
@@ -192,7 +210,7 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
   <footer class="entry-footer">
     <time>January 24, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-01-24-deploy-site-with-travis-ci/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/01/24/deploy-site-with-travis-ci/"></a>
 </article>
 
 <article class="post-entry">
@@ -211,7 +229,7 @@ MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一
   <footer class="entry-footer">
     <time>January 16, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-01-16-dockerize-applications/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/01/16/dockerize-applications/"></a>
 </article>
 
 <article class="post-entry">
@@ -228,7 +246,7 @@ MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一
   <footer class="entry-footer">
     <time>January 1, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-01-01-todo-list-2017/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/01/01/todo-list-2017/"></a>
 </article>
 
 <article class="post-entry">
@@ -247,26 +265,7 @@ MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一
   <footer class="entry-footer">
     <time>December 27, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-12-27-yarn-front-end-development-trends-in-2016/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>2016 前端补习 Webpack 篇</h2>
-  </header>
-  <section class="entry-content">
-   <p>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。
- 因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。
- Webpack 基础命令 Hello World Webpack 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：
-# globally install yarn global add webpack@2.1.0-beta.20 # locally install yarn add webpack@2.1.0-beta.20 -D 安装完后，就可以在控制台使用 webpack 命令了。在目录下执行 webpack，首先需要配置 webpack.config.js 文件，由该配置文件来控制 webpack 的操作。参考阮一峰老师 GitHub 上的示例如下：
-// webpack.config.js module.exports = { entry: &#39;./main.js&#39;, output: { filename: &#39;bundle.js&#39; } }; 然后执行 webpack 命令就可以按照配置文件的设置，把目录下的 main.js 打包成 bundle.js。
-核心概念 Webpack 有 4 个核心概念必须要了解：Entry、Output、Loaders 和 Plugins。
-Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告诉 webpack 这张图表的入口位置并循着依赖关系去打包，webpack 通过对 webpack configuration object 设置 entry 属性来定义 Entry，参考下面的代码：...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>December 26, 2016</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-12-26-webpack-front-end-development-trends-in-2016/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/12/27/yarn-front-end-development-trends-in-2016/"></a>
 </article>
 
 
@@ -290,7 +289,7 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
 <script src="https://isudox.com/highlight.min.js"></script>
 <script>

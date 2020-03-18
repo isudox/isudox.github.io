@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Git 一般实践 - I sudo X</title>
+    
+    <meta name="description" content="之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意义上讲，绝大多数时候我只是把 Git 当成了个人代码存储而不是协作开发的版本管理工具。Git 还有很多强大的功能并没有在个人小型开发中使用到，而在 JD 的工作中，实际上遇到了不少在使用 Git 协作开发时的问题。正好组长让我总结其间的问题和最佳实践，就把这些实践经验记录在本文中。另，Git 本来就是一个命令工具集，所以我就以类 Unix 系统下的命令行操作为基准，各个平台下的 Git GUI 工具花样百出，操作也不统一，就一并略过了。
+ 其实很多问题都是在你并不了解规律的情况下产生的，不仅仅是对 coding 而言
+ 常用操作 创建 Git 仓库 创建 Git 仓库有几种不同的情况：
+创建空的 Git 仓库，很简单，一条命令
+git init &lt;repo-name&gt; 该目录就是一个 Git 本地仓库了，目录下会有一个隐藏文件夹 .git/，看看它的目录结构
+tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├── description ├── FETCH_HEAD ├── HEAD ├── hooks ├── index ├── info │ └── exclude ├── logs │ ├── HEAD │ └── refs │ ├── heads │ │ ├── master │ │ └── source │ └── remotes │ └── origin │ ├── HEAD │ ├── master │ └── source ├── objects │ ├── 18 │ │ └── f66c7ed1e9d6dadb9aa71836fdf58d5217fd26 │ ├── info │ └── pack │ ├── pack-137f36f2b48c9ee4fb17518f99ec9b9f842fcd81.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Git 一般实践</h1>
+    <div class="post-meta">March 10, 2016</div>
+  </header>
+  <div class="post-content"><p>之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 <code>git pull</code>、<code>git commit</code>、<code>git push</code> 的三件套。严格意义上讲，绝大多数时候我只是把 Git 当成了个人代码存储而不是协作开发的版本管理工具。Git 还有很多强大的功能并没有在个人小型开发中使用到，而在 JD 的工作中，实际上遇到了不少在使用 Git 协作开发时的问题。正好组长让我总结其间的问题和最佳实践，就把这些实践经验记录在本文中。另，Git 本来就是一个命令工具集，所以我就以类 Unix 系统下的命令行操作为基准，各个平台下的 Git GUI 工具花样百出，操作也不统一，就一并略过了。</p>
+<!-- raw HTML omitted -->
+<blockquote>
+<p>其实很多问题都是在你并不了解规律的情况下产生的，不仅仅是对 coding 而言</p>
+</blockquote>
+<h3 id="常用操作">常用操作</h3>
+<h4 id="创建-git-仓库">创建 Git 仓库</h4>
+<p>创建 Git 仓库有几种不同的情况：</p>
+<p>创建空的 Git 仓库，很简单，一条命令</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git init &lt;repo-name&gt;
+</code></pre></div><p>该目录就是一个 Git 本地仓库了，目录下会有一个隐藏文件夹 <code>.git/</code>，看看它的目录结构</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">tree .git
+.git
+├── branches
+├── COMMIT_EDITMSG
+├── config
+├── description
+├── FETCH_HEAD
+├── HEAD
+├── hooks
+├── index
+├── info
+│   └── exclude
+├── logs
+│   ├── HEAD
+│   └── refs
+│       ├── heads
+│       │   ├── master
+│       │   └── source
+│       └── remotes
+│           └── origin
+│               ├── HEAD
+│               ├── master
+│               └── source
+├── objects
+│   ├── 18
+│   │   └── f66c7ed1e9d6dadb9aa71836fdf58d5217fd26
+│   ├── info
+│   └── pack
+│       ├── pack-137f36f2b48c9ee4fb17518f99ec9b9f842fcd81.idx
+│       ├── pack-137f36f2b48c9ee4fb17518f99ec9b9f842fcd81.pack
+├── packed-refs
+├── refs
+│   ├── heads
+│   │   ├── master
+│   │   └── source
+│   ├── remotes
+│   │   └── origin
+│   │       ├── HEAD
+│   │       ├── master
+│   │       └── source
+│   └── tags
+└── smartgit.config
+</code></pre></div><p>上面是我这个静态博客 Git 仓库下 <code>.git/</code> 目录结构。其中几个主要子目录和文件的基本作用如下——</p>
+<ul>
+<li><code>COMMIT_EDITMSG</code>: 该文件存放最新的 commit message；</li>
+<li><code>config</code>: 该文件保存 Git 的配置；</li>
+<li><code>description</code>: Git 仓库的描述信息；</li>
+<li><code>index</code>: Git 本地暂存区，是二进制文件；</li>
+<li><code>HEAD</code>: 该文件为 Git 仓库当前分支的引用；</li>
+<li><code>hooks</code>: 该目录存放 Git 脚本钩子，用以触发 Git 自动执行某些操作，例如本人博客的 Git 钩子就自定义了文件更新后自动部署的操作；</li>
+<li><code>info</code>: 存放 Git 仓库信息；</li>
+<li><code>logs</code>: 存放 Git log 的信息；</li>
+<li><code>objects</code>: 存放所有 Git Object，每次提交 Git 都会生成一个 Git Object，其SHA1值的前2位是文件夹名称，后 38 位是 Object 名；</li>
+<li><code>refs</code>: 包含 heads、remotes、tags 三个子目录，分别存储当前 head 指针指向的 commit，服务器端远程仓库的 header 指针及分支、Git tags 标签；</li>
+</ul>
+<p>创建空的 Git 仓库是最常用的操作，还有比较常用操作的是把已有的工程加入 Git</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd existing-dir
+git init
+git add .
+git commit -m <span style="color:#e6db74">&#39;first commit&#39;</span>
+</code></pre></div><p>还有一种情况并不多见，就是创建裸仓库，有别于 <code>git init</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git init --bare
+</code></pre></div><p>Git 仓库其实就是 Git 仓库下的 <code>.git</code> 目录，存储上面提到的那些子目录和文件，记录该 Git 仓库的所有记录。Git 裸仓库一般用在远程服务器上的仓库初始化。</p>
+<h4 id="添加到远程仓库">添加到远程仓库</h4>
+<p>在本地创建 Git 仓库后，还需要推到远程仓库上，比如大名鼎鼎的 GitHub，或者私有的 Git 服务器如 GitLab。首先在服务器上新建远程仓库，取到 Git 远程仓库地址，然后就可以把本地仓库推到远程。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git remote add &lt;origin remote repo URL&gt;
+git push origin master
+</code></pre></div><h4 id="提交改动">提交改动</h4>
+<p>当对 Git 仓库文件进行增删改操作后，需要把有必要提交的改动 commit 到本地，再 push 到远程仓库。想查看本地仓库有哪些改动可以执行 <code>git status</code> 命令。确认后执行 <code>git add &lt;filename or .&gt;</code> 把文件改动提交到 Git 仓库的__暂存区__，此时再通过 <code>git status</code> 就能看到提示信息与之前的变化。但暂存区顾名思义只是暂存改动，并未提交到本地仓库，因此还需要 <code>git commit -m 'blabla'</code> 将改动提交到本地仓库。这样就把改动提交上去了，至于是否需要再提交到远程仓库，视需要而定，<code>git push origin &lt;branch-name&gt;</code> 就是提交到上面绑定的远程仓库。</p>
+<h4 id="回滚撤销">回滚/撤销</h4>
+<p>本地仓库经过修改和提交后，<code>.git/</code> 就会记录下每次提交的版本。这里有两个概念：1)回滚；2)撤销。回滚是将 Git 仓库从当前的版本回滚到指定的版本，撤销则是将本地仓库的修改撤销掉，回滚是发生在 commit 之后，撤销是发生在 commit 之前。</p>
+<p>先说回滚的事。<code>git log</code> 查看仓库 <code>commit</code> 提交的记录，控制台显示</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">commit 061888eece36843cb14d9eb56c7979379aacd530
+Author: programmer_a &lt;programmer_a@jd.com&gt;
+Date:   Thu Mar <span style="color:#ae81ff">10</span> 18:51:16 <span style="color:#ae81ff">2016</span> +0800
+
+    成长推荐添加购物车 获取cookie
+
+commit 88bb88109456d3c0c3f4f172e187ca21257f7422
+Author: programmer_b &lt;programmer_b@gmail.com&gt;
+Date:   Thu Mar <span style="color:#ae81ff">10</span> 18:07:34 <span style="color:#ae81ff">2016</span> +0800
+
+    修改购物车WebOriginId属性
+
+commit 7dde62b5ef08fba5f6c4bcc5868a4a9c075f9af0
+Author: programmer_b &lt;programmer_b@gmail.com&gt;
+Date:   Thu Mar <span style="color:#ae81ff">10</span> 16:58:52 <span style="color:#ae81ff">2016</span> +0800
+
+    提出common.js
+</code></pre></div><p>每个 <code>commit log</code> 的第一行是其 id（SHA1 编码，杜绝版本号重复的可能）。如果要回滚到上一个版本，可以执行 <code>git reset</code> 命令</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git reset --hard 061888eece36843cb14d9eb56c7979379aacd530
+HEAD is now at 061888eece36843cb14d9eb56c7979379aacd530 成长推荐添加购物车 获取cookie
+</code></pre></div><p>其中 <code>commit id</code> 不需要写全，只要能让 git 识别到唯一的 id 就行。如果不想通过 id 去回滚，还有另外一种方式，仓库指针 HEAD 表示当前版本，上一 commit 版本为 <code>HEAD^</code>，上上版本为 <code>HEAD^^</code>，往前推第N个版本为 <code>HEAD~N</code>。回滚版本实际上就是移动 Git 指针的指向，因此回滚操作是向前向后都支持的，无非移动指针的方向不同而已。如果我想再回退到最新的提交版本上，只需要指定最新一次的 <code>commit id</code>。</p>
+<p>下面接着说撤销操作。当本地仓库的文件被修改后，需要执行 <code>git add {filename}</code> 讲文件改动提交到本地暂存区。如果本地修改没有被 add 进暂存区，则不会被 commit 提交到仓库中。加入现在需要讲改动撤销掉，有两种可能的情形：</p>
+<ul>
+<li>修改尚未被 add 到暂存区: 执行 <code>git checkout -- filename</code> 可以撤销修改，视情况恢复到上一次 <code>git add</code> 或 <code>git commit</code> 的文件；</li>
+<li>修改已经被 add 进暂存区: 这种情况下撤销本地工作区的改动实际上就是回滚到HEAD指针指向的版本。因此执行 <code>git reset HEAD {filename}...</code> 完成对暂存区的撤销操作。
+另外，<code>git checkout -- {filename}</code> 还可以恢复被删除的文件。</li>
+<li>如果是 untracked files，使用 <code>git clean -fn</code> 查看会被清除的文件，确认无误后执行 <code>git clean -f</code>。如果要清除 untracked directories 则执行 <code>git clean -fd</code>。</li>
+</ul>
+<h4 id="推送更新">推送/更新</h4>
+<p>很简单，两条很形象的命令</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git push origin &lt;branch-name&gt;
+$ git pull origin &lt;branch-name&gt;
+</code></pre></div><p>在了解了 Git 的基本操作后，基本已经可以让 Git 在团队协作开发中发挥作用了，但团队开发不同于个人开发很重要的一点是，前者往往有更高的管理成本和管理需求，而个人开发在这方面几乎是零。所以还需要更多高阶的 Git 操作。</p>
+<h3 id="git-进阶">Git 进阶</h3>
+<p>很多软件开发人员在发布版本时往往会标明 <code>stable</code>，<code>beta</code>，<code>alpha</code>，<code>v1.0</code>，<code>v1.1</code> 等，源代码管理也有同样的需求，这就涉及到 Git 的分支概念。另外当多个开发人员对同一文件的同一内容修改时，就会产生冲突。Git 到底是采纳a开发的代码还是b开发的代码，这是个问题。还有当项目开发到一定进度，可以正式发布时，需要给这个版本注明一个Tag，Git Tag 可以实现这个需求。</p>
+<h4 id="git-分支">Git 分支</h4>
+<p>分支类似沙盒，不同分支之间彼此互不干扰，比如我想给当前稳定版的软件里新加一个杀手级的功能，但是一时半会没法完成，就可以新开一个分支，在新分支下进行开发，完全不会影响稳定版分支里的代码。Git 分支可以随时创建，切换，删除。</p>
+<p>Git仓库的默认分支是 <code>master</code>，我个人的习惯通常是再创建一个 <code>dev</code> 分支作为开发分支，开发到一定程度后再把 <code>dev</code> 分支里的代码合并进 <code>master</code> 分支发布。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch dev
+$ git checkout dev
+</code></pre></div><p><code>merge</code> 命令合并 <code>dev</code> 到 <code>master</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout master
+$ git merge dev
+</code></pre></div><p>合并到主干分支后，如果不再需要 <code>dev</code> 分支，则可以丢弃</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch -d dev
+</code></pre></div><h4 id="冲突">冲突</h4>
+<p>冲突一般发生在什么时候？如果了解过并发就很好理解，一个资源被多个操作者同时处理时就会发生冲突，通常在多线程编程里，我们会采用“文件锁”、“信号量”等方式防止这种情况的产生。但再用 Git 进行协同开发时，这种办法是很难奏效的。因为 Git 是一个分布式的版本管理工具，当开发者 A 在修改一段代码时，Git 是不能在开发者 B 的仓库里锁住这段代码，而不让 B 去进行修改。所以冲突是避免不了的，也是正常问题，试着去解决就行了。</p>
+<p>下面就结合近期开发过程中的具体场景作个分析。
+正常情况下，我从 <code>master</code> 分支里 <code>commit id</code> 为 <code>aaabbbccc</code> 的版本分出 <code>dev</code> 分支，然后在 <code>dev</code> 分支下开发并 commit，此时切回 <code>master</code> 并将 <code>dev</code> 中的 commit 合并进来是不会有冲突的。有一回，我在 <code>dev</code> 分支上开发，并把提交推送到服务器上的远程仓库，同事把代码 pull 下来后，在 <code>master</code> 分支上进行了 commit，而恰好我的的提交和同事在本地 <code>master</code> 分支上的 commit 都对同一内容块进行了修改。这样的话，同事在进行 <code>merge</code> 合并时就发生了冲突，就需要人工解决。执行 <code>git status</code> 查看是哪个文件冲突，然后打开该文件尝试解决。</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+这里是本地仓库master提交的内容
+=======
+这里是本地仓库dev提交的内容
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; dev
+</code></pre><p>需要完成的工作就是人工进行取舍，选择保留哪个改动，或者重新写一段新的内容，保存后即解决了冲突。之后在将冲突解决后的改动 <code>add</code> 进暂存区，并 <code>commit</code> 到仓库。</p>
+<p>类似的，如果是本地修改了代码段 A，同事同样修改了代码段 A，并将修改推送到远程仓库上，那么我在 <code>pull</code> 操作后会收到冲突提醒，代码段 A 被多个人同时修改，跟上面的操作一样，人工解决。</p>
+<h4 id="stash-贮存">Stash 贮存</h4>
+<p>比如遇到这样一种状况：我正在 <code>dev</code> 下开发需求，临时接到测试人员提交的 bug，优先级上 bug 比当前待开发的需求更高，只能放下手头的需求去修复 bug。但是当前正在开发的功能代码既没完成又不想丢弃，难道真成了鸡肋了？交给 Git 贮存起来吧，既不会丢失辛辛苦苦写的代码，也不需要把未完成的半残代码提交到仓库导致整个工程没法运行。<code>git stash</code> 帮你排忧解难。</p>
+<p>首先执行 <code>git stash</code> 把当前工作区里的代码改动贮存在一个特殊的地方，使得整个分支是干净的。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git stash
+Saved working directory and index state WIP on dev: ec1c949 修改小功能
+HEAD is now at ec1c949 修改小功能
+</code></pre></div><p>再来执行 <code>git status</code> 查看分支状态</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git status
+On branch dev
+nothing to commit, working directory clean
+</code></pre></div><p>Ok，没问题，已经把之前的改动藏起来了，接着就可以修改测试提交的 bug，bug 修复后，再来找回先前藏起来的代码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git stash pop
+</code></pre></div><p>如果工作区有多次 <code>stash</code> 操作，可以通过 <code>git stash list</code> 查看 stash 操作记录，如果想恢复指定的某一次 <code>stash</code> 操作，执行 <code>git stash apply stash@{}</code>。</p>
+<h4 id="tag-标签">Tag 标签</h4>
+<p>互联网公司的项目往往是需要快速迭代的，比如一期我们只上简单的几个功能，版本就取 v1.0 吧，当我们一期项目上线发布时，可以在仓库里对需要发布的版本进行打标。标签的作用类似分支，但分支是可以随着代码的改动向前推移，标签所定义的指针位置是固定不变的，只要标签不被删除丢弃，任何时候都能取出指定标签所代表的仓库版本。设想下如果二期 v1.1 上线后用户反响很糟糕，强烈要求退回到 v1.0，那么我们重新上线标签为 v1.0 的版本即可，随时随地都可以做到。</p>
+<p>Git打标操作是有 <code>git tag &lt;tag-name&gt; [commit-id]</code> 实现的</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git tag v1.0
+$ git tag
+v1.0
+</code></pre></div><p>如果 <code>git tag</code> 命令不指定 <code>commit id</code> 的话，默认是对最近一次 commit 后的版本打标。删除标签的操作和上面的类似，加上参数 <code>-d</code> 即可。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git tag -d v1.0
+Deleted tag <span style="color:#e6db74">&#39;v1.0&#39;</span> <span style="color:#f92672">(</span>was ec1c949<span style="color:#f92672">)</span>
+</code></pre></div><p>打标确认无误就可以push到远程仓库了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git push origin &lt;tag-name&gt;
+</code></pre></div><h4 id="忽略文件">忽略文件</h4>
+<p>团队协作中，各人的开发平台不同，IDE不同，可能会有各种各样的配置，如果你改一下，我改一下，那要疯了……最好的处理方法是将这些差异性的文件加入 <code>.gitignore</code> 文件中。
+在仓库的根目录下创建 <code>.gitginore</code> 文件，比如 Java 工程，那些 build 后的文件我不需要提交到仓库中，C/C++ 项目编译后生成的 .so 文件我也不想把他们加进仓库，那么都可以统统扔进 <code>.gitignore</code> 里忽略掉。并且 <code>.gitignore</code> 支持通配符，可以根据后缀名把文件一并过滤掉。例如一般 Java 工程里通常会排除 <code>target/</code> 目录、<code>.class</code>、<code>.war</code>、<code>.jar</code> 等文件，还有 IntelliJ IDEA 或 Eclipse 的工程管理目录，那就可以这样处理</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">*.jar
+*.war
+*.class
+target/
+.idea/
+.project
+.classpath
+</code></pre></div><h4 id="协作细节">协作细节</h4>
+<p>在进行 Git 操作时，有一些个人经验想写一下，也是一些我觉得比较好的习惯。</p>
+<ul>
+<li>什么时候需要 commit，我觉得不是写两行代码或者写 100 行代码就得提交一下，而是完成一个小功能或修复一个 bug，并且整个功能能正常运行，不会影响其他开发人员调试，那么就可以提交上去，无论是改了一行代码还是 100 行代码。另外，commit时认真写注释还是很重要的，既方便自己也方便他人，不至于想回滚时都不知道哪次提交都改了什么。</li>
+<li>在 <code>push</code> 操作之前，先 <code>pull</code> 远程的代码，因为别人可能已经把他们开发的代码推送上去了，本地版本比远程版本旧，是无法推送上去的。此外，<code>pull</code> 后可以尽早发现可能的冲突，尽早解决，不然后期一堆冲突文件会抓狂的。</li>
+<li>合并到 master 分支上的代码必须要上线，如果合并进 master 却又没有上线部署，极有可能会导致线上代码和仓库代码不一致的情况，发生状况的话很难排查，血的教训……</li>
+<li>暂时只想到了这几点，想到了再补上……荆轲刺秦王，毛腿肩上扛</li>
+</ul>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/git">Git</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

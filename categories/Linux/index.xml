@@ -13,10 +13,10 @@
     
     <item>
       <title>通过代理安装 AUR 软件包</title>
-      <link>https://isudox.com/posts/2016-05-09-install-aur-packages-by-proxy/</link>
+      <link>https://isudox.com/2016/05/09/install-aur-packages-by-proxy/</link>
       <pubDate>Mon, 09 May 2016 23:27:07 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-05-09-install-aur-packages-by-proxy/</guid>
+      <guid>https://isudox.com/2016/05/09/install-aur-packages-by-proxy/</guid>
       <description>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。
 这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。
 就以上面提到的 atom-editor 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为
@@ -25,10 +25,10 @@
     
     <item>
       <title>开启 Arch 之旅</title>
-      <link>https://isudox.com/posts/2015-09-26-begin-arch-linux/</link>
+      <link>https://isudox.com/2015/09/26/begin-arch-linux/</link>
       <pubDate>Sat, 26 Sep 2015 18:02:05 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2015-09-26-begin-arch-linux/</guid>
+      <guid>https://isudox.com/2015/09/26/begin-arch-linux/</guid>
       <description>iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry&amp;hellip;
 最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而言，这不啻一个新的玩点。
 在 V2EX 上混的时候，被多次安利 Arch Linux，传闻中的 K.I.S.S 风格，滚动升级，业界良心的 Wiki，强大的社区支持，让常在 Linux 下搬砖的我心生向往。于是就在别人轻抚刚发货的 iPhone 6S 的夜晚，开始第 N + 1 次折腾。

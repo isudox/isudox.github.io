@@ -13,10 +13,10 @@
     
     <item>
       <title>[译] 一个行之有效的 Git 分支模型</title>
-      <link>https://isudox.com/posts/2017-02-18-a-successful-git-branching-model-zh/</link>
+      <link>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</link>
       <pubDate>Sat, 18 Feb 2017 14:51:10 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-02-18-a-successful-git-branching-model-zh/</guid>
+      <guid>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</guid>
       <description>原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。
  上面是废话，下面是译文。
   本文里，我会介绍一个在一年前就引入进多个项目（包括工作和个人项目）中的开发模型，实践表明该模型很成功。为此专门写篇文章的想法由来已久，但始终没挤出时间来做，直到现在。我不会细究项目的具体细节，仅仅是项目开发的分支策略和发布管理。
@@ -31,10 +31,10 @@
     
     <item>
       <title>Docker 部署 GitLab</title>
-      <link>https://isudox.com/posts/2016-08-01-running-gitlab-in-docker-container/</link>
+      <link>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</link>
       <pubDate>Mon, 01 Aug 2016 17:15:08 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-08-01-running-gitlab-in-docker-container/</guid>
+      <guid>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</guid>
       <description>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。
 GitLab 的外部依赖很多，有 Nginx、Rails、Postgres、Redis、MySQL、unicorn、Go 等。如果单独安装各个依赖，一大堆的配置会让人抓狂。如果用官网提供的 omni 集成包，除非是全新的服务器，否则很大可能就导致依赖的重复安装，比如进程里有多个 Nginx、MySQL，很容易把服务器环境弄得很乱。像 GitLab 这样的程序，其实很适合用 Docker 来部署，一则和实机环境隔离开，另外运行性能相当好。
 安装 Docker 环境 安装配置 惯例，以 Debian 8 为参考，把 Docker 官方维护的 deb 包添加到系统的 APT 源内，创建文件 /etc/apt/sources.list.d/docker.list：
@@ -44,10 +44,10 @@ root 2885 1 0 09:40 ? 00:00:10 /usr/bin/dockerd --raw-logs root 2897 2885 0 09:4
     
     <item>
       <title>Git 一般实践</title>
-      <link>https://isudox.com/posts/2016-03-10-git-general-practice/</link>
+      <link>https://isudox.com/2016/03/10/git-general-practice/</link>
       <pubDate>Thu, 10 Mar 2016 18:01:32 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-03-10-git-general-practice/</guid>
+      <guid>https://isudox.com/2016/03/10/git-general-practice/</guid>
       <description>之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意义上讲，绝大多数时候我只是把 Git 当成了个人代码存储而不是协作开发的版本管理工具。Git 还有很多强大的功能并没有在个人小型开发中使用到，而在 JD 的工作中，实际上遇到了不少在使用 Git 协作开发时的问题。正好组长让我总结其间的问题和最佳实践，就把这些实践经验记录在本文中。另，Git 本来就是一个命令工具集，所以我就以类 Unix 系统下的命令行操作为基准，各个平台下的 Git GUI 工具花样百出，操作也不统一，就一并略过了。
  其实很多问题都是在你并不了解规律的情况下产生的，不仅仅是对 coding 而言
  常用操作 创建 Git 仓库 创建 Git 仓库有几种不同的情况：
@@ -58,10 +58,10 @@ tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├�
     
     <item>
       <title>Hexo 小站轻松部署方案</title>
-      <link>https://isudox.com/posts/2015-09-03-hexo-your-blog/</link>
+      <link>https://isudox.com/2015/09/03/hexo-your-blog/</link>
       <pubDate>Thu, 03 Sep 2015 00:19:38 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2015-09-03-hexo-your-blog/</guid>
+      <guid>https://isudox.com/2015/09/03/hexo-your-blog/</guid>
       <description>进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。
 Blog 仿佛已是古董，在一众微博微信席卷的现下，多少有点像长势萎靡无人问津的路边草。那为什么还要做 Blog？为什么不选用现成的空间、Blog 提供商？为什么还是静态 Blog，还要搭在 VPS 上？
 需要有这么多为什么吗？因为好玩，这就够了。具体好玩的元素有很多，在下面的记录中会有所提及，更多的还需要自己去发现。

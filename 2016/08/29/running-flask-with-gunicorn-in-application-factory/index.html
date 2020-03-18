@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Gunicorn 驱动工厂模式 Flask 应用 - I sudo X</title>
+    
+    <meta name="description" content="之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— Gunicorn，并且利用工厂模式对不同开发环境进行了隔离。工厂模式下的 Flask 应用在用 Gunicorn 部署时，需要做一点针对性的改动。
+基础的 Flask 应用部署 先写一个最简单的 Flask 应用 hello：
+# hello.py from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#34;Hello World!&#34; if __name__ == &#39;__main__&#39;: app.run(host=&#39;0.0.0.0&#39;, port=5000) 然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。
+当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：
+gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明：">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Gunicorn 驱动工厂模式 Flask 应用</h1>
+    <div class="post-meta">August 29, 2016</div>
+  </header>
+  <div class="post-content"><p>之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— <a href="http://gunicorn.org/">Gunicorn</a>，并且利用工厂模式对不同开发环境进行了隔离。工厂模式下的 Flask 应用在用 Gunicorn 部署时，需要做一点针对性的改动。</p>
+<!-- raw HTML omitted -->
+<h3 id="基础的-flask-应用部署">基础的 Flask 应用部署</h3>
+<p>先写一个最简单的 Flask 应用 hello：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># hello.py</span>
+<span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask
+
+app <span style="color:#f92672">=</span> Flask(__name__)
+
+
+<span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hello_world</span>():
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span>
+
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
+</code></pre></div><p>然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。</p>
+<p>当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">gunicorn <span style="color:#f92672">-</span>w <span style="color:#ae81ff">4</span> <span style="color:#f92672">-</span>b <span style="color:#ae81ff">127.0</span><span style="color:#f92672">.</span><span style="color:#ae81ff">0.1</span>:<span style="color:#ae81ff">5000</span> hello:app
+</code></pre></div><p>Gunicorn 的常用运行参数说明：</p>
+<ul>
+<li>-w  WORKERS, &ndash;workers: worker 进程的数量，通常每个 CPU 内核运行 2-4 个 worker 进程。</li>
+<li>-b  BIND, &ndash;bind: 指定要绑定的服务器端口号或 socket</li>
+<li>-c  CONFIG, &ndash;config: 指定 config 文件</li>
+<li>-k  WORKERCLASS, &ndash;worker-class: worker 进程的类型，如 sync, eventlet, gevent, 默认为 sync</li>
+<li>-n  APP_NAME, &ndash;name: 指定 Gunicorn 进程在进程查看列表里的显示名（比如 ps 和 htop 命令查看）</li>
+</ul>
+<p>真正部署到生产环境，一般不会用 Gunicorn 直接处理客户端的 HTTP 请求，而是用类似 Nginx 来做代理，将请求代理到 Gunicorn，再由 Flask 程序进行处理，返回结果。配置 Nginx 如下</p>
+<pre><code class="language-conf" data-lang="conf">server {
+    listen 80;
+
+    server_name _;
+
+    access_log  /var/log/nginx/access.log;
+    error_log  /var/log/nginx/error.log;
+
+    location / {
+        proxy_pass         http://127.0.0.1:5000/;
+        proxy_redirect     off;
+
+        proxy_set_header   Host                 $host;
+        proxy_set_header   X-Real-IP            $remote_addr;
+        proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto    $scheme;
+    }
+}
+</code></pre><p>这样就实现了 Client &lt;-&gt; Nginx &lt;-&gt; Server port / socket &lt;-&gt; Gunicorn &lt;-&gt; Flask 整个请求响应链路。</p>
+<h3 id="工厂模式的部署">工厂模式的部署</h3>
+<p>上面给了最简单的应用部署方案，学习练手没问题，实际开发部署就得多考虑一些问题。一个主要的问题就是多环境配置，这个在上一篇关于 Django 非最佳实践里涉及到了，但是当时的方案很挫，只是通过配置文件的替换来解决。利用工厂模式来解决这个问题是更正确合理的方法。</p>
+<p>先把上面的 hello 程序做的再复杂一点，把 Flask 的 <a href="http://flask.pocoo.org/docs/0.11/blueprints/#blueprints">Blueprints</a> 集成进来：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># blueprint.py</span>
+<span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Blueprint, render_template, abort
+<span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> TemplateNotFound
+
+simple_page <span style="color:#f92672">=</span> Blueprint(<span style="color:#e6db74">&#39;simple_page&#39;</span>, __name__, template_folder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;templates&#39;</span>,
+                        static_folder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;static&#39;</span>)
+
+
+<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>, defaults<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;page&#39;</span>: <span style="color:#e6db74">&#39;index&#39;</span>})
+<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74">&#39;/&lt;page&gt;&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show</span>(page):
+    <span style="color:#66d9ef">try</span>:
+        <span style="color:#66d9ef">return</span> render_template(<span style="color:#e6db74">&#39;pages/$s.html&#39;</span> <span style="color:#f92672">%</span> page)
+    <span style="color:#66d9ef">except</span> TemplateNotFound:
+        abort(<span style="color:#ae81ff">404</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># hello.py</span>
+<span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask
+<span style="color:#f92672">from</span> blueprint <span style="color:#f92672">import</span> simple_page
+
+app <span style="color:#f92672">=</span> Flask(__name__)
+app<span style="color:#f92672">.</span>register_blueprint(simple_page)
+
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
+</code></pre></div><p>Flask 的 Blueprints 有很强大的功能，当项目变的比较大型时尤为重要，这里不作展开。上面的代码是通用的一种简单开发模式，就是在创建应用实例时将 Blueprints 注册进来。工厂模式并不是这么处理，相比这种简单模式，工厂模式会把 app 的创建转移到一个专门的方法中，就是所谓的工厂，然后根据要生产的产品类型，创建不同的实例。
+这样处理的好处是显而易见的——</p>
+<ul>
+<li>便于测试。测试环境的配置往往和生产环境不同，这样就能运行不同环境配置的应用实例；</li>
+<li>多实例。通过工厂模式，可以实现在同一个应用进程下，运行多个实例；</li>
+</ul>
+<p>创建工厂：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># manage.py</span>
+<span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_app</span>(config_filename):
+    app <span style="color:#f92672">=</span> Flask(__name__)
+    app<span style="color:#f92672">.</span>config<span style="color:#f92672">.</span>from_pyfile(config_filename)
+
+    <span style="color:#f92672">from</span> blueprint <span style="color:#f92672">import</span> simple_page
+    app<span style="color:#f92672">.</span>register_blueprint(simple_page)
+
+    <span style="color:#66d9ef">return</span> app
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> manage <span style="color:#f92672">import</span> create_app
+
+app <span style="color:#f92672">=</span> create_app(<span style="color:#e6db74">&#39;config.py&#39;</span>)
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
+</code></pre></div><p>根据传入的不同 config，创建不通的 app 实例。创建工厂后，有一点需要留意，就是在 Blueprints 内没法访问 app 对象实例了，因为当 Blueprints 注册时 app 对实例尚未被创建，但也有解决办法，就是通过 Flask 的 current_app：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># blueprints.py</span>
+<span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Blueprint, render_template, abort, current_app
+<span style="color:#f92672">from</span> jinja2 <span style="color:#f92672">import</span> TemplateNotFound
+
+simple_page <span style="color:#f92672">=</span> Blueprint(<span style="color:#e6db74">&#39;simple_page&#39;</span>, __name__, template_folder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;templates&#39;</span>,
+                        static_folder<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;static&#39;</span>)
+
+
+<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>, defaults<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;page&#39;</span>: <span style="color:#e6db74">&#39;index&#39;</span>})
+<span style="color:#a6e22e">@simple_page.route</span>(<span style="color:#e6db74">&#39;/&lt;page&gt;&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show</span>(page):
+    <span style="color:#66d9ef">try</span>:
+        <span style="color:#66d9ef">return</span> render_template(current_app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;INDEX_TEMPLATE&#39;</span>])
+    <span style="color:#66d9ef">except</span> TemplateNotFound:
+        abort(<span style="color:#ae81ff">404</span>)
+</code></pre></div><p>在实现基本的工厂模式后，再回来对 Gunicorn 和 Nginx 进行配置。上面用的是 Server Port，接下来就改为 socket。
+Nginx conf 配置：</p>
+<pre><code class="language-conf" data-lang="conf">server {
+    listen 80;
+
+    server_name _;
+
+    access_log  /var/log/nginx/access.log;
+    error_log  /var/log/nginx/error.log;
+
+    location / {
+        proxy_pass         http://unix:/path/to/project.sock;
+        proxy_redirect     off;
+
+        proxy_set_header   Host                 $host;
+        proxy_set_header   X-Real-IP            $remote_addr;
+        proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto    $scheme;
+    }
+}
+</code></pre><p>上面的 proxy_pass 参数也可以使用 upstream 来作反向代理，作用是一样的。然后 Gunicorn 运行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gunicorn -w <span style="color:#ae81ff">4</span> -b unix:/path/to/project.sock hello:app
+</code></pre></div></div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/flask">Flask</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/python">Python</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

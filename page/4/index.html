@@ -92,6 +92,22 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>Python Click 学习笔记</h2>
+  </header>
+  <section class="entry-content">
+   <p>Click 是 Flask 的团队 pallets 开发的优秀开源项目，它为命令行工具的开发封装了大量方法，使开发者只需要专注于功能实现。恰好我最近在开发的一个小工具需要在命令行环境下操作，就写个学习笔记。
+国际惯例，先来一段 “Hello World” 程序（假定已经安装了 Click 包）。
+# hello.py import click @click.command() @click.option(&#39;--count&#39;, default=1, help=&#39;Number of greetings.&#39;) @click.option(&#39;--name&#39;, prompt=&#39;Your name&#39;, help=&#39;The person to greet.&#39;) def hello(count, name): &#34;&#34;&#34;Simple program that greets NAME for a total of COUNT times.&#34;&#34;&#34; for x in range(count): click.echo(&#39;Hello %s!&#39; % name) if __name__ == &#39;__main__&#39;: hello() 执行 python hello.py --count=3，不难猜到控制台的输出结果。除此之外，Click 还悄悄地做了其他的工作，比如帮助选项：
+$ python hello.py --help Usage: hello.py [OPTIONS] Simple program that greets NAME for a total of COUNT times....</p>
+  </section>
+  <footer class="entry-footer">
+    <time>September 3, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/2016/09/03/learning-python-package-click/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>Gunicorn 驱动工厂模式 Flask 应用</h2>
   </header>
   <section class="entry-content">
@@ -104,7 +120,7 @@ gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明�
   <footer class="entry-footer">
     <time>August 29, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-08-29-running-flask-with-gunicorn-in-application-factory/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/08/29/running-flask-with-gunicorn-in-application-factory/"></a>
 </article>
 
 <article class="post-entry">
@@ -120,7 +136,7 @@ public class HashMapTest { public static void main(String[] args) { HashMap&lt;S
   <footer class="entry-footer">
     <time>August 8, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-08-08-how-hashmap-works-in-jdk8/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/08/08/how-hashmap-works-in-jdk8/"></a>
 </article>
 
 <article class="post-entry">
@@ -138,7 +154,7 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
   <footer class="entry-footer">
     <time>August 3, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-08-03-imitate-rpc-invoke-locally-by-spring-aop/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/08/03/imitate-rpc-invoke-locally-by-spring-aop/"></a>
 </article>
 
 <article class="post-entry">
@@ -155,7 +171,7 @@ root 2885 1 0 09:40 ? 00:00:10 /usr/bin/dockerd --raw-logs root 2897 2885 0 09:4
   <footer class="entry-footer">
     <time>August 1, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-08-01-running-gitlab-in-docker-container/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/08/01/running-gitlab-in-docker-container/"></a>
 </article>
 
 <article class="post-entry">
@@ -173,7 +189,7 @@ git A 45.33.47.109 git AAAA 2600:3c01::f03c:91ff:fe18:68b6 添加完后等待 DN
   <footer class="entry-footer">
     <time>July 28, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-07-28-secure-subdomain-with-ssl-certificate/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/07/28/secure-subdomain-with-ssl-certificate/"></a>
 </article>
 
 <article class="post-entry">
@@ -189,7 +205,7 @@ Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模�
   <footer class="entry-footer">
     <time>July 26, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-07-26-scheme-of-ideavim-keymap/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/07/26/scheme-of-ideavim-keymap/"></a>
 </article>
 
 <article class="post-entry">
@@ -207,7 +223,7 @@ deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main wget --quiet -O - 
   <footer class="entry-footer">
     <time>July 22, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-07-22-guide-for-postgresql-beginners/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/07/22/guide-for-postgresql-beginners/"></a>
 </article>
 
 <article class="post-entry">
@@ -225,7 +241,7 @@ deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main wget --quiet -O - 
   <footer class="entry-footer">
     <time>July 14, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-07-14-customize-hexo-theme/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/07/14/customize-hexo-theme/"></a>
 </article>
 
 <article class="post-entry">
@@ -242,27 +258,7 @@ Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
   <footer class="entry-footer">
     <time>July 8, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-07-08-leetcode-tour-5/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>Spring MVC 集成 Thymeleaf</h2>
-  </header>
-  <section class="entry-content">
-   <p>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
-和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
-模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
-&lt;form:inputText name=&#34;userName&#34; value=&#34;${user.name}&#34; /&gt; 而 Thymeleaf 模板标准语言会这样写：
-&lt;input type=&#34;text&#34; name=&#34;userName&#34; value=&#34;James Carrot&#34; th:value=&#34;${user.name}&#34; /&gt; 浏览器能直接识别上述 Thymeleaf 的 input 标签，而且还能在加载模板引擎后，由后端返回的数据渲染 value 值。也就是这一特性，可以让前后端工程师在同一个模板文件上协作开发，避免了从静态页面到模板页面的转换，前后端并行开发，这就是未来的趋势，也被称作 Natural Templating，页面即模板，模板即页面。
-标准表达式语法 基本表达式 Thymeleaf 模板方言里最重要的就是它的标准表达式语法了。Thymeleaf 的表达式有：
-  简单表达式：
- 变量表达式：${....</p>
-  </section>
-  <footer class="entry-footer">
-    <time>July 6, 2016</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-07-06-integrating-thymeleaf-with-spring-mvc/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/07/08/leetcode-tour-5/"></a>
 </article>
 
 
@@ -286,7 +282,7 @@ Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
 <script src="https://isudox.com/highlight.min.js"></script>
 <script>

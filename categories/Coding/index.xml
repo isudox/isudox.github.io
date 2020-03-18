@@ -13,10 +13,10 @@
     
     <item>
       <title>LeetCode-39 Combination Sum</title>
-      <link>https://isudox.com/posts/2019-03-29-leetcode-39-combination-sum/</link>
+      <link>https://isudox.com/2019/03/29/leetcode-39-combination-sum/</link>
       <pubDate>Fri, 29 Mar 2019 21:54:41 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2019-03-29-leetcode-39-combination-sum/</guid>
+      <guid>https://isudox.com/2019/03/29/leetcode-39-combination-sum/</guid>
       <description>39. Combination Sum
 Medium
  Problem Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
@@ -28,10 +28,10 @@ Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] E
     
     <item>
       <title>LeetCode-136 Single Number</title>
-      <link>https://isudox.com/posts/2019-03-26-leetcode-136-single-number/</link>
+      <link>https://isudox.com/2019/03/26/leetcode-136-single-number/</link>
       <pubDate>Tue, 26 Mar 2019 20:20:20 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2019-03-26-leetcode-136-single-number/</guid>
+      <guid>https://isudox.com/2019/03/26/leetcode-136-single-number/</guid>
       <description>136. Single Number
 Easy
  Given a non-empty array of integers, every element appears twice except for one. Find that single one.
@@ -44,10 +44,10 @@ Input: [4,1,2,1,2] Output: 4 Solution Actually it&amp;rsquo;s quite simple to so
     
     <item>
       <title>JavaScript ES6 和 Python 中的 Generator</title>
-      <link>https://isudox.com/posts/2018-04-22-generators-in-python-es6/</link>
+      <link>https://isudox.com/2018/04/22/generators-in-python-es6/</link>
       <pubDate>Sun, 22 Apr 2018 23:20:03 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2018-04-22-generators-in-python-es6/</guid>
+      <guid>https://isudox.com/2018/04/22/generators-in-python-es6/</guid>
       <description>这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 redux-saga，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 generator、yield 从思想上到写法上基本是一致的，之前也写过 Python 里的用法，这里也简单的写下我对动态语言里 generator 的学习和理解。
 通识 首先，generator 本质上还是 function，只是行为略微特殊。 普通 function 会在执行结束时通过 return 返回； generator 可以中断 function 的执行过程，并重新回到断点现场继续执行。具体实现就是通过 yield 将结果返回给调用方并中断，通过 next() 方法继续回到断点再执行到下一个 yield 断点处。 普通函数只会返回一次，就是在执行结束的时候；generator 函数在执行过程中可以多次返回，即在 yield 断点处取代了 return。
 还有一个和 generator 紧密相关的概念是 iterator，简单的描述二者的关系就是──generator 实现的目的是生成一个 iterator，它是 iterable 的，也就是说是可以循环遍历的。
@@ -57,10 +57,10 @@ function* generator(i) { yield i; yield i + 10; } var gen = generator(10); conso
     
     <item>
       <title>Java 8 Stream API 和函数式编程</title>
-      <link>https://isudox.com/posts/2017-07-12-java-8-streams-api-fp-intro/</link>
+      <link>https://isudox.com/2017/07/12/java-8-streams-api-fp-intro/</link>
       <pubDate>Wed, 12 Jul 2017 11:10:03 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-07-12-java-8-streams-api-fp-intro/</guid>
+      <guid>https://isudox.com/2017/07/12/java-8-streams-api-fp-intro/</guid>
       <description>流式操作我们在很多地方都使用过，比如 Shell 操作时经常用到的 ps aux | grep xxx、Python 中的 mapreduce 方法。Java 8 也引入了 Stream API，并且加入 Lambda 表达式，使得函数也可以成为像类一样的一等公民。
 在引出主题前，先看一道简单的算法题，分别用 Java 和 Python 来实现。
  给定的一个整型数组，将其中每个元素变为它的平方。
@@ -69,10 +69,10 @@ function* generator(i) { yield i; yield i + 10; } var gen = generator(10); conso
     
     <item>
       <title>扔掉鼠标，开始键盘流编程</title>
-      <link>https://isudox.com/posts/2017-06-25-coding-with-keyboard-no-mouse/</link>
+      <link>https://isudox.com/2017/06/25/coding-with-keyboard-no-mouse/</link>
       <pubDate>Sun, 25 Jun 2017 22:40:10 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-06-25-coding-with-keyboard-no-mouse/</guid>
+      <guid>https://isudox.com/2017/06/25/coding-with-keyboard-no-mouse/</guid>
       <description>之前曾和朋友讨论，为什么很多程序员舍得买千元价位的键盘，却很少愿意买个同级别的鼠标……最后一致认为原因在于代码是键盘敲出来的，不是鼠标点出来的。如果以后编程简化到拖拽下控件就搞定，那价值天平恐怕就能向鼠标倾斜了。
 在开始尝试键盘流编程前，需要达成一个共识──
  不依赖鼠标的编程，不仅很酷，更重要的是非常高效。
@@ -86,10 +86,10 @@ IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以�
     
     <item>
       <title>Spring AOP 那些事儿</title>
-      <link>https://isudox.com/posts/2017-05-24-spring-aop-guide/</link>
+      <link>https://isudox.com/2017/05/24/spring-aop-guide/</link>
       <pubDate>Wed, 24 May 2017 19:25:56 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-05-24-spring-aop-guide/</guid>
+      <guid>https://isudox.com/2017/05/24/spring-aop-guide/</guid>
       <description>AOP 即 Aspect-Oriented Programming，面向切面编程，是对 OOP 编程思想的补充。OOP 核心是继承、封装、多态，是实现 OOP 模块化的基础。当 OOP 达到一定规模后，对于遍布各处的横向代码的处理就开始捉襟见肘，而 AOP 正好弥补了这个不足。
 引入 AOP 下图是很常见的编程场景──
 我们经常会遇到需要在多个方法中实现相同的一部分功能，面向过程的办法就是像图示在每个方法里都复制粘贴相同的一段代码，但是如果要改动就要改动 N 处代码。在有了 OOP 思想后，我们就进阶了一大步，可以将相同的代码段抽离出来，避免了到处改动的问题。
@@ -103,10 +103,10 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
     
     <item>
       <title>Thrift 学习笔记：RPC Server 和 Client</title>
-      <link>https://isudox.com/posts/2017-04-10-thrift-notes-server-client/</link>
+      <link>https://isudox.com/2017/04/10/thrift-notes-server-client/</link>
       <pubDate>Mon, 10 Apr 2017 11:46:23 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-04-10-thrift-notes-server-client/</guid>
+      <guid>https://isudox.com/2017/04/10/thrift-notes-server-client/</guid>
       <description>在了解 Thrift IDL 后，就能开始编写自己的 RPC 服务端和客户端了。对 Thrift 的安装过程和命令操作略过不表，主要还是关注如何利用 Thrift 实现 Java 的 RPC 服务端和客户端。
 服务接口描述 首先需要定义服务接口描述，即 .thrift 文件，再由 Thrift 将接口描述文件编译成相应的客户端和服务端的 stub 代码。
 官网 Tutorial 给出的示例略复杂，不妨自己写一个简单的 Hello World 文件：
@@ -117,10 +117,10 @@ gen-java └── com └── isudox └── thrift └── tutorial └�
     
     <item>
       <title>Thrift 学习笔记：IDL</title>
-      <link>https://isudox.com/posts/2017-04-06-thrift-learn-notes-idl/</link>
+      <link>https://isudox.com/2017/04/06/thrift-learn-notes-idl/</link>
       <pubDate>Thu, 06 Apr 2017 11:08:26 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-04-06-thrift-learn-notes-idl/</guid>
+      <guid>https://isudox.com/2017/04/06/thrift-learn-notes-idl/</guid>
       <description>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的是自己改写的 Thrift，这两天也在看相关的文档，汇总成学习笔记。
 Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Google 的 protobuf，Thrift 是典型的 C/S 架构，RPC 客户端和服务端间需要定义 IDL(Interface Description Language) 来实现跨语言通信。本文是对 Thrift IDL 学习的总结。
 基础类型 参考官方文档，Thrift IDL 的基础类型覆盖了绝大多数编程语言的关键类型，共有以下 7 种：
@@ -131,10 +131,10 @@ Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Go
     
     <item>
       <title>探索 Spring MVC 重定向和转发</title>
-      <link>https://isudox.com/posts/2017-02-16-spring-mvc-redirect-forward/</link>
+      <link>https://isudox.com/2017/02/16/spring-mvc-redirect-forward/</link>
       <pubDate>Thu, 16 Feb 2017 11:35:09 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-02-16-spring-mvc-redirect-forward/</guid>
+      <guid>https://isudox.com/2017/02/16/spring-mvc-redirect-forward/</guid>
       <description>最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。
 比如客户端的请求进到 Controller 方法中，我们会判断当前用户状态，可能会跳转到用户中心页，也可能会跳转到等待页，又或者错误页。类似的场景很多，都需要用到请求的重定向和转发。Sping MVC 实现重定向或转发的方法有很多，我先大致梳理下，然后再通过源码加深理解。
 常用处理方式 Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 ModelAndView 对象，又或者是 RedirectView 对象，下面逐一说明。
@@ -145,10 +145,10 @@ String 重定向 是 return 映射到另一个 Controller 方法的字符串。�
     
     <item>
       <title>读 Flask 源码：源码结构</title>
-      <link>https://isudox.com/posts/2017-02-14-explore-flask-source-code-structure/</link>
+      <link>https://isudox.com/2017/02/14/explore-flask-source-code-structure/</link>
       <pubDate>Tue, 14 Feb 2017 19:47:11 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-02-14-explore-flask-source-code-structure/</guid>
+      <guid>https://isudox.com/2017/02/14/explore-flask-source-code-structure/</guid>
       <description>打算对 Flask 的学习做个整理，以 Flask 的 GitHub 代码库的 master 分支为参考。其实早期的 0.3 版还是单文件，整个 flask.py 加上注释也只有 1426 行代码，非常简洁，很适合作为 Python 源码学习的教材。
 拿到源码先不着急，就像读书一样，不妨浏览下目录，以便有个全局的了解。Flask 的源码有一个非常好的优点，就是它的注释非常完备，即使不看源码，只看注释，也能有个大概的理解。
 从 Flask 根目录下的 setup.py 可以看到，Flask 依赖的组件主要有 3 个：
@@ -158,10 +158,10 @@ flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.p
     
     <item>
       <title>Spring Boot 学习笔记 1：起手式 Hello World</title>
-      <link>https://isudox.com/posts/2017-02-10-spring-boot-note-1/</link>
+      <link>https://isudox.com/2017/02/10/spring-boot-note-1/</link>
       <pubDate>Fri, 10 Feb 2017 23:59:24 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-02-10-spring-boot-note-1/</guid>
+      <guid>https://isudox.com/2017/02/10/spring-boot-note-1/</guid>
       <description>Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convention over configuration)的设计范式。从零搭建 Spring Boot 项目几乎是傻瓜化的，因为框架把大量配置自动完成了。
 Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 Spring Boot 项目初始化工具，为开发者实现一个基本的项目骨架。很多 Java IDE 也集成了这个工具，以 Intellij IDEA 为例，新建项目，选择 Spring Initializr，进入如下组件选择面板
 其中 Core 包含了像 AOP Cashe 这些核心组件，Web 包含了 SpringMVC Thymeleaf 等 Web 开发组件，还有数据库相关，配置中心相关等一系列组件……因为是 Hello World 程序演示，就不选组件了，直接点下一步，创建空项目。空项目结构如下图。
@@ -170,10 +170,10 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
     
     <item>
       <title>通过反射统一 RPC 调用入口</title>
-      <link>https://isudox.com/posts/2017-02-06-rpc-uni-entry-with-reflection/</link>
+      <link>https://isudox.com/2017/02/06/rpc-uni-entry-with-reflection/</link>
       <pubDate>Mon, 06 Feb 2017 15:18:55 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-02-06-rpc-uni-entry-with-reflection/</guid>
+      <guid>https://isudox.com/2017/02/06/rpc-uni-entry-with-reflection/</guid>
       <description>最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一个专属的 Porcessor 去处理服务调用的结果。当然好处就是功能区分清晰，不好的地方就是当 Processor 多了后维护起来不太方便。一种思路就是利用反射思想，为 Processor 中的 RPC 调用添加统一入口，通过服务名和方法名对调用进行定位。
 代理的思路很简单，但真的非常实用，在实际开发中，合理使用代理，能精简很多固有代码。从代理的统一入口进入，根据传入的远程服务名和方法名，自动定位到需要被远程调用的方法，再传入入参并调用该方法，就能代理过多的 Processor 调用 RPC。
 代理入口的代码如下：
@@ -182,10 +182,10 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
     
     <item>
       <title>Travis CI 持续部署静态站方案</title>
-      <link>https://isudox.com/posts/2017-01-24-deploy-site-with-travis-ci/</link>
+      <link>https://isudox.com/2017/01/24/deploy-site-with-travis-ci/</link>
       <pubDate>Tue, 24 Jan 2017 22:07:42 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-01-24-deploy-site-with-travis-ci/</guid>
+      <guid>https://isudox.com/2017/01/24/deploy-site-with-travis-ci/</guid>
       <description>这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓库会设置 hook，使得有新的 Commit 被 Push 上来后，自动把 Nginx 下的站点目录进行 Pull 更新。这种方案只是一开始的设置比较麻烦，之后就能一劳永逸，但我觉得还可以再抢救下。
 初步方案 既然核心目标都是一键部署，为什么不利用持续集成，那就用 Travis CI 吧，和 GitHub 无缝结合。
 先来梳理下整个部署思路：
@@ -194,10 +194,10 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
     
     <item>
       <title>Docker 容器化应用</title>
-      <link>https://isudox.com/posts/2017-01-16-dockerize-applications/</link>
+      <link>https://isudox.com/2017/01/16/dockerize-applications/</link>
       <pubDate>Mon, 16 Jan 2017 13:30:31 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-01-16-dockerize-applications/</guid>
+      <guid>https://isudox.com/2017/01/16/dockerize-applications/</guid>
       <description>最近看了一篇博文，大受启发，也想着手尝试把自己 VPS 上的应用容器化，一方面尝试下新的开发方式，另一方面也便于应用迁移。
 Dockerfile Docker 通过 dockerfile 配置来把应用构建成镜像，dockerfile 是一个包含了配置和创建应用的全部命令的文本。Docker 官网上有对 dockerfile 的详细说明文档
 看了文档后，对其使用有大致的了解，对不是太复杂的应用的容器化，已经能实践了，下面对 dockerfile 的编写和使用简单总结下。
@@ -209,10 +209,10 @@ MAINTAINER&amp;lt;name&amp;gt;RUN RUN 会运行其指定的命令，一个 RUN �
     
     <item>
       <title>2016 前端补习 Yarn 篇</title>
-      <link>https://isudox.com/posts/2016-12-27-yarn-front-end-development-trends-in-2016/</link>
+      <link>https://isudox.com/2016/12/27/yarn-front-end-development-trends-in-2016/</link>
       <pubDate>Tue, 27 Dec 2016 22:39:09 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-12-27-yarn-front-end-development-trends-in-2016/</guid>
+      <guid>https://isudox.com/2016/12/27/yarn-front-end-development-trends-in-2016/</guid>
       <description>目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w+ stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。
 基础操作 如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。
 初始化新项目：
@@ -224,10 +224,10 @@ MAINTAINER&amp;lt;name&amp;gt;RUN RUN 会运行其指定的命令，一个 RUN �
     
     <item>
       <title>2016 前端补习 Webpack 篇</title>
-      <link>https://isudox.com/posts/2016-12-26-webpack-front-end-development-trends-in-2016/</link>
+      <link>https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/</link>
       <pubDate>Mon, 26 Dec 2016 10:40:41 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-12-26-webpack-front-end-development-trends-in-2016/</guid>
+      <guid>https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/</guid>
       <description>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。
  因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。
  Webpack 基础命令 Hello World Webpack 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：
@@ -239,10 +239,10 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
     
     <item>
       <title>CORS 跨域调试记录</title>
-      <link>https://isudox.com/posts/2016-11-12-cors-in-action/</link>
+      <link>https://isudox.com/2016/11/12/cors-in-action/</link>
       <pubDate>Sat, 12 Nov 2016 00:31:58 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-11-12-cors-in-action/</guid>
+      <guid>https://isudox.com/2016/11/12/cors-in-action/</guid>
       <description>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运用中会存在不同的状况，只是看文档理解概念并不能真正成为实战派。
 这次联调采用前后端分离的方式，后端由 Spring MVC 提供数据接口，前端通过异步的方式做数据渲染，和以往不同的是，由于前端开发全部交给深圳的凹凸实验室，所以静态文件都跑在独立的一个域名上，就是京东的通天塔项目。因此所有来自前端的请求都成了跨域请求。
 JSONP 确实是通过一种巧妙的伎俩解决了跨域请求被浏览器拒绝的问题，但是它并不能解决 POST 跨域，联调的接口是跨域上传头像，采用 POST 发送 FormData 对象的方式。所以由服务端 CORS 来处理。
@@ -254,10 +254,10 @@ var formData = new FormData(); formData.</description>
     
     <item>
       <title>理解 Python 生成器</title>
-      <link>https://isudox.com/posts/2016-10-26-python-generator-guide/</link>
+      <link>https://isudox.com/2016/10/26/python-generator-guide/</link>
       <pubDate>Wed, 26 Oct 2016 20:23:03 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-10-26-python-generator-guide/</guid>
+      <guid>https://isudox.com/2016/10/26/python-generator-guide/</guid>
       <description>在 Python 里创建一个有一定规律的序列，很直观的做法就是在循环里创建序列的各个元素。但 Python 有更加符合 Pythonic 风格的做法，就是用生成器来实现。
 举个被写滥的例子吧，用 Python 生成 Fibonacci 数列的前 n 个数字，该怎么做？
 def fib(n): if n &amp;lt; 2: return 1 return fib(n - 1) + fib(n - 2) def gen_fib(n): res = [] for i in range(n): res.append(fib(i)) return res 而 Pythonic 的写法是像下面这样：
@@ -266,10 +266,10 @@ def fib(n): if n &amp;lt; 2: return 1 return fib(n - 1) + fib(n - 2) def gen_fib
     
     <item>
       <title>LeetCode 26-30</title>
-      <link>https://isudox.com/posts/2016-10-17-leetcode-26-30/</link>
+      <link>https://isudox.com/2016/10/17/leetcode-26-30/</link>
       <pubDate>Mon, 17 Oct 2016 17:09:15 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-10-17-leetcode-26-30/</guid>
+      <guid>https://isudox.com/2016/10/17/leetcode-26-30/</guid>
       <description>三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。
 Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Array
  给定一个有序数组，去掉其中重复的元素，并返回新数组的长度。 不要为其他数组分配额外的空间，必须在给定的内存中完成。
@@ -281,10 +281,10 @@ Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Arr
     
     <item>
       <title>敏捷开发实战：AOP &#43; 反射</title>
-      <link>https://isudox.com/posts/2016-10-11-spring-aop-with-reflection/</link>
+      <link>https://isudox.com/2016/10/11/spring-aop-with-reflection/</link>
       <pubDate>Tue, 11 Oct 2016 11:40:04 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-10-11-spring-aop-with-reflection/</guid>
+      <guid>https://isudox.com/2016/10/11/spring-aop-with-reflection/</guid>
       <description>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。
 如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！
 Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。
@@ -295,10 +295,10 @@ Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会�
     
     <item>
       <title>JUnit &#43; Mockito 单元测试的风云际会</title>
-      <link>https://isudox.com/posts/2016-10-10-unit-test-with-junit-mockito/</link>
+      <link>https://isudox.com/2016/10/10/unit-test-with-junit-mockito/</link>
       <pubDate>Mon, 10 Oct 2016 22:12:35 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-10-10-unit-test-with-junit-mockito/</guid>
+      <guid>https://isudox.com/2016/10/10/unit-test-with-junit-mockito/</guid>
       <description>JUnit 是 2015 年 Java 开发者引用最多的库，是 Java 单元测试框架里无可争议的 No.1。JUnit 基本上能覆盖大部分接口的测试，但如果待测接口依赖外部服务，比如我之前写的这篇小文里描述的情况，JUnit 就可能捉襟见肘了。而 Mockito 在 Mock 数据方面功能强大，正好弥补了 JUnit 在这方面的不足。风云合璧，摩诃无量。
 上面其实已经点到 JUnit 和 Mockito 的不同了，虽然二者都是运用在单元测试中，但 JUnit 侧重对接口的运行状态和结果的测试，而 Mockito 侧重 &amp;ldquo;Mock&amp;rdquo; 数据，即对对象的模拟，尤其是不容易构造的复杂对象。
 JUnit + Mockito 组合的优势是显而易见的，对于服务化的系统，有了这个组合，就能实现各上下游模块并行开发，同时进行单元测试验证可用性，减少串行联调的时间。
@@ -310,10 +310,10 @@ test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源�
     
     <item>
       <title>读 Flask 源码：Context</title>
-      <link>https://isudox.com/posts/2016-10-02-flask-context-guide/</link>
+      <link>https://isudox.com/2016/10/02/flask-context-guide/</link>
       <pubDate>Sun, 02 Oct 2016 20:11:40 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-10-02-flask-context-guide/</guid>
+      <guid>https://isudox.com/2016/10/02/flask-context-guide/</guid>
       <description>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那么它可以独立运行了；如果程序需要外部环境的支持，Context 的存在就有意义。比如 Flask Web 开发中常用的 current_app、request 都是 Context，可以在不同方法中调用，并且实现通信及交互。
 Context 的实现 Flask 提供了 4 个 Context：
    Context 类型 说明     flask.current_app Application Context 当前 app 的实例对象   flask.g Application Context 处理请求时用作临时存储的对象   flask.request Request Context 封装了 HTTP 请求中的内容   flask.session Request Context 存储了用户回话    这些 Context 分为 Application Context 和 Request Context 两类：
@@ -322,10 +322,10 @@ Context 的实现 Flask 提供了 4 个 Context：
     
     <item>
       <title>跨域请求之 JSONP 和 CORS</title>
-      <link>https://isudox.com/posts/2016-09-24-cross-site-jsonp-and-cors/</link>
+      <link>https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/</link>
       <pubDate>Sat, 24 Sep 2016 23:55:52 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-09-24-cross-site-jsonp-and-cors/</guid>
+      <guid>https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/</guid>
       <description>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。
 首先理清一个经常会被混淆的概念，AJAX(Asynchronous JavaScript and XML) 和跨域请求是两个不同的概念，AJAX 是异步请求和解析处理 XML 文档的方式，它在服务器端没有提供支持（CORS 是一种解决方案）的前提下，也是无法跨域的。
 跨域请求 跨域请求，顾名思义，就是从 A 地址向非同源的 B 地址发起了请求。参考 MDN 上对同源的定义:
@@ -337,10 +337,10 @@ Context 的实现 Flask 提供了 4 个 Context：
     
     <item>
       <title>Java 常用容器小结</title>
-      <link>https://isudox.com/posts/2016-09-13-java-collections-overview/</link>
+      <link>https://isudox.com/2016/09/13/java-collections-overview/</link>
       <pubDate>Tue, 13 Sep 2016 20:15:58 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-09-13-java-collections-overview/</guid>
+      <guid>https://isudox.com/2016/09/13/java-collections-overview/</guid>
       <description>无论是什么编程语言，容器都是非常重要的概念，在 Java 的实际开发中更是无处不在，各种 List、Set、Map。很多时候就是随着编程的惯性用了 ArrayList 或者 HashMap，但是并没对其特性和适用场景作更多的思考。开发者对 Java 容器的讨论比较多，我自己从源码的角度做个粗浅的整理。
 Collection java.util 包中的基于 Collection 接口的有 List、Set 和 Queue，下面这张图清楚的显示了 Collection 接口的向下实现和继承关系。
 Collection 接口继承了 Iterable 接口，表明所有 Collection 的实现都是可迭代的。Collection 提供最基础的接口方法，如 add()、remove()、contains()、isEmpty()、hashCode() 等。
@@ -349,10 +349,10 @@ List  An ordered collection (also known as a sequence). The user of this interfa
     
     <item>
       <title>理解 Python 装饰器</title>
-      <link>https://isudox.com/posts/2016-09-09-python-decorator-guide/</link>
+      <link>https://isudox.com/2016/09/09/python-decorator-guide/</link>
       <pubDate>Fri, 09 Sep 2016 22:42:36 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-09-09-python-decorator-guide/</guid>
+      <guid>https://isudox.com/2016/09/09/python-decorator-guide/</guid>
       <description>前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 @decorator 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。
 管窥装饰器 下面是一个很简单的 Python 方法：
 def call(): print(&amp;#39;call me&amp;#39;) call() 很简单，这会得到 &amp;ldquo;call me&amp;rdquo; 的文本输出。现在增加一个时间标记，告知是什么时间呼叫的我，可以这么改：
@@ -363,10 +363,10 @@ import time def call(): print(&amp;#39;call me &amp;#39;) def mark_time(func): d
     
     <item>
       <title>Python Click 学习笔记</title>
-      <link>https://isudox.com/posts/2016-09-03-learning-python-package-click/</link>
+      <link>https://isudox.com/2016/09/03/learning-python-package-click/</link>
       <pubDate>Sat, 03 Sep 2016 01:22:37 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-09-03-learning-python-package-click/</guid>
+      <guid>https://isudox.com/2016/09/03/learning-python-package-click/</guid>
       <description>Click 是 Flask 的团队 pallets 开发的优秀开源项目，它为命令行工具的开发封装了大量方法，使开发者只需要专注于功能实现。恰好我最近在开发的一个小工具需要在命令行环境下操作，就写个学习笔记。
 国际惯例，先来一段 &amp;ldquo;Hello World&amp;rdquo; 程序（假定已经安装了 Click 包）。
 # hello.py import click @click.command() @click.option(&amp;#39;--count&amp;#39;, default=1, help=&amp;#39;Number of greetings.&amp;#39;) @click.option(&amp;#39;--name&amp;#39;, prompt=&amp;#39;Your name&amp;#39;, help=&amp;#39;The person to greet.&amp;#39;) def hello(count, name): &amp;#34;&amp;#34;&amp;#34;Simple program that greets NAME for a total of COUNT times.&amp;#34;&amp;#34;&amp;#34; for x in range(count): click.echo(&amp;#39;Hello %s!&amp;#39; % name) if __name__ == &amp;#39;__main__&amp;#39;: hello() 执行 python hello.py --count=3，不难猜到控制台的输出结果。除此之外，Click 还悄悄地做了其他的工作，比如帮助选项：
@@ -375,10 +375,10 @@ $ python hello.py --help Usage: hello.py [OPTIONS] Simple program that greets NA
     
     <item>
       <title>JDK 8 中 HashMap 的工作原理</title>
-      <link>https://isudox.com/posts/2016-08-08-how-hashmap-works-in-jdk8/</link>
+      <link>https://isudox.com/2016/08/08/how-hashmap-works-in-jdk8/</link>
       <pubDate>Mon, 08 Aug 2016 17:31:32 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-08-08-how-hashmap-works-in-jdk8/</guid>
+      <guid>https://isudox.com/2016/08/08/how-hashmap-works-in-jdk8/</guid>
       <description>Java 容器类中，HashMap 是一个绕不开的重点，无论是实际开发还是求职面试。由于对 JDK 6 下 HashMap 的讨论已经很多了，而且 JDK 8 对 HashMap 做了比较大的改进，本文仅对 JDK 8 中 HashMap 的实现和工作原理做一点粗浅的讨论。
  文中 Java 代码均基于 OpenJDK 8
  引入 为了便于切入话题，先写一段最简单的 HashMap 样例代码：
@@ -387,10 +387,10 @@ public class HashMapTest { public static void main(String[] args) { HashMap&amp;
     
     <item>
       <title>Spring AOP 本地模拟线上 RPC</title>
-      <link>https://isudox.com/posts/2016-08-03-imitate-rpc-invoke-locally-by-spring-aop/</link>
+      <link>https://isudox.com/2016/08/03/imitate-rpc-invoke-locally-by-spring-aop/</link>
       <pubDate>Wed, 03 Aug 2016 14:57:22 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-08-03-imitate-rpc-invoke-locally-by-spring-aop/</guid>
+      <guid>https://isudox.com/2016/08/03/imitate-rpc-invoke-locally-by-spring-aop/</guid>
       <description>成熟的互联网公司内部一般都会有多个线上环境，像在 JD，就有测试环境，预发布环境，生产环境。开发过程通常是现在本地编写代码，功能差不多了提到测试环境，再到预发布联调，测试通过再提交上线包部署到生产环境。但这是理想状况，实际开发中会有上下游系统联调的问题。
 JD 的项目绝大多数都已经服务化了，服务的提供者和消费者分别在服务中心注册，消费者就能调用服务者的接口。但由于 JD 内部系统繁多，各有不同的开发团队维护各自的项目，除了生产环境和预发布环境能保证各系统间能互联互通，很多情况下，本地运行或在测试环境上运行时，没法调用到服务提供者的接口，这就很尴尬了，因为测试资源的不到位，只能上预发布环境进行上下游系统的对接联调，这是很烦人的，比较好的开发方案是，如果测试环境不完善，就把预发布环境上服务接口的真实数据截流并重定向到本地文件，把它打包成一个本地的测试数据源，以后直接在本地运行就行了。
 如何拦截数据？这就需要 AOP 大显身手了。Spring AOP 可以通过 BeanNameAutoProxyCreatoraaaa 自动代理目标 bean，属性 beanNames 和 interceptorNames 分别设置要代理的目标 bean 列表和拦截器数组。这样就很方便的实现了对目标 bean 的切入拦截。
@@ -401,10 +401,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
     
     <item>
       <title>JetBrains IDE Vim 模式的方案</title>
-      <link>https://isudox.com/posts/2016-07-26-scheme-of-ideavim-keymap/</link>
+      <link>https://isudox.com/2016/07/26/scheme-of-ideavim-keymap/</link>
       <pubDate>Tue, 26 Jul 2016 16:47:03 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-07-26-scheme-of-ideavim-keymap/</guid>
+      <guid>https://isudox.com/2016/07/26/scheme-of-ideavim-keymap/</guid>
       <description>之前的一篇博客翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 Ideavim，模拟 Vim 编辑器的操作。
 在安装 ideavim 插件后，IDE 可能会处在几种不同的模式下：
  Vim 模拟器关闭模式（Vim Emulator off） Vim 模拟器开启模式（Vim Emulator on） Vim 命令模式（Command mode） Vim 插入模式（Insert mode） Vim 末行命令模式（Last line mode）  当关闭 Vim 模拟器时，IDE 的 Keymap 会恢复到安装 Ideavim 之前的状态，因此最好是在自己自定义设置并熟悉 IDE 自带的 keymap 后安装 Ideavim 插件。开启/关闭 Vim 模拟器的快捷键可以北自定义，默认的切换快捷键是 Ctrl + Alt + V，这个切换方式和 IDE 自带的快捷键冲突，可以考虑改成更合适的映射。我把切换 Vim 开关状态的快捷键修改成了 Ctrl + ;，这样，如果 Caps 键映射成 Ctrl 键，左手右手一个慢动作，可以很方便的开启/关闭 Vim 模拟器。
@@ -413,10 +413,10 @@ Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模�
     
     <item>
       <title>Hexo 主题美化</title>
-      <link>https://isudox.com/posts/2016-07-14-customize-hexo-theme/</link>
+      <link>https://isudox.com/2016/07/14/customize-hexo-theme/</link>
       <pubDate>Thu, 14 Jul 2016 16:01:06 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-07-14-customize-hexo-theme/</guid>
+      <guid>https://isudox.com/2016/07/14/customize-hexo-theme/</guid>
       <description>小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题抄袭过来，嘿嘿。
 头像旋转 Pacman 主题布局非常大气，最有心的设计在我看来就是底栏的可旋转的圆形头像，非常可爱。相比之下，鄙人小站侧边栏头像就显得很呆板了。那就抄过来！ 可以知道，这是一个鼠标的 hover 事件，因此先找到位于 source/css/_common/components/sidebar/sidebar-author.syl 模板文件里侧边栏头像的样式 .site-author-image
 .site-author-image { display: block; margin: 0 auto; padding: $site-author-image-padding; max-width: $site-author-image-width; height: $site-author-image-height; border: $site-author-image-border-width solid $site-author-image-border-color; } 首先要做的事就是把原头像图通过 css 样式改成圆形头像。通过修改 border-radius 属性就可以改图片四个角的圆角程度。另外针对不同内核的浏览器也能分别指定。再加上属性变化的动画效果 transition。
@@ -427,10 +427,10 @@ Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模�
     
     <item>
       <title>LeetCode 21-25</title>
-      <link>https://isudox.com/posts/2016-07-08-leetcode-tour-5/</link>
+      <link>https://isudox.com/2016/07/08/leetcode-tour-5/</link>
       <pubDate>Fri, 08 Jul 2016 21:25:43 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-07-08-leetcode-tour-5/</guid>
+      <guid>https://isudox.com/2016/07/08/leetcode-tour-5/</guid>
       <description>本篇记录 LeetCode 算法部分第 21 至 25 题。
 Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
  将两个有序链表合并成一个新的有序链表。
@@ -440,10 +440,10 @@ Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
     
     <item>
       <title>Spring MVC 集成 Thymeleaf</title>
-      <link>https://isudox.com/posts/2016-07-06-integrating-thymeleaf-with-spring-mvc/</link>
+      <link>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</link>
       <pubDate>Wed, 06 Jul 2016 15:25:45 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-07-06-integrating-thymeleaf-with-spring-mvc/</guid>
+      <guid>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</guid>
       <description>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
 和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
 模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
@@ -456,10 +456,10 @@ Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
     
     <item>
       <title>LeetCode 16-20</title>
-      <link>https://isudox.com/posts/2016-07-04-leetcode-tour-4/</link>
+      <link>https://isudox.com/2016/07/04/leetcode-tour-4/</link>
       <pubDate>Mon, 04 Jul 2016 15:06:59 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-07-04-leetcode-tour-4/</guid>
+      <guid>https://isudox.com/2016/07/04/leetcode-tour-4/</guid>
       <description>本篇记录 LeetCode 算法部分第 16-20 题。
 3Sum Closest 第 16 题 3Sum Closest
  给定一个包含 n 个整型数的数组 S，找出 S 中的三个数，使得三者求和的结果和目标值最接近。返回求和结果，假定 S 中一定存在唯一解。 举例：数组 S = { -1 2 1 -4 }，目标值 target = 1。最接近目标值的求和结果为 (-1 + 2 + 1 = 2)
@@ -469,10 +469,10 @@ Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists
     
     <item>
       <title>Java String 的内存模型</title>
-      <link>https://isudox.com/posts/2016-06-22-memory-model-of-string-in-java-language/</link>
+      <link>https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/</link>
       <pubDate>Wed, 22 Jun 2016 13:00:53 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-06-22-memory-model-of-string-in-java-language/</guid>
+      <guid>https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/</guid>
       <description>在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。
 字符串比较 字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：
 String s1 = &amp;#34;hello,world!&amp;#34;; // 通过字面值 String s2 = new String(&amp;#34;hello,world!&amp;#34;); // 通过 new 关键字 字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：
@@ -481,10 +481,10 @@ public class Debug { public static void main(String[] args) { String s1 = &amp;#
     
     <item>
       <title>LeetCode 11-15</title>
-      <link>https://isudox.com/posts/2016-06-15-leetcode-tour-3/</link>
+      <link>https://isudox.com/2016/06/15/leetcode-tour-3/</link>
       <pubDate>Wed, 15 Jun 2016 20:18:15 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-06-15-leetcode-tour-3/</guid>
+      <guid>https://isudox.com/2016/06/15/leetcode-tour-3/</guid>
       <description>继上篇 LeetCode 探险第二弹，第三弹记录第 11 到 15 题。
 Container With Most Water 第 11 题 Container With Most Water
  给出 n 个非负整数 a1, a2, &amp;hellip;, an，每个数指向一个坐标点 (i, ai)。该 n 个坐标点画出了 n 条纵线，即从 (i, ai) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。
@@ -495,10 +495,10 @@ Container With Most Water 第 11 题 Container With Most Water
     
     <item>
       <title>责任链模式的实际运用</title>
-      <link>https://isudox.com/posts/2016-06-06-using-chain-of-responsibility-pattern/</link>
+      <link>https://isudox.com/2016/06/06/using-chain-of-responsibility-pattern/</link>
       <pubDate>Mon, 06 Jun 2016 18:23:51 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-06-06-using-chain-of-responsibility-pattern/</guid>
+      <guid>https://isudox.com/2016/06/06/using-chain-of-responsibility-pattern/</guid>
       <description>加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，review 自己写的代码时，好像一直在 repeat yourself。代码不应该那样写，把复杂业务拆分，松耦合，利用设计模式将业务代码简化，而不是一味的去用过程编程的思维去实现业务逻辑，又苦又累毫无乐趣。
 重构之前 趁着 JD 618 大促的机会，把陪伴计划项目部分业务重构了下。前期开发时因为业务需求多、时间紧张，没有对业务逻辑深入的分析，代码拿上来就写，导致逻辑的紧耦合、难以更改，难以扩展，面对新增的业务只能从头再写而无法做到有效复用。
 要做到代码的合理复用，直接有效的途径就是把业务逻辑拆分细化，颗粒度最细的拆分就是将业务逻辑拆分成原子操作，但这样做会导致代码过于细碎，未免过犹不及。业务松耦合，并非零耦合。让每一个细分业务只负责单一逻辑，通过灵活可配的组合实现复杂逻辑，这是实现松耦合，提高扩展性行之有效的办法。
@@ -510,10 +510,10 @@ public class BullshitCode { public static void main(String[] args) { int cmd = I
     
     <item>
       <title>Spring 加载含中文 properties 文件的思考</title>
-      <link>https://isudox.com/posts/2016-05-23-some-thoughts-on-loading-utf8-properties-file-in-spring/</link>
+      <link>https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/</link>
       <pubDate>Mon, 23 May 2016 15:17:18 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-05-23-some-thoughts-on-loading-utf8-properties-file-in-spring/</guid>
+      <guid>https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/</guid>
       <description>在公司项目的中间件代码里看到有些配置文件里有很多 &amp;quot;\uXXXX&amp;quot; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是 UTF-8 编码，配置文件里的中文字符为什么还会被转码？
 编码那些事儿 Spring 读取 .properties 文件并将配置内容加载进 Properties 类，文档中明确写明
  &amp;hellip; the input/output stream is encoded in ISO 8859-1 character encoding. Characters that cannot be directly represented in this encoding can be written using Unicode escapes as defined in section 3.3 of The Java™ Language Specification; only a single &amp;lsquo;u&amp;rsquo; character is allowed in an escape sequence. The native2ascii tool can be used to convert property files to and from other character encodings.</description>
@@ -521,10 +521,10 @@ public class BullshitCode { public static void main(String[] args) { int cmd = I
     
     <item>
       <title>LeetCode 6-10</title>
-      <link>https://isudox.com/posts/2016-05-17-leetcode-tour-2/</link>
+      <link>https://isudox.com/2016/05/17/leetcode-tour-2/</link>
       <pubDate>Tue, 17 May 2016 21:14:04 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-05-17-leetcode-tour-2/</guid>
+      <guid>https://isudox.com/2016/05/17/leetcode-tour-2/</guid>
       <description>接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。
 ZigZag Conversion 第 6 题 ZigZag Conversion
  字符串 &amp;quot;PAYPALISHIRING&amp;quot; 是由如下排列的字符串通过 ZigZag 形式读取所得。
@@ -535,10 +535,10 @@ ZigZag Conversion 第 6 题 ZigZag Conversion
     
     <item>
       <title>Spring MVC 拦截器使用小结</title>
-      <link>https://isudox.com/posts/2016-05-10-summary-of-spring-mvc-interceptor/</link>
+      <link>https://isudox.com/2016/05/10/summary-of-spring-mvc-interceptor/</link>
       <pubDate>Tue, 10 May 2016 16:38:39 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-05-10-summary-of-spring-mvc-interceptor/</guid>
+      <guid>https://isudox.com/2016/05/10/summary-of-spring-mvc-interceptor/</guid>
       <description>之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。拦截器普遍用在用户登录验证上，也应用在其他需要对一些信息进行验证的场景下。
 实现拦截 请求流程 Spring MVC 请求的生命周期 图示给出了一次请求从发送到处理到接收响应的整个过程，非常标准的 M-V-C。
 接口实现 Spring MVC 拦截器由 HandlerInterceptor 实现。HandlerInterceptor 接口包含三个方法：
@@ -548,10 +548,10 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
     
     <item>
       <title>移动端仿微信朋友圈发布图文</title>
-      <link>https://isudox.com/posts/2016-04-18-imitate-wechat-moment-on-mobile-device/</link>
+      <link>https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/</link>
       <pubDate>Mon, 18 Apr 2016 19:55:14 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-04-18-imitate-wechat-moment-on-mobile-device/</guid>
+      <guid>https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/</guid>
       <description>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。
 由于微信朋友圈的火爆和用户基础，因此 JD 的这个项目中类朋友圈的原型设计基本也是抄袭的微信，只不过换成 HTML5 的样式，所以原型图就不贴出来了……要实现的功能大致等于微信朋友圈，用户通过手机相册或摄像头上传图片，发布到京东 App 的一个版块里，由于一期不开发社交功能，因此没有朋友圈留言功能（电商 APP 不务正业，我也是无力吐槽）。 从项目前端开始讲吧。
 前端 在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 WebUploader 组件，或者 jQuery-File-Upload，再久远些还有用 Flash 做的文件上传插件，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像朋友圈发状态一次上传好几张图片，客户端不做处理的话，无论是传输时间还是流量损耗都是不能接受的。因此移动端需要在上传前默认对大体积图片进行压缩处理，后面会完整说明。
@@ -563,19 +563,19 @@ input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别�
     
     <item>
       <title>前端优化实践</title>
-      <link>https://isudox.com/posts/2016-03-17-front-end-optimization/</link>
+      <link>https://isudox.com/2016/03/17/front-end-optimization/</link>
       <pubDate>Thu, 17 Mar 2016 20:47:21 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-03-17-front-end-optimization/</guid>
+      <guid>https://isudox.com/2016/03/17/front-end-optimization/</guid>
       <description>还在憋&amp;hellip;</description>
     </item>
     
     <item>
       <title>Git 一般实践</title>
-      <link>https://isudox.com/posts/2016-03-10-git-general-practice/</link>
+      <link>https://isudox.com/2016/03/10/git-general-practice/</link>
       <pubDate>Thu, 10 Mar 2016 18:01:32 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-03-10-git-general-practice/</guid>
+      <guid>https://isudox.com/2016/03/10/git-general-practice/</guid>
       <description>之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意义上讲，绝大多数时候我只是把 Git 当成了个人代码存储而不是协作开发的版本管理工具。Git 还有很多强大的功能并没有在个人小型开发中使用到，而在 JD 的工作中，实际上遇到了不少在使用 Git 协作开发时的问题。正好组长让我总结其间的问题和最佳实践，就把这些实践经验记录在本文中。另，Git 本来就是一个命令工具集，所以我就以类 Unix 系统下的命令行操作为基准，各个平台下的 Git GUI 工具花样百出，操作也不统一，就一并略过了。
  其实很多问题都是在你并不了解规律的情况下产生的，不仅仅是对 coding 而言
  常用操作 创建 Git 仓库 创建 Git 仓库有几种不同的情况：
@@ -586,10 +586,10 @@ tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├�
     
     <item>
       <title>String, StringBuilder, StringBuffer 区别</title>
-      <link>https://isudox.com/posts/2016-02-17-difference-between-string-stringbuilder-stringbuffer/</link>
+      <link>https://isudox.com/2016/02/17/difference-between-string-stringbuilder-stringbuffer/</link>
       <pubDate>Wed, 17 Feb 2016 15:22:01 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-02-17-difference-between-string-stringbuilder-stringbuffer/</guid>
+      <guid>https://isudox.com/2016/02/17/difference-between-string-stringbuilder-stringbuffer/</guid>
       <description>今天下午浏览代码时看到 IDEA 给出了一段提示： StringBuffer variables may be declared as StringBuilder.
 回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场景的差异。遂谷歌之，看到阿里的 Android 大牛 Trinea 在 Github 上提的 issue，正好是关于它们之间区别的讨论。我也凑个热闹，查漏补缺。
 CharSequence 首先，String、StringBuilder 和 StringBuffer 都是实现的 CharSequence 接口。下面是 CharSequence 的源码：
@@ -599,10 +599,10 @@ String 先看 JDK 里的源码：</description>
     
     <item>
       <title>阿里大鱼短信 SDK 迁移到 Python 3.x</title>
-      <link>https://isudox.com/posts/2016-02-02-migrate-alidayu-to-py3-from-py2/</link>
+      <link>https://isudox.com/2016/02/02/migrate-alidayu-to-py3-from-py2/</link>
       <pubDate>Tue, 02 Feb 2016 11:05:24 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-02-02-migrate-alidayu-to-py3-from-py2/</guid>
+      <guid>https://isudox.com/2016/02/02/migrate-alidayu-to-py3-from-py2/</guid>
       <description>近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定阿里大鱼的解决方案。
 然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python 3，导致很多时候用 Python 会有些捉襟见肘，尤其是像我这种野路子的 Python 开发。
 比如阿里大鱼的短信方案，虽然相比其他厂商很良心的在 PHP 、 Java 版 SDK 之外，友情附赠了 Python 版，但集成进 Django 工程并 debug 后，真是握了棵草，它是基于 Python 2.x 开发的，翻了下开发包源码文件，署名为 “lihao” 的这位阿里同学是在 2012 年更新的源码，这竟是一份蒙尘多年的代码啊，当时我的内心是奔溃的……
@@ -613,10 +613,10 @@ String 先看 JDK 里的源码：</description>
     
     <item>
       <title>LeetCode 1-5</title>
-      <link>https://isudox.com/posts/2015-11-23-leetcode-1st-week/</link>
+      <link>https://isudox.com/2015/11/23/leetcode-1st-week/</link>
       <pubDate>Mon, 23 Nov 2015 20:50:27 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2015-11-23-leetcode-1st-week/</guid>
+      <guid>https://isudox.com/2015/11/23/leetcode-1st-week/</guid>
       <description>上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。
 Two Sum 第 1 题 Two Sum 算是简单题，题意大致为：
  给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。 伪代码： nums = [2, 7, 11, 15], target = 9 nums[0] + nums[1] = 2 + 7 = 9 return [0, 1]
@@ -626,10 +626,10 @@ Two Sum 第 1 题 Two Sum 算是简单题，题意大致为：
     
     <item>
       <title>小记 JavaScript 全局变量的一些思考</title>
-      <link>https://isudox.com/posts/2015-10-25-js-global-variables/</link>
+      <link>https://isudox.com/2015/10/25/js-global-variables/</link>
       <pubDate>Sun, 25 Oct 2015 19:37:47 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2015-10-25-js-global-variables/</guid>
+      <guid>https://isudox.com/2015/10/25/js-global-variables/</guid>
       <description>毕业来 JD 后完成的第一个任务是写选号中心的前端。由于和 PM 没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用 JavaScript 全局变量，带来便利的同时也有意想不到的坑，更不应滥用，很多时候全局变量并不是一个好选择。
 一个很重要的原因就是，页面所引用的 JS 文件里所有变量和函数都是在同一个域(scope)中运行，重名的变量和函数被覆盖，bug 将随之而来。如果仅仅只是一个展示页或由个人独立开发的项目，这个问题或许并不明显，但对于团队开发，组件化开发而言，全局变量会是深埋的地雷，你不知道什么时候自己会踩上，或者下一时刻会是谁踩上。举个简单的栗子：
 // example1.js var vim_fan = true; var emacs_fan = false; function judge() { if (vim_fan &amp;amp;&amp;amp; emacs_fan) { alert(&amp;#34;You must be burned!&amp;#34;); } } // example2.js var emacs_fan = 1; 如果 HTML 页面里引用了这两个 JS 文件，那么这个既加入 Vim 党又加入 Emacs 党的人将被烧死。然而这种情况是不应该存在的。这就是 JavaScript 全局变量的隐患，尤其是在公司里团队开发，当你调用已有的组件时，往往是黑箱操作，当全局变量出现冲突时，就会引发未知错误。
@@ -638,10 +638,10 @@ JavaScript 语法太过灵活，有时无意中就声明了一个全局变量，
     
     <item>
       <title>Hexo 小站轻松部署方案</title>
-      <link>https://isudox.com/posts/2015-09-03-hexo-your-blog/</link>
+      <link>https://isudox.com/2015/09/03/hexo-your-blog/</link>
       <pubDate>Thu, 03 Sep 2015 00:19:38 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2015-09-03-hexo-your-blog/</guid>
+      <guid>https://isudox.com/2015/09/03/hexo-your-blog/</guid>
       <description>进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。
 Blog 仿佛已是古董，在一众微博微信席卷的现下，多少有点像长势萎靡无人问津的路边草。那为什么还要做 Blog？为什么不选用现成的空间、Blog 提供商？为什么还是静态 Blog，还要搭在 VPS 上？
 需要有这么多为什么吗？因为好玩，这就够了。具体好玩的元素有很多，在下面的记录中会有所提及，更多的还需要自己去发现。

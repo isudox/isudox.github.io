@@ -94,6 +94,23 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>MySQL Binlog 解析组件 open-replicator 原理介绍</h2>
+  </header>
+  <section class="entry-content">
+   <p>open-replicator 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。
+在探索 open-replicator 原理前，可以先思考一个问题，如果是自己来开发这个组件该怎么做。 open-replicator 的做法是参照 MySQL 主从复制的方式，像 slave 一样连接到 MySQL 实例，拉取 binlog 并解析，再通过回调进行处理。
+MySQL 主从复制的过程：
+ master 将数据变更写入 binlog； slave 将 master 的 binlog event 复制到 relay log； slave 重放 relay log 中的事件，把数据变更写入到 DB；  类似的，open-replicator 的执行过程是：
+ 包装成 slave 连接到目标 MySQL，并发送 dump 请求； master 收到 dump 请求，返回 binlog 到 open-replicator； open-replicator 解析 binlog；  源码梳理 参考上面的类图，open-replicator 的入口就是 OpenReplicator 类，其主要的成员属性有：...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>February 28, 2020</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/2020/02/28/dive-into-open-replicator/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>动手搭建一个梯子</h2>
   </header>
   <section class="entry-content">
@@ -115,7 +132,7 @@ Socks5 协议  socks5 是 socks 协议的第 5 版。参考 RPC 1928。
   <footer class="entry-footer">
     <time>December 13, 2019</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2019-12-10-proxy-is-a-ladder/"></a>
+  <a class="entry-link" href="https://isudox.com/2019/12/13/proxy-is-a-ladder/"></a>
 </article>
 
 <article class="post-entry">
@@ -134,7 +151,7 @@ Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] E
   <footer class="entry-footer">
     <time>March 29, 2019</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2019-03-29-leetcode-39-combination-sum/"></a>
+  <a class="entry-link" href="https://isudox.com/2019/03/29/leetcode-39-combination-sum/"></a>
 </article>
 
 <article class="post-entry">
@@ -154,7 +171,7 @@ Input: [4,1,2,1,2] Output: 4 Solution Actually it’s quite simple to solve, but
   <footer class="entry-footer">
     <time>March 26, 2019</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2019-03-26-leetcode-136-single-number/"></a>
+  <a class="entry-link" href="https://isudox.com/2019/03/26/leetcode-136-single-number/"></a>
 </article>
 
 <article class="post-entry">
@@ -171,7 +188,7 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
   <footer class="entry-footer">
     <time>April 22, 2018</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2018-04-22-generators-in-python-es6/"></a>
+  <a class="entry-link" href="https://isudox.com/2018/04/22/generators-in-python-es6/"></a>
 </article>
 
 <article class="post-entry">
@@ -184,7 +201,7 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
   <footer class="entry-footer">
     <time>December 29, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-12-29-frontend-backend-split-practice/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/12/29/frontend-backend-split-practice/"></a>
 </article>
 
 <article class="post-entry">
@@ -200,7 +217,7 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
   <footer class="entry-footer">
     <time>July 12, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-07-12-java-8-streams-api-fp-intro/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/07/12/java-8-streams-api-fp-intro/"></a>
 </article>
 
 <article class="post-entry">
@@ -221,7 +238,7 @@ IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以�
   <footer class="entry-footer">
     <time>June 25, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-06-25-coding-with-keyboard-no-mouse/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/06/25/coding-with-keyboard-no-mouse/"></a>
 </article>
 
 <article class="post-entry">
@@ -242,7 +259,7 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
   <footer class="entry-footer">
     <time>May 24, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-05-24-spring-aop-guide/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/05/24/spring-aop-guide/"></a>
 </article>
 
 <article class="post-entry">
@@ -260,25 +277,7 @@ gen-java └── com └── isudox └── thrift └── tutorial └�
   <footer class="entry-footer">
     <time>April 10, 2017</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-04-10-thrift-notes-server-client/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>Thrift 学习笔记：IDL</h2>
-  </header>
-  <section class="entry-content">
-   <p>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的是自己改写的 Thrift，这两天也在看相关的文档，汇总成学习笔记。
-Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Google 的 protobuf，Thrift 是典型的 C/S 架构，RPC 客户端和服务端间需要定义 IDL(Interface Description Language) 来实现跨语言通信。本文是对 Thrift IDL 学习的总结。
-基础类型 参考官方文档，Thrift IDL 的基础类型覆盖了绝大多数编程语言的关键类型，共有以下 7 种：
- bool：布尔值，true 或 false byte：8-bit 有符号整数 i16：16-bit 有符号整数 i32：32-bit 有符号整数 i64：64-bit 有符号整数 double：64-bit 浮点数 string：UTF-8 编码的字符串  文档中说明了，IDL 并没有包含无符号整型，这是由于很多编程语言并没有原生的无符号整型数。
-特殊类型 Thrift IDL 支持 binary 类型，它是未编码字节序列，是 string 类型的特殊形式。binary 类型提高了和 Java 的互操作性，Thrift 计划在某个时候将其提升为基础类型。
-结构体 Thrift 结构体定义了公共对象，基本等同于面向对象语言中的类，但没有继承特性。一个结构体有一组强类型的字段，每个字段都有唯一名称标识符。Thrift 接口文件中的结构体类型，编译后会转换成一个类，类的属性就是结构体中的各个类型字段，而类的方法就是对这些类型字段进行处理的相关函数。结构体类型的关键字是 struct，参考下面的 IDL 代码：...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>April 6, 2017</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2017-04-06-thrift-learn-notes-idl/"></a>
+  <a class="entry-link" href="https://isudox.com/2017/04/10/thrift-notes-server-client/"></a>
 </article>
 
 
@@ -300,7 +299,7 @@ Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Go
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
 <script src="https://isudox.com/highlight.min.js"></script>
 <script>

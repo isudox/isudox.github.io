@@ -13,10 +13,10 @@
     
     <item>
       <title>Spring AOP 那些事儿</title>
-      <link>https://isudox.com/posts/2017-05-24-spring-aop-guide/</link>
+      <link>https://isudox.com/2017/05/24/spring-aop-guide/</link>
       <pubDate>Wed, 24 May 2017 19:25:56 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-05-24-spring-aop-guide/</guid>
+      <guid>https://isudox.com/2017/05/24/spring-aop-guide/</guid>
       <description>AOP 即 Aspect-Oriented Programming，面向切面编程，是对 OOP 编程思想的补充。OOP 核心是继承、封装、多态，是实现 OOP 模块化的基础。当 OOP 达到一定规模后，对于遍布各处的横向代码的处理就开始捉襟见肘，而 AOP 正好弥补了这个不足。
 引入 AOP 下图是很常见的编程场景──
 我们经常会遇到需要在多个方法中实现相同的一部分功能，面向过程的办法就是像图示在每个方法里都复制粘贴相同的一段代码，但是如果要改动就要改动 N 处代码。在有了 OOP 思想后，我们就进阶了一大步，可以将相同的代码段抽离出来，避免了到处改动的问题。
@@ -30,10 +30,10 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
     
     <item>
       <title>探索 Spring MVC 重定向和转发</title>
-      <link>https://isudox.com/posts/2017-02-16-spring-mvc-redirect-forward/</link>
+      <link>https://isudox.com/2017/02/16/spring-mvc-redirect-forward/</link>
       <pubDate>Thu, 16 Feb 2017 11:35:09 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-02-16-spring-mvc-redirect-forward/</guid>
+      <guid>https://isudox.com/2017/02/16/spring-mvc-redirect-forward/</guid>
       <description>最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。
 比如客户端的请求进到 Controller 方法中，我们会判断当前用户状态，可能会跳转到用户中心页，也可能会跳转到等待页，又或者错误页。类似的场景很多，都需要用到请求的重定向和转发。Sping MVC 实现重定向或转发的方法有很多，我先大致梳理下，然后再通过源码加深理解。
 常用处理方式 Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 ModelAndView 对象，又或者是 RedirectView 对象，下面逐一说明。
@@ -44,10 +44,10 @@ String 重定向 是 return 映射到另一个 Controller 方法的字符串。�
     
     <item>
       <title>Spring Boot 学习笔记 1：起手式 Hello World</title>
-      <link>https://isudox.com/posts/2017-02-10-spring-boot-note-1/</link>
+      <link>https://isudox.com/2017/02/10/spring-boot-note-1/</link>
       <pubDate>Fri, 10 Feb 2017 23:59:24 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-02-10-spring-boot-note-1/</guid>
+      <guid>https://isudox.com/2017/02/10/spring-boot-note-1/</guid>
       <description>Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convention over configuration)的设计范式。从零搭建 Spring Boot 项目几乎是傻瓜化的，因为框架把大量配置自动完成了。
 Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 Spring Boot 项目初始化工具，为开发者实现一个基本的项目骨架。很多 Java IDE 也集成了这个工具，以 Intellij IDEA 为例，新建项目，选择 Spring Initializr，进入如下组件选择面板
 其中 Core 包含了像 AOP Cashe 这些核心组件，Web 包含了 SpringMVC Thymeleaf 等 Web 开发组件，还有数据库相关，配置中心相关等一系列组件……因为是 Hello World 程序演示，就不选组件了，直接点下一步，创建空项目。空项目结构如下图。
@@ -56,10 +56,10 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
     
     <item>
       <title>敏捷开发实战：AOP &#43; 反射</title>
-      <link>https://isudox.com/posts/2016-10-11-spring-aop-with-reflection/</link>
+      <link>https://isudox.com/2016/10/11/spring-aop-with-reflection/</link>
       <pubDate>Tue, 11 Oct 2016 11:40:04 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-10-11-spring-aop-with-reflection/</guid>
+      <guid>https://isudox.com/2016/10/11/spring-aop-with-reflection/</guid>
       <description>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。
 如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！
 Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。
@@ -70,10 +70,10 @@ Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会�
     
     <item>
       <title>Spring AOP 本地模拟线上 RPC</title>
-      <link>https://isudox.com/posts/2016-08-03-imitate-rpc-invoke-locally-by-spring-aop/</link>
+      <link>https://isudox.com/2016/08/03/imitate-rpc-invoke-locally-by-spring-aop/</link>
       <pubDate>Wed, 03 Aug 2016 14:57:22 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-08-03-imitate-rpc-invoke-locally-by-spring-aop/</guid>
+      <guid>https://isudox.com/2016/08/03/imitate-rpc-invoke-locally-by-spring-aop/</guid>
       <description>成熟的互联网公司内部一般都会有多个线上环境，像在 JD，就有测试环境，预发布环境，生产环境。开发过程通常是现在本地编写代码，功能差不多了提到测试环境，再到预发布联调，测试通过再提交上线包部署到生产环境。但这是理想状况，实际开发中会有上下游系统联调的问题。
 JD 的项目绝大多数都已经服务化了，服务的提供者和消费者分别在服务中心注册，消费者就能调用服务者的接口。但由于 JD 内部系统繁多，各有不同的开发团队维护各自的项目，除了生产环境和预发布环境能保证各系统间能互联互通，很多情况下，本地运行或在测试环境上运行时，没法调用到服务提供者的接口，这就很尴尬了，因为测试资源的不到位，只能上预发布环境进行上下游系统的对接联调，这是很烦人的，比较好的开发方案是，如果测试环境不完善，就把预发布环境上服务接口的真实数据截流并重定向到本地文件，把它打包成一个本地的测试数据源，以后直接在本地运行就行了。
 如何拦截数据？这就需要 AOP 大显身手了。Spring AOP 可以通过 BeanNameAutoProxyCreatoraaaa 自动代理目标 bean，属性 beanNames 和 interceptorNames 分别设置要代理的目标 bean 列表和拦截器数组。这样就很方便的实现了对目标 bean 的切入拦截。
@@ -84,10 +84,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
     
     <item>
       <title>Spring MVC 集成 Thymeleaf</title>
-      <link>https://isudox.com/posts/2016-07-06-integrating-thymeleaf-with-spring-mvc/</link>
+      <link>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</link>
       <pubDate>Wed, 06 Jul 2016 15:25:45 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-07-06-integrating-thymeleaf-with-spring-mvc/</guid>
+      <guid>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</guid>
       <description>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
 和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
 模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
@@ -100,10 +100,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
     
     <item>
       <title>Spring 加载含中文 properties 文件的思考</title>
-      <link>https://isudox.com/posts/2016-05-23-some-thoughts-on-loading-utf8-properties-file-in-spring/</link>
+      <link>https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/</link>
       <pubDate>Mon, 23 May 2016 15:17:18 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-05-23-some-thoughts-on-loading-utf8-properties-file-in-spring/</guid>
+      <guid>https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/</guid>
       <description>在公司项目的中间件代码里看到有些配置文件里有很多 &amp;quot;\uXXXX&amp;quot; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是 UTF-8 编码，配置文件里的中文字符为什么还会被转码？
 编码那些事儿 Spring 读取 .properties 文件并将配置内容加载进 Properties 类，文档中明确写明
  &amp;hellip; the input/output stream is encoded in ISO 8859-1 character encoding. Characters that cannot be directly represented in this encoding can be written using Unicode escapes as defined in section 3.3 of The Java™ Language Specification; only a single &amp;lsquo;u&amp;rsquo; character is allowed in an escape sequence. The native2ascii tool can be used to convert property files to and from other character encodings.</description>
@@ -111,10 +111,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
     
     <item>
       <title>Spring MVC 拦截器使用小结</title>
-      <link>https://isudox.com/posts/2016-05-10-summary-of-spring-mvc-interceptor/</link>
+      <link>https://isudox.com/2016/05/10/summary-of-spring-mvc-interceptor/</link>
       <pubDate>Tue, 10 May 2016 16:38:39 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-05-10-summary-of-spring-mvc-interceptor/</guid>
+      <guid>https://isudox.com/2016/05/10/summary-of-spring-mvc-interceptor/</guid>
       <description>之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。拦截器普遍用在用户登录验证上，也应用在其他需要对一些信息进行验证的场景下。
 实现拦截 请求流程 Spring MVC 请求的生命周期 图示给出了一次请求从发送到处理到接收响应的整个过程，非常标准的 M-V-C。
 接口实现 Spring MVC 拦截器由 HandlerInterceptor 实现。HandlerInterceptor 接口包含三个方法：

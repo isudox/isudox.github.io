@@ -13,10 +13,10 @@
     
     <item>
       <title>动手搭建一个梯子</title>
-      <link>https://isudox.com/posts/2019-12-10-proxy-is-a-ladder/</link>
+      <link>https://isudox.com/2019/12/13/proxy-is-a-ladder/</link>
       <pubDate>Fri, 13 Dec 2019 10:14:44 +0800</pubDate>
       
-      <guid>https://isudox.com/posts/2019-12-10-proxy-is-a-ladder/</guid>
+      <guid>https://isudox.com/2019/12/13/proxy-is-a-ladder/</guid>
       <description>由于众所周知的原因，大陆的互联网在一定程度上受限的。这归功于北京某高校校长主导的防火墙项目，我们时不时会看到类似下面这种地图——
 出现防火墙后，不断的有技术去突破这个封锁，双方都从彼此身上吸取教训，升级迭代，如果有兴趣去了解的话，其实是一段非常有趣的历史。但实事求是的说，校长还是放了一马，毕竟没有祭出杀手锏才使得技术手段有突破高墙的可能。
 早期防火墙通过 DNS 劫持的方式，给客户端返回一个错误的 IP 来破坏客户端到目标域名的访问。在那个相对单纯的年代里，我们通常是用修改 hosts 的方式来固定访问正确的 IP。

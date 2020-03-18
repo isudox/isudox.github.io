@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>理解 Python 装饰器 - I sudo X</title>
+    
+    <meta name="description" content="前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 @decorator 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。
+管窥装饰器 下面是一个很简单的 Python 方法：
+def call(): print(&#39;call me&#39;) call() 很简单，这会得到 &ldquo;call me&rdquo; 的文本输出。现在增加一个时间标记，告知是什么时间呼叫的我，可以这么改：
+import time def call(): print(&#39;call me&#39;) print(&#39;at &#39;, time.strftime(&#39;%Y-%m-%d%H:%M:%S&#39;, time.localtime(time.time())))) call() 这么做有一个麻烦的地方，就是在 call() 方法内部做了改动。在很多场景下，我们不希望去改变方法本身的行为，因为这个方法可能在很多地方都被调用了，如果在方法内部做了修改，那么对每个调用都会产生影响，但我们只希望在某些调用时才去改变它的行为。比较常见的实用场景如用户登录拦截。
+不改变函数本身，那么该如何对 call() 加上时间标记呢？这就到装饰器大显身手的时候了。装饰器可以把被装饰的方法包裹起来，被装饰者本身的行为不会变，装饰器只是在它之外添加了额外的功能。下面这张图解释的很形象：
+import time def call(): print(&#39;call me &#39;) def mark_time(func): def wrapper(*args, **kwargs): func() print(&#39;at&#39;, time.strftime(&#39;%Y-%m-%d%H:%M:%S&#39;, time.localtime(time.time()))) return wrapper call = mark_time(call) call() 上面就实现了简朴的装饰器，Python 内置了对装饰器的语法支持，可以更便捷的实现装饰功能，就是上面提到的 @decorator，这相当于是 func = decorator(func) 的作用。">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">理解 Python 装饰器</h1>
+    <div class="post-meta">September 9, 2016</div>
+  </header>
+  <div class="post-content"><p>前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 <code>@decorator</code> 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。</p>
+<!-- raw HTML omitted -->
+<h3 id="管窥装饰器">管窥装饰器</h3>
+<p>下面是一个很简单的 Python 方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call</span>():
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;call me&#39;</span>)
+
+call()
+</code></pre></div><p>很简单，这会得到 &ldquo;call me&rdquo; 的文本输出。现在增加一个时间标记，告知是什么时间呼叫的我，可以这么改：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> time
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call</span>():
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;call me&#39;</span>)
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;at &#39;</span>, time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>, time<span style="color:#f92672">.</span>localtime(time<span style="color:#f92672">.</span>time()))))
+          
+call()
+</code></pre></div><p>这么做有一个麻烦的地方，就是在 <code>call()</code> 方法内部做了改动。在很多场景下，我们不希望去改变方法本身的行为，因为这个方法可能在很多地方都被调用了，如果在方法内部做了修改，那么对每个调用都会产生影响，但我们只希望在某些调用时才去改变它的行为。比较常见的实用场景如用户登录拦截。</p>
+<p>不改变函数本身，那么该如何对 <code>call()</code> 加上时间标记呢？这就到装饰器大显身手的时候了。装饰器可以把被装饰的方法包裹起来，被装饰者本身的行为不会变，装饰器只是在它之外添加了额外的功能。下面这张图解释的很形象：</p>
+<p><img src="https://o70e8d1kb.qnssl.com/qxf2-gun-decorator1.jpg" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> time
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call</span>():
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;call me &#39;</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mark_time</span>(func):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        func()
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;at&#39;</span>,
+              time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>, time<span style="color:#f92672">.</span>localtime(time<span style="color:#f92672">.</span>time())))
+
+    <span style="color:#66d9ef">return</span> wrapper
+
+
+call <span style="color:#f92672">=</span> mark_time(call)
+call()
+</code></pre></div><p>上面就实现了简朴的装饰器，Python 内置了对装饰器的语法支持，可以更便捷的实现装饰功能，就是上面提到的 <code>@decorator</code>，这相当于是 <code>func = decorator(func)</code> 的作用。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> time
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mark_time</span>(func):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        func()
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;at&#39;</span>,
+              time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>, time<span style="color:#f92672">.</span>localtime(time<span style="color:#f92672">.</span>time())))
+
+    <span style="color:#66d9ef">return</span> wrapper
+
+<span style="color:#a6e22e">@mark_time</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call</span>():
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;call me &#39;</span>)
+
+call()
+</code></pre></div><p>可以看出，<code>@mark_time</code> 的作用等同于 <code>call = mark_time(call)</code>，得到一个可调用的函数名。</p>
+<p>如果需要多个装饰器来实现功能，只需要按顺序对方法进行装饰，装饰的顺序是从下到上：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a6e22e">@f1</span>(arg)
+<span style="color:#a6e22e">@f2</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">foo</span>():
+    <span style="color:#66d9ef">pass</span>
+
+foo()
+</code></pre></div><p>等效于执行 <code>f1(arg)(f2(foo))()</code></p>
+<h3 id="认识函数">认识函数</h3>
+<p>了解装饰器的基础用法只是皮毛，深入理解装饰器前，得先理解函数究竟是什么。</p>
+<p>首先明确一点，在 Python 中，函数 function 也是一种对象 Object。这就意味着：</p>
+<ul>
+<li>函数可以被指派为参数（作为传入或返回值）；</li>
+<li>函数可以被定义在函数体中；</li>
+</ul>
+<p>因此，函数的返回值可以是另一个函数。手写一段示例代码来印证这一点：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_drink</span>(choice<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;tea&#39;</span>):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">serve_tea</span>():
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;Green tea&#39;</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">serve_coffee</span>():
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;Coffee latte&#39;</span>
+
+    <span style="color:#66d9ef">if</span> choice <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;tea&#39;</span>:
+        <span style="color:#66d9ef">return</span> serve_tea
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">return</span> serve_coffee
+
+my_drink <span style="color:#f92672">=</span> get_drink()
+
+<span style="color:#66d9ef">print</span>(my_drink)  <span style="color:#75715e"># &lt;function get_drink.&lt;locals&gt;.serve_tea at 0x7f313f307f28&gt;</span>
+
+<span style="color:#66d9ef">print</span>(my_drink())  <span style="color:#75715e"># Green tea</span>
+
+<span style="color:#66d9ef">print</span>(get_drink(<span style="color:#e6db74">&#39;coffee&#39;</span>)())  <span style="color:#75715e"># Coffee latte</span>
+</code></pre></div><p>这样之前写的装饰器函数返回的 <code>wrapper</code> 就不难明白了。装饰器的本质就是实现了在被装饰的方法执行之前/之后，执行装饰的动作。</p>
+<h3 id="带参装饰器">带参装饰器</h3>
+<p>假设有这么个需求，在前面的 <code>call()</code> 方法之前加上主语，实现 &ldquo;{who} calls me at {time}&quot;，可以考虑给装饰器函数本身传递一个入参 {who}。
+已有的装饰器是这样的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">call <span style="color:#f92672">=</span> mark_time(call)
+call()
+</code></pre></div><p>增加入参的装饰器是这样的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">call <span style="color:#f92672">=</span> mark_time(<span style="color:#e6db74">&#39;sudoz&#39;</span>)(call)
+call()
+</code></pre></div><p>拆开来看上面的代码：先执行 <code>mark_time('sudoz')</code> 返回一个回调函数 wrapper_1（假设是这个函数名），然后执行 <code>wrapper_1(call)</code>，得到另一个回调函数 wrapper_2，<code>call()</code> 实际上运行的是 <code>wrapper_2()</code>。这么拆解开来，就很好实现带参的装饰器方法了，就是相比不带参的装饰器外面多套一层以返回 wrapper_1：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> time
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mark_time</span>(who):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper_1</span>(func):
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper_2</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> who)
+            func()
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;at&#39;</span>,
+                  time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>, time<span style="color:#f92672">.</span>localtime(time<span style="color:#f92672">.</span>time())))
+        <span style="color:#66d9ef">return</span> wrapper_2
+    <span style="color:#66d9ef">return</span> wrapper_1
+
+<span style="color:#a6e22e">@mark_time</span>(<span style="color:#e6db74">&#39;sudoz&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call</span>():
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;call me &#39;</span>)
+
+call()
+</code></pre></div><h3 id="内置装饰器">内置装饰器</h3>
+<p>Python 类有 3 个内置的装饰器：<code>@staticmethod</code>，<code>@classmethod</code>，<code>property</code>——</p>
+<ul>
+<li><code>@staticmethod</code> 装饰的方法是类的静态方法，即无需通过类的实例去调用，因此方法的参数中没有类实例 <code>self</code>；</li>
+<li><code>@classmethod</code> 装饰的方法是类方法，方法的第一个参数是类对象 <code>cls</code>，可以在方法内调用类对象本身；</li>
+<li><code>@property</code> 装饰的方法是类的属性，装饰器内部定义了 <code>getter</code> 和 <code>setter</code> 方法，这种方式和 Java 里的 <code>getXXX</code>、<code>setXXX</code> 非常相像；</li>
+</ul>
+<p>代码演示下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Demo</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, name, city):
+        self<span style="color:#f92672">.</span>_name <span style="color:#f92672">=</span> name
+        self<span style="color:#f92672">.</span>_city <span style="color:#f92672">=</span> city
+
+    <span style="color:#a6e22e">@staticmethod</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_static_method</span>():
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;nothing to do.&#39;</span>)
+
+    <span style="color:#a6e22e">@classmethod</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_class_method</span>(cls):
+        <span style="color:#66d9ef">print</span>(cls<span style="color:#f92672">.</span>__name__)
+
+    <span style="color:#a6e22e">@property</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">name</span>(self):
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>_name
+
+    <span style="color:#a6e22e">@name.setter</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">name</span>(self, name):
+        self<span style="color:#f92672">.</span>_name <span style="color:#f92672">=</span> name
+
+    <span style="color:#a6e22e">@property</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">city</span>(self):
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>_city
+
+
+demo <span style="color:#f92672">=</span> Demo(<span style="color:#e6db74">&#39;sudoz&#39;</span>, <span style="color:#e6db74">&#39;beijing&#39;</span>)
+Demo<span style="color:#f92672">.</span>test_static_method()  <span style="color:#75715e"># nothing to do</span>
+demo<span style="color:#f92672">.</span>test_static_method()  <span style="color:#75715e"># nothing to do</span>
+demo<span style="color:#f92672">.</span>test_class_method()   <span style="color:#75715e"># Demo</span>
+<span style="color:#66d9ef">print</span>(demo<span style="color:#f92672">.</span>name)           <span style="color:#75715e"># sudoz beijing</span>
+demo<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;anonymous&#39;</span>
+<span style="color:#66d9ef">print</span>(demo<span style="color:#f92672">.</span>name)           <span style="color:#75715e"># anonymous</span>
+<span style="color:#66d9ef">try</span>:
+    demo<span style="color:#f92672">.</span>city <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;hangzhou&#39;</span>
+    <span style="color:#66d9ef">print</span>(demo<span style="color:#f92672">.</span>city)
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+    <span style="color:#66d9ef">print</span>(e)              <span style="color:#75715e"># can&#39;t set attribute</span>
+</code></pre></div><p>注意上面的代码，如果被 <code>@property</code> 装饰的属性没有设置 <code>setter</code> 方法，那么该属性就是类的只读属性，不能被修改，因此上面试图修改 city 属性，抛出异常。</p>
+<h3 id="functools-进阶">functools 进阶</h3>
+<p>装饰器在执行时，有一个隐蔽的小动作可能会被忽略：它把被装饰的函数的 <code>__name__</code> 属性给置换成回调函数的属性了。测试下上面代码里被装饰后的 <code>call</code> 的 <code>__name__</code> 属性，不再是 &ldquo;call&rdquo; 而是 &ldquo;wrapper_2&rdquo;。Python 2.5 版本新增的 <code>functools.wraps()</code> 解决了这个问题，它会把被装饰方法的名称，模块复制到装饰器内。而<code>functools.wraps()</code> 本身也是一个装饰器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> functools
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">foobar</span>(func):
+    <span style="color:#a6e22e">@functools.wraps</span>(func)
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;foo&#39;</span>)
+        <span style="color:#66d9ef">return</span> func(args)
+
+    <span style="color:#66d9ef">return</span> wrapper
+
+
+<span style="color:#a6e22e">@foobar</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">say_hello</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Hello </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> args[<span style="color:#ae81ff">0</span>])
+
+
+<span style="color:#66d9ef">print</span>(say_hello<span style="color:#f92672">.</span>__name__)  <span style="color:#75715e"># Output: bar</span>
+
+say_hello(<span style="color:#e6db74">&#39;sudoz&#39;</span>)  <span style="color:#75715e"># Output: Hello sudoz</span>
+</code></pre></div></div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/python">Python</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

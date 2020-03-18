@@ -13,10 +13,10 @@
     
     <item>
       <title>Docker 容器化应用</title>
-      <link>https://isudox.com/posts/2017-01-16-dockerize-applications/</link>
+      <link>https://isudox.com/2017/01/16/dockerize-applications/</link>
       <pubDate>Mon, 16 Jan 2017 13:30:31 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-01-16-dockerize-applications/</guid>
+      <guid>https://isudox.com/2017/01/16/dockerize-applications/</guid>
       <description>最近看了一篇博文，大受启发，也想着手尝试把自己 VPS 上的应用容器化，一方面尝试下新的开发方式，另一方面也便于应用迁移。
 Dockerfile Docker 通过 dockerfile 配置来把应用构建成镜像，dockerfile 是一个包含了配置和创建应用的全部命令的文本。Docker 官网上有对 dockerfile 的详细说明文档
 看了文档后，对其使用有大致的了解，对不是太复杂的应用的容器化，已经能实践了，下面对 dockerfile 的编写和使用简单总结下。
@@ -28,10 +28,10 @@ MAINTAINER&amp;lt;name&amp;gt;RUN RUN 会运行其指定的命令，一个 RUN �
     
     <item>
       <title>Docker 部署 GitLab</title>
-      <link>https://isudox.com/posts/2016-08-01-running-gitlab-in-docker-container/</link>
+      <link>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</link>
       <pubDate>Mon, 01 Aug 2016 17:15:08 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-08-01-running-gitlab-in-docker-container/</guid>
+      <guid>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</guid>
       <description>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。
 GitLab 的外部依赖很多，有 Nginx、Rails、Postgres、Redis、MySQL、unicorn、Go 等。如果单独安装各个依赖，一大堆的配置会让人抓狂。如果用官网提供的 omni 集成包，除非是全新的服务器，否则很大可能就导致依赖的重复安装，比如进程里有多个 Nginx、MySQL，很容易把服务器环境弄得很乱。像 GitLab 这样的程序，其实很适合用 Docker 来部署，一则和实机环境隔离开，另外运行性能相当好。
 安装 Docker 环境 安装配置 惯例，以 Debian 8 为参考，把 Docker 官方维护的 deb 包添加到系统的 APT 源内，创建文件 /etc/apt/sources.list.d/docker.list：

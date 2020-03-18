@@ -13,10 +13,10 @@
     
     <item>
       <title>CORS 跨域调试记录</title>
-      <link>https://isudox.com/posts/2016-11-12-cors-in-action/</link>
+      <link>https://isudox.com/2016/11/12/cors-in-action/</link>
       <pubDate>Sat, 12 Nov 2016 00:31:58 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-11-12-cors-in-action/</guid>
+      <guid>https://isudox.com/2016/11/12/cors-in-action/</guid>
       <description>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运用中会存在不同的状况，只是看文档理解概念并不能真正成为实战派。
 这次联调采用前后端分离的方式，后端由 Spring MVC 提供数据接口，前端通过异步的方式做数据渲染，和以往不同的是，由于前端开发全部交给深圳的凹凸实验室，所以静态文件都跑在独立的一个域名上，就是京东的通天塔项目。因此所有来自前端的请求都成了跨域请求。
 JSONP 确实是通过一种巧妙的伎俩解决了跨域请求被浏览器拒绝的问题，但是它并不能解决 POST 跨域，联调的接口是跨域上传头像，采用 POST 发送 FormData 对象的方式。所以由服务端 CORS 来处理。

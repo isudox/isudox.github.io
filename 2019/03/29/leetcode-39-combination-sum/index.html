@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>LeetCode-39 Combination Sum - I sudo X</title>
+    
+    <meta name="description" content="39. Combination Sum
+Medium
+ Problem Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+The same repeated number may be chosen from candidates unlimited number of times.
+Note:
+ All numbers (including target) will be positive integers. The solution set must not contain duplicate combinations.  Example 1:
+Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] Example 2:">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">LeetCode-39 Combination Sum</h1>
+    <div class="post-meta">March 29, 2019</div>
+  </header>
+  <div class="post-content"><blockquote>
+<p><a href="https://leetcode.com/problems/combination-sum/">39. Combination Sum</a></p>
+<p>Medium</p>
+</blockquote>
+<!-- raw HTML omitted -->
+<h2 id="problem">Problem</h2>
+<p>Given a <strong>set</strong> of candidate numbers (<code>candidates</code>) <strong>(without duplicates)</strong> and a target number (<code>target</code>), find all unique combinations in <code>candidates</code> where the candidate numbers sums to <code>target</code>.</p>
+<p>The <strong>same</strong> repeated number may be chosen from <code>candidates</code> unlimited number of times.</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li>All numbers (including <code>target</code>) will be positive integers.</li>
+<li>The solution set must not contain duplicate combinations.</li>
+</ul>
+<p><strong>Example 1:</strong></p>
+<pre><code>Input: candidates = [2,3,6,7], target = 7,
+A solution set is:
+[
+  [7],
+  [2,2,3]
+]
+</code></pre><p><strong>Example 2:</strong></p>
+<pre><code>Input: candidates = [2,3,5], target = 8,
+A solution set is:
+[
+  [2,2,2,2],
+  [2,3,3],
+  [3,5]
+]
+</code></pre><h2 id="solution">Solution</h2>
+<p>Obviously, what we have to do to solve this prolem is traversal. Then let&rsquo;s think how to reduce the comlexity of traversal.</p>
+<p>Let&rsquo;s say we&rsquo;ve already find out some numbers stored in a <code>list</code>, if the next number <code>x</code> in candidate numbers is less than <code>target - sum(list)</code>, then we can append this number in <code>list</code> ans continue to find next number <code>y</code>;</p>
+<p>If <code>x</code> equals to <code>target - sum(list)</code> then we find out one combination , and if the candidate numbers is in ascending order, there is no need to check the next number <code>y</code>, we just stop here and move back to last position, put the next number after <code>x</code> and check the sum.</p>
+<p>Thus, we need to sort these candidate numbers firstly. Let&rsquo;s assume the argument <code>candidates</code> is <code>[a, b]</code>, and <code>a &lt; b</code>, imagine a tree as followed:</p>
+<pre><code>             0
+         /       \
+        a         b
+     /     \   /     \
+    a       b a       b
+</code></pre><ul>
+<li>if <code>a + a &lt; target</code>, then try to test <code>a + b</code>;</li>
+<li>if <code>a + a = target</code>, then pop the newest appended number and return to the last node of first <code>a</code>, pop the last number and try the sibling number <code>b</code>;</li>
+</ul>
+<p>Here we make it clear that this is a recursive algorithm, which we should record current list which contains the numbers we get from the ordered candidates and the index of the number we start to test.</p>
+<p>Show you the code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>:
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">combination_sum</span>(self, candidates: List[int], target: int) \
+            <span style="color:#f92672">-&gt;</span> List[List[int]]:
+        ans <span style="color:#f92672">=</span> []
+        <span style="color:#75715e"># important, we need it sorted</span>
+        candidates<span style="color:#f92672">.</span>sort()
+
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">backtrack</span>(nums: List[int], targ: int, start: int, store: List[int]):
+            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(start, len(nums)):
+                <span style="color:#75715e"># test the number from `start` position</span>
+                num <span style="color:#f92672">=</span> nums[i]
+                <span style="color:#66d9ef">if</span> targ <span style="color:#f92672">&lt;</span> num:
+                    <span style="color:#75715e"># current number is gt current target, break</span>
+                    <span style="color:#66d9ef">break</span>
+
+                <span style="color:#75715e"># then we can append current number confidently</span>
+                store<span style="color:#f92672">.</span>append(num)
+                <span style="color:#66d9ef">if</span> targ <span style="color:#f92672">==</span> num:
+                    <span style="color:#75715e"># if equals, we find it, pop the number</span>
+                    nonlocal ans
+                    <span style="color:#75715e"># deep-copy, important detail</span>
+                    ans<span style="color:#f92672">.</span>append(store[:])
+                    store<span style="color:#f92672">.</span>pop()
+                    <span style="color:#66d9ef">break</span>
+                <span style="color:#75715e"># keep testing next number from current position</span>
+                backtrack(nums, targ <span style="color:#f92672">-</span> num, i, store)
+                <span style="color:#75715e"># pop current number and test sibling number</span>
+                store<span style="color:#f92672">.</span>pop()
+
+        backtrack(candidates, target, <span style="color:#ae81ff">0</span>, [])
+
+        <span style="color:#66d9ef">return</span> ans
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CombinationSum</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">combinationSum</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> candidates<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>candidates<span style="color:#f92672">);</span>
+        List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> ans <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+        backtrack<span style="color:#f92672">(</span>candidates<span style="color:#f92672">,</span> target<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(),</span> ans<span style="color:#f92672">);</span>
+
+        <span style="color:#66d9ef">return</span> ans<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">backtrack</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> candidates<span style="color:#f92672">,</span>
+                           <span style="color:#66d9ef">int</span> target<span style="color:#f92672">,</span>
+                           <span style="color:#66d9ef">int</span> start<span style="color:#f92672">,</span>
+                           List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> list<span style="color:#f92672">,</span>
+                           List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> ans<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> start<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> candidates<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">int</span> num <span style="color:#f92672">=</span> candidates<span style="color:#f92672">[</span>i<span style="color:#f92672">];</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>target <span style="color:#f92672">&lt;</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>num<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>target <span style="color:#f92672">==</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                ans<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>list<span style="color:#f92672">));</span>
+                list<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            backtrack<span style="color:#f92672">(</span>candidates<span style="color:#f92672">,</span> target <span style="color:#f92672">-</span> num<span style="color:#f92672">,</span> i<span style="color:#f92672">,</span> list<span style="color:#f92672">,</span> ans<span style="color:#f92672">);</span>
+            list<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="complexity-analysis">Complexity Analysis</h2>
+<p>Time complexity of this approach is <code>O(N*logN)</code>;</p>
+<p>Space complexity is <code>O(N)</code>;</p>
+<hr>
+<p><a href="https://github.com/isudox/leetcode-solution/blob/master/docs/39.combination-sum.md">GitHub Link</a></p>
+<pre><code>Forgive my poor English, I just wanna improve my writing skill.
+So if I make some stupid mistakes in writing, forget about them.
+Let's focus on the code :)
+</code></pre></div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/algorithm">Algorithm</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/leetcode">LeetCode</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

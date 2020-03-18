@@ -94,6 +94,25 @@
 
 <article class="post-entry">
   <header class="entry-header">
+    <h2>2016 前端补习 Webpack 篇</h2>
+  </header>
+  <section class="entry-content">
+   <p>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。
+ 因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。
+ Webpack 基础命令 Hello World Webpack 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：
+# globally install yarn global add webpack@2.1.0-beta.20 # locally install yarn add webpack@2.1.0-beta.20 -D 安装完后，就可以在控制台使用 webpack 命令了。在目录下执行 webpack，首先需要配置 webpack.config.js 文件，由该配置文件来控制 webpack 的操作。参考阮一峰老师 GitHub 上的示例如下：
+// webpack.config.js module.exports = { entry: &#39;./main.js&#39;, output: { filename: &#39;bundle.js&#39; } }; 然后执行 webpack 命令就可以按照配置文件的设置，把目录下的 main.js 打包成 bundle.js。
+核心概念 Webpack 有 4 个核心概念必须要了解：Entry、Output、Loaders 和 Plugins。
+Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告诉 webpack 这张图表的入口位置并循着依赖关系去打包，webpack 通过对 webpack configuration object 设置 entry 属性来定义 Entry，参考下面的代码：...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>December 26, 2016</time>
+  </footer>
+  <a class="entry-link" href="https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
     <h2>CORS 跨域调试记录</h2>
   </header>
   <section class="entry-content">
@@ -108,7 +127,7 @@ var formData = new FormData(); formData....</p>
   <footer class="entry-footer">
     <time>November 12, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-11-12-cors-in-action/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/11/12/cors-in-action/"></a>
 </article>
 
 <article class="post-entry">
@@ -124,7 +143,7 @@ def fib(n): if n &lt; 2: return 1 return fib(n - 1) &#43; fib(n - 2) def gen_fib
   <footer class="entry-footer">
     <time>October 26, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-10-26-python-generator-guide/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/10/26/python-generator-guide/"></a>
 </article>
 
 <article class="post-entry">
@@ -143,7 +162,7 @@ Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Arr
   <footer class="entry-footer">
     <time>October 17, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-10-17-leetcode-26-30/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/10/17/leetcode-26-30/"></a>
 </article>
 
 <article class="post-entry">
@@ -161,7 +180,7 @@ Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会�
   <footer class="entry-footer">
     <time>October 11, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-10-11-spring-aop-with-reflection/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/10/11/spring-aop-with-reflection/"></a>
 </article>
 
 <article class="post-entry">
@@ -180,7 +199,7 @@ test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源�
   <footer class="entry-footer">
     <time>October 10, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-10-10-unit-test-with-junit-mockito/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/10/10/unit-test-with-junit-mockito/"></a>
 </article>
 
 <article class="post-entry">
@@ -196,7 +215,7 @@ Context 的实现 Flask 提供了 4 个 Context：
   <footer class="entry-footer">
     <time>October 2, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-10-02-flask-context-guide/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/10/02/flask-context-guide/"></a>
 </article>
 
 <article class="post-entry">
@@ -215,7 +234,7 @@ Context 的实现 Flask 提供了 4 个 Context：
   <footer class="entry-footer">
     <time>September 24, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-09-24-cross-site-jsonp-and-cors/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/"></a>
 </article>
 
 <article class="post-entry">
@@ -231,7 +250,7 @@ List  An ordered collection (also known as a sequence). The user of this interfa
   <footer class="entry-footer">
     <time>September 13, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-09-13-java-collections-overview/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/09/13/java-collections-overview/"></a>
 </article>
 
 <article class="post-entry">
@@ -249,23 +268,7 @@ import time def call(): print(&#39;call me &#39;) def mark_time(func): def wrapp
   <footer class="entry-footer">
     <time>September 9, 2016</time>
   </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-09-09-python-decorator-guide/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>Python Click 学习笔记</h2>
-  </header>
-  <section class="entry-content">
-   <p>Click 是 Flask 的团队 pallets 开发的优秀开源项目，它为命令行工具的开发封装了大量方法，使开发者只需要专注于功能实现。恰好我最近在开发的一个小工具需要在命令行环境下操作，就写个学习笔记。
-国际惯例，先来一段 “Hello World” 程序（假定已经安装了 Click 包）。
-# hello.py import click @click.command() @click.option(&#39;--count&#39;, default=1, help=&#39;Number of greetings.&#39;) @click.option(&#39;--name&#39;, prompt=&#39;Your name&#39;, help=&#39;The person to greet.&#39;) def hello(count, name): &#34;&#34;&#34;Simple program that greets NAME for a total of COUNT times.&#34;&#34;&#34; for x in range(count): click.echo(&#39;Hello %s!&#39; % name) if __name__ == &#39;__main__&#39;: hello() 执行 python hello.py --count=3，不难猜到控制台的输出结果。除此之外，Click 还悄悄地做了其他的工作，比如帮助选项：
-$ python hello.py --help Usage: hello.py [OPTIONS] Simple program that greets NAME for a total of COUNT times....</p>
-  </section>
-  <footer class="entry-footer">
-    <time>September 3, 2016</time>
-  </footer>
-  <a class="entry-link" href="https://isudox.com/posts/2016-09-03-learning-python-package-click/"></a>
+  <a class="entry-link" href="https://isudox.com/2016/09/09/python-decorator-guide/"></a>
 </article>
 
 
@@ -289,7 +292,7 @@ $ python hello.py --help Usage: hello.py [OPTIONS] Simple program that greets NA
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
 <script src="https://isudox.com/highlight.min.js"></script>
 <script>

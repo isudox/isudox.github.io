@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Hexo 小站轻松部署方案 - I sudo X</title>
+    
+    <meta name="description" content="进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。
+Blog 仿佛已是古董，在一众微博微信席卷的现下，多少有点像长势萎靡无人问津的路边草。那为什么还要做 Blog？为什么不选用现成的空间、Blog 提供商？为什么还是静态 Blog，还要搭在 VPS 上？
+需要有这么多为什么吗？因为好玩，这就够了。具体好玩的元素有很多，在下面的记录中会有所提及，更多的还需要自己去发现。
+Why  选择自己搭建独立 Blog 的理由很简单，既然是自己的东西，就不需要放在别人口袋里； 选择静态 Blog 是因为无需数据库，支持 Markdown，文本文件便于 Git 管理；  静态 Blog 程序尽管小众，也还是有不少选择的，按语言不同门派各异，也是一江湖。比如 Ruby 系 Jekyll，Node.js 系 Hexo，Python 系 Pelican。
+什么？竟然没有世界上最好的语言！好吧，WordPress 正在冲你露大白牙……
+Jekyll、Hexo 和 Pelican 各有拥趸，各执一词。我不辩优劣，选 Hexo 只是因为平时用 JS 更多罢了。如果对语言有信仰，那就闭上眼睛遵从信仰吧。
+How Google 一下关键字 Hexo &#43; Blog，或者直接查看 Hexo 官方文档，都可以对 Hexo 的搭建过程有较为清晰的认知。我设想的方案是搭建一个由 GitHub 托管，并且能在 VPS 上实时发布部署的 Blog 程序，因此基本框架就是 Hexo &#43; GitHub &#43; VPS。
+Let&rsquo;s Hexo GitHub 网上已有的 Hexo 方案基本都是将 Hexo 生成的静态文件提交至 GitHub Pages，通过 GitHub Pages 实现 Blog 的撰写及更新。但有一不足，如果换一台电脑写，难道还要将 Hexo 源文件拷贝过来再生成静态博客？肯定不能这么做，对此我的建议很简单：在 GitHub 上的以 {username}.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Hexo 小站轻松部署方案</h1>
+    <div class="post-meta">September 3, 2015</div>
+  </header>
+  <div class="post-content"><p>进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。</p>
+<p>Blog 仿佛已是古董，在一众微博微信席卷的现下，多少有点像长势萎靡无人问津的路边草。那为什么还要做 Blog？为什么不选用现成的空间、Blog 提供商？为什么还是静态 Blog，还要搭在 VPS 上？</p>
+<p>需要有这么多为什么吗？因为好玩，这就够了。具体好玩的元素有很多，在下面的记录中会有所提及，更多的还需要自己去发现。</p>
+<!-- raw HTML omitted -->
+<h3 id="why">Why</h3>
+<ul>
+<li>选择自己搭建独立 Blog 的理由很简单，既然是自己的东西，就不需要放在别人口袋里；</li>
+<li>选择静态 Blog 是因为无需数据库，支持 Markdown，文本文件便于 Git 管理；</li>
+</ul>
+<p>静态 Blog 程序尽管小众，也还是有不少选择的，按语言不同门派各异，也是一江湖。比如 Ruby 系 <a href="http://jekyllrb.com">Jekyll</a>，Node.js 系 <a href="http://hexo.io">Hexo</a>，Python 系 <a href="http://blog.getpelican.com">Pelican</a>。</p>
+<p>什么？竟然没有世界上最好的语言！好吧，<a href="http://wordpress.org">WordPress</a> 正在冲你露大白牙……</p>
+<p>Jekyll、Hexo 和 Pelican 各有拥趸，各执一词。我不辩优劣，选 Hexo 只是因为平时用 JS 更多罢了。如果对语言有信仰，那就闭上眼睛遵从信仰吧。</p>
+<h3 id="how">How</h3>
+<p>Google 一下关键字 Hexo + Blog，或者直接查看 Hexo 官方<a href="http://hexo.io/docs">文档</a>，都可以对 Hexo 的搭建过程有较为清晰的认知。我设想的方案是搭建一个由 GitHub 托管，并且能在 VPS 上实时发布部署的 Blog 程序，因此基本框架就是 Hexo + GitHub + VPS。</p>
+<h3 id="lets-hexo">Let&rsquo;s Hexo</h3>
+<h4 id="github">GitHub</h4>
+<p>网上已有的 Hexo 方案基本都是将 Hexo 生成的静态文件提交至 GitHub Pages，通过 GitHub Pages 实现 Blog 的撰写及更新。但有一不足，如果换一台电脑写，难道还要将 Hexo 源文件拷贝过来再生成静态博客？肯定不能这么做，对此我的建议很简单：在 GitHub 上的以 {username}.github.io 命名的仓库里建立两个分支：一是 master 分支，保存 Hexo 生成的静态文件；另一是 source 分支，保存 Hexo 的源文件。</p>
+<h4 id="vps">VPS</h4>
+<p>首先得买一台可靠的 VPS，我选用的美帝 <a href="https://www.linode.com/?r=285e75ec2001be00899a5a81796260d2e5962a5b">Linode</a>。我在 VPS 上测试过两种方案，方案一是在 VPS 上也创建 Hexo 环境，同时新建一个 Git 裸仓库作为私有 Git 服务器，本地提交 Hexo 的源文件至 VPS 上的 Git 服务器，然后 VPS 上的 Hexo 程序生成静态文件并发布部署到 Web 目录下；方案二则是本地提交 Hexo 生成文件到 Git 裸仓库，VPS 直接将其部署到 Web 目录下。前者徒增 VPS 的压力，后者使得 Git 日志冗余，各有长短。两种方案我都测试通过，最后采用方案二。
+GitHub 提供 GitHub Pages 服务，原意是用来给开发者发布器在 GitHub 上项目的文档及说明，当然也可以作为开发者的个人站点使用。如果是创建 {username}.github.io 仓库，GitHub 会将其 master 分支下的内容作为站点文件发布；如果是创建其他自定义名称的仓库，GitHub 将以 gh-page 分支作为站点文件。</p>
+<p>创建新用户 git，在服务器上创建 git server 请参考 git <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server">官方文档</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo adduser git
+$ git init --bare &lt;your_repo&gt;.git
+$ touch &lt;your_repo&gt;.git/hook/post-receive
+$ chmod +x post-receive
+$ cd &lt;path_to_your_blog&gt;
+$ git clone &lt;your_repo&gt;.git
+</code></pre></div><p>其中<code>post-receive</code>为 Git Hook，Git 通过该脚本实现本地提交改动后自动发布更新</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash -l
+</span><span style="color:#75715e"></span>
+GIT_REPO<span style="color:#f92672">=</span>/home/git/isudox-hexo.git
+GIT_TEMP<span style="color:#f92672">=</span>/home/git/repo/isudox-hexo
+WWW_HEXO<span style="color:#f92672">=</span>/home/git/www/isudox-hexo
+
+rm -rf <span style="color:#e6db74">${</span>GIT_TEMP<span style="color:#e6db74">}</span>
+git clone $GIT_REPO $GIT_TEMP
+rm -rf <span style="color:#e6db74">${</span>WWW_HEXO<span style="color:#e6db74">}</span>/*
+cp -rf <span style="color:#e6db74">${</span>GIT_TEMP<span style="color:#e6db74">}</span>/* <span style="color:#e6db74">${</span>WWW_HEXO<span style="color:#e6db74">}</span>
+</code></pre></div><p>原理很简单，VPS 上的 Git 仓库一旦接收到 <code>push</code>，便会触发 <code>post-receive</code> 脚本，进入 Blog 根目录，执行更新发布任务。</p>
+<p>如果是方案一，<code>post-receive</code> 也是类似的操作，只是多了一步 <code>hexo generate</code> 生成静态文件的操作，因为提交到 Git 仓库的是 Hexo 源文件而不是生成文件。</p>
+<h4 id="local">Local</h4>
+<p>本地环境需要 Node.js 和 git，系统可以是 Linux | Mac | Win 任一，Node.js与Git 和这些操作系统都能友好相处。我的本地环境是 Arch Linux，因此配置起来可谓轻松愉快——</p>
+<p>安装 Node.js、git</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo pacman -S git nodejs
+</code></pre></div><p>安装 Hexo</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo npm install -g hexo-cli
+</code></pre></div><p>创建本地 Git 仓库并提交至远端 Git 仓库的 master 分支</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#75715e"># isudox.github.io &gt;&gt; README.md</span>
+git init
+git add README.md
+git commit -m <span style="color:#e6db74">&#34;first commit&#34;</span>
+git remote add origin git@github.com:isudox/isudox.github.io.git
+git push -u origin master
+</code></pre></div><p>新建 Hexo 源文件分支 <code>source</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git checkout -b source
+</code></pre></div><p>在本地 Git 仓库下创建 Hexo Blog，并安装必要的 npm 包</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ hexo init
+$ npm install
+$ npm install hexo-deployer-git --save
+</code></pre></div><p>执行完上述命令后，属于你的 Hexo Blog 就已经诞生了，接下来可以修改配置文件 <code>_config.yml</code>，可以在 <code>themes/</code> 路径下添加主题，可以撰写新文章……总之，你拥有了 Hexo 的全部魔力。</p>
+<p>因为本地的Hexo项目的提交涉及三处：</p>
+<ol>
+<li>Github 仓库的 source 分支；</li>
+<li>Github 仓库的 master 分支；</li>
+<li>VPS 上的私有 Git 仓库 master 分支；</li>
+</ol>
+<p>因此需要更改 <code>_config</code> 文件中 <code>deploy</code> 字段的属性</p>
+<pre><code>deploy:
+    type: git
+    repo:
+        github: git@github.com:&lt;username&gt;/&lt;username&gt;.github.io.git,master
+        vpsgit: git@vps_ip:&lt;your_repo&gt;.git,master
+</code></pre><p>注意 <code>.yml</code> 的 <code>:</code> 后面必须跟一个空格，这是格式规定，否则配置无效。</p>
+<p>提交 GitHub source 分支时，确人当前分支为 source，然后执行 <code>git push origin source</code>；
+提交 GitHub master 分支和 VPS 私有 Git 库时，执行 <code>hexo deploy</code> 发布即可；</p>
+<p>好了，回到本地的 Hexo 项目根目录下，再敲最后一行命令，让我们看看会发生什么</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ hexo generate --deploy
+</code></pre></div><p>打开 http://{username}.github.io 或者你自己绑定的域名……</p>
+<p>Duang    ^______^</p>
+<hr>
+<p>后续优化：我现在的小站采用了 Github + Travis CI 的自动部署方案，参考
+<a href="/2017/01/24/deploy-site-with-travis-ci/">Travis CI 持续部署静态站方案</a></p>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/hexo">Hexo</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/vps">VPS</a></li>
+      
+      
+      <li><a href="https://isudox.com/tags/git">Git</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

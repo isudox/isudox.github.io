@@ -13,10 +13,10 @@
     
     <item>
       <title>JavaScript ES6 和 Python 中的 Generator</title>
-      <link>https://isudox.com/posts/2018-04-22-generators-in-python-es6/</link>
+      <link>https://isudox.com/2018/04/22/generators-in-python-es6/</link>
       <pubDate>Sun, 22 Apr 2018 23:20:03 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2018-04-22-generators-in-python-es6/</guid>
+      <guid>https://isudox.com/2018/04/22/generators-in-python-es6/</guid>
       <description>这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 redux-saga，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 generator、yield 从思想上到写法上基本是一致的，之前也写过 Python 里的用法，这里也简单的写下我对动态语言里 generator 的学习和理解。
 通识 首先，generator 本质上还是 function，只是行为略微特殊。 普通 function 会在执行结束时通过 return 返回； generator 可以中断 function 的执行过程，并重新回到断点现场继续执行。具体实现就是通过 yield 将结果返回给调用方并中断，通过 next() 方法继续回到断点再执行到下一个 yield 断点处。 普通函数只会返回一次，就是在执行结束的时候；generator 函数在执行过程中可以多次返回，即在 yield 断点处取代了 return。
 还有一个和 generator 紧密相关的概念是 iterator，简单的描述二者的关系就是──generator 实现的目的是生成一个 iterator，它是 iterable 的，也就是说是可以循环遍历的。
@@ -26,10 +26,10 @@ function* generator(i) { yield i; yield i + 10; } var gen = generator(10); conso
     
     <item>
       <title>跨域请求之 JSONP 和 CORS</title>
-      <link>https://isudox.com/posts/2016-09-24-cross-site-jsonp-and-cors/</link>
+      <link>https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/</link>
       <pubDate>Sat, 24 Sep 2016 23:55:52 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2016-09-24-cross-site-jsonp-and-cors/</guid>
+      <guid>https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/</guid>
       <description>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。
 首先理清一个经常会被混淆的概念，AJAX(Asynchronous JavaScript and XML) 和跨域请求是两个不同的概念，AJAX 是异步请求和解析处理 XML 文档的方式，它在服务器端没有提供支持（CORS 是一种解决方案）的前提下，也是无法跨域的。
 跨域请求 跨域请求，顾名思义，就是从 A 地址向非同源的 B 地址发起了请求。参考 MDN 上对同源的定义:
@@ -41,10 +41,10 @@ function* generator(i) { yield i; yield i + 10; } var gen = generator(10); conso
     
     <item>
       <title>小记 JavaScript 全局变量的一些思考</title>
-      <link>https://isudox.com/posts/2015-10-25-js-global-variables/</link>
+      <link>https://isudox.com/2015/10/25/js-global-variables/</link>
       <pubDate>Sun, 25 Oct 2015 19:37:47 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2015-10-25-js-global-variables/</guid>
+      <guid>https://isudox.com/2015/10/25/js-global-variables/</guid>
       <description>毕业来 JD 后完成的第一个任务是写选号中心的前端。由于和 PM 没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用 JavaScript 全局变量，带来便利的同时也有意想不到的坑，更不应滥用，很多时候全局变量并不是一个好选择。
 一个很重要的原因就是，页面所引用的 JS 文件里所有变量和函数都是在同一个域(scope)中运行，重名的变量和函数被覆盖，bug 将随之而来。如果仅仅只是一个展示页或由个人独立开发的项目，这个问题或许并不明显，但对于团队开发，组件化开发而言，全局变量会是深埋的地雷，你不知道什么时候自己会踩上，或者下一时刻会是谁踩上。举个简单的栗子：
 // example1.js var vim_fan = true; var emacs_fan = false; function judge() { if (vim_fan &amp;amp;&amp;amp; emacs_fan) { alert(&amp;#34;You must be burned!&amp;#34;); } } // example2.js var emacs_fan = 1; 如果 HTML 页面里引用了这两个 JS 文件，那么这个既加入 Vim 党又加入 Emacs 党的人将被烧死。然而这种情况是不应该存在的。这就是 JavaScript 全局变量的隐患，尤其是在公司里团队开发，当你调用已有的组件时，往往是黑箱操作，当全局变量出现冲突时，就会引发未知错误。

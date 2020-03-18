@@ -6,10 +6,19 @@
     <description>Recent content in Tags on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Dec 2019 10:14:44 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 28 Feb 2020 13:41:33 +0800</lastBuildDate>
     
 	<atom:link href="https://isudox.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Database</title>
+      <link>https://isudox.com/tags/database/</link>
+      <pubDate>Fri, 28 Feb 2020 13:41:33 +0800</pubDate>
+      
+      <guid>https://isudox.com/tags/database/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Networks</title>

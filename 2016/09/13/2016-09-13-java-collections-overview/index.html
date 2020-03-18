@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Java 常用容器小结 - I sudo X</title>
+    
+    <meta name="description" content="无论是什么编程语言，容器都是非常重要的概念，在 Java 的实际开发中更是无处不在，各种 List、Set、Map。很多时候就是随着编程的惯性用了 ArrayList 或者 HashMap，但是并没对其特性和适用场景作更多的思考。开发者对 Java 容器的讨论比较多，我自己从源码的角度做个粗浅的整理。
+Collection java.util 包中的基于 Collection 接口的有 List、Set 和 Queue，下面这张图清楚的显示了 Collection 接口的向下实现和继承关系。
+Collection 接口继承了 Iterable 接口，表明所有 Collection 的实现都是可迭代的。Collection 提供最基础的接口方法，如 add()、remove()、contains()、isEmpty()、hashCode() 等。
+List  An ordered collection (also known as a sequence). The user of this interface has precise control over where in the list each element is inserted. The user can access elements by their integer index (position in the list), and search for elements in the list.">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Java 常用容器小结</h1>
+    <div class="post-meta">September 13, 2016</div>
+  </header>
+  <div class="post-content"><p>无论是什么编程语言，容器都是非常重要的概念，在 Java 的实际开发中更是无处不在，各种 List、Set、Map。很多时候就是随着编程的惯性用了 ArrayList 或者 HashMap，但是并没对其特性和适用场景作更多的思考。开发者对 Java 容器的讨论比较多，我自己从源码的角度做个粗浅的整理。</p>
+<!-- raw HTML omitted -->
+<h2 id="collection">Collection</h2>
+<p>java.util 包中的基于 Collection 接口的有 List、Set 和 Queue，下面这张图清楚的显示了 Collection 接口的向下实现和继承关系。</p>
+<p><img src="https://o70e8d1kb.qnssl.com/java-collection-hierarchy.png" alt=""></p>
+<p>Collection 接口继承了 Iterable 接口，表明所有 Collection 的实现都是可迭代的。Collection 提供最基础的接口方法，如 <code>add()</code>、<code>remove()</code>、<code>contains()</code>、<code>isEmpty()</code>、<code>hashCode()</code> 等。</p>
+<h3 id="list">List</h3>
+<blockquote>
+<p>An ordered collection (also known as a sequence). The user of this interface has precise control over where in the list each element is inserted. The user can access elements by their integer index (position in the list), and search for elements in the list.</p>
+</blockquote>
+<p>上面是 Java SE Docs 里对 List 的定义。也就是说，List 是一个有序的 Collection，即队列，List 的使用者通过 List 内元素所在的 index 访问元素，且不限制重复元素。</p>
+<h4 id="arraylist">ArrayList</h4>
+<blockquote>
+<p>Resizable-array implementation of the List interface. Implements all optional list operations, and permits all elements, including null. In addition to implementing the List interface, this class provides methods to manipulate the size of the array that is used internally to store the list. (This class is roughly equivalent to Vector, except that it is unsynchronized.)</p>
+</blockquote>
+<p>ArrayList 是 List 里使用度非常高的一个实现。Doc 里有这么几个关键的说明：可动态扩容，允许插入 <code>null</code>，非同步。</p>
+<p>ArrayList 实例有一个容量（capacity），就是它所能存储的元素数量，默认是 10。当元素不断被添加进 ArrayList 后，它的 size 域接近 capacity 时，capacity 会自动增加。</p>
+<p>先来了解 ArrayList 的自动扩容机制。自动扩容是在执行 <code>add</code> 或 <code>addAll</code> 方法是触发的，这两个方法里会调用 <code>ensureCapacityInternal()</code> 方法来增大 capacity，看源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    ensureCapacityInternal<span style="color:#f92672">(</span>size <span style="color:#f92672">+</span> 1<span style="color:#f92672">);</span>  <span style="color:#75715e">// Increments modCount!!
+</span><span style="color:#75715e"></span>    elementData<span style="color:#f92672">[</span>size<span style="color:#f92672">++]</span> <span style="color:#f92672">=</span> e<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ensureCapacityInternal</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> minCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>elementData <span style="color:#f92672">==</span> DEFAULTCAPACITY_EMPTY_ELEMENTDATA<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        minCapacity <span style="color:#f92672">=</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">(</span>DEFAULT_CAPACITY<span style="color:#f92672">,</span> minCapacity<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    ensureExplicitCapacity<span style="color:#f92672">(</span>minCapacity<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ensureExplicitCapacity</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> minCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    modCount<span style="color:#f92672">++;</span>
+
+    <span style="color:#75715e">// overflow-conscious code
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>minCapacity <span style="color:#f92672">-</span> elementData<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span>
+        grow<span style="color:#f92672">(</span>minCapacity<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">grow</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> minCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// overflow-conscious code
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> oldCapacity <span style="color:#f92672">=</span> elementData<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> newCapacity <span style="color:#f92672">=</span> oldCapacity <span style="color:#f92672">+</span> <span style="color:#f92672">(</span>oldCapacity <span style="color:#f92672">&gt;&gt;</span> 1<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>newCapacity <span style="color:#f92672">-</span> minCapacity <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span>
+        newCapacity <span style="color:#f92672">=</span> minCapacity<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>newCapacity <span style="color:#f92672">-</span> MAX_ARRAY_SIZE <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span>
+        newCapacity <span style="color:#f92672">=</span> hugeCapacity<span style="color:#f92672">(</span>minCapacity<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// minCapacity is usually close to size, so this is a win:
+</span><span style="color:#75715e"></span>    elementData <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">copyOf</span><span style="color:#f92672">(</span>elementData<span style="color:#f92672">,</span> newCapacity<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>只有当新增元素后的 size 超过当前的容量时，才会触发扩容。扩容的操作由 <code>grow()</code> 通过 <code>Arrays.copyOf()</code> 完成。自动扩容省去了程序员操心 ArrayList 溢出问题，但也带来一个弊端，就是当需要添加大量元素，会频繁触发自动扩容，JDK 提供了 <code>ensureCapacity()</code> 方法手动的预先设置 capacity 去避免这种情况。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ensureCapacity</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> minCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">int</span> minExpand <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>elementData <span style="color:#f92672">!=</span> DEFAULTCAPACITY_EMPTY_ELEMENTDATA<span style="color:#f92672">)</span>
+        <span style="color:#75715e">// any size if not default element table
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">?</span> 0
+        <span style="color:#75715e">// larger than default for default empty table. It&#39;s already
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// supposed to be at default size.
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">:</span> DEFAULT_CAPACITY<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>minCapacity <span style="color:#f92672">&gt;</span> minExpand<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        ensureExplicitCapacity<span style="color:#f92672">(</span>minCapacity<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="vector">Vector</h4>
+<blockquote>
+<p>The Vector class implements a growable array of objects. Like an array, it contains components that can be accessed using an integer index. However, the size of a Vector can grow or shrink as needed to accommodate adding and removing items after the Vector has been created.</p>
+</blockquote>
+<p>Vector 和 ArrayList 很类似，不同之处在于，Vector 是同步的，线程安全，自动扩容时，容量是增大 100%（ArrayList 是增大 50%）。</p>
+<h4 id="linkedlist">LinkedList</h4>
+<blockquote>
+<p>Doubly-linked list implementation of the List and Deque interfaces. Implements all optional list operations, and permits all elements (including null).</p>
+</blockquote>
+<p>LinkedList 是一个双向链表实现，对 LinkedList 内元素的索引都需要从它的头部或尾部遍历。因此 LinkedList 不能像 ArrayList 和 Vector 那样根据元素索引位置进行随机访问，只能通过 LinkedList 里逐个 Node 依次向下（上）迭代进行查找，访问效率相比会差一点。</p>
+<p>LinkedList 内元素是以 <code>Node&lt;E&gt;</code> 结构存储，Node 包含真实的存储元素 item，前一 Node 的引用 prev，后一 Node 的引用 next：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Node</span><span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    E item<span style="color:#f92672">;</span>
+    Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> next<span style="color:#f92672">;</span>
+    Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> prev<span style="color:#f92672">;</span>
+
+    Node<span style="color:#f92672">(</span>Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> prev<span style="color:#f92672">,</span> E element<span style="color:#f92672">,</span> Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> next<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">item</span> <span style="color:#f92672">=</span> element<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> next<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">prev</span> <span style="color:#f92672">=</span> prev<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>双向链表的结构使得数据的插入删除变得非常简单高效：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> E element<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    checkPositionIndex<span style="color:#f92672">(</span>index<span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>index <span style="color:#f92672">==</span> size<span style="color:#f92672">)</span>
+        linkLast<span style="color:#f92672">(</span>element<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">else</span>
+        linkBefore<span style="color:#f92672">(</span>element<span style="color:#f92672">,</span> node<span style="color:#f92672">(</span>index<span style="color:#f92672">));</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">linkBefore</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">,</span> Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> succ<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// assert succ != null;
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">final</span> Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> pred <span style="color:#f92672">=</span> succ<span style="color:#f92672">.</span><span style="color:#a6e22e">prev</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> Node<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> newNode <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Node<span style="color:#f92672">&lt;&gt;(</span>pred<span style="color:#f92672">,</span> e<span style="color:#f92672">,</span> succ<span style="color:#f92672">);</span>
+    succ<span style="color:#f92672">.</span><span style="color:#a6e22e">prev</span> <span style="color:#f92672">=</span> newNode<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>pred <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+        first <span style="color:#f92672">=</span> newNode<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">else</span>
+        pred<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> newNode<span style="color:#f92672">;</span>
+    size<span style="color:#f92672">++;</span>
+    modCount<span style="color:#f92672">++;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>插入时，只需要将新元素的 Node 插在 prev 和 next Node之间，并重新建立前后连接关系。同理，删除操作也是。</p>
+<h3 id="set">Set</h3>
+<blockquote>
+<p>A collection that contains no duplicate elements. More formally, sets contain no pair of elements e1 and e2 such that e1.equals(e2), and at most one null element. As implied by its name, this interface models the mathematical set abstraction.</p>
+</blockquote>
+<p>Set 是不存在重复元素的集合类型。对于重复的定义就是，当 <code>e1.equals(e2)</code> 时，就意味着重复。Set 支持 <code>null</code>，最多也只能存在一个。</p>
+<h4 id="hashset">HashSet</h4>
+<blockquote>
+<p>This class implements the Set interface, backed by a hash table (actually a HashMap instance). It makes no guarantees as to the iteration order of the set; in particular, it does not guarantee that the order will remain constant over time. This class permits the null element.</p>
+</blockquote>
+<p>凡是和 Hash 相关的都是查询效率很高的集合类型，HashSet 也是。HashSet 内部持有一个 HashMap 域来作为元素的实际存储，也就是说，HashSet 根据元素的 HashCode 来确定顺序，因此 HashSet 无法保证元素的存储顺序和插入顺序一致，甚至都不能保证顺序一直保持不变。参考 OpenJDK 里的源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashSet</span><span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">extends</span> AbstractSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">implements</span> Set<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;,</span> Cloneable<span style="color:#f92672">,</span> Serializable <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">transient</span> HashMap<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> map<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>E var1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">,</span> PRESENT<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Object var1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> PRESENT<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">clear</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="linkedhashset">LinkedHashSet</h4>
+<blockquote>
+<p>Hash table and linked list implementation of the Set interface, with predictable iteration order.</p>
+</blockquote>
+<p>LinkedHashSet 继承了 HashSet，不同的是，LinkedHashSet 内部持有一个双向链表，这个链表决定了其元素遍历的顺序，即元素插入的顺序。因此 LinkedHashSet 是有序的集合。</p>
+<h4 id="treeset">TreeSet</h4>
+<blockquote>
+<p>A NavigableSet implementation based on a TreeMap. The elements are ordered using their natural ordering, or by a Comparator provided at set creation time, depending on which constructor is used.</p>
+</blockquote>
+<p>TreeSet 继承 SortedSet（直接父类是 NavigableSet），是有序的集合。元素顺序可以保持自然排序，或者根据提供的比较器 Comparator 排序，因此 TreeSet 中任意两个元素的值都不同。TreeSet 的元素存储在 NavigableMap 中（父类是 SortedMap）。</p>
+<p>TreeSet 是非同步的，如果多线程并行访问 TreeSet，且至少有一个线程会修改它，就必须在外部进行同步。典型的办法是采用包装器去把非同步的对象装饰成同步的对象（Java 并发编程实战里讲得很详细），Collections 包提供了这样的方法：
+<code> SortedSet set = Collections.synchronizedSortedSet(new TreeSet(...));</code></p>
+<h2 id="map">Map</h2>
+<p><img src="https://o70e8d1kb.qnssl.com/java-map-hierarchy.png" alt=""></p>
+<p>Map 存储的元素是 K-V 键值对，Map 的具体实现通常是由 key 映射到 value，而 Apache Commons 包的 BidiMap 集合，实现了 value 到 key 的反向映射，参考 <a href="http://stackoverflow.com/questions/1383797/java-hashmap-how-to-get-key-from-value">StackOverflow</a>。</p>
+<h3 id="hashmap">HashMap</h3>
+<blockquote>
+<p>This implementation provides all of the optional map operations, and permits null values and the null key. (The HashMap class is roughly equivalent to Hashtable, except that it is unsynchronized and permits nulls.) This class makes no guarantees as to the order of the map; in particular, it does not guarantee that the order will remain constant over time.</p>
+</blockquote>
+<p>之前的<a href="/2016/08/08/how-hashmap-works-in-jdk8/">博客</a>对 JDK8 里的 HashMap 做了简单的介绍。HashMap 的 key 和 value 允许 null，且它是非同步的，这个 Hashtable 有别（HashMap 继承了 AbstractMap，Hashtable 继承了 Dictionary，两者都实现了 Map 接口）。HashMap 是无序的，因为它的元素通过 key 的哈希值决定其在 hash bucket 中的存储位置。</p>
+<h3 id="hashtable">Hashtable</h3>
+<p>Hashtable 和 HashMap 类似，但它是同步的，且不支持 null。在单线程环境下，Hashtable 的性能要稍差于 HashMap。</p>
+<h3 id="treemap">TreeMap</h3>
+<blockquote>
+<p>A Red-Black tree based NavigableMap implementation. The map is sorted according to the natural ordering of its keys, or by a Comparator provided at map creation time, depending on which constructor is used.</p>
+</blockquote>
+<p>TreeMap 是基于红黑树的 NavigableMap（父类 SortedMap）实现，是有序集合，以元素 key 的自然顺序或者比较器作为排序依据。它和 TreeSet 除了元素结构的差异，在行为表现上很相似。</p>
+<h2 id="总览">总览</h2>
+<p>搬运前人总结的表格，总览几个常用集合的特点：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Collection class</th>
+<th align="center">Base class</th>
+<th align="center">Base interfaces</th>
+<th align="center">Duplicate elements?</th>
+<th align="center">Ordered?</th>
+<th align="center">Sorted?</th>
+<th align="center">Thread-safe?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">ArrayList<!-- raw HTML omitted --></td>
+<td align="center">AbstractList<!-- raw HTML omitted --></td>
+<td align="center">List<!-- raw HTML omitted --></td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">LinkedList<!-- raw HTML omitted --></td>
+<td align="center">AbstractSequentialList<!-- raw HTML omitted --></td>
+<td align="center">List<!-- raw HTML omitted -->; Deque<!-- raw HTML omitted --></td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">Vector<!-- raw HTML omitted --></td>
+<td align="center">AbstractList<!-- raw HTML omitted --></td>
+<td align="center">List<!-- raw HTML omitted --></td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+<td align="center">Y</td>
+</tr>
+<tr>
+<td align="center">HashSet<!-- raw HTML omitted --></td>
+<td align="center">AbstractSet<!-- raw HTML omitted --></td>
+<td align="center">Set<!-- raw HTML omitted --></td>
+<td align="center">N</td>
+<td align="center">N</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">LinkedHashSet<!-- raw HTML omitted --></td>
+<td align="center">HashSet<!-- raw HTML omitted --></td>
+<td align="center">Set<!-- raw HTML omitted --></td>
+<td align="center">N</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">TreeSet<!-- raw HTML omitted --></td>
+<td align="center">AbstractSet<!-- raw HTML omitted --></td>
+<td align="center">NavigableSet<!-- raw HTML omitted --></td>
+<td align="center">N</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">HashMap&lt;K, V&gt;</td>
+<td align="center">AbstractMap&lt;K, V&gt;</td>
+<td align="center">Map&lt;K, V&gt;</td>
+<td align="center">N</td>
+<td align="center">N</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">LinkedHashMap&lt;K, V&gt;</td>
+<td align="center">HashMap&lt;K, V&gt;</td>
+<td align="center">Map&lt;K, V&gt;</td>
+<td align="center">N</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">Hashtable&lt;K, V&gt;</td>
+<td align="center">Dictionary&lt;K, V&gt;</td>
+<td align="center">Map&lt;K, V&gt;</td>
+<td align="center">N</td>
+<td align="center">N</td>
+<td align="center">N</td>
+<td align="center">Y</td>
+</tr>
+<tr>
+<td align="center">TreeMap&lt;K, V&gt;</td>
+<td align="center">AbstractMap&lt;K, V&gt;</td>
+<td align="center">NavigableMap&lt;K, V&gt;</td>
+<td align="center">N</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">N</td>
+</tr>
+</tbody>
+</table>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/java">Java</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

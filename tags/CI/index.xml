@@ -13,10 +13,10 @@
     
     <item>
       <title>Travis CI 持续部署静态站方案</title>
-      <link>https://isudox.com/posts/2017-01-24-deploy-site-with-travis-ci/</link>
+      <link>https://isudox.com/2017/01/24/deploy-site-with-travis-ci/</link>
       <pubDate>Tue, 24 Jan 2017 22:07:42 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-01-24-deploy-site-with-travis-ci/</guid>
+      <guid>https://isudox.com/2017/01/24/deploy-site-with-travis-ci/</guid>
       <description>这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓库会设置 hook，使得有新的 Commit 被 Push 上来后，自动把 Nginx 下的站点目录进行 Pull 更新。这种方案只是一开始的设置比较麻烦，之后就能一劳永逸，但我觉得还可以再抢救下。
 初步方案 既然核心目标都是一键部署，为什么不利用持续集成，那就用 Travis CI 吧，和 GitHub 无缝结合。
 先来梳理下整个部署思路：

@@ -13,10 +13,10 @@
     
     <item>
       <title>Thrift 学习笔记：RPC Server 和 Client</title>
-      <link>https://isudox.com/posts/2017-04-10-thrift-notes-server-client/</link>
+      <link>https://isudox.com/2017/04/10/thrift-notes-server-client/</link>
       <pubDate>Mon, 10 Apr 2017 11:46:23 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-04-10-thrift-notes-server-client/</guid>
+      <guid>https://isudox.com/2017/04/10/thrift-notes-server-client/</guid>
       <description>在了解 Thrift IDL 后，就能开始编写自己的 RPC 服务端和客户端了。对 Thrift 的安装过程和命令操作略过不表，主要还是关注如何利用 Thrift 实现 Java 的 RPC 服务端和客户端。
 服务接口描述 首先需要定义服务接口描述，即 .thrift 文件，再由 Thrift 将接口描述文件编译成相应的客户端和服务端的 stub 代码。
 官网 Tutorial 给出的示例略复杂，不妨自己写一个简单的 Hello World 文件：
@@ -27,10 +27,10 @@ gen-java └── com └── isudox └── thrift └── tutorial └�
     
     <item>
       <title>Thrift 学习笔记：IDL</title>
-      <link>https://isudox.com/posts/2017-04-06-thrift-learn-notes-idl/</link>
+      <link>https://isudox.com/2017/04/06/thrift-learn-notes-idl/</link>
       <pubDate>Thu, 06 Apr 2017 11:08:26 +0000</pubDate>
       
-      <guid>https://isudox.com/posts/2017-04-06-thrift-learn-notes-idl/</guid>
+      <guid>https://isudox.com/2017/04/06/thrift-learn-notes-idl/</guid>
       <description>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的是自己改写的 Thrift，这两天也在看相关的文档，汇总成学习笔记。
 Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Google 的 protobuf，Thrift 是典型的 C/S 架构，RPC 客户端和服务端间需要定义 IDL(Interface Description Language) 来实现跨语言通信。本文是对 Thrift IDL 学习的总结。
 基础类型 参考官方文档，Thrift IDL 的基础类型覆盖了绝大多数编程语言的关键类型，共有以下 7 种：

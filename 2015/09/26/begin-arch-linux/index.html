@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>开启 Arch 之旅 - I sudo X</title>
+    
+    <meta name="description" content="iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry&hellip;
+最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而言，这不啻一个新的玩点。
+在 V2EX 上混的时候，被多次安利 Arch Linux，传闻中的 K.I.S.S 风格，滚动升级，业界良心的 Wiki，强大的社区支持，让常在 Linux 下搬砖的我心生向往。于是就在别人轻抚刚发货的 iPhone 6S 的夜晚，开始第 N &#43; 1 次折腾。
+故事就在这样一个夜晚发生了&hellip;
+准备工作 Arch 的镜像很小，仅不到 700M，由于光驱已经退役，因此就用了 U 盘做启动。在 Linux 下用 dd 命令就可以将镜像文件烧写进 U 盘：
+$ dd bs=4M if=/path_archlinux.iso of=/dev/sdx &amp;&amp; sync 其中 sdx 为 /dev 下挂载的 U 盘文件符。片刻功夫，烧写完毕，准备工作就绪！
+躁起来吧，骚年 重启选择 U 盘启动，U 盘里的镜像文件释放展开，屏幕上显现启动列表，选择第一个 x86-64 进入 Arch 配置安装。前方没有任何图形，黑白两色的屏幕像极了窗外的夜。
+联网 相比 Debian、CentOS 这些动辄 3,4G 的安装镜像，Arch 有着诱人的小而美，也意味这很多包都需要联网下载。所以安装过程中，必须要联网。
+$ wifi-mune 输入 Wifi 密码，ping 测试。">
+    <meta name="author" content="">
+    
+    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="https://isudox.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+    <link rel="icon" href="https://isudox.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.67.1" />
+    
+    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">开启 Arch 之旅</h1>
+    <div class="post-meta">September 26, 2015</div>
+  </header>
+  <div class="post-content"><p>iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry&hellip;</p>
+<p>最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而言，这不啻一个新的玩点。</p>
+<p>在 <a href="https://www.v2ex.com/">V2EX</a> 上混的时候，被多次安利 <a href="https://www.archlinux.org">Arch Linux</a>，传闻中的 K.I.S.S 风格，滚动升级，业界良心的 Wiki，强大的社区支持，让常在 Linux 下搬砖的我心生向往。于是就在别人轻抚刚发货的 iPhone 6S 的夜晚，开始第 N + 1 次折腾。</p>
+<p>故事就在这样一个夜晚发生了&hellip;</p>
+<!-- raw HTML omitted -->
+<h3 id="准备工作">准备工作</h3>
+<p>Arch 的镜像很小，仅不到 700M，由于光驱已经退役，因此就用了 U 盘做启动。在 Linux 下用 <code>dd</code> 命令就可以将镜像文件烧写进 U 盘：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ dd bs<span style="color:#f92672">=</span>4M <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/path_archlinux.iso of<span style="color:#f92672">=</span>/dev/sdx <span style="color:#f92672">&amp;&amp;</span> sync
+</code></pre></div><p>其中 <code>sdx</code> 为 <code>/dev</code> 下挂载的 U 盘文件符。片刻功夫，烧写完毕，准备工作就绪！</p>
+<h3 id="躁起来吧骚年">躁起来吧，骚年</h3>
+<p>重启选择 U 盘启动，U 盘里的镜像文件释放展开，屏幕上显现启动列表，选择第一个 x86-64 进入 Arch 配置安装。前方没有任何图形，黑白两色的屏幕像极了窗外的夜。</p>
+<h4 id="联网">联网</h4>
+<p>相比 Debian、CentOS 这些动辄 3,4G 的安装镜像，Arch 有着诱人的小而美，也意味这很多包都需要联网下载。所以安装过程中，必须要联网。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ wifi-mune
+</code></pre></div><p>输入 Wifi 密码，ping 测试。</p>
+<h4 id="磁盘">磁盘</h4>
+<p>执行 <code>lsblk</code> 查看当前磁盘挂载情况，本地磁盘的话都是 <code>sdx</code>。我准备删掉 Win7 + Ubuntu 的双系统全新安装 Arch，对磁盘来一次彻底的革命。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ parted /dev/sda
+<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mklabel msdos
+<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart primary ext4 1M 300M
+<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> set <span style="color:#ae81ff">1</span> boot on
+<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart primary ext4 300M 50G
+<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart primary linux-swap 50G 54G
+<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart primary ext4 54G 100%
+</code></pre></div><p>上面的操作是对本地磁盘进行分区，分别为 <code>/boot</code> 分区、<code>/</code> 分区、<code>swap</code> 交换分区和 <code>/home</code> 分区。分区完成后，exit 退出 parted 状态返回安装界面。</p>
+<p>再次执行 <code>lsblk</code> 查看磁盘情况，可以看到 <code>sda</code> 生成了 <code>sda1</code>～<code>sda4</code> 4 个分区，接下来就是对这些分区进行格式化和挂载。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkfs.ext4 /dev/sda1
+$ mkfs.ext4 /dev/sda2
+$ mkswap    /dev/sda3
+$ mkfs.ext4 /dev/sda4
+$
+$ mount /dev/sda2 /mnt
+$ mkdir -p /mnt/boot
+$ mkdir -p /mnt/home
+$ mount /dev/sda1 /mnt/boot
+$ mount /dev/sda4 /mnt/home
+$ mkswap /dev/sda3
+$ swapon /dev/sda3
+</code></pre></div><p>这是我的操作，每个人分区不同操作也各异，注意每个分区应该挂载到对应的位置上，否则后果可想而知。</p>
+<h4 id="安装进行时">安装进行时</h4>
+<p>修改安装源，中科大的镜像站很靠谱，修改 <code>/etc/pacman.d/mirrorlist</code>，找到中科大镜像站地址，粘贴到第一行即为最高下载优先级。</p>
+<p>下面就是安装进行时：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ pacstrap -i /mnt base base-devel
+</code></pre></div><p>几分钟的胡思乱想之后，Arch 成功安装到挂载空间中。<code>arch-chroot</code> 进入挂载空间中的 Arch，进行必要的初始配置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ genfstab -U /mnt &gt; /mnt/etc/fstab
+$ arch-chroot /mnt /bin/bash
+$ vi /etc/locale.gen
+...
+en_US.UTF-8 UTF-8
+zh_CN.UTF-8 UTF-8
+
+$ locale-gen
+$ echo LANG<span style="color:#f92672">=</span>en_US.UTF-8 &gt; /etc/locale.conf
+$ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+$ hwclock --systohc --utc
+</code></pre></div><p>安装 grub 引导并生成配置文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ pacman -S grub os-prober
+$ grub-install --recheck /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre></div><p>给自己的第一台 Arch 起个响亮的名字吧，<code>echo Wittgenstein &gt; /etc/hostname</code>。exit 退出 chroot 环境，<code>mount -R /mnt</code> 结束挂载，<code>reboot</code> 进入 Arch 的世界。</p>
+<h3 id="done">Done!</h3>
+<p>哈哈，真真是个大道至简的黑屏白字世界，Arch 于此开始，一如混沌之初。</p>
+<p><img src="https://o70e8d1kb.qnssl.com/begin-arch-linux-1.png" alt=""></p>
+<p>TODO: 后续再把图形化过程记下来,包括 xorg -&gt; xfce -&gt; lightdm -&gt; video-driver, etc.</p>
+<blockquote>
+<p>K.I.S.S: Keep It Simple, Stupid.<br>
+大道至简，大智若愚。</p>
+</blockquote>
+</div>
+  
+  <footer class="post-footer">
+    <ul class="post-tags">
+      
+      
+      <li><a href="https://isudox.com/tags/linux">Linux</a></li>
+      
+    </ul>
+  </footer>
+  
+  
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_shortname = 'isudox';
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+
