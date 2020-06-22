@@ -18,13 +18,11 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
     
     <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
     <link href="https://isudox.com/style.css" rel="stylesheet">
+    <link href="https://isudox.com/custom.css" rel="stylesheet">
     
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
-    
-    <meta name="generator" content="Hugo 0.67.1" />
-    
-    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    <meta name="generator" content="Hugo 0.72.0" />
     
     
     
@@ -77,10 +75,7 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
     </script>
     <header class="header">
       <nav class="nav">
-        
         <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-        
-        
       </nav>
     </header>
     <main class="main">
@@ -121,7 +116,7 @@ yarn add webpack@2.1.0-beta.20 -D
 <span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
   <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./path/to/my/entry/file.js&#39;</span>
 };
-</code></pre></div><p>如果要指定多个 Entry，则需要将 <code>entry</code> 属性从 <code>string</code> 改为 <code>Array&lt;string&gt;</code>，比如 ['./main.js&rsquo;, &lsquo;./index.js&rsquo;]。也可以使用 Object 语法，把 <code>entry</code> 属性设置为一个 key-value 对象，这是更具扩展性的定义 <code>entry</code> 的写法：</p>
+</code></pre></div><p>如果要指定多个 Entry，则需要将 <code>entry</code> 属性从 <code>string</code> 改为 <code>Array&lt;string&gt;</code>，比如 [&rsquo;./main.js&rsquo;, &lsquo;./index.js&rsquo;]。也可以使用 Object 语法，把 <code>entry</code> 属性设置为一个 key-value 对象，这是更具扩展性的定义 <code>entry</code> 的写法：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">config</span> <span style="color:#f92672">=</span> {
   <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> {
     <span style="color:#a6e22e">app</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./src/app.js&#39;</span>,
@@ -413,21 +408,12 @@ yarn add react@15.3.0 react-dom@15.3.0
 <li>阮一峰 - <a href="https://github.com/ruanyf/webpack-demos">webpack-demos</a></li>
 </ul>
 </div>
-  
   <footer class="post-footer">
     <ul class="post-tags">
-      
-      
       <li><a href="https://isudox.com/tags/frontend">Frontend</a></li>
-      
-      
       <li><a href="https://isudox.com/tags/webpack">Webpack</a></li>
-      
     </ul>
   </footer>
-  
-  
-  
   
   <div id="disqus_thread"></div>
   <script>
@@ -444,11 +430,7 @@ yarn add react@15.3.0 react-dom@15.3.0
     <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
   </noscript>
   
-  
-  
-</article>
-
-</main>
+</article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>

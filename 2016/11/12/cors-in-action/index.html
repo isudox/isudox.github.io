@@ -18,13 +18,11 @@ var formData = new FormData(); formData.">
     
     <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
     <link href="https://isudox.com/style.css" rel="stylesheet">
+    <link href="https://isudox.com/custom.css" rel="stylesheet">
     
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
-    
-    <meta name="generator" content="Hugo 0.67.1" />
-    
-    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    <meta name="generator" content="Hugo 0.72.0" />
     
     
     
@@ -77,10 +75,7 @@ var formData = new FormData(); formData.">
     </script>
     <header class="header">
       <nav class="nav">
-        
         <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-        
-        
       </nav>
     </header>
     <main class="main">
@@ -125,7 +120,7 @@ var formData = new FormData(); formData.">
 <span style="color:#f92672">}</span>
 </code></pre></div><p>心想这次总该 OK 了吧，还是没调通，我摔！但是这次是有进步的，因为请求进到 Controller 的方法里，执行完了头像上传，只是浏览器的到的响应体为空，打开浏览器的控制台看到一段错误信息：</p>
 <blockquote>
-<p>XMLHttpRequest cannot load <a href="http://xxxp.jd.com/xxx/xxx">http://xxxp.jd.com/xxx/xxx</a>. Credentials flag is &lsquo;true&rsquo;, but the &lsquo;Access-Control-Allow-Credentials&rsquo; header is &lsquo;'. It must be &lsquo;true&rsquo; to allow credentials. Origin &lsquo;<a href="http://h5.m.jd.com">http://h5.m.jd.com</a>&rsquo; is therefore not allowed access.</p>
+<p>XMLHttpRequest cannot load <a href="http://xxxp.jd.com/xxx/xxx">http://xxxp.jd.com/xxx/xxx</a>. Credentials flag is &lsquo;true&rsquo;, but the &lsquo;Access-Control-Allow-Credentials&rsquo; header is &lsquo;&rsquo;. It must be &lsquo;true&rsquo; to allow credentials. Origin &lsquo;<a href="http://h5.m.jd.com">http://h5.m.jd.com</a>&rsquo; is therefore not allowed access.</p>
 </blockquote>
 <p>这是第三个问题，POST 请求是标记了凭证信息标识位，但是服务端回传的响应头的 <code>Access-Control-Allow-Credentials</code> 字段却是空，而不是 <code>true</code>，解决办法显而易见了，设置 <code>HttpServletResponse</code> 响应字段为 <code>true</code> 即可：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">preHandle</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span>
@@ -136,21 +131,12 @@ var formData = new FormData(); formData.">
 </code></pre></div><p>这样处理后，浏览器就收到的 Controller 层方法返回的 JSON 结果。</p>
 <p>以上就是这次由服务端 CORS 实现的跨域请求的调试过程。其实从结果看真的很简单，只是有些问题如果实际开发中没有遇到，很容易疏漏，仅仅是看文档学怎么用还是不够的。</p>
 </div>
-  
   <footer class="post-footer">
     <ul class="post-tags">
-      
-      
       <li><a href="https://isudox.com/tags/http">HTTP</a></li>
-      
-      
       <li><a href="https://isudox.com/tags/springmvc">SpringMVC</a></li>
-      
     </ul>
   </footer>
-  
-  
-  
   
   <div id="disqus_thread"></div>
   <script>
@@ -167,11 +153,7 @@ var formData = new FormData(); formData.">
     <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
   </noscript>
   
-  
-  
-</article>
-
-</main>
+</article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>

@@ -16,13 +16,11 @@ gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明�
     
     <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
     <link href="https://isudox.com/style.css" rel="stylesheet">
+    <link href="https://isudox.com/custom.css" rel="stylesheet">
     
     <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
     <link rel="icon" href="https://isudox.com/favicon.ico">
-    
-    <meta name="generator" content="Hugo 0.67.1" />
-    
-    <link rel="alternate" type="application/atom+xml" href="https://isudox.com/index.xml" title="I sudo X">
+    <meta name="generator" content="Hugo 0.72.0" />
     
     
     
@@ -75,10 +73,7 @@ gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明�
     </script>
     <header class="header">
       <nav class="nav">
-        
         <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-        
-        
       </nav>
     </header>
     <main class="main">
@@ -229,21 +224,12 @@ Nginx conf 配置：</p>
 </code></pre><p>上面的 proxy_pass 参数也可以使用 upstream 来作反向代理，作用是一样的。然后 Gunicorn 运行：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gunicorn -w <span style="color:#ae81ff">4</span> -b unix:/path/to/project.sock hello:app
 </code></pre></div></div>
-  
   <footer class="post-footer">
     <ul class="post-tags">
-      
-      
       <li><a href="https://isudox.com/tags/flask">Flask</a></li>
-      
-      
       <li><a href="https://isudox.com/tags/python">Python</a></li>
-      
     </ul>
   </footer>
-  
-  
-  
   
   <div id="disqus_thread"></div>
   <script>
@@ -260,11 +246,7 @@ Nginx conf 配置：</p>
     <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
   </noscript>
   
-  
-  
-</article>
-
-</main>
+</article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>

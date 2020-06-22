@@ -68,11 +68,6 @@
   </url>
   
   <url>
-    <loc>https://isudox.com/tags/java/</loc>
-    <lastmod>2018-04-22T23:20:03+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://isudox.com/tags/javascript/</loc>
     <lastmod>2018-04-22T23:20:03+00:00</lastmod>
   </url>
@@ -90,6 +85,11 @@
   <url>
     <loc>https://isudox.com/2017/12/29/frontend-backend-split-practice/</loc>
     <lastmod>2017-12-29T10:44:59+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://isudox.com/tags/java/</loc>
+    <lastmod>2017-07-12T11:10:03+00:00</lastmod>
   </url>
   
   <url>
