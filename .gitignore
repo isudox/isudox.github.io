@@ -4,3 +4,4 @@ db.json
 *.log
 .vscode/
 .DS_Store
+themes/paper
