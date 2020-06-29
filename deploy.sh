@@ -11,7 +11,8 @@ hugo # if using a theme, replace with `hugo -t <YOURTHEME>`
 # Go To Public folder
 cd public
 
-# Add changes to git.
+# Checkout to master and add changes.
+git checkout master
 git add .
 
 # Commit changes.
@@ -19,7 +20,7 @@ msg="rebuilding site $(date)"
 if [ -n "$*" ]; then
 	msg="$*"
 fi
-git commit -m "$msg"
+git commit -a -S -m "$msg"
 
 # Push source and build repos.
 git push origin master

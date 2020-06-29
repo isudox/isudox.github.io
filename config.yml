@@ -1,8 +1,20 @@
+# internal settings
 baseURL: "https://isudox.com/"
-languageCode: "en-us"
+languageCode: "zh"
 title: "I sudo X"
 theme: "nova"
-disqusShortname: "isudox"
 uglyurls: "false"
 permalinks:
   posts: "/:year/:month/:day/:filename/"
+paginate: 10
+hasCJKLanguage: true
+defaultContentLanguage: "zh"
+menu:
+  main:
+  - identifier: about
+    name: About
+    pre: <i class='fa fa-heart'></i>
+    url: /about/
+    weight: -110
+# custom settings
+disqusShortname: "isudox"
