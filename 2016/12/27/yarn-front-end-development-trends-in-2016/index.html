@@ -1,90 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>2016 前端补习 Yarn 篇 - I sudo X</title>
-    
-    <meta name="description" content="目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w&#43; stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。
-基础操作 如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。
-初始化新项目：
-# same as npm init yarn init 执行该命令时，会询问项目名称，入口文件，作者等信息，确认后自动创建包管理文件 package.json，以后每次对包的增删更新都会同步到 package.json 中。
-安装依赖包：
-# same as npm install [package] yarn add [package] yarn add [package]@[version] yarn add [package]@[tag] 另外，该命令可以通过标识参数来指定依赖类型：
- yarn add --dev 会把依赖包添加进 devDependencies 字段； yarn add --peer 会把依赖包添加进 peerDependencies 字段； yarn add --optional 会把依赖包添加进 optionalDependencies 字段；  更新依赖包：">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>2016 前端补习 Yarn 篇 - I sudo X</title>
+  
+  <meta name="description" content="目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">2016 前端补习 Yarn 篇</h1>
-    <div class="post-meta">December 27, 2016</div>
+    <div class="post-meta">2016/12/12</div>
   </header>
   <div class="post-content"><p>目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w+ stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。</p>
 <!-- raw HTML omitted -->
@@ -271,11 +272,10 @@ yarn install
       <li><a href="https://isudox.com/tags/frontend">Frontend</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -284,9 +284,10 @@ yarn install
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -300,5 +301,6 @@ yarn install
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

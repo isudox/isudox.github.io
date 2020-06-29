@@ -1,90 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>跨域请求之 JSONP 和 CORS - I sudo X</title>
-    
-    <meta name="description" content="Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。
-首先理清一个经常会被混淆的概念，AJAX(Asynchronous JavaScript and XML) 和跨域请求是两个不同的概念，AJAX 是异步请求和解析处理 XML 文档的方式，它在服务器端没有提供支持（CORS 是一种解决方案）的前提下，也是无法跨域的。
-跨域请求 跨域请求，顾名思义，就是从 A 地址向非同源的 B 地址发起了请求。参考 MDN 上对同源的定义:
- 如果两个页面拥有相同的协议（protocol），端口（如果指定）和主机，那么这两个页面就属于同一个源（origin）。
- MDN 给了同源检测的示例，如果是相对 http://store.company.com/dir/page.html，那么
-   URL 结果 原因     http://store.company.com/dir2/other.html 成功    http://store.company.com/dir/inner/another.html 成功    https://store.company.com/secure.html 失败 协议不同   http://store.company.com:81/dir/etc.html 失败 端口不同   http://news.company.com/dir/other.html 失败 主机名不同    严格的说，浏览器并不是拒绝所有的跨域请求，否则如果想从百度搜索结果页跳转到其他页面就是个伪命题，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：
- 通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向； 通常浏览器允许跨域资源嵌入（Cross-origin embedding），如 img、script 标签； 通常浏览器不允许跨域读操作（Cross-origin reads）。  对于跨域资源的嵌入，实际开发中用的非常频繁，从外部引入 js、css、img 这些静态文件，都是被浏览器接受的。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>跨域请求之 JSONP 和 CORS - I sudo X</title>
+  
+  <meta name="description" content="Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。 首先理">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">跨域请求之 JSONP 和 CORS</h1>
-    <div class="post-meta">September 24, 2016</div>
+    <div class="post-meta">2016/09/09</div>
   </header>
   <div class="post-content"><p>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>(JSON with Padding) 和 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a>(Cross-Origin Resource Sharing)。</p>
 <!-- raw HTML omitted -->
@@ -279,11 +280,10 @@ Content-Type: text/plain
       <li><a href="https://isudox.com/tags/javascript">JavaScript</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -292,9 +292,10 @@ Content-Type: text/plain
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -308,5 +309,6 @@ Content-Type: text/plain
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

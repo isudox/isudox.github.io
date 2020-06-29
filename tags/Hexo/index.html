@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Hexo - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/hexo/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Hexo - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/hexo/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,15 +100,10 @@
     <h2>Hexo 主题美化</h2>
   </header>
   <section class="entry-content">
-   <p>小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题抄袭过来，嘿嘿。
-头像旋转 Pacman 主题布局非常大气，最有心的设计在我看来就是底栏的可旋转的圆形头像，非常可爱。相比之下，鄙人小站侧边栏头像就显得很呆板了。那就抄过来！ 可以知道，这是一个鼠标的 hover 事件，因此先找到位于 source/css/_common/components/sidebar/sidebar-author.syl 模板文件里侧边栏头像的样式 .site-author-image
-.site-author-image { display: block; margin: 0 auto; padding: $site-author-image-padding; max-width: $site-author-image-width; height: $site-author-image-height; border: $site-author-image-border-width solid $site-author-image-border-color; } 首先要做的事就是把原头像图通过 css 样式改成圆形头像。通过修改 border-radius 属性就可以改图片四个角的圆角程度。另外针对不同内核的浏览器也能分别指定。再加上属性变化的动画效果 transition。
-.site-author-image { border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; transition: 1.4s all; } 圆角效果完成后，再做 hover 动作。添加 .site-author-image:hover 样式，由 rotate() 方法实现，旋转 360°
-.site-author-image:hover { -webkit-transform: rotate(360deg); -moz-transform: rotate(360deg); -ms-transform: rotate(360deg); -transform: rotate(360deg); } OK，成就达成。
-侧边滚动条 Yilia 也是 GitHub 上非常受欢迎的一款 Hexo 主题， 虽然我用的不是 Yilia 主题，但是不妨碍我喜欢它的侧边滚动条，灰色系的性冷淡风很契合我的小站。所以我就把这个样式挪到了我的小站里。 为了不影响小站原主题的样式，最好不要直接在原有样式上做修改。在 source/css/_custom 里的 custom....</p>
+   <p>小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题...</p>
   </section>
   <footer class="entry-footer">
-    <time>July 14, 2016</time>
+    <time>2016/07/07</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/07/14/customize-hexo-theme/"></a>
 </article>
@@ -111,17 +113,10 @@
     <h2>Hexo 小站轻松部署方案</h2>
   </header>
   <section class="entry-content">
-   <p>进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。
-Blog 仿佛已是古董，在一众微博微信席卷的现下，多少有点像长势萎靡无人问津的路边草。那为什么还要做 Blog？为什么不选用现成的空间、Blog 提供商？为什么还是静态 Blog，还要搭在 VPS 上？
-需要有这么多为什么吗？因为好玩，这就够了。具体好玩的元素有很多，在下面的记录中会有所提及，更多的还需要自己去发现。
-Why  选择自己搭建独立 Blog 的理由很简单，既然是自己的东西，就不需要放在别人口袋里； 选择静态 Blog 是因为无需数据库，支持 Markdown，文本文件便于 Git 管理；  静态 Blog 程序尽管小众，也还是有不少选择的，按语言不同门派各异，也是一江湖。比如 Ruby 系 Jekyll，Node.js 系 Hexo，Python 系 Pelican。
-什么？竟然没有世界上最好的语言！好吧，WordPress 正在冲你露大白牙……
-Jekyll、Hexo 和 Pelican 各有拥趸，各执一词。我不辩优劣，选 Hexo 只是因为平时用 JS 更多罢了。如果对语言有信仰，那就闭上眼睛遵从信仰吧。
-How Google 一下关键字 Hexo &#43; Blog，或者直接查看 Hexo 官方文档，都可以对 Hexo 的搭建过程有较为清晰的认知。我设想的方案是搭建一个由 GitHub 托管，并且能在 VPS 上实时发布部署的 Blog 程序，因此基本框架就是 Hexo &#43; GitHub &#43; VPS。
-Let’s Hexo GitHub 网上已有的 Hexo 方案基本都是将 Hexo 生成的静态文件提交至 GitHub Pages，通过 GitHub Pages 实现 Blog 的撰写及更新。但有一不足，如果换一台电脑写，难道还要将 Hexo 源文件拷贝过来再生成静态博客？肯定不能这么做，对此我的建议很简单：在 GitHub 上的以 {username}....</p>
+   <p>进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。 Blog 仿...</p>
   </section>
   <footer class="entry-footer">
-    <time>September 3, 2015</time>
+    <time>2015/09/09</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2015/09/03/hexo-your-blog/"></a>
 </article>
@@ -143,5 +138,6 @@ Let’s Hexo GitHub 网上已有的 Hexo 方案基本都是将 Hexo 生成的静
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

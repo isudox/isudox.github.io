@@ -5,7 +5,7 @@
     <link>https://isudox.com/tags/webpack/</link>
     <description>Recent content in Webpack on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh</language>
     <lastBuildDate>Mon, 26 Dec 2016 10:40:41 +0000</lastBuildDate>
     
 	<atom:link href="https://isudox.com/tags/webpack/index.xml" rel="self" type="application/rss+xml" />
@@ -17,13 +17,7 @@
       <pubDate>Mon, 26 Dec 2016 10:40:41 +0000</pubDate>
       
       <guid>https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/</guid>
-      <description>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。
- 因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。
- Webpack 基础命令 Hello World Webpack 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：
-# globally install yarn global add webpack@2.1.0-beta.20 # locally install yarn add webpack@2.1.0-beta.20 -D 安装完后，就可以在控制台使用 webpack 命令了。在目录下执行 webpack，首先需要配置 webpack.config.js 文件，由该配置文件来控制 webpack 的操作。参考阮一峰老师 GitHub 上的示例如下：
-// webpack.config.js module.exports = { entry: &amp;#39;./main.js&amp;#39;, output: { filename: &amp;#39;bundle.js&amp;#39; } }; 然后执行 webpack 命令就可以按照配置文件的设置，把目录下的 main.js 打包成 bundle.js。
-核心概念 Webpack 有 4 个核心概念必须要了解：Entry、Output、Loaders 和 Plugins。
-Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告诉 webpack 这张图表的入口位置并循着依赖关系去打包，webpack 通过对 webpack configuration object 设置 entry 属性来定义 Entry，参考下面的代码：</description>
+      <description>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外</description>
     </item>
     
   </channel>

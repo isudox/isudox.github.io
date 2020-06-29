@@ -1,90 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Docker 容器化应用 - I sudo X</title>
-    
-    <meta name="description" content="最近看了一篇博文，大受启发，也想着手尝试把自己 VPS 上的应用容器化，一方面尝试下新的开发方式，另一方面也便于应用迁移。
-Dockerfile Docker 通过 dockerfile 配置来把应用构建成镜像，dockerfile 是一个包含了配置和创建应用的全部命令的文本。Docker 官网上有对 dockerfile 的详细说明文档
-看了文档后，对其使用有大致的了解，对不是太复杂的应用的容器化，已经能实践了，下面对 dockerfile 的编写和使用简单总结下。
-编写 dockerfile FROM FROM 指令会设置要构建的镜像所依赖的基础镜像，比如应用是运行在 Ubuntu 系统上，那么就用 FROM 指定依赖镜像为 Ubuntu，FROM 必须是第一条非注释指令。
-FROM&lt;image&gt;# tag 可选FROM&lt;image&gt;:&lt;tag&gt;MAINTAINER 该指令设置镜像的作者信息。
-MAINTAINER&lt;name&gt;RUN RUN 会运行其指定的命令，一个 RUN 运行一条命令，单条命令可以通过 \ 反斜杠换行。RUN 支持两种格式：
- RUN &lt;cmd&gt;：shell 格式，直接运行一条完整的 shell 命令，默认使用 /bin/sh -c 执行该 shell 命令； RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]： exec 格式，第一个参数是可执行文件，后面跟参数； 参考下面的例子：  RUN /bin/bash -c &#39;source $HOME/.bashrc; echo $HOME&#39;RUN [&#34;/bin/bash&#34;, &#34;-c&#34;, &#34;echo hello&#34;]CMD CMD 也是执行命令的指令，和 RUN 的区别在于，RUN 发生在镜像构建过程中，CMD 发生在容器启动时。dockerfile 中只能存在一条有效的 CMD 指令，如果编写了多条，则只有最后一条生效。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Docker 容器化应用 - I sudo X</title>
+  
+  <meta name="description" content="最近看了一篇博文，大受启发，也想着手尝试把自己 VPS 上的应用容器化，一方面尝试下新的开发方式，另一方面也便于应用迁移。 Dockerfile Docker 通过 dockerfile 配置来把应用构建">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Docker 容器化应用</h1>
-    <div class="post-meta">January 16, 2017</div>
+    <div class="post-meta">2017/01/01</div>
   </header>
   <div class="post-content"><p>最近看了一篇<a href="http://www.kkblog.me/notes/%E4%BD%BF%E7%94%A8Docker%E6%9E%84%E5%BB%BA%E9%AB%98%E6%95%88Web%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83">博文</a>，大受启发，也想着手尝试把自己 VPS 上的应用容器化，一方面尝试下新的开发方式，另一方面也便于应用迁移。</p>
 <!-- raw HTML omitted -->
@@ -271,11 +272,10 @@ sudo make install
       <li><a href="https://isudox.com/tags/docker">Docker</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -284,9 +284,10 @@ sudo make install
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -300,5 +301,6 @@ sudo make install
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

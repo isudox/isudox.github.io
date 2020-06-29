@@ -1,89 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>LeetCode 6-10 - I sudo X</title>
-    
-    <meta name="description" content="接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。
-ZigZag Conversion 第 6 题 ZigZag Conversion
- 字符串 &quot;PAYPALISHIRING&quot; 是由如下排列的字符串通过 ZigZag 形式读取所得。
- P A H N A P L S I I G Y I R
-&gt; 如果按行读取则为 `&quot;PAHNAPLSIIGYIR&quot;` &gt; 请编写代码将给定行数的 zigzag 形式字符串转换为行形式的字符串： &gt; ``` string convert(string text, int nRows);  比如 convert(&quot;PAYPALISHIRING&quot;, 3) 得到 &quot;PAHNAPLSIIGYIR&quot;
- 这道 ZigZag 题很好玩，让我想起小时候做过的奥数题。从 ZigZag 型字符串中找规律，可以看到第一行和最后一行很容易挑出来，因为其字符的步进是固定的，即 2*(nRows-1)。然而中间的行的规律就不那么规则了，其步进间距是跳跃的，如果继续按 2*(nRows-1) 步进查找的话，会漏掉步进间距小于该值的字符。但是仔细观察除掉首行和末行的 ZigZag 排列字符串，可以发现它仍然是 ZigZag 字符串，只不过行数再减小，与之相应的步进间距也在变化，但始终符合 2*(nRows-1) 的规律。找到这个特性后，在步进查找时把中间行组成的 ZigZag 字符串的步进间距也作查询，就不会漏掉了。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>LeetCode 6-10 - I sudo X</title>
+  
+  <meta name="description" content="接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。 ZigZag Conversion 第 6 题 ZigZag Conversion 字符串 &quot;PAYPALISHIRING&quot; 是由如下排列的字符串通过 ZigZag 形式读取所得。 P A H N A P L S I I G Y I R &gt; 如果按">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">LeetCode 6-10</h1>
-    <div class="post-meta">May 17, 2016</div>
+    <div class="post-meta">2016/05/05</div>
   </header>
   <div class="post-content"><p>接着上篇 <a href="/2015/11/23/leetcode-1st-week/">LeetCode 探险第一弹</a>，本篇记录第 6 到 10 题。</p>
 <!-- raw HTML omitted -->
@@ -547,11 +549,10 @@ x = 123，返回 321；x = -123，返回 -321；</p>
       <li><a href="https://isudox.com/tags/leetcode">LeetCode</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -560,9 +561,10 @@ x = 123，返回 321；x = -123，返回 -321；</p>
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -576,5 +578,6 @@ x = 123，返回 321；x = -123，返回 -321；</p>
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

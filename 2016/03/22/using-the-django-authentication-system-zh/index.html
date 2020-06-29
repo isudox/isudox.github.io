@@ -1,90 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>[译] 使用 Django 认证系统 - I sudo X</title>
-    
-    <meta name="description" content="译自 Django Documentation，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。
- 本文介绍了 Django 认证系统在默认配置下的使用。默认配置已经发展到能够满足大多数项目需求，处理相当数量的任务，而且具备严谨的密码和权限实现。对于有自定义验证需求的项目，Django 支持扩展验证。 Django 认证系统提供认证和授权功能，由于两部分功能有耦合，因此通常简称为认证系统。
-User 对象 User 对象是认证系统的核心。该对象一般抽象表示与网站进行交互的用户，被用来进行权限控制，信息注册，关联内容及其创建者。Django 框架中只存在一种 User 类，像superusers，staff只是具有一些特殊属性的 User 对象，而不是不同类的 User 对象。
-默认的 user 有如下主要属性：
- username password email first_name last_name  全面的参考请阅读完整 API 文档，下文更偏业务导向。
-创建 users 创建 user 最直接的方式是调用内置的 create_user() 辅助方法：
-&gt;&gt;&gt; from django.contrib.auth.models import User &gt;&gt;&gt; user = User.objects.create_user(&#39;john&#39;, &#39;lennon@thebeatles.com&#39;, &#39;johnpassword&#39;) # At this point, user is a User object that has already been saved # to the database.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>[译] 使用 Django 认证系统 - I sudo X</title>
+  
+  <meta name="description" content="译自 Django Documentation，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。 本文介绍了 Django 认证系统在默认配置下的使用。默认配置已经发展">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">[译] 使用 Django 认证系统</h1>
-    <div class="post-meta">March 22, 2016</div>
+    <div class="post-meta">2016/03/03</div>
   </header>
   <div class="post-content"><blockquote>
 <p>译自 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/">Django Documentation</a>，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。</p>
@@ -331,11 +332,10 @@ url(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^accoun
       <li><a href="https://isudox.com/tags/django">Django</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -344,9 +344,10 @@ url(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^accoun
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -360,5 +361,6 @@ url(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^accoun
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

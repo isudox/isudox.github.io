@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>DesignPatterns - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/designpatterns/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>DesignPatterns - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/designpatterns/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,16 +100,10 @@
     <h2>责任链模式的实际运用</h2>
   </header>
   <section class="entry-content">
-   <p>加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，review 自己写的代码时，好像一直在 repeat yourself。代码不应该那样写，把复杂业务拆分，松耦合，利用设计模式将业务代码简化，而不是一味的去用过程编程的思维去实现业务逻辑，又苦又累毫无乐趣。
-重构之前 趁着 JD 618 大促的机会，把陪伴计划项目部分业务重构了下。前期开发时因为业务需求多、时间紧张，没有对业务逻辑深入的分析，代码拿上来就写，导致逻辑的紧耦合、难以更改，难以扩展，面对新增的业务只能从头再写而无法做到有效复用。
-要做到代码的合理复用，直接有效的途径就是把业务逻辑拆分细化，颗粒度最细的拆分就是将业务逻辑拆分成原子操作，但这样做会导致代码过于细碎，未免过犹不及。业务松耦合，并非零耦合。让每一个细分业务只负责单一逻辑，通过灵活可配的组合实现复杂逻辑，这是实现松耦合，提高扩展性行之有效的办法。
-以这次的小范围重构为例，京东陪伴计划项目包含大量的优惠券促销业务，其逻辑涉及到诸多信息，比如宝贝档案、风险控制、券卡类别库存、会员信息、领取时间等多个维度。重构前的代码把优惠券业务里所涉及的多维度逻辑统统杂糅在一个接口实现里。这样的处理很草率，唯一的好处就是，在从零到一编写代码的过程中，思维可以很清楚的沿着业务逻辑线性写下去，说白了就是无脑编程。试想一下，如果优惠券部分的业务发生改变或者新增维度信息，很难灵活应变，而且代码冗余，牵扯面大，很难灵活扩展。
-原味责任链模式 责任链模式的基本思想是通过连锁处理单元，链式的处理客户端请求。链是由一系列处理单元自由组成的集合，可以是直线、环、树状结构，不同的处理单元将业务逻辑解耦。责任链上的每个处理单元或节点，都是客户端请求的潜在处理者，且客户端请求必定会在责任链上被处理。 标准的责任链结构，其节点包含处理方法 handle()，后一节点的引用 nextHandler，因此可以灵活配置责任链的每个节点，从而实现复杂业务的组合。 客户端的请求从责任链的根节点开始，依次往下执行，如果当前节点能胜任处理工作，则完成任务，否则将请求往下传递，直到到达能处理该请求的节点。下面编写一段简单的 Java 示例代码：
-先来一段又臭又长的代码，举个栗子
-public class BullshitCode { public static void main(String[] args) { int cmd = Integer.parseInt(args[0]); switch (cmd) { case 1: System.out.println(&#34;my name is sudoz&#34;); break; case 2: System.out.println(&#34;this is my site&#34;); break; case 3: System.out.println(&#34;any advice is welcome&#34;); break; case 4: System.out.println(&#34;reach me via e-mail at me@isudox.com&#34;); break; default: break; } } } 上面的代码没有什么实际意义，只是一种很具有代表性的写法，通过一长串的 if-else 逻辑去处理业务，导致所有可能的处理缓解都堆积杂糅在一块，设想一下如果新增了业务需求，是不是再往里面插一个 if-else 了事？总是用这种方式去写代码会让程序越来越臃肿，难以维护和扩展，尤其是当你接手别人的代码发现以百行计的 if-else 语句块时，你一定会一脸懵逼看不下去，沃泽法克什么鬼？！ 升职加薪对码农而言，就像是马儿眼前的草，给不给草啊，难道又要马儿跑又要马儿不吃草，互联网公司好像还真这么想……说多了就是两行泪，上头的 Boss 和 HR 们层层把关，不是想加就能加。...</p>
+   <p>加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，...</p>
   </section>
   <footer class="entry-footer">
-    <time>June 6, 2016</time>
+    <time>2016/06/06</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/06/06/using-chain-of-responsibility-pattern/"></a>
 </article>
@@ -124,5 +125,6 @@ public class BullshitCode { public static void main(String[] args) { int cmd = I
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

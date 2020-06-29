@@ -5,7 +5,7 @@
     <link>https://isudox.com/categories/web/</link>
     <description>Recent content in Web on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh</language>
     <lastBuildDate>Fri, 18 Mar 2016 16:53:47 +0000</lastBuildDate>
     
 	<atom:link href="https://isudox.com/categories/web/index.xml" rel="self" type="application/rss+xml" />
@@ -17,10 +17,7 @@
       <pubDate>Fri, 18 Mar 2016 16:53:47 +0000</pubDate>
       
       <guid>https://isudox.com/2016/03/18/enable-http-2-on-nginx/</guid>
-      <description>今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。 上 Google 搜索关键字，才知道自己已经滞后了6个月，Nginx 从1.9.5版本开始已经加入了对 HTTP/2 的官方支持 Nginx Open Source 1.9.5 Released with HTTP/2 Support。这篇文章里也提到了 Nginx 从 1.9.5 开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级 Nginx，开启 HTTP/2。
-挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼 conf 文件，没有 SPDY 的参数设置，可以平滑升级到 1.10.0了。由于 Nginx1.10.0 发布在 mainline 上，如果想采用 apt 方式升级，还需要配置下 source 源。先安装 Nginx 的 apt 源的签名key，把 key 添加进 apt 源。
-sudo apt-key add nginx_signing.key 修改/etc/apt/sources.list，在文件后追加 nginx mainline 的 deb 包源和 deb-src 源
-deb http://nginx.org/packages/debian/ codename nginx deb-src http://nginx.</description>
+      <description>今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。 上 Google 搜索关键字，</description>
     </item>
     
   </channel>

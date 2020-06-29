@@ -1,88 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>LeetCode 1-5 - I sudo X</title>
-    
-    <meta name="description" content="上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。
-Two Sum 第 1 题 Two Sum 算是简单题，题意大致为：
- 给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。 伪代码： nums = [2, 7, 11, 15], target = 9 nums[0] &#43; nums[1] = 2 &#43; 7 = 9 return [0, 1]
- 这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答
-// TwoSum.java public class Solution { public int[] twoSum(int[] nums, int target) { int len = nums.length; int[] res = new int[2]; if (len &lt; 2) { return res; } for (int i = 0; i &lt; len; i&#43;&#43;) { for (int j = i &#43; 1; j &lt; len; j&#43;&#43;) { if (nums[i] &#43; nums[j] == target) { res[0] = i &#43; 1; res[1] = j &#43; 1; break; } } } return res; } } # two_sum.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>LeetCode 1-5 - I sudo X</title>
+  
+  <meta name="description" content="上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">LeetCode 1-5</h1>
-    <div class="post-meta">November 23, 2015</div>
+    <div class="post-meta">2015/11/11</div>
   </header>
   <div class="post-content"><p>上学时零零碎碎上 <a href="https://leetcode.com/">LeetCode</a> 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。
 LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。</p>
@@ -483,11 +486,10 @@ nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
       <li><a href="https://isudox.com/tags/leetcode">LeetCode</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -496,9 +498,10 @@ nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -512,5 +515,6 @@ nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Flask - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/flask/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Flask - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/flask/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,14 +100,10 @@
     <h2>读 Flask 源码：源码结构</h2>
   </header>
   <section class="entry-content">
-   <p>打算对 Flask 的学习做个整理，以 Flask 的 GitHub 代码库的 master 分支为参考。其实早期的 0.3 版还是单文件，整个 flask.py 加上注释也只有 1426 行代码，非常简洁，很适合作为 Python 源码学习的教材。
-拿到源码先不着急，就像读书一样，不妨浏览下目录，以便有个全局的了解。Flask 的源码有一个非常好的优点，就是它的注释非常完备，即使不看源码，只看注释，也能有个大概的理解。
-从 Flask 根目录下的 setup.py 可以看到，Flask 依赖的组件主要有 3 个：
- Werkzeug：一个 HTTP 和 WSGI 的工具集； Jinja2：Python 的前端模板引擎； itsdangerous：处理并传递可信数据的辅助函数集；  Flask 的核心代码都在 flask 目录下，其目录结构如下：
-flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.py 导入模块 ├── __main__.py 命令行运行 ├── _compat.py Py2/3 兼容性模块 ├── app.py 核心模块 ├── blueprints.py 蓝图模块 ├── cli.py 命令行支持模块 ├── config.py flask 配置模块 ├── ctx....</p>
+   <p>打算对 Flask 的学习做个整理，以 Flask 的 GitHub 代码库的 master 分支为参考。其实早期的 0.3 版还是单文件，整个 flask.py 加上注释也只有 1426 行代码，非常简洁，很适合作为 Python 源码学习...</p>
   </section>
   <footer class="entry-footer">
-    <time>February 14, 2017</time>
+    <time>2017/02/02</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/02/14/explore-flask-source-code-structure/"></a>
 </article>
@@ -110,13 +113,10 @@ flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.p
     <h2>读 Flask 源码：Context</h2>
   </header>
   <section class="entry-content">
-   <p>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那么它可以独立运行了；如果程序需要外部环境的支持，Context 的存在就有意义。比如 Flask Web 开发中常用的 current_app、request 都是 Context，可以在不同方法中调用，并且实现通信及交互。
-Context 的实现 Flask 提供了 4 个 Context：
-   Context 类型 说明     flask.current_app Application Context 当前 app 的实例对象   flask.g Application Context 处理请求时用作临时存储的对象   flask.request Request Context 封装了 HTTP 请求中的内容   flask.session Request Context 存储了用户回话    这些 Context 分为 Application Context 和 Request Context 两类：
- Application Context: 是提供给由 app = Flask(__name__) 所创建的 Flask app 的 Context； Request Context: 是客户端发起 HTTP 请求时，Flask 对象为 HTTP 请求对象所创建的 Context；  这些 Context 定义在 Flask 源码（v0....</p>
+   <p>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那...</p>
   </section>
   <footer class="entry-footer">
-    <time>October 2, 2016</time>
+    <time>2016/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/10/02/flask-context-guide/"></a>
 </article>
@@ -126,14 +126,10 @@ Context 的实现 Flask 提供了 4 个 Context：
     <h2>Gunicorn 驱动工厂模式 Flask 应用</h2>
   </header>
   <section class="entry-content">
-   <p>之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— Gunicorn，并且利用工厂模式对不同开发环境进行了隔离。工厂模式下的 Flask 应用在用 Gunicorn 部署时，需要做一点针对性的改动。
-基础的 Flask 应用部署 先写一个最简单的 Flask 应用 hello：
-# hello.py from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#34;Hello World!&#34; if __name__ == &#39;__main__&#39;: app.run(host=&#39;0.0.0.0&#39;, port=5000) 然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。
-当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：
-gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明：...</p>
+   <p>之前用 uWsgi 部署过 Django 应用，但当时的开发和部署都还手生，有很多不合理的地方，最近写的一个 Flask 应用，用了另一个 wsgi 容器 —— Gunicorn，并且利用工厂...</p>
   </section>
   <footer class="entry-footer">
-    <time>August 29, 2016</time>
+    <time>2016/08/08</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/08/29/running-flask-with-gunicorn-in-application-factory/"></a>
 </article>
@@ -155,5 +151,6 @@ gunicorn -w 4 -b 127.0.0.1:5000 hello:app Gunicorn 的常用运行参数说明�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

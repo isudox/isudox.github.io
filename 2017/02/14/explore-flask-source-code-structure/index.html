@@ -1,88 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>读 Flask 源码：源码结构 - I sudo X</title>
-    
-    <meta name="description" content="打算对 Flask 的学习做个整理，以 Flask 的 GitHub 代码库的 master 分支为参考。其实早期的 0.3 版还是单文件，整个 flask.py 加上注释也只有 1426 行代码，非常简洁，很适合作为 Python 源码学习的教材。
-拿到源码先不着急，就像读书一样，不妨浏览下目录，以便有个全局的了解。Flask 的源码有一个非常好的优点，就是它的注释非常完备，即使不看源码，只看注释，也能有个大概的理解。
-从 Flask 根目录下的 setup.py 可以看到，Flask 依赖的组件主要有 3 个：
- Werkzeug：一个 HTTP 和 WSGI 的工具集； Jinja2：Python 的前端模板引擎； itsdangerous：处理并传递可信数据的辅助函数集；  Flask 的核心代码都在 flask 目录下，其目录结构如下：
-flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.py 导入模块 ├── __main__.py 命令行运行 ├── _compat.py Py2/3 兼容性模块 ├── app.py 核心模块 ├── blueprints.py 蓝图模块 ├── cli.py 命令行支持模块 ├── config.py flask 配置模块 ├── ctx.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>读 Flask 源码：源码结构 - I sudo X</title>
+  
+  <meta name="description" content="打算对 Flask 的学习做个整理，以 Flask 的 GitHub 代码库的 master 分支为参考。其实早期的 0.3 版还是单文件，整个 flask.py 加上注释也只有 1426 行代码，非常简洁，很适合作为 Python 源码学习">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">读 Flask 源码：源码结构</h1>
-    <div class="post-meta">February 14, 2017</div>
+    <div class="post-meta">2017/02/02</div>
   </header>
   <div class="post-content"><p>打算对 <a href="https://github.com/pallets/flask">Flask</a> 的学习做个整理，以 Flask 的 GitHub 代码库的 <code>master</code> 分支为参考。其实早期的 <code>0.3</code> 版还是单文件，整个 <code>flask.py</code> 加上注释也只有 1426 行代码，非常简洁，很适合作为 Python 源码学习的教材。</p>
 <!-- raw HTML omitted -->
@@ -129,11 +132,10 @@ flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.p
       <li><a href="https://isudox.com/tags/python">Python</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -142,9 +144,10 @@ flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.p
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -158,5 +161,6 @@ flask ├── ext │ └── __init__.py flask 扩展 ├── __init__.p
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

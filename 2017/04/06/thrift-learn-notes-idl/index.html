@@ -1,89 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Thrift 学习笔记：IDL - I sudo X</title>
-    
-    <meta name="description" content="上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的是自己改写的 Thrift，这两天也在看相关的文档，汇总成学习笔记。
-Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Google 的 protobuf，Thrift 是典型的 C/S 架构，RPC 客户端和服务端间需要定义 IDL(Interface Description Language) 来实现跨语言通信。本文是对 Thrift IDL 学习的总结。
-基础类型 参考官方文档，Thrift IDL 的基础类型覆盖了绝大多数编程语言的关键类型，共有以下 7 种：
- bool：布尔值，true 或 false byte：8-bit 有符号整数 i16：16-bit 有符号整数 i32：32-bit 有符号整数 i64：64-bit 有符号整数 double：64-bit 浮点数 string：UTF-8 编码的字符串  文档中说明了，IDL 并没有包含无符号整型，这是由于很多编程语言并没有原生的无符号整型数。
-特殊类型 Thrift IDL 支持 binary 类型，它是未编码字节序列，是 string 类型的特殊形式。binary 类型提高了和 Java 的互操作性，Thrift 计划在某个时候将其提升为基础类型。
-结构体 Thrift 结构体定义了公共对象，基本等同于面向对象语言中的类，但没有继承特性。一个结构体有一组强类型的字段，每个字段都有唯一名称标识符。Thrift 接口文件中的结构体类型，编译后会转换成一个类，类的属性就是结构体中的各个类型字段，而类的方法就是对这些类型字段进行处理的相关函数。结构体类型的关键字是 struct，参考下面的 IDL 代码：">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Thrift 学习笔记：IDL - I sudo X</title>
+  
+  <meta name="description" content="上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Thrift 学习笔记：IDL</h1>
-    <div class="post-meta">April 6, 2017</div>
+    <div class="post-meta">2017/04/04</div>
   </header>
   <div class="post-content"><p>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的是自己改写的 Thrift，这两天也在看相关的文档，汇总成学习笔记。</p>
 <!-- raw HTML omitted -->
@@ -230,11 +232,10 @@ service MyService extends test.FacebookService{
       <li><a href="https://isudox.com/tags/thrift">Thrift</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -243,9 +244,10 @@ service MyService extends test.FacebookService{
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -259,5 +261,6 @@ service MyService extends test.FacebookService{
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

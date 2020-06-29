@@ -1,88 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>JavaScript ES6 和 Python 中的 Generator - I sudo X</title>
-    
-    <meta name="description" content="这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 redux-saga，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 generator、yield 从思想上到写法上基本是一致的，之前也写过 Python 里的用法，这里也简单的写下我对动态语言里 generator 的学习和理解。
-通识 首先，generator 本质上还是 function，只是行为略微特殊。 普通 function 会在执行结束时通过 return 返回； generator 可以中断 function 的执行过程，并重新回到断点现场继续执行。具体实现就是通过 yield 将结果返回给调用方并中断，通过 next() 方法继续回到断点再执行到下一个 yield 断点处。 普通函数只会返回一次，就是在执行结束的时候；generator 函数在执行过程中可以多次返回，即在 yield 断点处取代了 return。
-还有一个和 generator 紧密相关的概念是 iterator，简单的描述二者的关系就是──generator 实现的目的是生成一个 iterator，它是 iterable 的，也就是说是可以循环遍历的。
-ES6 JavaScript ES6 的 generator 和普通函数相比，最明显的不同在于它的关键字包含星号 * 和 yield，比如 MDN 文档上的代码示例：
-function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); console.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>JavaScript ES6 和 Python 中的 Generator - I sudo X</title>
+  
+  <meta name="description" content="这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 redux-saga，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 generator、y">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">JavaScript ES6 和 Python 中的 Generator</h1>
-    <div class="post-meta">April 22, 2018</div>
+    <div class="post-meta">2018/04/04</div>
   </header>
   <div class="post-content"><p>这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 <code>redux-saga</code>，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 <code>generator</code>、<code>yield</code> 从思想上到写法上基本是一致的，之前也写过 Python 里的用法，这里也简单的写下我对动态语言里 <code>generator</code> 的学习和理解。</p>
 <!-- raw HTML omitted -->
@@ -206,11 +209,10 @@ book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6d
       <li><a href="https://isudox.com/tags/javascript">JavaScript</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -219,9 +221,10 @@ book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6d
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -235,5 +238,6 @@ book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6d
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

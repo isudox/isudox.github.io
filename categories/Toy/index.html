@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Toy - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/categories/toy/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Toy - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/categories/toy/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,15 +100,10 @@
     <h2>神器有价，情怀无价 —— HHKB</h2>
   </header>
   <section class="entry-content">
-   <p>It’s to keyboards what Leica is to cameras; what Rimowa is to luggage; what Moleskine is to notebooks; what Rolls Royce is to cars; what Grey Goose is to vodka. Or at least, that’s the reputation it carries. If someone is discussing the “best mechanical keyboard”, it will be mentioned right away.
- 流水账 上面这段引文里指的键盘究竟是什么？当然是本文的主角啦 —— HHKB。
-HHKB，即 Happy Hacking Keyboard，透着复古气息的 Geek 范儿。如此个性而备受推崇的一把键盘，很难不吸引码农，尤其是单身码农（莫问为什么，此时应有金馆长捂脸表情）。
-言归正传，对于程序员而言，键盘就是朝夕相处，亲密无间的伙伴，头脑里所有蹿着火苗的想法和纠缠在一起的头绪都在键盘上跳跃。孙悟空需要称手的金箍棒，码农也需要一把值得信赖的键盘。看过这样一个类比，讲的是骑马的人可以换骑不同的马，但始终都会佩着自己的马鞍。
-键盘构造不同，有薄膜，机械，静电容之分。严格的讲呢，HHKB并不是引文中所提到的 “mechanical keyboard”，而是静电容键盘。至于静电容结构，无非就是不需要物理接触就能获得电位信号。抛开这些概念，HHKB 的素质几乎都切中了程序员的痛点，简单讲——
- 适配 Linux 和 Mac 的键位。比如 A 键的左侧的是 Ctrl 键，1 键左侧的是 ESC 键，这些有别与标准键盘的设计恰恰更符合类 Unix 系统的操作 精简低频按键。HHKB 是 60% 键盘，没有数字小键，功能键，甚至连方向键都省去了。实际上这些按键在平常 coding 过程中使用到的频率并不高，方向键的缺省可能会造成一点困扰，但类 Unix 系统一般都常用 Ctrl &#43; p,n,f,b来实现 多种配置模式。HHKB 的背侧有 6 个 dips 开关，通过组合可以实现不同的键位，映射出 Windows 的 win 键，Mac 系统的 Meta 键等特殊键位  此外日系工业产品的做工品质自是无需赘述，但最吸引我还是上述三点特质。终于在1024这个特殊的日子里，所有被压抑已久的欲望化为最原始的冲动，就是要 买！买！！买！！！...</p>
+   <p>It’s to keyboards what Leica is to cameras; what Rimowa is to luggage; what Moleskine is to notebooks; what Rolls Royce is to cars; what Grey Goose is to vodka. Or at least, that’s the reputation it carries. If someone is discussing the “best mechanical keyboard”, it will be mentioned right away....</p>
   </section>
   <footer class="entry-footer">
-    <time>October 29, 2015</time>
+    <time>2015/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2015/10/29/my-hhkb-pro2-type-s/"></a>
 </article>
@@ -123,5 +125,6 @@ HHKB，即 Happy Hacking Keyboard，透着复古气息的 Geek 范儿。如此�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

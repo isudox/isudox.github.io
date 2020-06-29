@@ -1,89 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>开始使用 PostgreSQL - I sudo X</title>
-    
-    <meta name="description" content="最近开始做的一个课余项目用 Flask &#43; PostgreSQL &#43; Bootstrap 快速开发。之前本地开发和生产部署都用 MySQL，而 PostgreSQL 是关系型数据库阵营中的另一大高手。这俩的口号放在一起看相当好玩。
-一个自称 &ldquo;The world&rsquo;s most popular open source database&rdquo;，另一个自称 &ldquo;The world&rsquo;s most advanced open source database&rdquo;。论针锋相对，我就服这俩。→_→
-至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细，顺便还拉上了 SQLite。 SQLite vs MySQL vs PostgreSQL: A Comparison Of Relational Database Management Systems
-菜鸟入门三板斧，安装、配置和使用——
-安装 服务器端我习惯用 Debian 系统。Debian/Ubuntu 内置的 APT 源已经包含了 PostgreSQL，但版本上会稍滞后于 PostgreSQL 最新版本。如果像我一样激进的，可以把 PostgreSQL 官方维护的 APT 源加进 Debian/Ubuntu 的 APT 列表中。比如在 Debian 系统下，新建文件 /etc/apt/sources.list.d/pgdg.list，添加源地址和版本，再导入该源的签名。
-deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main wget --quiet -O - https://www.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>开始使用 PostgreSQL - I sudo X</title>
+  
+  <meta name="description" content="最近开始做的一个课余项目用 Flask &#43; PostgreSQL &#43; Bootstrap 快速开发。之前本地开发和生产部署都用 MySQL，而 PostgreSQL 是关系型数据库阵营中的另一大高手。这俩的口号放在一起">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">开始使用 PostgreSQL</h1>
-    <div class="post-meta">July 22, 2016</div>
+    <div class="post-meta">2016/07/07</div>
   </header>
   <div class="post-content"><p>最近开始做的一个课余项目用 Flask + PostgreSQL + Bootstrap 快速开发。之前本地开发和生产部署都用 <a href="https://www.mysql.com/">MySQL</a>，而 <a href="https://www.postgresql.org/">PostgreSQL</a> 是关系型数据库阵营中的另一大高手。这俩的口号放在一起看相当好玩。</p>
 <!-- raw HTML omitted -->
@@ -200,11 +202,10 @@ Password <span style="color:#66d9ef">for</span> user sudoz:
       <li><a href="https://isudox.com/tags/postgresql">PostgreSQL</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -213,9 +214,10 @@ Password <span style="color:#66d9ef">for</span> user sudoz:
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -229,5 +231,6 @@ Password <span style="color:#66d9ef">for</span> user sudoz:
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

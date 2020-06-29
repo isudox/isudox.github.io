@@ -1,89 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Spring AOP 本地模拟线上 RPC - I sudo X</title>
-    
-    <meta name="description" content="成熟的互联网公司内部一般都会有多个线上环境，像在 JD，就有测试环境，预发布环境，生产环境。开发过程通常是现在本地编写代码，功能差不多了提到测试环境，再到预发布联调，测试通过再提交上线包部署到生产环境。但这是理想状况，实际开发中会有上下游系统联调的问题。
-JD 的项目绝大多数都已经服务化了，服务的提供者和消费者分别在服务中心注册，消费者就能调用服务者的接口。但由于 JD 内部系统繁多，各有不同的开发团队维护各自的项目，除了生产环境和预发布环境能保证各系统间能互联互通，很多情况下，本地运行或在测试环境上运行时，没法调用到服务提供者的接口，这就很尴尬了，因为测试资源的不到位，只能上预发布环境进行上下游系统的对接联调，这是很烦人的，比较好的开发方案是，如果测试环境不完善，就把预发布环境上服务接口的真实数据截流并重定向到本地文件，把它打包成一个本地的测试数据源，以后直接在本地运行就行了。
-如何拦截数据？这就需要 AOP 大显身手了。Spring AOP 可以通过 BeanNameAutoProxyCreatoraaaa 自动代理目标 bean，属性 beanNames 和 interceptorNames 分别设置要代理的目标 bean 列表和拦截器数组。这样就很方便的实现了对目标 bean 的切入拦截。
-简单说下具体的实现流程：
- 当线上运行时，通过拦截器对目标 bean 内部方法的拦截，将方法调用的结果持久化到结果文件中； 当本地运行时，拦截器就不走远程调用，而是直接从结果文件中读取真实的调用结果。  下面给出大致的拦截服务调用数据的代码：
-&lt;!-- spring-aop-config.xml --&gt; &lt;beans&gt; &lt;!-- method interceptor --&gt; &lt;bean id=&#34;rpcInterceptor&#34; class=&#34;com.isudox.utils.RpcInterceptor&#34;&gt; &lt;property name=&#34;mode&#34; value=&#34;online&#34;/&gt; &lt;property name=&#34;fileName&#34; value=&#34;/home/sudoz/dev/local-rpc-data.properties&#34;/&gt; &lt;/bean&gt; &lt;!-- auto proxy --&gt; &lt;bean id=&#34;rpcAutoProxyCreator&#34; class=&#34;org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator&#34;&gt; &lt;property name=&#34;beanNames&#34;&gt; &lt;list&gt; &lt;value&gt;remoteService1&lt;/value&gt; &lt;value&gt;remoteService2&lt;/value&gt; &lt;value&gt;remoteService3&lt;/value&gt; &lt;value&gt;remoteService4&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;property name=&#34;interceptorNames&#34;&gt; &lt;list&gt; &lt;value&gt;rpcInterceptor&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;/beans&gt; import org.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Spring AOP 本地模拟线上 RPC - I sudo X</title>
+  
+  <meta name="description" content="成熟的互联网公司内部一般都会有多个线上环境，像在 JD，就有测试环境，预发布环境，生产环境。开发过程通常是现在本地编写代码，功能差不多了提到测">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Spring AOP 本地模拟线上 RPC</h1>
-    <div class="post-meta">August 3, 2016</div>
+    <div class="post-meta">2016/08/08</div>
   </header>
   <div class="post-content"><p>成熟的互联网公司内部一般都会有多个线上环境，像在 JD，就有测试环境，预发布环境，生产环境。开发过程通常是现在本地编写代码，功能差不多了提到测试环境，再到预发布联调，测试通过再提交上线包部署到生产环境。但这是理想状况，实际开发中会有上下游系统联调的问题。</p>
 <!-- raw HTML omitted -->
@@ -206,11 +208,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
       <li><a href="https://isudox.com/tags/spring">Spring</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -219,9 +220,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -235,5 +237,6 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

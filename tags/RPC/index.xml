@@ -5,7 +5,7 @@
     <link>https://isudox.com/tags/rpc/</link>
     <description>Recent content in RPC on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh</language>
     <lastBuildDate>Mon, 10 Apr 2017 11:46:23 +0000</lastBuildDate>
     
 	<atom:link href="https://isudox.com/tags/rpc/index.xml" rel="self" type="application/rss+xml" />
@@ -17,12 +17,7 @@
       <pubDate>Mon, 10 Apr 2017 11:46:23 +0000</pubDate>
       
       <guid>https://isudox.com/2017/04/10/thrift-notes-server-client/</guid>
-      <description>在了解 Thrift IDL 后，就能开始编写自己的 RPC 服务端和客户端了。对 Thrift 的安装过程和命令操作略过不表，主要还是关注如何利用 Thrift 实现 Java 的 RPC 服务端和客户端。
-服务接口描述 首先需要定义服务接口描述，即 .thrift 文件，再由 Thrift 将接口描述文件编译成相应的客户端和服务端的 stub 代码。
-官网 Tutorial 给出的示例略复杂，不妨自己写一个简单的 Hello World 文件：
-// tutorial.thrift namespace java com.isudox.thrift.tutorial typedef i32 int service CustomService { int add(1:int a, 2:int b) string sayHello(1:string name) } 描述文件写的很简单，只定义了一个接口，包含两个函数。将 tutorial.thrift 编译成 Java 代码：
-thrift -r --gen java tutorial.thrift 生成如下 Java 文件：
-gen-java └── com └── isudox └── thrift └── tutorial └── CustomService.</description>
+      <description>在了解 Thrift IDL 后，就能开始编写自己的 RPC 服务端和客户端了。对 Thrift 的安装过程和命令操作略过不表，主要还是关注如何利用 Thrift 实现 Java 的 RPC 服务端和客户端。 服务接</description>
     </item>
     
     <item>
@@ -31,12 +26,7 @@ gen-java └── com └── isudox └── thrift └── tutorial └�
       <pubDate>Thu, 06 Apr 2017 11:08:26 +0000</pubDate>
       
       <guid>https://isudox.com/2017/04/06/thrift-learn-notes-idl/</guid>
-      <description>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的是自己改写的 Thrift，这两天也在看相关的文档，汇总成学习笔记。
-Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Google 的 protobuf，Thrift 是典型的 C/S 架构，RPC 客户端和服务端间需要定义 IDL(Interface Description Language) 来实现跨语言通信。本文是对 Thrift IDL 学习的总结。
-基础类型 参考官方文档，Thrift IDL 的基础类型覆盖了绝大多数编程语言的关键类型，共有以下 7 种：
- bool：布尔值，true 或 false byte：8-bit 有符号整数 i16：16-bit 有符号整数 i32：32-bit 有符号整数 i64：64-bit 有符号整数 double：64-bit 浮点数 string：UTF-8 编码的字符串  文档中说明了，IDL 并没有包含无符号整型，这是由于很多编程语言并没有原生的无符号整型数。
-特殊类型 Thrift IDL 支持 binary 类型，它是未编码字节序列，是 string 类型的特殊形式。binary 类型提高了和 Java 的互操作性，Thrift 计划在某个时候将其提升为基础类型。
-结构体 Thrift 结构体定义了公共对象，基本等同于面向对象语言中的类，但没有继承特性。一个结构体有一组强类型的字段，每个字段都有唯一名称标识符。Thrift 接口文件中的结构体类型，编译后会转换成一个类，类的属性就是结构体中的各个类型字段，而类的方法就是对这些类型字段进行处理的相关函数。结构体类型的关键字是 struct，参考下面的 IDL 代码：</description>
+      <description>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的</description>
     </item>
     
     <item>
@@ -45,10 +35,7 @@ Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Go
       <pubDate>Mon, 06 Feb 2017 15:18:55 +0000</pubDate>
       
       <guid>https://isudox.com/2017/02/06/rpc-uni-entry-with-reflection/</guid>
-      <description>最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一个专属的 Porcessor 去处理服务调用的结果。当然好处就是功能区分清晰，不好的地方就是当 Processor 多了后维护起来不太方便。一种思路就是利用反射思想，为 Processor 中的 RPC 调用添加统一入口，通过服务名和方法名对调用进行定位。
-代理的思路很简单，但真的非常实用，在实际开发中，合理使用代理，能精简很多固有代码。从代理的统一入口进入，根据传入的远程服务名和方法名，自动定位到需要被远程调用的方法，再传入入参并调用该方法，就能代理过多的 Processor 调用 RPC。
-代理入口的代码如下：
-@Service(value = &amp;#34;rpcEntry&amp;#34;) public class RpcEntry { @Resource private Map&amp;lt;String, Object&amp;gt; serviceMap; // 远程服务的 k-v 映射  private final Map&amp;lt;String, Method&amp;gt; actions = new HashMap&amp;lt;&amp;gt;(); // 存储方法调用  public Result process(String invokeStr, Object[] args) { String serviceName = methodKey.split(&amp;#34;\\.&amp;#34;)[0]; if (!actions.containsKey(invokeStr)) { Object service = serviceMap.get(serviceName); if (service != null) { for (Method m : service.getClass().getMethods()) { actions.</description>
+      <description>最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一</description>
     </item>
     
   </channel>

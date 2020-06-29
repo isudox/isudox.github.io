@@ -1,90 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>LeetCode 26-30 - I sudo X</title>
-    
-    <meta name="description" content="三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。
-Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Array
- 给定一个有序数组，去掉其中重复的元素，并返回新数组的长度。 不要为其他数组分配额外的空间，必须在给定的内存中完成。
- 假设传入的数组是 [1, 1, 2]，得到的结果应该是 2。题意很简单，但是有两个注意点，一个是该数组是有序的，即从小到大排列，另一个是不允许分配新数组的存储空间，这就意味着不用创建新的数组来保存数据，也不能通过 Set 来过滤重复元素。
-因为第二点的限，只能在给定的数组上进行数值比较的同时，计算非重复元素的数量；因为第一点的设定，所以可以做到对数组只遍历一次。具体做法就是，在遍历数组元素时，比较前后两个元素，如果相等，则重复元素的数量加一，同时移动当前遍历位置，直到遍历到数组最末元素。
-编写 Java 解法如下：
-// Rejected × public class Solution { public int removeDuplicates(int[] nums) { int count = nums.length; int dup = 0; if (count &lt; 2) return count; for (int i = 0; i &lt; count - 1; i&#43;&#43;) { if (nums[i] == nums[i &#43; 1]) dup&#43;&#43;; } return count - dup; } } 本地测试结果是正确的，但是提交的 LeetCode 上却被否决，因为上面的方法只计算出了非重复元素的个数 n，没有考虑把有序数组前 n 位修改成正确的有序非重复元素。因此在遍历的同时，需要修改发现重复的位置上的元素。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>LeetCode 26-30 - I sudo X</title>
+  
+  <meta name="description" content="三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。 Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Array 给定一个有序数组，去掉其中重复的">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">LeetCode 26-30</h1>
-    <div class="post-meta">October 17, 2016</div>
+    <div class="post-meta">2016/10/10</div>
   </header>
   <div class="post-content"><p>三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。</p>
 <!-- raw HTML omitted -->
@@ -270,11 +271,10 @@ words: [&ldquo;foo&rdquo;, &ldquo;bar&rdquo;]
       <li><a href="https://isudox.com/tags/leetcode">LeetCode</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -283,9 +283,10 @@ words: [&ldquo;foo&rdquo;, &ldquo;bar&rdquo;]
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -299,5 +300,6 @@ words: [&ldquo;foo&rdquo;, &ldquo;bar&rdquo;]
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

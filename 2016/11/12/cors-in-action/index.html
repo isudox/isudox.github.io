@@ -1,90 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>CORS 跨域调试记录 - I sudo X</title>
-    
-    <meta name="description" content="之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运用中会存在不同的状况，只是看文档理解概念并不能真正成为实战派。
-这次联调采用前后端分离的方式，后端由 Spring MVC 提供数据接口，前端通过异步的方式做数据渲染，和以往不同的是，由于前端开发全部交给深圳的凹凸实验室，所以静态文件都跑在独立的一个域名上，就是京东的通天塔项目。因此所有来自前端的请求都成了跨域请求。
-JSONP 确实是通过一种巧妙的伎俩解决了跨域请求被浏览器拒绝的问题，但是它并不能解决 POST 跨域，联调的接口是跨域上传头像，采用 POST 发送 FormData 对象的方式。所以由服务端 CORS 来处理。
-对于服务端，Spring MVC 设置 CORS 很简单，如果 springframework 版本是 4.2 及以上，Spring MVC 可以直接由注解 @CrossOrigin 对标记的控制器方法设置 CORS。例如下面的示例代码：
-@CrossOrigin(origins = &#34;http://localhost:9000&#34;) @GetMapping(&#34;/greeting&#34;) public Greeting greeting(@RequestParam(required=false, defaultValue=&#34;World&#34;) String name) { System.out.println(&#34;==== in greeting ====&#34;); return new Greeting(counter.incrementAndGet(), String.format(template, name)); } @CrossOrigin 注解可以通过设置 origins、methods、maxAge、allowHeaders、allowCredentials 等参数来确定 CORS 接受跨域的来源域，请求类型，请求头等。如果 origins 设置为星号，则对所有来源域的请求都允许跨域，methods 设置为 POST 就只允许请求类型为 POST 的跨域请求。
-前端正常发送异步请求，类似如下代码：
-var formData = new FormData(); formData.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>CORS 跨域调试记录 - I sudo X</title>
+  
+  <meta name="description" content="之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">CORS 跨域调试记录</h1>
-    <div class="post-meta">November 12, 2016</div>
+    <div class="post-meta">2016/11/11</div>
   </header>
   <div class="post-content"><p>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运用中会存在不同的状况，只是看文档理解概念并不能真正成为实战派。</p>
 <!-- raw HTML omitted -->
@@ -137,11 +138,10 @@ var formData = new FormData(); formData.">
       <li><a href="https://isudox.com/tags/springmvc">SpringMVC</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -150,9 +150,10 @@ var formData = new FormData(); formData.">
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -166,5 +167,6 @@ var formData = new FormData(); formData.">
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

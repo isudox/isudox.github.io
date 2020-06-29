@@ -1,89 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Git 一般实践 - I sudo X</title>
-    
-    <meta name="description" content="之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意义上讲，绝大多数时候我只是把 Git 当成了个人代码存储而不是协作开发的版本管理工具。Git 还有很多强大的功能并没有在个人小型开发中使用到，而在 JD 的工作中，实际上遇到了不少在使用 Git 协作开发时的问题。正好组长让我总结其间的问题和最佳实践，就把这些实践经验记录在本文中。另，Git 本来就是一个命令工具集，所以我就以类 Unix 系统下的命令行操作为基准，各个平台下的 Git GUI 工具花样百出，操作也不统一，就一并略过了。
- 其实很多问题都是在你并不了解规律的情况下产生的，不仅仅是对 coding 而言
- 常用操作 创建 Git 仓库 创建 Git 仓库有几种不同的情况：
-创建空的 Git 仓库，很简单，一条命令
-git init &lt;repo-name&gt; 该目录就是一个 Git 本地仓库了，目录下会有一个隐藏文件夹 .git/，看看它的目录结构
-tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├── description ├── FETCH_HEAD ├── HEAD ├── hooks ├── index ├── info │ └── exclude ├── logs │ ├── HEAD │ └── refs │ ├── heads │ │ ├── master │ │ └── source │ └── remotes │ └── origin │ ├── HEAD │ ├── master │ └── source ├── objects │ ├── 18 │ │ └── f66c7ed1e9d6dadb9aa71836fdf58d5217fd26 │ ├── info │ └── pack │ ├── pack-137f36f2b48c9ee4fb17518f99ec9b9f842fcd81.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Git 一般实践 - I sudo X</title>
+  
+  <meta name="description" content="之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Git 一般实践</h1>
-    <div class="post-meta">March 10, 2016</div>
+    <div class="post-meta">2016/03/03</div>
   </header>
   <div class="post-content"><p>之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 <code>git pull</code>、<code>git commit</code>、<code>git push</code> 的三件套。严格意义上讲，绝大多数时候我只是把 Git 当成了个人代码存储而不是协作开发的版本管理工具。Git 还有很多强大的功能并没有在个人小型开发中使用到，而在 JD 的工作中，实际上遇到了不少在使用 Git 协作开发时的问题。正好组长让我总结其间的问题和最佳实践，就把这些实践经验记录在本文中。另，Git 本来就是一个命令工具集，所以我就以类 Unix 系统下的命令行操作为基准，各个平台下的 Git GUI 工具花样百出，操作也不统一，就一并略过了。</p>
 <!-- raw HTML omitted -->
@@ -272,11 +274,10 @@ target/
       <li><a href="https://isudox.com/tags/git">Git</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -285,9 +286,10 @@ target/
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -301,5 +303,6 @@ target/
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

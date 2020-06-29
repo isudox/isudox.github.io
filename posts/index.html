@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Posts - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/posts/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Posts - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/posts/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,14 +100,10 @@
     <h2>MySQL Binlog 解析组件 open-replicator 原理介绍</h2>
   </header>
   <section class="entry-content">
-   <p>open-replicator 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。
-在探索 open-replicator 原理前，可以先思考一个问题，如果是自己来开发这个组件该怎么做。 open-replicator 的做法是参照 MySQL 主从复制的方式，像 slave 一样连接到 MySQL 实例，拉取 binlog 并解析，再通过回调进行处理。
-MySQL 主从复制的过程：
- master 将数据变更写入 binlog； slave 将 master 的 binlog event 复制到 relay log； slave 重放 relay log 中的事件，把数据变更写入到 DB；  类似的，open-replicator 的执行过程是：
- 包装成 slave 连接到目标 MySQL，并发送 dump 请求； master 收到 dump 请求，返回 binlog 到 open-replicator； open-replicator 解析 binlog；  源码梳理 参考上面的类图，open-replicator 的入口就是 OpenReplicator 类，其主要的成员属性有：...</p>
+   <p>open-replicator 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。 在探索 open-replicator 原...</p>
   </section>
   <footer class="entry-footer">
-    <time>February 28, 2020</time>
+    <time>2020/02/02</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2020/02/28/dive-into-open-replicator/"></a>
 </article>
@@ -110,23 +113,10 @@ MySQL 主从复制的过程：
     <h2>动手搭建一个梯子</h2>
   </header>
   <section class="entry-content">
-   <p>由于众所周知的原因，大陆的互联网在一定程度上受限的。这归功于北京某高校校长主导的防火墙项目，我们时不时会看到类似下面这种地图——
-出现防火墙后，不断的有技术去突破这个封锁，双方都从彼此身上吸取教训，升级迭代，如果有兴趣去了解的话，其实是一段非常有趣的历史。但实事求是的说，校长还是放了一马，毕竟没有祭出杀手锏才使得技术手段有突破高墙的可能。
-早期防火墙通过 DNS 劫持的方式，给客户端返回一个错误的 IP 来破坏客户端到目标域名的访问。在那个相对单纯的年代里，我们通常是用修改 hosts 的方式来固定访问正确的 IP。
-后来防火墙使用了 IP 黑名单，阻止客户端到服务端的通讯，像 Google YouTube 就在这个名单里。所以这时候的技术思路就是通过不在该黑名单里的第三方服务器做代理中转，把我们所要访问的内容辗转搬运到客户端。这就是目前绝大多数梯子的实现原理。
-下文会根据 shadowsocks 项目（以下简称 ss），来尝试说明如何造一把简单的梯子。
- 代理服务器的最终目的：不被检测出客户端的真实访问网站，且不被检测出代理服务器在提供代理服务。
- 首先基于上面的第一点，要让墙无法解析数据包里的内容，就是通过加密，比如 AES。而第二点，是决定一个代理服务器是否能藏匿起来，躲过墙的试探而不被封锁的关键。
-限于能力和时间，在这篇文章里我只能对第一点做一些展开。要实现代理的整个数据流如下所示——
-类似 shadowsocks 这类的工具，会在本地客户端和远程代理服务器上分别部署自己的 client 和 server，用来加解密数据包。 就 ss 而言，它的核心就两个部分，分别是 ss-local 和 ss-server，对应上图的 local-proxy 和 remote-proxy。
-本地客户端需要对请求进行加密，这是最基础的功能。ss-local 会在本地监听端口，本地发起的网络请求都会发送到这个端口进行加密处理，再转发到 ss-server 所在的代理服务器上。
-远程服务端接收来自 ss-local 的请求，解密出原始请求信息，并转发到真实的目标服务器上，在接收到响应后会再次对响应做加密，转发给 ss-local，ss-local 再做一次解密，拿到真实的响应信息。
-整个过程是非常标准清晰的对称加密的过程。
-Socks5 协议  socks5 是 socks 协议的第 5 版。参考 RPC 1928。
- 另一个核心是通信协议，ss 基于 socks5 协议，为什么选择 socks5 而不是 HTTPS，一个比较重要的原因是 socks5 同时支持 TCP 和 UDP，而 UDP 往往是 IM 和游戏数据通信所采用的协议。...</p>
+   <p>由于众所周知的原因，大陆的互联网在一定程度上受限的。这归功于北京某高校校长主导的防火墙项目，我们时不时会看到类似下面这种地图—— 出现防火墙后...</p>
   </section>
   <footer class="entry-footer">
-    <time>December 13, 2019</time>
+    <time>2019/12/12</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2019/12/13/proxy-is-a-ladder/"></a>
 </article>
@@ -145,7 +135,7 @@ Note:
 Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] Example 2:...</p>
   </section>
   <footer class="entry-footer">
-    <time>March 29, 2019</time>
+    <time>2019/03/03</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2019/03/29/leetcode-39-combination-sum/"></a>
 </article>
@@ -165,7 +155,7 @@ Input: [2,2,1] Output: 1 Example 2:
 Input: [4,1,2,1,2] Output: 4 Solution Actually it’s quite simple to solve, but we should make clear that it requires O(N) complexity and no extra memory usage....</p>
   </section>
   <footer class="entry-footer">
-    <time>March 26, 2019</time>
+    <time>2019/03/03</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2019/03/26/leetcode-136-single-number/"></a>
 </article>
@@ -175,14 +165,10 @@ Input: [4,1,2,1,2] Output: 4 Solution Actually it’s quite simple to solve, but
     <h2>JavaScript ES6 和 Python 中的 Generator</h2>
   </header>
   <section class="entry-content">
-   <p>这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 redux-saga，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 generator、yield 从思想上到写法上基本是一致的，之前也写过 Python 里的用法，这里也简单的写下我对动态语言里 generator 的学习和理解。
-通识 首先，generator 本质上还是 function，只是行为略微特殊。 普通 function 会在执行结束时通过 return 返回； generator 可以中断 function 的执行过程，并重新回到断点现场继续执行。具体实现就是通过 yield 将结果返回给调用方并中断，通过 next() 方法继续回到断点再执行到下一个 yield 断点处。 普通函数只会返回一次，就是在执行结束的时候；generator 函数在执行过程中可以多次返回，即在 yield 断点处取代了 return。
-还有一个和 generator 紧密相关的概念是 iterator，简单的描述二者的关系就是──generator 实现的目的是生成一个 iterator，它是 iterable 的，也就是说是可以循环遍历的。
-ES6 JavaScript ES6 的 generator 和普通函数相比，最明显的不同在于它的关键字包含星号 * 和 yield，比如 MDN 文档上的代码示例：
-function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); console....</p>
+   <p>这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 redux-saga，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 generator、y...</p>
   </section>
   <footer class="entry-footer">
-    <time>April 22, 2018</time>
+    <time>2018/04/04</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2018/04/22/generators-in-python-es6/"></a>
 </article>
@@ -195,7 +181,7 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
    <p>整理中，待完善……...</p>
   </section>
   <footer class="entry-footer">
-    <time>December 29, 2017</time>
+    <time>2017/12/12</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/12/29/frontend-backend-split-practice/"></a>
 </article>
@@ -205,13 +191,10 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
     <h2>Java 8 Stream API 和函数式编程</h2>
   </header>
   <section class="entry-content">
-   <p>流式操作我们在很多地方都使用过，比如 Shell 操作时经常用到的 ps aux | grep xxx、Python 中的 mapreduce 方法。Java 8 也引入了 Stream API，并且加入 Lambda 表达式，使得函数也可以成为像类一样的一等公民。
-在引出主题前，先看一道简单的算法题，分别用 Java 和 Python 来实现。
- 给定的一个整型数组，将其中每个元素变为它的平方。
- public class Solution { public List&lt;Integer&gt; square(List&lt;Integer&gt; nums) { List&lt;Integer&gt; res = new ArrayList&lt;&gt;(); for (Integer n : nums) { res.add(n * n); } return res; } } class Solution(object): def square(self, nums): return [i ** 2 for i in nums] 上面两个实现都是对这个问题最直接的解法，遍历数组中每个元素，同时计算其平方。对于 Python 的算法，如果了解过 lambda 表达式的话，还可以想出下面这种写法──...</p>
+   <p>流式操作我们在很多地方都使用过，比如 Shell 操作时经常用到的 ps aux | grep xxx、Python 中的 mapreduce 方法。Java 8 也引入了 Stream API，并且加入 Lambda 表达式，...</p>
   </section>
   <footer class="entry-footer">
-    <time>July 12, 2017</time>
+    <time>2017/07/07</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/07/12/java-8-streams-api-fp-intro/"></a>
 </article>
@@ -221,18 +204,10 @@ function* generator(i) { yield i; yield i &#43; 10; } var gen = generator(10); c
     <h2>扔掉鼠标，开始键盘流编程</h2>
   </header>
   <section class="entry-content">
-   <p>之前曾和朋友讨论，为什么很多程序员舍得买千元价位的键盘，却很少愿意买个同级别的鼠标……最后一致认为原因在于代码是键盘敲出来的，不是鼠标点出来的。如果以后编程简化到拖拽下控件就搞定，那价值天平恐怕就能向鼠标倾斜了。
-在开始尝试键盘流编程前，需要达成一个共识──
- 不依赖鼠标的编程，不仅很酷，更重要的是非常高效。
- 以 Java 编程来说，我使用的软硬件是 MacBook Pro、IntelliJ IDEA、Vim。脱离鼠标编程的关键在于──
- 熟悉代码定位的快捷键，包括目标文件的打开，方法定义/实现的跳转等； 熟悉文档操作的快捷键，复制粘贴是最最基础的，复杂高阶的甚至可以是宏操作；  纯熟的掌握以上两个技能，基本可以实现不依赖鼠标，双手不离开键盘地进行编程了。而 MacBook &#43; IntelliJ IDEA &#43; Vim 的组合工具最大化的降低了上述两点的习得门槛。为什么下这样的结论，其一，macOS 常用的组合键是 Command 键，这样就释放了大量潜在的以 Control 键为基础的快捷键，此外 macOS 支持 Emacs 的光标移动快捷键，这非常高效；其二，IntelliJ IDEA 是最棒的 Java IDE 没有之一，它的快捷键也是最出色的；其三，Vim 是久经考验的编辑器之神。
-吹工具的话到此为止，下面就具体写写怎么用这些工具实现键盘流编程。
-IDEA 本身并不支持 Vim 操作，需要安装一个堪称神器的插件 IdeaVim，几乎可以说是模拟 Vim 最好的一个插件了。IDEA 的完善快捷键加上 Vim 强大的文本编辑能力，多加练习就完全可以脱离对鼠标的依赖。
-先来看 IDEA 自带的快捷键，哪些能带来强大的生产力。
-IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以打开全局文件查找和最近访问文件查找； 在文件查找框中输入 / &#43; 文件夹名，可以定位到文件夹所在位置； 通过 Command &#43; E 打开最近访问文件的查找框； 通过 Command &#43; Shift &#43; O 查找文档名，精确定位文档； 在选择文档时，你根本不需要移动鼠标去点击，扔掉鼠标，试着用 Ctrl &#43; N (P, F, B) 来对光标进行向下、向上、向前和向后移动。...</p>
+   <p>之前曾和朋友讨论，为什么很多程序员舍得买千元价位的键盘，却很少愿意买个同级别的鼠标……最后一致认为原因在于代码是键盘敲出来的，不是鼠标点出来...</p>
   </section>
   <footer class="entry-footer">
-    <time>June 25, 2017</time>
+    <time>2017/06/06</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/06/25/coding-with-keyboard-no-mouse/"></a>
 </article>
@@ -242,18 +217,10 @@ IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以�
     <h2>Spring AOP 那些事儿</h2>
   </header>
   <section class="entry-content">
-   <p>AOP 即 Aspect-Oriented Programming，面向切面编程，是对 OOP 编程思想的补充。OOP 核心是继承、封装、多态，是实现 OOP 模块化的基础。当 OOP 达到一定规模后，对于遍布各处的横向代码的处理就开始捉襟见肘，而 AOP 正好弥补了这个不足。
-引入 AOP 下图是很常见的编程场景──
-我们经常会遇到需要在多个方法中实现相同的一部分功能，面向过程的办法就是像图示在每个方法里都复制粘贴相同的一段代码，但是如果要改动就要改动 N 处代码。在有了 OOP 思想后，我们就进阶了一大步，可以将相同的代码段抽离出来，避免了到处改动的问题。
-一般像上图去实现代码就能应付大多数场景了。但随着软件规模的升级，有些问题就开始凸显了。首先共同功能的实现需要在各个方法中显示的去调用；其次，共同功能的控制权分散在代码各处；再次，对共同功能的依赖加重了类之间的耦合，降低了可重用性，如果共同功能并非各个方法的核心功能，那么就不应该耦合进各个对象中。AOP 则可以解决这些问题。
-AOP 把系统功能分为两部分：核心关注点，横切关注点。核心关注点是代码的主要逻辑；横切进多个模块，但不是模块主要逻辑的就是横切关注点。不是简单的把公共模块抽离出来，而是把那些与具体业务无关的，却为业务模块所共同调用的逻辑或责任封装起来，减少冗余代码，降低模块间耦合度，提升可维护性。
-基本概念 什么是 AOP 《Sping 实战》中对 AOP 有一段非常形象的描述──
- 每家每户都需要用电，电力公司会安装电表会记录用电量，会派员工查电表。但是如果没有电表也没有人来查看用电量，相信大多数家庭都不会去记录电量并缴费，因为这不是家庭重点关注的问题。软件开发中，类似记录用电量这种散布于应用中多处的功能被称为横切关注点（cross-cutting concern），从概念上是与应用的业务逻辑相分离的（但往往会直接嵌入到业务逻辑中）。把横切关注点与业务逻辑相分离正是 AOP 所要解决的问题。
- 知道 AOP 大致是做什么的后，再来了解下 AOP 的专用术语：
- 切面 Aspect：横切关注点模块化的类； 连接点 Join point：程序的执行点，比如方法的执行，或者异常的处理。在 Spring AOP 中，连接点总是表示方法执行； 通知 Advice：切面在某个具体的连接点上执行的动作。且可以定义动作执行的时机，比如 around、before、after 等。包括 Spring 在内的许多 AOP 框架，都会把通知模块化成拦截器，围绕连接点构建拦截链； 切点 Poincut：匹配通知所要执行的一个或多个连接点。通常明确指定或者使用正则表达式匹配类名.方法。 引入 Introduction：即向已有的类添加新方法或属性。Spring AOP 允许向被通知的类添加新的接口（和其实现）。 目标对象 Target objection：被一个或多个切面通知的类。因为在 Spring 中，AOP 是通过运行时代理实现的，所以目标对象总是代理对象。 AOP 代理：由 AOP 框架创建的为实现 aspect 的对象，在 Spring 中，AOP 代理是 JDK 动态代理或 CGLIB 代理。 织入 Weaving：把切面应用到目标对象并创建新的代理对象的过程。切面在指定的连接点被织入到目标对象中。织入可以在对象生命周期的编译期、类加载期、运行期完成。Spring AOP 因为采用动态代理，所以是在运行期完成织入。  代码演示 @Component public class PrinterServiceImpl implements PrinterService { public void run(String message) { System....</p>
+   <p>AOP 即 Aspect-Oriented Programming，面向切面编程，是对 OOP 编程思想的补充。OOP 核心是继承、封装、多态，是实现 OOP 模块化的基础。当 OOP 达到一定规模后，对...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 24, 2017</time>
+    <time>2017/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/05/24/spring-aop-guide/"></a>
 </article>
@@ -263,15 +230,10 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
     <h2>Thrift 学习笔记：RPC Server 和 Client</h2>
   </header>
   <section class="entry-content">
-   <p>在了解 Thrift IDL 后，就能开始编写自己的 RPC 服务端和客户端了。对 Thrift 的安装过程和命令操作略过不表，主要还是关注如何利用 Thrift 实现 Java 的 RPC 服务端和客户端。
-服务接口描述 首先需要定义服务接口描述，即 .thrift 文件，再由 Thrift 将接口描述文件编译成相应的客户端和服务端的 stub 代码。
-官网 Tutorial 给出的示例略复杂，不妨自己写一个简单的 Hello World 文件：
-// tutorial.thrift namespace java com.isudox.thrift.tutorial typedef i32 int service CustomService { int add(1:int a, 2:int b) string sayHello(1:string name) } 描述文件写的很简单，只定义了一个接口，包含两个函数。将 tutorial.thrift 编译成 Java 代码：
-thrift -r --gen java tutorial.thrift 生成如下 Java 文件：
-gen-java └── com └── isudox └── thrift └── tutorial └── CustomService....</p>
+   <p>在了解 Thrift IDL 后，就能开始编写自己的 RPC 服务端和客户端了。对 Thrift 的安装过程和命令操作略过不表，主要还是关注如何利用 Thrift 实现 Java 的 RPC 服务端和客户端。 服务接...</p>
   </section>
   <footer class="entry-footer">
-    <time>April 10, 2017</time>
+    <time>2017/04/04</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/04/10/thrift-notes-server-client/"></a>
 </article>
@@ -283,7 +245,7 @@ gen-java └── com └── isudox └── thrift └── tutorial └�
   <nav class="pagination">
     
     
-    <a class="next" href="/posts/page/2/">Next Page →</a>
+    <a class="next" href="/posts/page/2/">下一页 →</a>
     
   </nav>
 </footer>
@@ -302,5 +264,6 @@ gen-java └── com └── isudox └── thrift └── tutorial └�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

@@ -1,91 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Spring MVC 集成 Thymeleaf - I sudo X</title>
-    
-    <meta name="description" content="在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
-和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
-模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
-&lt;form:inputText name=&#34;userName&#34; value=&#34;${user.name}&#34; /&gt; 而 Thymeleaf 模板标准语言会这样写：
-&lt;input type=&#34;text&#34; name=&#34;userName&#34; value=&#34;James Carrot&#34; th:value=&#34;${user.name}&#34; /&gt; 浏览器能直接识别上述 Thymeleaf 的 input 标签，而且还能在加载模板引擎后，由后端返回的数据渲染 value 值。也就是这一特性，可以让前后端工程师在同一个模板文件上协作开发，避免了从静态页面到模板页面的转换，前后端并行开发，这就是未来的趋势，也被称作 Natural Templating，页面即模板，模板即页面。
-标准表达式语法 基本表达式 Thymeleaf 模板方言里最重要的就是它的标准表达式语法了。Thymeleaf 的表达式有：
-  简单表达式：
- 变量表达式：${.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Spring MVC 集成 Thymeleaf - I sudo X</title>
+  
+  <meta name="description" content="在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Spring MVC 集成 Thymeleaf</h1>
-    <div class="post-meta">July 6, 2016</div>
+    <div class="post-meta">2016/07/07</div>
   </header>
   <div class="post-content"><p>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 <a href="http://velocity.apache.org/">Velocity</a>。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” <a href="http://www.thymeleaf.org/">Thymeleaf</a>，就像它的名字一样美妙。</p>
 <!-- raw HTML omitted -->
@@ -416,11 +416,10 @@
       <li><a href="https://isudox.com/tags/java">Java</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -429,9 +428,10 @@
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -445,5 +445,6 @@
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

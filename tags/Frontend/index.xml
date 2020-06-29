@@ -5,7 +5,7 @@
     <link>https://isudox.com/tags/frontend/</link>
     <description>Recent content in Frontend on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh</language>
     <lastBuildDate>Tue, 27 Dec 2016 22:39:09 +0000</lastBuildDate>
     
 	<atom:link href="https://isudox.com/tags/frontend/index.xml" rel="self" type="application/rss+xml" />
@@ -17,13 +17,7 @@
       <pubDate>Tue, 27 Dec 2016 22:39:09 +0000</pubDate>
       
       <guid>https://isudox.com/2016/12/27/yarn-front-end-development-trends-in-2016/</guid>
-      <description>目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w+ stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。
-基础操作 如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。
-初始化新项目：
-# same as npm init yarn init 执行该命令时，会询问项目名称，入口文件，作者等信息，确认后自动创建包管理文件 package.json，以后每次对包的增删更新都会同步到 package.json 中。
-安装依赖包：
-# same as npm install [package] yarn add [package] yarn add [package]@[version] yarn add [package]@[tag] 另外，该命令可以通过标识参数来指定依赖类型：
- yarn add --dev 会把依赖包添加进 devDependencies 字段； yarn add --peer 会把依赖包添加进 peerDependencies 字段； yarn add --optional 会把依赖包添加进 optionalDependencies 字段；  更新依赖包：</description>
+      <description>目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包</description>
     </item>
     
     <item>
@@ -32,13 +26,7 @@
       <pubDate>Mon, 26 Dec 2016 10:40:41 +0000</pubDate>
       
       <guid>https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/</guid>
-      <description>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。
- 因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。
- Webpack 基础命令 Hello World Webpack 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：
-# globally install yarn global add webpack@2.1.0-beta.20 # locally install yarn add webpack@2.1.0-beta.20 -D 安装完后，就可以在控制台使用 webpack 命令了。在目录下执行 webpack，首先需要配置 webpack.config.js 文件，由该配置文件来控制 webpack 的操作。参考阮一峰老师 GitHub 上的示例如下：
-// webpack.config.js module.exports = { entry: &amp;#39;./main.js&amp;#39;, output: { filename: &amp;#39;bundle.js&amp;#39; } }; 然后执行 webpack 命令就可以按照配置文件的设置，把目录下的 main.js 打包成 bundle.js。
-核心概念 Webpack 有 4 个核心概念必须要了解：Entry、Output、Loaders 和 Plugins。
-Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告诉 webpack 这张图表的入口位置并循着依赖关系去打包，webpack 通过对 webpack configuration object 设置 entry 属性来定义 Entry，参考下面的代码：</description>
+      <description>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外</description>
     </item>
     
     <item>
@@ -47,13 +35,7 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
       <pubDate>Sat, 24 Sep 2016 23:55:52 +0000</pubDate>
       
       <guid>https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/</guid>
-      <description>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。
-首先理清一个经常会被混淆的概念，AJAX(Asynchronous JavaScript and XML) 和跨域请求是两个不同的概念，AJAX 是异步请求和解析处理 XML 文档的方式，它在服务器端没有提供支持（CORS 是一种解决方案）的前提下，也是无法跨域的。
-跨域请求 跨域请求，顾名思义，就是从 A 地址向非同源的 B 地址发起了请求。参考 MDN 上对同源的定义:
- 如果两个页面拥有相同的协议（protocol），端口（如果指定）和主机，那么这两个页面就属于同一个源（origin）。
- MDN 给了同源检测的示例，如果是相对 http://store.company.com/dir/page.html，那么
-   URL 结果 原因     http://store.company.com/dir2/other.html 成功    http://store.company.com/dir/inner/another.html 成功    https://store.company.com/secure.html 失败 协议不同   http://store.company.com:81/dir/etc.html 失败 端口不同   http://news.company.com/dir/other.html 失败 主机名不同    严格的说，浏览器并不是拒绝所有的跨域请求，否则如果想从百度搜索结果页跳转到其他页面就是个伪命题，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：
- 通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向； 通常浏览器允许跨域资源嵌入（Cross-origin embedding），如 img、script 标签； 通常浏览器不允许跨域读操作（Cross-origin reads）。  对于跨域资源的嵌入，实际开发中用的非常频繁，从外部引入 js、css、img 这些静态文件，都是被浏览器接受的。</description>
+      <description>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。 首先理</description>
     </item>
     
     <item>
@@ -62,12 +44,7 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
       <pubDate>Thu, 14 Jul 2016 16:01:06 +0000</pubDate>
       
       <guid>https://isudox.com/2016/07/14/customize-hexo-theme/</guid>
-      <description>小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题抄袭过来，嘿嘿。
-头像旋转 Pacman 主题布局非常大气，最有心的设计在我看来就是底栏的可旋转的圆形头像，非常可爱。相比之下，鄙人小站侧边栏头像就显得很呆板了。那就抄过来！ 可以知道，这是一个鼠标的 hover 事件，因此先找到位于 source/css/_common/components/sidebar/sidebar-author.syl 模板文件里侧边栏头像的样式 .site-author-image
-.site-author-image { display: block; margin: 0 auto; padding: $site-author-image-padding; max-width: $site-author-image-width; height: $site-author-image-height; border: $site-author-image-border-width solid $site-author-image-border-color; } 首先要做的事就是把原头像图通过 css 样式改成圆形头像。通过修改 border-radius 属性就可以改图片四个角的圆角程度。另外针对不同内核的浏览器也能分别指定。再加上属性变化的动画效果 transition。
-.site-author-image { border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; transition: 1.4s all; } 圆角效果完成后，再做 hover 动作。添加 .site-author-image:hover 样式，由 rotate() 方法实现，旋转 360°
-.site-author-image:hover { -webkit-transform: rotate(360deg); -moz-transform: rotate(360deg); -ms-transform: rotate(360deg); -transform: rotate(360deg); } OK，成就达成。
-侧边滚动条 Yilia 也是 GitHub 上非常受欢迎的一款 Hexo 主题， 虽然我用的不是 Yilia 主题，但是不妨碍我喜欢它的侧边滚动条，灰色系的性冷淡风很契合我的小站。所以我就把这个样式挪到了我的小站里。 为了不影响小站原主题的样式，最好不要直接在原有样式上做修改。在 source/css/_custom 里的 custom.</description>
+      <description>小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题</description>
     </item>
     
     <item>
@@ -76,14 +53,7 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
       <pubDate>Wed, 06 Jul 2016 15:25:45 +0000</pubDate>
       
       <guid>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</guid>
-      <description>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
-和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
-模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
-&amp;lt;form:inputText name=&amp;#34;userName&amp;#34; value=&amp;#34;${user.name}&amp;#34; /&amp;gt; 而 Thymeleaf 模板标准语言会这样写：
-&amp;lt;input type=&amp;#34;text&amp;#34; name=&amp;#34;userName&amp;#34; value=&amp;#34;James Carrot&amp;#34; th:value=&amp;#34;${user.name}&amp;#34; /&amp;gt; 浏览器能直接识别上述 Thymeleaf 的 input 标签，而且还能在加载模板引擎后，由后端返回的数据渲染 value 值。也就是这一特性，可以让前后端工程师在同一个模板文件上协作开发，避免了从静态页面到模板页面的转换，前后端并行开发，这就是未来的趋势，也被称作 Natural Templating，页面即模板，模板即页面。
-标准表达式语法 基本表达式 Thymeleaf 模板方言里最重要的就是它的标准表达式语法了。Thymeleaf 的表达式有：
-  简单表达式：
- 变量表达式：${.</description>
+      <description>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分</description>
     </item>
     
     <item>
@@ -92,13 +62,7 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
       <pubDate>Mon, 18 Apr 2016 19:55:14 +0000</pubDate>
       
       <guid>https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/</guid>
-      <description>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。
-由于微信朋友圈的火爆和用户基础，因此 JD 的这个项目中类朋友圈的原型设计基本也是抄袭的微信，只不过换成 HTML5 的样式，所以原型图就不贴出来了……要实现的功能大致等于微信朋友圈，用户通过手机相册或摄像头上传图片，发布到京东 App 的一个版块里，由于一期不开发社交功能，因此没有朋友圈留言功能（电商 APP 不务正业，我也是无力吐槽）。 从项目前端开始讲吧。
-前端 在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 WebUploader 组件，或者 jQuery-File-Upload，再久远些还有用 Flash 做的文件上传插件，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像朋友圈发状态一次上传好几张图片，客户端不做处理的话，无论是传输时间还是流量损耗都是不能接受的。因此移动端需要在上传前默认对大体积图片进行压缩处理，后面会完整说明。
-input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别于 PC 端上，移动设备除了调用文件浏览器外，还可以调用摄像头进行拍照上传，需要加入 capture 参数
-&amp;lt;input type=&amp;#34;file&amp;#34; name=&amp;#34;file&amp;#34; accept=&amp;#34;image/*&amp;#34; capture=&amp;#34;camera&amp;#34;&amp;gt; 但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。
-关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。
-&amp;lt;!-- 图片添加按钮 --&amp;gt; &amp;lt;ul id=&amp;#34;previewer&amp;#34; class=&amp;#34;upload-list&amp;#34;&amp;gt; &amp;lt;li id=&amp;#34;select-image&amp;#34; class=&amp;#34;add-pic-btn&amp;#34;&amp;gt;&amp;lt;a href=&amp;#34;javascript:;&amp;#34; onclick=&amp;#34;clickBrowse();&amp;#34;&amp;gt;+&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;!</description>
+      <description>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。 由于微信朋友圈的火爆和用户基础</description>
     </item>
     
     <item>
@@ -116,10 +80,7 @@ input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别�
       <pubDate>Sun, 25 Oct 2015 19:37:47 +0000</pubDate>
       
       <guid>https://isudox.com/2015/10/25/js-global-variables/</guid>
-      <description>毕业来 JD 后完成的第一个任务是写选号中心的前端。由于和 PM 没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用 JavaScript 全局变量，带来便利的同时也有意想不到的坑，更不应滥用，很多时候全局变量并不是一个好选择。
-一个很重要的原因就是，页面所引用的 JS 文件里所有变量和函数都是在同一个域(scope)中运行，重名的变量和函数被覆盖，bug 将随之而来。如果仅仅只是一个展示页或由个人独立开发的项目，这个问题或许并不明显，但对于团队开发，组件化开发而言，全局变量会是深埋的地雷，你不知道什么时候自己会踩上，或者下一时刻会是谁踩上。举个简单的栗子：
-// example1.js var vim_fan = true; var emacs_fan = false; function judge() { if (vim_fan &amp;amp;&amp;amp; emacs_fan) { alert(&amp;#34;You must be burned!&amp;#34;); } } // example2.js var emacs_fan = 1; 如果 HTML 页面里引用了这两个 JS 文件，那么这个既加入 Vim 党又加入 Emacs 党的人将被烧死。然而这种情况是不应该存在的。这就是 JavaScript 全局变量的隐患，尤其是在公司里团队开发，当你调用已有的组件时，往往是黑箱操作，当全局变量出现冲突时，就会引发未知错误。
-JavaScript 语法太过灵活，有时无意中就声明了一个全局变量，比如忘了加 var，或者像这样赋值 var a = b = 1;（值是传递了，但变量的生存期没有传递，b 变成了全局变量）。 对应的解决办法也很简单，同时也是很好的 JavaScript 编码习惯，因为同一域下的 JS 文件都不重名，当需要在当前 JS 文件里调用全局变量时，创建以该 JS 文件名命名的全局对象，在全局对象中添加属性。这样即使在同一域下其他 JS 文件中有同名属性，由于所属对象不同，也不会发生冲突。相当于是在一个域里各自圈地，互不相扰。</description>
+      <description>毕业来 JD 后完成的第一个任务是写选号中心的前端。由于和 PM 没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用</description>
     </item>
     
   </channel>

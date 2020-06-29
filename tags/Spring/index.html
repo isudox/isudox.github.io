@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Spring - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/spring/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Spring - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/spring/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,18 +100,10 @@
     <h2>Spring AOP 那些事儿</h2>
   </header>
   <section class="entry-content">
-   <p>AOP 即 Aspect-Oriented Programming，面向切面编程，是对 OOP 编程思想的补充。OOP 核心是继承、封装、多态，是实现 OOP 模块化的基础。当 OOP 达到一定规模后，对于遍布各处的横向代码的处理就开始捉襟见肘，而 AOP 正好弥补了这个不足。
-引入 AOP 下图是很常见的编程场景──
-我们经常会遇到需要在多个方法中实现相同的一部分功能，面向过程的办法就是像图示在每个方法里都复制粘贴相同的一段代码，但是如果要改动就要改动 N 处代码。在有了 OOP 思想后，我们就进阶了一大步，可以将相同的代码段抽离出来，避免了到处改动的问题。
-一般像上图去实现代码就能应付大多数场景了。但随着软件规模的升级，有些问题就开始凸显了。首先共同功能的实现需要在各个方法中显示的去调用；其次，共同功能的控制权分散在代码各处；再次，对共同功能的依赖加重了类之间的耦合，降低了可重用性，如果共同功能并非各个方法的核心功能，那么就不应该耦合进各个对象中。AOP 则可以解决这些问题。
-AOP 把系统功能分为两部分：核心关注点，横切关注点。核心关注点是代码的主要逻辑；横切进多个模块，但不是模块主要逻辑的就是横切关注点。不是简单的把公共模块抽离出来，而是把那些与具体业务无关的，却为业务模块所共同调用的逻辑或责任封装起来，减少冗余代码，降低模块间耦合度，提升可维护性。
-基本概念 什么是 AOP 《Sping 实战》中对 AOP 有一段非常形象的描述──
- 每家每户都需要用电，电力公司会安装电表会记录用电量，会派员工查电表。但是如果没有电表也没有人来查看用电量，相信大多数家庭都不会去记录电量并缴费，因为这不是家庭重点关注的问题。软件开发中，类似记录用电量这种散布于应用中多处的功能被称为横切关注点（cross-cutting concern），从概念上是与应用的业务逻辑相分离的（但往往会直接嵌入到业务逻辑中）。把横切关注点与业务逻辑相分离正是 AOP 所要解决的问题。
- 知道 AOP 大致是做什么的后，再来了解下 AOP 的专用术语：
- 切面 Aspect：横切关注点模块化的类； 连接点 Join point：程序的执行点，比如方法的执行，或者异常的处理。在 Spring AOP 中，连接点总是表示方法执行； 通知 Advice：切面在某个具体的连接点上执行的动作。且可以定义动作执行的时机，比如 around、before、after 等。包括 Spring 在内的许多 AOP 框架，都会把通知模块化成拦截器，围绕连接点构建拦截链； 切点 Poincut：匹配通知所要执行的一个或多个连接点。通常明确指定或者使用正则表达式匹配类名.方法。 引入 Introduction：即向已有的类添加新方法或属性。Spring AOP 允许向被通知的类添加新的接口（和其实现）。 目标对象 Target objection：被一个或多个切面通知的类。因为在 Spring 中，AOP 是通过运行时代理实现的，所以目标对象总是代理对象。 AOP 代理：由 AOP 框架创建的为实现 aspect 的对象，在 Spring 中，AOP 代理是 JDK 动态代理或 CGLIB 代理。 织入 Weaving：把切面应用到目标对象并创建新的代理对象的过程。切面在指定的连接点被织入到目标对象中。织入可以在对象生命周期的编译期、类加载期、运行期完成。Spring AOP 因为采用动态代理，所以是在运行期完成织入。  代码演示 @Component public class PrinterServiceImpl implements PrinterService { public void run(String message) { System....</p>
+   <p>AOP 即 Aspect-Oriented Programming，面向切面编程，是对 OOP 编程思想的补充。OOP 核心是继承、封装、多态，是实现 OOP 模块化的基础。当 OOP 达到一定规模后，对...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 24, 2017</time>
+    <time>2017/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/05/24/spring-aop-guide/"></a>
 </article>
@@ -114,15 +113,10 @@ AOP 把系统功能分为两部分：核心关注点，横切关注点。核心�
     <h2>探索 Spring MVC 重定向和转发</h2>
   </header>
   <section class="entry-content">
-   <p>最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。
-比如客户端的请求进到 Controller 方法中，我们会判断当前用户状态，可能会跳转到用户中心页，也可能会跳转到等待页，又或者错误页。类似的场景很多，都需要用到请求的重定向和转发。Sping MVC 实现重定向或转发的方法有很多，我先大致梳理下，然后再通过源码加深理解。
-常用处理方式 Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 ModelAndView 对象，又或者是 RedirectView 对象，下面逐一说明。
-String 重定向 是 return 映射到另一个 Controller 方法的字符串。如果有请求参数，就拼接在 RequestMapping 映射的字符串后面。
-// 返回字符串映射的方式 @RequestMapping(&#34;hello&#34;) public String hello(HttpServletRequest req, HttpServletResponse resp) { doSomething(); return &#34;redirect:/bye&#34;; // return &#34;redirect:/bye?username=sudoz&#34;; } ModelAndView 重定向 另一种方法是通过返回 ModelAndView 对象来实现跳转。类似的，如果有请求参数，也可以通过类似 GET 参数拼接的方式：
-// 返回 ModelAndView 对象 @RequestMapping(&#34;hello&#34;) public ModelAndView hello(HttpServletRequest req, HttpServletResponse resp) { doSomething(); return new ModelAndView(&#34;redirect:/bye&#34;); // return new ModelAndView(&#34;redirect:/bye?...</p>
+   <p>最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码...</p>
   </section>
   <footer class="entry-footer">
-    <time>February 16, 2017</time>
+    <time>2017/02/02</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/02/16/spring-mvc-redirect-forward/"></a>
 </article>
@@ -132,13 +126,10 @@ String 重定向 是 return 映射到另一个 Controller 方法的字符串。�
     <h2>Spring Boot 学习笔记 1：起手式 Hello World</h2>
   </header>
   <section class="entry-content">
-   <p>Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convention over configuration)的设计范式。从零搭建 Spring Boot 项目几乎是傻瓜化的，因为框架把大量配置自动完成了。
-Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 Spring Boot 项目初始化工具，为开发者实现一个基本的项目骨架。很多 Java IDE 也集成了这个工具，以 Intellij IDEA 为例，新建项目，选择 Spring Initializr，进入如下组件选择面板
-其中 Core 包含了像 AOP Cashe 这些核心组件，Web 包含了 SpringMVC Thymeleaf 等 Web 开发组件，还有数据库相关，配置中心相关等一系列组件……因为是 Hello World 程序演示，就不选组件了，直接点下一步，创建空项目。空项目结构如下图。
- DemonApplication.java：是应用程序的启动引导类（bootstrap class），也是主要的 Spring 配置类； DemoApplicationTest.java：集成 JUnit 的测试类； application.properties：配置应用程序和 Spring Boot 的属性；  OK，到此为止，第一个 Spring Boot 项目就创建完成了！是的，几乎什么都不需要做，一个能编译能运行的 Spring 项目已经搭建好了，真是幸福到泪奔啊o(&gt;_&lt;)o 但是空项目什么效果都看不到，所以接下来就往里面填充内容，实现一个简单的 Web 应用。...</p>
+   <p>Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convent...</p>
   </section>
   <footer class="entry-footer">
-    <time>February 10, 2017</time>
+    <time>2017/02/02</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2017/02/10/spring-boot-note-1/"></a>
 </article>
@@ -148,15 +139,10 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
     <h2>敏捷开发实战：AOP &#43; 反射</h2>
   </header>
   <section class="entry-content">
-   <p>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。
-如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！
-Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。
-写法一 后端部分 假设创建的 AOP 类为 DemoAspect，在 Spring 的配置文件中，将其注册到 aop 配置中：
-&lt;bean id=&#34;demoAspect&#34; class=&#34;com.isudox.aspect.DemoAspect&#34;/&gt; &lt;aop:aspectj-autoproxy&gt; &lt;aop:include name=&#34;demoAspect&#34;/&gt; &lt;/aop:aspectj-autoproxy&gt; 把流程改造相关的服务 bean 再次声明一份，修改其 id 和新流程的分组，以作为新流程所需服务的 bean（配置就省略了）。下面用 Java 的方式来声明切面和织入的方法：
-@Aspect public class DemoAspect { @Resource private CartService cartService2; @Around(&#34;bean(cartService)&#34;) public Object advice(ProceedingJoinPoint joinPoint) throws Throwable { Object result; try { MethodSignature signature = (MethodSignature) joinPoint....</p>
+   <p>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过...</p>
   </section>
   <footer class="entry-footer">
-    <time>October 11, 2016</time>
+    <time>2016/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/10/11/spring-aop-with-reflection/"></a>
 </article>
@@ -166,15 +152,10 @@ Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会�
     <h2>Spring AOP 本地模拟线上 RPC</h2>
   </header>
   <section class="entry-content">
-   <p>成熟的互联网公司内部一般都会有多个线上环境，像在 JD，就有测试环境，预发布环境，生产环境。开发过程通常是现在本地编写代码，功能差不多了提到测试环境，再到预发布联调，测试通过再提交上线包部署到生产环境。但这是理想状况，实际开发中会有上下游系统联调的问题。
-JD 的项目绝大多数都已经服务化了，服务的提供者和消费者分别在服务中心注册，消费者就能调用服务者的接口。但由于 JD 内部系统繁多，各有不同的开发团队维护各自的项目，除了生产环境和预发布环境能保证各系统间能互联互通，很多情况下，本地运行或在测试环境上运行时，没法调用到服务提供者的接口，这就很尴尬了，因为测试资源的不到位，只能上预发布环境进行上下游系统的对接联调，这是很烦人的，比较好的开发方案是，如果测试环境不完善，就把预发布环境上服务接口的真实数据截流并重定向到本地文件，把它打包成一个本地的测试数据源，以后直接在本地运行就行了。
-如何拦截数据？这就需要 AOP 大显身手了。Spring AOP 可以通过 BeanNameAutoProxyCreatoraaaa 自动代理目标 bean，属性 beanNames 和 interceptorNames 分别设置要代理的目标 bean 列表和拦截器数组。这样就很方便的实现了对目标 bean 的切入拦截。
-简单说下具体的实现流程：
- 当线上运行时，通过拦截器对目标 bean 内部方法的拦截，将方法调用的结果持久化到结果文件中； 当本地运行时，拦截器就不走远程调用，而是直接从结果文件中读取真实的调用结果。  下面给出大致的拦截服务调用数据的代码：
-&lt;!-- spring-aop-config.xml --&gt; &lt;beans&gt; &lt;!-- method interceptor --&gt; &lt;bean id=&#34;rpcInterceptor&#34; class=&#34;com.isudox.utils.RpcInterceptor&#34;&gt; &lt;property name=&#34;mode&#34; value=&#34;online&#34;/&gt; &lt;property name=&#34;fileName&#34; value=&#34;/home/sudoz/dev/local-rpc-data.properties&#34;/&gt; &lt;/bean&gt; &lt;!-- auto proxy --&gt; &lt;bean id=&#34;rpcAutoProxyCreator&#34; class=&#34;org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator&#34;&gt; &lt;property name=&#34;beanNames&#34;&gt; &lt;list&gt; &lt;value&gt;remoteService1&lt;/value&gt; &lt;value&gt;remoteService2&lt;/value&gt; &lt;value&gt;remoteService3&lt;/value&gt; &lt;value&gt;remoteService4&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;property name=&#34;interceptorNames&#34;&gt; &lt;list&gt; &lt;value&gt;rpcInterceptor&lt;/value&gt; &lt;/list&gt; &lt;/property&gt; &lt;/bean&gt; &lt;/beans&gt; import org....</p>
+   <p>成熟的互联网公司内部一般都会有多个线上环境，像在 JD，就有测试环境，预发布环境，生产环境。开发过程通常是现在本地编写代码，功能差不多了提到测...</p>
   </section>
   <footer class="entry-footer">
-    <time>August 3, 2016</time>
+    <time>2016/08/08</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/08/03/imitate-rpc-invoke-locally-by-spring-aop/"></a>
 </article>
@@ -184,17 +165,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
     <h2>Spring MVC 集成 Thymeleaf</h2>
   </header>
   <section class="entry-content">
-   <p>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
-和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
-模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
-&lt;form:inputText name=&#34;userName&#34; value=&#34;${user.name}&#34; /&gt; 而 Thymeleaf 模板标准语言会这样写：
-&lt;input type=&#34;text&#34; name=&#34;userName&#34; value=&#34;James Carrot&#34; th:value=&#34;${user.name}&#34; /&gt; 浏览器能直接识别上述 Thymeleaf 的 input 标签，而且还能在加载模板引擎后，由后端返回的数据渲染 value 值。也就是这一特性，可以让前后端工程师在同一个模板文件上协作开发，避免了从静态页面到模板页面的转换，前后端并行开发，这就是未来的趋势，也被称作 Natural Templating，页面即模板，模板即页面。
-标准表达式语法 基本表达式 Thymeleaf 模板方言里最重要的就是它的标准表达式语法了。Thymeleaf 的表达式有：
-  简单表达式：
- 变量表达式：${....</p>
+   <p>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分...</p>
   </section>
   <footer class="entry-footer">
-    <time>July 6, 2016</time>
+    <time>2016/07/07</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/"></a>
 </article>
@@ -204,12 +178,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
     <h2>Spring 加载含中文 properties 文件的思考</h2>
   </header>
   <section class="entry-content">
-   <p>在公司项目的中间件代码里看到有些配置文件里有很多 &#34;\uXXXX&#34; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是 UTF-8 编码，配置文件里的中文字符为什么还会被转码？
-编码那些事儿 Spring 读取 .properties 文件并将配置内容加载进 Properties 类，文档中明确写明
- … the input/output stream is encoded in ISO 8859-1 character encoding. Characters that cannot be directly represented in this encoding can be written using Unicode escapes as defined in section 3.3 of The Java™ Language Specification; only a single ‘u’ character is allowed in an escape sequence. The native2ascii tool can be used to convert property files to and from other character encodings....</p>
+   <p>在公司项目的中间件代码里看到有些配置文件里有很多 &#34;\uXXXX&#34; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 23, 2016</time>
+    <time>2016/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/"></a>
 </article>
@@ -219,14 +191,10 @@ JD 的项目绝大多数都已经服务化了，服务的提供者和消费者�
     <h2>Spring MVC 拦截器使用小结</h2>
   </header>
   <section class="entry-content">
-   <p>之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。拦截器普遍用在用户登录验证上，也应用在其他需要对一些信息进行验证的场景下。
-实现拦截 请求流程 Spring MVC 请求的生命周期 图示给出了一次请求从发送到处理到接收响应的整个过程，非常标准的 M-V-C。
-接口实现 Spring MVC 拦截器由 HandlerInterceptor 实现。HandlerInterceptor 接口包含三个方法：
-public interface HandlerInterceptor { boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception; void postHandle(HttpServletRequest req, HttpServletResponse resp, Object handler, ModelAndView modelAndView) throws Exception; void afterCompletion(HttpServletRequest req, HttpServletResponse resp, Object handler, Exception ex) throws Exception; } 从这三个方法名就能看出各自执行的事件节点：分别在请求处理之前、请求处理之后但在渲染视图之前、请求完成之后。
-preHandle() 在请求进到 Controller 前就对请求进行预处理。如果处理结果返回 true 则请求放行并继续往下执行，进到 Controller 或 下一个拦截器中；如果处理结果为 false 则中断处理请求，直接返回响应。...</p>
+   <p>之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 10, 2016</time>
+    <time>2016/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/05/10/summary-of-spring-mvc-interceptor/"></a>
 </article>
@@ -248,5 +216,6 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

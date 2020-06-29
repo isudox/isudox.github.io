@@ -1,85 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>[译] IntelliJ IDEA 快捷键操作 - I sudo X</title>
-    
-    <meta name="description" content="捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时去翻看手册，索性把官方的默认 Keymap 翻译成中文。
-编辑 Ctrl &#43; Space: 基本代码补全（类、方法或变量名） Ctrl &#43; Shift &#43; Space: 智能代码补全（根据类型过滤待选的方法和变量列表） Ctrl &#43; Shift &#43; Enter: 补全语句 Ctrl &#43; P: 参数信息（在方法内调用参数） Ctrl &#43; Q: 快速查看文档 Shift &#43; F1: 外部文档 Ctrl &#43; F1: 显示光标所在处的错误或警告信息 Alt &#43; Insert: 生成代码（Getters, Setters, Constructors, hashCode/equals, toString） Ctrl &#43; O: 重写父类方法 Ctrl &#43; I: 实现接口方法 Ctrl &#43; Alt &#43; T: 包裹代码（if..else, try..catch, for, synchronized, etc.） Ctrl &#43; /: 注释/取消注释当前行 Ctrl &#43; Shift &#43; /: 注释/取消注释代码块 Ctrl &#43; W: 层次递增地选中代码块 Ctrl &#43; Shift &#43; W: 对当前选中的代码块层次递减的回到之前的选中状态（Ctrl &#43; W 的逆过程） Alt &#43; Q: 上下文信息 Alt &#43; Enter: 显示意图动作和快速修复 Ctrl &#43; Alt &#43; L: 格式化代码 Ctrl &#43; Alt &#43; O: 优化 imports Ctrl &#43; Alt &#43; I: 自动缩进行 Tab / Shift &#43; Tab: 缩进/回退当前选中的行 Ctrl &#43; X or Shift &#43; Delete: 剪切当前行或选中的代码块到剪贴板 Ctrl &#43; C or Ctrl &#43; Insert: 复制当前行或选中的代码块到剪贴板 Ctrl &#43; V or Shift &#43; Insert: 从剪贴板黏贴 Ctrl &#43; Shift &#43; V: 从当前 buffers 中黏贴 Ctrl &#43; D: 复制当前行或选中的代码段到后一位置 Ctrl &#43; Y: 删除光标所在行 Ctrl &#43; Shift &#43; J: 智能行拼接 Ctrl &#43; Enter: 智能行分拆 Shift &#43; Enter: 新增一行 Ctrl &#43; Shift &#43; U: 变更光标所在单词或选中代码段的大小写 Ctrl &#43; Shift &#43; ] / [: 向上/向下选中代码直到代码块的结束/开始位置 Ctrl &#43; Delete: 向后删除到单词尾 Ctrl &#43; Backspace: 向前删除到单词头 Ctrl &#43; NumPad&#43;/-: 展开/并拢代码块 Ctrl &#43; Shift &#43; NumPad&#43;: 展开全部代码 Ctrl &#43; Shift &#43; NumPad-: 收拢全部代码 Ctrl &#43; F4: 关闭当前 tab Alt &#43; Shift &#43; Inert: 开启/关闭列选择模式">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>[译] IntelliJ IDEA 快捷键操作 - I sudo X</title>
+  
+  <meta name="description" content="捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">[译] IntelliJ IDEA 快捷键操作</h1>
-    <div class="post-meta">May 17, 2016</div>
+    <div class="post-meta">2016/05/05</div>
   </header>
   <div class="post-content"><p>捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时去翻看手册，索性把官方的默认 Keymap 翻译成中文。</p>
 <!-- raw HTML omitted -->
@@ -226,11 +232,10 @@ Ctrl + Tab: 在编辑标签和工具窗口之间切换</p>
       <li><a href="https://isudox.com/tags/jetbrains">JetBrains</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -239,9 +244,10 @@ Ctrl + Tab: 在编辑标签和工具窗口之间切换</p>
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -255,5 +261,6 @@ Ctrl + Tab: 在编辑标签和工具窗口之间切换</p>
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

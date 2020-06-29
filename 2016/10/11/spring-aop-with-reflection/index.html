@@ -1,89 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>敏捷开发实战：AOP &#43; 反射 - I sudo X</title>
-    
-    <meta name="description" content="双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。
-如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！
-Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。
-写法一 后端部分 假设创建的 AOP 类为 DemoAspect，在 Spring 的配置文件中，将其注册到 aop 配置中：
-&lt;bean id=&#34;demoAspect&#34; class=&#34;com.isudox.aspect.DemoAspect&#34;/&gt; &lt;aop:aspectj-autoproxy&gt; &lt;aop:include name=&#34;demoAspect&#34;/&gt; &lt;/aop:aspectj-autoproxy&gt; 把流程改造相关的服务 bean 再次声明一份，修改其 id 和新流程的分组，以作为新流程所需服务的 bean（配置就省略了）。下面用 Java 的方式来声明切面和织入的方法：
-@Aspect public class DemoAspect { @Resource private CartService cartService2; @Around(&#34;bean(cartService)&#34;) public Object advice(ProceedingJoinPoint joinPoint) throws Throwable { Object result; try { MethodSignature signature = (MethodSignature) joinPoint.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>敏捷开发实战：AOP &#43; 反射 - I sudo X</title>
+  
+  <meta name="description" content="双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">敏捷开发实战：AOP &#43; 反射</h1>
-    <div class="post-meta">October 11, 2016</div>
+    <div class="post-meta">2016/10/10</div>
   </header>
   <div class="post-content"><p>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。</p>
 <!-- raw HTML omitted -->
@@ -152,11 +154,10 @@ Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会�
       <li><a href="https://isudox.com/tags/spring">Spring</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -165,9 +166,10 @@ Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会�
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -181,5 +183,6 @@ Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

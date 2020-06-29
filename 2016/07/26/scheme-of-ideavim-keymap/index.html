@@ -1,87 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>JetBrains IDE Vim 模式的方案 - I sudo X</title>
-    
-    <meta name="description" content="之前的一篇博客翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 Ideavim，模拟 Vim 编辑器的操作。
-在安装 ideavim 插件后，IDE 可能会处在几种不同的模式下：
- Vim 模拟器关闭模式（Vim Emulator off） Vim 模拟器开启模式（Vim Emulator on） Vim 命令模式（Command mode） Vim 插入模式（Insert mode） Vim 末行命令模式（Last line mode）  当关闭 Vim 模拟器时，IDE 的 Keymap 会恢复到安装 Ideavim 之前的状态，因此最好是在自己自定义设置并熟悉 IDE 自带的 keymap 后安装 Ideavim 插件。开启/关闭 Vim 模拟器的快捷键可以北自定义，默认的切换快捷键是 Ctrl &#43; Alt &#43; V，这个切换方式和 IDE 自带的快捷键冲突，可以考虑改成更合适的映射。我把切换 Vim 开关状态的快捷键修改成了 Ctrl &#43; ;，这样，如果 Caps 键映射成 Ctrl 键，左手右手一个慢动作，可以很方便的开启/关闭 Vim 模拟器。
-Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模拟器开启后，IDE 就拥有了 Vim 编辑器的强大功能（不是全部，但也很强大了）。Vim 的三个模式基本都耳熟能详了，命令模式下的键盘动作会被识别为命令，而不是字符输入，比如 a 进入 append 输入，i 进入 insert 输入，x 删除光标所在的字符，X 删除光标之前的字符，dd 删除光标所在行，yy 复制当前行，p 粘贴等。插入模式就是正常的文本输入编辑，Esc 键退出插入模式，或者 Ctrl &#43; [。末行命令模式是从命令模式下按 : 键进入，可以执行保存、退出、set:options 等操作。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>JetBrains IDE Vim 模式的方案 - I sudo X</title>
+  
+  <meta name="description" content="之前的一篇博客翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">JetBrains IDE Vim 模式的方案</h1>
-    <div class="post-meta">July 26, 2016</div>
+    <div class="post-meta">2016/07/07</div>
   </header>
   <div class="post-content"><p>之前的一篇<a href="/2016/05/17/intellij-idea-keymap-zh/">博客</a>翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 <a href="https://github.com/JetBrains/ideavim">Ideavim</a>，模拟 Vim 编辑器的操作。</p>
 <!-- raw HTML omitted -->
@@ -257,11 +261,10 @@ Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模�
       <li><a href="https://isudox.com/tags/jetbrains">JetBrains</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -270,9 +273,10 @@ Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模�
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -286,5 +290,6 @@ Vim 模拟器关闭状态下就不多讲了，之前都翻译过。在 Vim 模�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

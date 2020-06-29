@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Java - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/java/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Java - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/java/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,13 +100,10 @@
     <h2>Java String 的内存模型</h2>
   </header>
   <section class="entry-content">
-   <p>在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。
-字符串比较 字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：
-String s1 = &#34;hello,world!&#34;; // 通过字面值 String s2 = new String(&#34;hello,world!&#34;); // 通过 new 关键字 字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：
-public class Debug { public static void main(String[] args) { String s1 = &#34;hello,world!&#34;; String s2 = new String(&#34;hello,world!&#34;); System.out.println(s1 == s2); // false  System.out.println(Objects.equals(s1, s2)); // true  } } 值都是 “hello,world!” 的字符串，然而两种比较的方式所得到的结果却不相同。字符串 s1 是通过字面值创建，字符串 s2 是通过关键字 new 创建，在分析这两种创建字符串方式的区别之前，先比较下 == 操作符和 equals() 方法在进行字符串比较时的差异。...</p>
+   <p>在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。 字符...</p>
   </section>
   <footer class="entry-footer">
-    <time>June 22, 2016</time>
+    <time>2016/06/06</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/"></a>
 </article>
@@ -109,16 +113,10 @@ public class Debug { public static void main(String[] args) { String s1 = &#34;h
     <h2>责任链模式的实际运用</h2>
   </header>
   <section class="entry-content">
-   <p>加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，review 自己写的代码时，好像一直在 repeat yourself。代码不应该那样写，把复杂业务拆分，松耦合，利用设计模式将业务代码简化，而不是一味的去用过程编程的思维去实现业务逻辑，又苦又累毫无乐趣。
-重构之前 趁着 JD 618 大促的机会，把陪伴计划项目部分业务重构了下。前期开发时因为业务需求多、时间紧张，没有对业务逻辑深入的分析，代码拿上来就写，导致逻辑的紧耦合、难以更改，难以扩展，面对新增的业务只能从头再写而无法做到有效复用。
-要做到代码的合理复用，直接有效的途径就是把业务逻辑拆分细化，颗粒度最细的拆分就是将业务逻辑拆分成原子操作，但这样做会导致代码过于细碎，未免过犹不及。业务松耦合，并非零耦合。让每一个细分业务只负责单一逻辑，通过灵活可配的组合实现复杂逻辑，这是实现松耦合，提高扩展性行之有效的办法。
-以这次的小范围重构为例，京东陪伴计划项目包含大量的优惠券促销业务，其逻辑涉及到诸多信息，比如宝贝档案、风险控制、券卡类别库存、会员信息、领取时间等多个维度。重构前的代码把优惠券业务里所涉及的多维度逻辑统统杂糅在一个接口实现里。这样的处理很草率，唯一的好处就是，在从零到一编写代码的过程中，思维可以很清楚的沿着业务逻辑线性写下去，说白了就是无脑编程。试想一下，如果优惠券部分的业务发生改变或者新增维度信息，很难灵活应变，而且代码冗余，牵扯面大，很难灵活扩展。
-原味责任链模式 责任链模式的基本思想是通过连锁处理单元，链式的处理客户端请求。链是由一系列处理单元自由组成的集合，可以是直线、环、树状结构，不同的处理单元将业务逻辑解耦。责任链上的每个处理单元或节点，都是客户端请求的潜在处理者，且客户端请求必定会在责任链上被处理。 标准的责任链结构，其节点包含处理方法 handle()，后一节点的引用 nextHandler，因此可以灵活配置责任链的每个节点，从而实现复杂业务的组合。 客户端的请求从责任链的根节点开始，依次往下执行，如果当前节点能胜任处理工作，则完成任务，否则将请求往下传递，直到到达能处理该请求的节点。下面编写一段简单的 Java 示例代码：
-先来一段又臭又长的代码，举个栗子
-public class BullshitCode { public static void main(String[] args) { int cmd = Integer.parseInt(args[0]); switch (cmd) { case 1: System.out.println(&#34;my name is sudoz&#34;); break; case 2: System.out.println(&#34;this is my site&#34;); break; case 3: System.out.println(&#34;any advice is welcome&#34;); break; case 4: System.out.println(&#34;reach me via e-mail at me@isudox.com&#34;); break; default: break; } } } 上面的代码没有什么实际意义，只是一种很具有代表性的写法，通过一长串的 if-else 逻辑去处理业务，导致所有可能的处理缓解都堆积杂糅在一块，设想一下如果新增了业务需求，是不是再往里面插一个 if-else 了事？总是用这种方式去写代码会让程序越来越臃肿，难以维护和扩展，尤其是当你接手别人的代码发现以百行计的 if-else 语句块时，你一定会一脸懵逼看不下去，沃泽法克什么鬼？！ 升职加薪对码农而言，就像是马儿眼前的草，给不给草啊，难道又要马儿跑又要马儿不吃草，互联网公司好像还真这么想……说多了就是两行泪，上头的 Boss 和 HR 们层层把关，不是想加就能加。...</p>
+   <p>加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，...</p>
   </section>
   <footer class="entry-footer">
-    <time>June 6, 2016</time>
+    <time>2016/06/06</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/06/06/using-chain-of-responsibility-pattern/"></a>
 </article>
@@ -128,12 +126,10 @@ public class BullshitCode { public static void main(String[] args) { int cmd = I
     <h2>Spring 加载含中文 properties 文件的思考</h2>
   </header>
   <section class="entry-content">
-   <p>在公司项目的中间件代码里看到有些配置文件里有很多 &#34;\uXXXX&#34; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是 UTF-8 编码，配置文件里的中文字符为什么还会被转码？
-编码那些事儿 Spring 读取 .properties 文件并将配置内容加载进 Properties 类，文档中明确写明
- … the input/output stream is encoded in ISO 8859-1 character encoding. Characters that cannot be directly represented in this encoding can be written using Unicode escapes as defined in section 3.3 of The Java™ Language Specification; only a single ‘u’ character is allowed in an escape sequence. The native2ascii tool can be used to convert property files to and from other character encodings....</p>
+   <p>在公司项目的中间件代码里看到有些配置文件里有很多 &#34;\uXXXX&#34; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 23, 2016</time>
+    <time>2016/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/"></a>
 </article>
@@ -143,11 +139,10 @@ public class BullshitCode { public static void main(String[] args) { int cmd = I
     <h2>[译] IntelliJ IDEA 快捷键操作</h2>
   </header>
   <section class="entry-content">
-   <p>捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时去翻看手册，索性把官方的默认 Keymap 翻译成中文。
-编辑 Ctrl &#43; Space: 基本代码补全（类、方法或变量名） Ctrl &#43; Shift &#43; Space: 智能代码补全（根据类型过滤待选的方法和变量列表） Ctrl &#43; Shift &#43; Enter: 补全语句 Ctrl &#43; P: 参数信息（在方法内调用参数） Ctrl &#43; Q: 快速查看文档 Shift &#43; F1: 外部文档 Ctrl &#43; F1: 显示光标所在处的错误或警告信息 Alt &#43; Insert: 生成代码（Getters, Setters, Constructors, hashCode/equals, toString） Ctrl &#43; O: 重写父类方法 Ctrl &#43; I: 实现接口方法 Ctrl &#43; Alt &#43; T: 包裹代码（if..else, try..catch, for, synchronized, etc.） Ctrl &#43; /: 注释/取消注释当前行 Ctrl &#43; Shift &#43; /: 注释/取消注释代码块 Ctrl &#43; W: 层次递增地选中代码块 Ctrl &#43; Shift &#43; W: 对当前选中的代码块层次递减的回到之前的选中状态（Ctrl &#43; W 的逆过程） Alt &#43; Q: 上下文信息 Alt &#43; Enter: 显示意图动作和快速修复 Ctrl &#43; Alt &#43; L: 格式化代码 Ctrl &#43; Alt &#43; O: 优化 imports Ctrl &#43; Alt &#43; I: 自动缩进行 Tab / Shift &#43; Tab: 缩进/回退当前选中的行 Ctrl &#43; X or Shift &#43; Delete: 剪切当前行或选中的代码块到剪贴板 Ctrl &#43; C or Ctrl &#43; Insert: 复制当前行或选中的代码块到剪贴板 Ctrl &#43; V or Shift &#43; Insert: 从剪贴板黏贴 Ctrl &#43; Shift &#43; V: 从当前 buffers 中黏贴 Ctrl &#43; D: 复制当前行或选中的代码段到后一位置 Ctrl &#43; Y: 删除光标所在行 Ctrl &#43; Shift &#43; J: 智能行拼接 Ctrl &#43; Enter: 智能行分拆 Shift &#43; Enter: 新增一行 Ctrl &#43; Shift &#43; U: 变更光标所在单词或选中代码段的大小写 Ctrl &#43; Shift &#43; ] / [: 向上/向下选中代码直到代码块的结束/开始位置 Ctrl &#43; Delete: 向后删除到单词尾 Ctrl &#43; Backspace: 向前删除到单词头 Ctrl &#43; NumPad&#43;/-: 展开/并拢代码块 Ctrl &#43; Shift &#43; NumPad&#43;: 展开全部代码 Ctrl &#43; Shift &#43; NumPad-: 收拢全部代码 Ctrl &#43; F4: 关闭当前 tab Alt &#43; Shift &#43; Inert: 开启/关闭列选择模式...</p>
+   <p>捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 17, 2016</time>
+    <time>2016/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/05/17/intellij-idea-keymap-zh/"></a>
 </article>
@@ -157,14 +152,10 @@ public class BullshitCode { public static void main(String[] args) { int cmd = I
     <h2>Spring MVC 拦截器使用小结</h2>
   </header>
   <section class="entry-content">
-   <p>之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。拦截器普遍用在用户登录验证上，也应用在其他需要对一些信息进行验证的场景下。
-实现拦截 请求流程 Spring MVC 请求的生命周期 图示给出了一次请求从发送到处理到接收响应的整个过程，非常标准的 M-V-C。
-接口实现 Spring MVC 拦截器由 HandlerInterceptor 实现。HandlerInterceptor 接口包含三个方法：
-public interface HandlerInterceptor { boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception; void postHandle(HttpServletRequest req, HttpServletResponse resp, Object handler, ModelAndView modelAndView) throws Exception; void afterCompletion(HttpServletRequest req, HttpServletResponse resp, Object handler, Exception ex) throws Exception; } 从这三个方法名就能看出各自执行的事件节点：分别在请求处理之前、请求处理之后但在渲染视图之前、请求完成之后。
-preHandle() 在请求进到 Controller 前就对请求进行预处理。如果处理结果返回 true 则请求放行并继续往下执行，进到 Controller 或 下一个拦截器中；如果处理结果为 false 则中断处理请求，直接返回响应。...</p>
+   <p>之前用 Django 开发的时候，Django 内置的 middleware 提供了 login_required() 装饰器作登录拦截。强大的 Spring MVC 也支持拦截器，可以通过不算复杂的配置非常灵活的控制请求拦截策略。...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 10, 2016</time>
+    <time>2016/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/05/10/summary-of-spring-mvc-interceptor/"></a>
 </article>
@@ -174,14 +165,10 @@ preHandle() 在请求进到 Controller 前就对请求进行预处理。如果�
     <h2>String, StringBuilder, StringBuffer 区别</h2>
   </header>
   <section class="entry-content">
-   <p>今天下午浏览代码时看到 IDEA 给出了一段提示： StringBuffer variables may be declared as StringBuilder.
-回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场景的差异。遂谷歌之，看到阿里的 Android 大牛 Trinea 在 Github 上提的 issue，正好是关于它们之间区别的讨论。我也凑个热闹，查漏补缺。
-CharSequence 首先，String、StringBuilder 和 StringBuffer 都是实现的 CharSequence 接口。下面是 CharSequence 的源码：
-package java.lang; public interface CharSequence { int length(); char charAt(int index); CharSequence subSequence(int start, int end); public String toString(); } CharSequence 抽象了 char 序列，提供了求序列长度的方法 length()，获取指定位置字符的方法 charAt()，截取子序列的方法 subSequence() 和转换为 String 型的方法 toString()。实际运用中，我们很少直接用等到 CharSequence，因为它的实现 String、StringBuffer 和 StringBuilder 满足绝大多数使用场景。
-String 先看 JDK 里的源码：...</p>
+   <p>今天下午浏览代码时看到 IDEA 给出了一段提示： StringBuffer variables may be declared as StringBuilder. 回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场...</p>
   </section>
   <footer class="entry-footer">
-    <time>February 17, 2016</time>
+    <time>2016/02/02</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/02/17/difference-between-string-stringbuilder-stringbuffer/"></a>
 </article>
@@ -192,7 +179,7 @@ String 先看 JDK 里的源码：...</p>
 <footer class="page-footer">
   <nav class="pagination">
     
-    <a class="prev" href="/tags/java/">← Prev Page</a>
+    <a class="prev" href="/tags/java/">← 上一页</a>
     
     
   </nav>
@@ -212,5 +199,6 @@ String 先看 JDK 里的源码：...</p>
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

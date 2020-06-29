@@ -1,89 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>探索 Spring MVC 重定向和转发 - I sudo X</title>
-    
-    <meta name="description" content="最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。
-比如客户端的请求进到 Controller 方法中，我们会判断当前用户状态，可能会跳转到用户中心页，也可能会跳转到等待页，又或者错误页。类似的场景很多，都需要用到请求的重定向和转发。Sping MVC 实现重定向或转发的方法有很多，我先大致梳理下，然后再通过源码加深理解。
-常用处理方式 Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 ModelAndView 对象，又或者是 RedirectView 对象，下面逐一说明。
-String 重定向 是 return 映射到另一个 Controller 方法的字符串。如果有请求参数，就拼接在 RequestMapping 映射的字符串后面。
-// 返回字符串映射的方式 @RequestMapping(&#34;hello&#34;) public String hello(HttpServletRequest req, HttpServletResponse resp) { doSomething(); return &#34;redirect:/bye&#34;; // return &#34;redirect:/bye?username=sudoz&#34;; } ModelAndView 重定向 另一种方法是通过返回 ModelAndView 对象来实现跳转。类似的，如果有请求参数，也可以通过类似 GET 参数拼接的方式：
-// 返回 ModelAndView 对象 @RequestMapping(&#34;hello&#34;) public ModelAndView hello(HttpServletRequest req, HttpServletResponse resp) { doSomething(); return new ModelAndView(&#34;redirect:/bye&#34;); // return new ModelAndView(&#34;redirect:/bye?">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>探索 Spring MVC 重定向和转发 - I sudo X</title>
+  
+  <meta name="description" content="最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">探索 Spring MVC 重定向和转发</h1>
-    <div class="post-meta">February 16, 2017</div>
+    <div class="post-meta">2017/02/02</div>
   </header>
   <div class="post-content"><p>最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码后，把经验归纳整理出来，遂成此文。</p>
 <!-- raw HTML omitted -->
@@ -235,11 +237,10 @@ Date: Thu, <span style="color:#ae81ff">16</span> Feb <span style="color:#ae81ff"
       <li><a href="https://isudox.com/tags/java">Java</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -248,9 +249,10 @@ Date: Thu, <span style="color:#ae81ff">16</span> Feb <span style="color:#ae81ff"
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -264,5 +266,6 @@ Date: Thu, <span style="color:#ae81ff">16</span> Feb <span style="color:#ae81ff"
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

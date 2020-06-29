@@ -1,87 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Nginx 启用 HTTP/2 - I sudo X</title>
-    
-    <meta name="description" content="今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。 上 Google 搜索关键字，才知道自己已经滞后了6个月，Nginx 从1.9.5版本开始已经加入了对 HTTP/2 的官方支持 Nginx Open Source 1.9.5 Released with HTTP/2 Support。这篇文章里也提到了 Nginx 从 1.9.5 开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级 Nginx，开启 HTTP/2。
-挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼 conf 文件，没有 SPDY 的参数设置，可以平滑升级到 1.10.0了。由于 Nginx1.10.0 发布在 mainline 上，如果想采用 apt 方式升级，还需要配置下 source 源。先安装 Nginx 的 apt 源的签名key，把 key 添加进 apt 源。
-sudo apt-key add nginx_signing.key 修改/etc/apt/sources.list，在文件后追加 nginx mainline 的 deb 包源和 deb-src 源
-deb http://nginx.org/packages/debian/ codename nginx deb-src http://nginx.">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Nginx 启用 HTTP/2 - I sudo X</title>
+  
+  <meta name="description" content="今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。 上 Google 搜索关键字，">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Nginx 启用 HTTP/2</h1>
-    <div class="post-meta">March 18, 2016</div>
+    <div class="post-meta">2016/03/03</div>
   </header>
   <div class="post-content"><p>今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。
 上 Google 搜索关键字，才知道自己已经滞后了6个月，Nginx 从1.9.5版本开始已经加入了对 HTTP/2 的官方支持 <a href="https://www.nginx.com/blog/nginx-1-9-5/">Nginx Open Source 1.9.5 Released with HTTP/2 Support</a>。这篇文章里也提到了 Nginx 从 1.9.5 开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级 Nginx，开启 HTTP/2。</p>
@@ -160,11 +164,10 @@ ERR_SPDY_INADEQUATE_TRANSPORT_SECURITY
       <li><a href="https://isudox.com/tags/nginx">Nginx</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -173,9 +176,10 @@ ERR_SPDY_INADEQUATE_TRANSPORT_SECURITY
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -189,5 +193,6 @@ ERR_SPDY_INADEQUATE_TRANSPORT_SECURITY
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

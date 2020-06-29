@@ -5,7 +5,7 @@
     <link>https://isudox.com/tags/git/</link>
     <description>Recent content in Git on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh</language>
     <lastBuildDate>Sat, 18 Feb 2017 14:51:10 +0000</lastBuildDate>
     
 	<atom:link href="https://isudox.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
@@ -17,16 +17,7 @@
       <pubDate>Sat, 18 Feb 2017 14:51:10 +0000</pubDate>
       
       <guid>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</guid>
-      <description>原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中有些表述略显唠叨和陈旧，但不缺干货，搬运过来做个日常开发手册也是好的。
- 上面是废话，下面是译文。
-  本文里，我会介绍一个在一年前就引入进多个项目（包括工作和个人项目）中的开发模型，实践表明该模型很成功。为此专门写篇文章的想法由来已久，但始终没挤出时间来做，直到现在。我不会细究项目的具体细节，仅仅是项目开发的分支策略和发布管理。
-该模型专注于使用 Git 作为代码版本管理工具。（另外，如果你对 Git 感兴趣，我司的 GitPrime 提供了一些很棒的软件性能实时数据分析功能）
-为什么使用 Git 关于 Git 相比于中心化的代码管理系统的优劣，可以从网上找到很多相关讨论。作为开发者，我选择 Git。Git 确实改变了开发者们对分支和合并的理解。在之前使用经典的 CVS/Subversion 时，新建分支和合并分支总是有点吓人（小心代码合并时的冲突，它们会咬你）。
-但是用 Git 时，这些日常工作流的主要操作都变得简便易行。举例来说，在 CVS/Subversion 的相关书籍中，分支和合并操作会在靠后的章节中介绍（面向高阶读者），而 Git 的书中，往往是前三章的基础操作里就会做说明。
-由于 Git 的简单性和重用性（repetitive），分支和合并不再是令人生畏的高危操作。版本管理工具应该更多的协助代码的新建分支和合并分支。
-闲言少叙，进入开发模型的正题吧。我要介绍的模型基本上只是团队里每个成员都要遵循的一组开发流程规范。
-去中心化也中心化 在分支模型下工作良好的代码库，实际上有一个真实的中心代码库。注意这个库被视为一个中心（因为 Git 是分布式的版本管理工具，所以从技术角度上说并不存在中心代码库）。我们将其视为为 origin，因为所有 Git 用户都熟悉这个名称。
-每个开发者对 origin 进行 pull 和 push 操作。但是除了中心化的 push-pull，每个开发者也可能会建立子团队并 pull 同个子团队里其他成员的代码改动。比如，和两个或更多开发者合作开发一个大的新功能时，避免过早的将开发进行过程中的代码 push 上去。上图中，有 Alice 和 Bob 的小团队，Clair 和 David 的小团队。</description>
+      <description>原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中</description>
     </item>
     
     <item>
@@ -35,11 +26,7 @@
       <pubDate>Mon, 01 Aug 2016 17:15:08 +0000</pubDate>
       
       <guid>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</guid>
-      <description>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。
-GitLab 的外部依赖很多，有 Nginx、Rails、Postgres、Redis、MySQL、unicorn、Go 等。如果单独安装各个依赖，一大堆的配置会让人抓狂。如果用官网提供的 omni 集成包，除非是全新的服务器，否则很大可能就导致依赖的重复安装，比如进程里有多个 Nginx、MySQL，很容易把服务器环境弄得很乱。像 GitLab 这样的程序，其实很适合用 Docker 来部署，一则和实机环境隔离开，另外运行性能相当好。
-安装 Docker 环境 安装配置 惯例，以 Debian 8 为参考，把 Docker 官方维护的 deb 包添加到系统的 APT 源内，创建文件 /etc/apt/sources.list.d/docker.list：
-deb https://apt.dockerproject.org/repo debian-jessie main 更新源，安装 docker-engine 包，执行 ps -ef | grep docker 查看 Docker 的进程，
-root 2885 1 0 09:40 ? 00:00:10 /usr/bin/dockerd --raw-logs root 2897 2885 0 09:40 ? 00:00:00 docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --shim docker-containerd-shim --metrics-interval=0 --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --runtime docker-runc sudoz 21053 6463 0 14:54 pts/0 00:00:00 grep --color=auto --exclude-dir=.</description>
+      <description>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。 GitLab 的外部依赖很多，有 Nginx、Rails</description>
     </item>
     
     <item>
@@ -48,12 +35,7 @@ root 2885 1 0 09:40 ? 00:00:10 /usr/bin/dockerd --raw-logs root 2897 2885 0 09:4
       <pubDate>Thu, 10 Mar 2016 18:01:32 +0000</pubDate>
       
       <guid>https://isudox.com/2016/03/10/git-general-practice/</guid>
-      <description>之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意义上讲，绝大多数时候我只是把 Git 当成了个人代码存储而不是协作开发的版本管理工具。Git 还有很多强大的功能并没有在个人小型开发中使用到，而在 JD 的工作中，实际上遇到了不少在使用 Git 协作开发时的问题。正好组长让我总结其间的问题和最佳实践，就把这些实践经验记录在本文中。另，Git 本来就是一个命令工具集，所以我就以类 Unix 系统下的命令行操作为基准，各个平台下的 Git GUI 工具花样百出，操作也不统一，就一并略过了。
- 其实很多问题都是在你并不了解规律的情况下产生的，不仅仅是对 coding 而言
- 常用操作 创建 Git 仓库 创建 Git 仓库有几种不同的情况：
-创建空的 Git 仓库，很简单，一条命令
-git init &amp;lt;repo-name&amp;gt; 该目录就是一个 Git 本地仓库了，目录下会有一个隐藏文件夹 .git/，看看它的目录结构
-tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├── description ├── FETCH_HEAD ├── HEAD ├── hooks ├── index ├── info │ └── exclude ├── logs │ ├── HEAD │ └── refs │ ├── heads │ │ ├── master │ │ └── source │ └── remotes │ └── origin │ ├── HEAD │ ├── master │ └── source ├── objects │ ├── 18 │ │ └── f66c7ed1e9d6dadb9aa71836fdf58d5217fd26 │ ├── info │ └── pack │ ├── pack-137f36f2b48c9ee4fb17518f99ec9b9f842fcd81.</description>
+      <description>之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意</description>
     </item>
     
     <item>
@@ -62,14 +44,7 @@ tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├�
       <pubDate>Thu, 03 Sep 2015 00:19:38 +0000</pubDate>
       
       <guid>https://isudox.com/2015/09/03/hexo-your-blog/</guid>
-      <description>进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。
-Blog 仿佛已是古董，在一众微博微信席卷的现下，多少有点像长势萎靡无人问津的路边草。那为什么还要做 Blog？为什么不选用现成的空间、Blog 提供商？为什么还是静态 Blog，还要搭在 VPS 上？
-需要有这么多为什么吗？因为好玩，这就够了。具体好玩的元素有很多，在下面的记录中会有所提及，更多的还需要自己去发现。
-Why  选择自己搭建独立 Blog 的理由很简单，既然是自己的东西，就不需要放在别人口袋里； 选择静态 Blog 是因为无需数据库，支持 Markdown，文本文件便于 Git 管理；  静态 Blog 程序尽管小众，也还是有不少选择的，按语言不同门派各异，也是一江湖。比如 Ruby 系 Jekyll，Node.js 系 Hexo，Python 系 Pelican。
-什么？竟然没有世界上最好的语言！好吧，WordPress 正在冲你露大白牙……
-Jekyll、Hexo 和 Pelican 各有拥趸，各执一词。我不辩优劣，选 Hexo 只是因为平时用 JS 更多罢了。如果对语言有信仰，那就闭上眼睛遵从信仰吧。
-How Google 一下关键字 Hexo + Blog，或者直接查看 Hexo 官方文档，都可以对 Hexo 的搭建过程有较为清晰的认知。我设想的方案是搭建一个由 GitHub 托管，并且能在 VPS 上实时发布部署的 Blog 程序，因此基本框架就是 Hexo + GitHub + VPS。
-Let&amp;rsquo;s Hexo GitHub 网上已有的 Hexo 方案基本都是将 Hexo 生成的静态文件提交至 GitHub Pages，通过 GitHub Pages 实现 Blog 的撰写及更新。但有一不足，如果换一台电脑写，难道还要将 Hexo 源文件拷贝过来再生成静态博客？肯定不能这么做，对此我的建议很简单：在 GitHub 上的以 {username}.</description>
+      <description>进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。 Blog 仿</description>
     </item>
     
   </channel>

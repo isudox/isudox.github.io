@@ -5,7 +5,7 @@
     <link>https://isudox.com/tags/thymeleaf/</link>
     <description>Recent content in Thymeleaf on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh</language>
     <lastBuildDate>Wed, 06 Jul 2016 15:25:45 +0000</lastBuildDate>
     
 	<atom:link href="https://isudox.com/tags/thymeleaf/index.xml" rel="self" type="application/rss+xml" />
@@ -17,14 +17,7 @@
       <pubDate>Wed, 06 Jul 2016 15:25:45 +0000</pubDate>
       
       <guid>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</guid>
-      <description>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分离的好选择。还好，近几年 Java Web 诞生了一款新的视图解析器——“百里香叶” Thymeleaf，就像它的名字一样美妙。
-和 Velocity 类似，Thymeleaf 支持通过 @Controller 注解的映射方法返回模板名称；模板支持 Spring Expression Language；支持在模板中创建表单，表单验证。（这就比较像 Jinja2 了）。
-模板标准方言 引入 Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:
-&amp;lt;form:inputText name=&amp;#34;userName&amp;#34; value=&amp;#34;${user.name}&amp;#34; /&amp;gt; 而 Thymeleaf 模板标准语言会这样写：
-&amp;lt;input type=&amp;#34;text&amp;#34; name=&amp;#34;userName&amp;#34; value=&amp;#34;James Carrot&amp;#34; th:value=&amp;#34;${user.name}&amp;#34; /&amp;gt; 浏览器能直接识别上述 Thymeleaf 的 input 标签，而且还能在加载模板引擎后，由后端返回的数据渲染 value 值。也就是这一特性，可以让前后端工程师在同一个模板文件上协作开发，避免了从静态页面到模板页面的转换，前后端并行开发，这就是未来的趋势，也被称作 Natural Templating，页面即模板，模板即页面。
-标准表达式语法 基本表达式 Thymeleaf 模板方言里最重要的就是它的标准表达式语法了。Thymeleaf 的表达式有：
-  简单表达式：
- 变量表达式：${.</description>
+      <description>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分</description>
     </item>
     
   </channel>

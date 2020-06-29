@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Posts - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/posts/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Posts - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/posts/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,13 +100,10 @@
     <h2>通过代理安装 AUR 软件包</h2>
   </header>
   <section class="entry-content">
-   <p>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。
-这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。
-就以上面提到的 atom-editor 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为
-# Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt; # Contributor: John Reese &lt;jreese@noswap.com&gt; # Upstream URL: https://github.com/atom/atom # # For improvements/fixes to this package, please send a pull request: # https://github.com/sjug/atom-editor pkgname=atom-editor pkgver=1.7.3 pkgrel=1 pkgdesc=&#39;Chrome-based text editor from Github&#39; arch=(&#39;x86_64&#39; &#39;i686&#39;) url=&#39;https://github.com/atom/atom&#39; license=(&#39;MIT&#39;) depends=(&#39;alsa-lib&#39; &#39;desktop-file-utils&#39; &#39;gconf&#39; &#39;gtk2&#39; &#39;libgnome-keyring&#39; &#39;libnotify&#39; &#39;libxtst&#39; &#39;nodejs&#39; &#39;nss&#39; &#39;python2&#39;) optdepends=(&#39;gvfs: file deletion support&#39;) makedepends=(&#39;git&#39; &#39;npm&#39;) conflicts=(&#39;atom-editor-bin&#39; &#39;atom-editor-git&#39;) install=atom....</p>
+   <p>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 9, 2016</time>
+    <time>2016/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/05/09/install-aur-packages-by-proxy/"></a>
 </article>
@@ -109,16 +113,10 @@
     <h2>移动端仿微信朋友圈发布图文</h2>
   </header>
   <section class="entry-content">
-   <p>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。
-由于微信朋友圈的火爆和用户基础，因此 JD 的这个项目中类朋友圈的原型设计基本也是抄袭的微信，只不过换成 HTML5 的样式，所以原型图就不贴出来了……要实现的功能大致等于微信朋友圈，用户通过手机相册或摄像头上传图片，发布到京东 App 的一个版块里，由于一期不开发社交功能，因此没有朋友圈留言功能（电商 APP 不务正业，我也是无力吐槽）。 从项目前端开始讲吧。
-前端 在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 WebUploader 组件，或者 jQuery-File-Upload，再久远些还有用 Flash 做的文件上传插件，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像朋友圈发状态一次上传好几张图片，客户端不做处理的话，无论是传输时间还是流量损耗都是不能接受的。因此移动端需要在上传前默认对大体积图片进行压缩处理，后面会完整说明。
-input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别于 PC 端上，移动设备除了调用文件浏览器外，还可以调用摄像头进行拍照上传，需要加入 capture 参数
-&lt;input type=&#34;file&#34; name=&#34;file&#34; accept=&#34;image/*&#34; capture=&#34;camera&#34;&gt; 但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。
-关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。
-&lt;!-- 图片添加按钮 --&gt; &lt;ul id=&#34;previewer&#34; class=&#34;upload-list&#34;&gt; &lt;li id=&#34;select-image&#34; class=&#34;add-pic-btn&#34;&gt;&lt;a href=&#34;javascript:;&#34; onclick=&#34;clickBrowse();&#34;&gt;&#43;&lt;/a&gt;&lt;/li&gt; &lt;!...</p>
+   <p>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。 由于微信朋友圈的火爆和用户基础...</p>
   </section>
   <footer class="entry-footer">
-    <time>April 18, 2016</time>
+    <time>2016/04/04</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/"></a>
 </article>
@@ -128,16 +126,10 @@ input 标签 移动端上传文件仍然采用 HTML5 的 input 标签，区别�
     <h2>[译] 使用 Django 认证系统</h2>
   </header>
   <section class="entry-content">
-   <p>译自 Django Documentation，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。
- 本文介绍了 Django 认证系统在默认配置下的使用。默认配置已经发展到能够满足大多数项目需求，处理相当数量的任务，而且具备严谨的密码和权限实现。对于有自定义验证需求的项目，Django 支持扩展验证。 Django 认证系统提供认证和授权功能，由于两部分功能有耦合，因此通常简称为认证系统。
-User 对象 User 对象是认证系统的核心。该对象一般抽象表示与网站进行交互的用户，被用来进行权限控制，信息注册，关联内容及其创建者。Django 框架中只存在一种 User 类，像superusers，staff只是具有一些特殊属性的 User 对象，而不是不同类的 User 对象。
-默认的 user 有如下主要属性：
- username password email first_name last_name  全面的参考请阅读完整 API 文档，下文更偏业务导向。
-创建 users 创建 user 最直接的方式是调用内置的 create_user() 辅助方法：
-&gt;&gt;&gt; from django.contrib.auth.models import User &gt;&gt;&gt; user = User.objects.create_user(&#39;john&#39;, &#39;lennon@thebeatles.com&#39;, &#39;johnpassword&#39;) # At this point, user is a User object that has already been saved # to the database....</p>
+   <p>译自 Django Documentation，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。 本文介绍了 Django 认证系统在默认配置下的使用。默认配置已经发展...</p>
   </section>
   <footer class="entry-footer">
-    <time>March 22, 2016</time>
+    <time>2016/03/03</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/03/22/using-the-django-authentication-system-zh/"></a>
 </article>
@@ -147,13 +139,10 @@ User 对象 User 对象是认证系统的核心。该对象一般抽象表示与
     <h2>Nginx 启用 HTTP/2</h2>
   </header>
   <section class="entry-content">
-   <p>今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。 上 Google 搜索关键字，才知道自己已经滞后了6个月，Nginx 从1.9.5版本开始已经加入了对 HTTP/2 的官方支持 Nginx Open Source 1.9.5 Released with HTTP/2 Support。这篇文章里也提到了 Nginx 从 1.9.5 开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级 Nginx，开启 HTTP/2。
-挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼 conf 文件，没有 SPDY 的参数设置，可以平滑升级到 1.10.0了。由于 Nginx1.10.0 发布在 mainline 上，如果想采用 apt 方式升级，还需要配置下 source 源。先安装 Nginx 的 apt 源的签名key，把 key 添加进 apt 源。
-sudo apt-key add nginx_signing.key 修改/etc/apt/sources.list，在文件后追加 nginx mainline 的 deb 包源和 deb-src 源
-deb http://nginx.org/packages/debian/ codename nginx deb-src http://nginx....</p>
+   <p>今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。 上 Google 搜索关键字，...</p>
   </section>
   <footer class="entry-footer">
-    <time>March 18, 2016</time>
+    <time>2016/03/03</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/03/18/enable-http-2-on-nginx/"></a>
 </article>
@@ -166,7 +155,7 @@ deb http://nginx.org/packages/debian/ codename nginx deb-src http://nginx....</p
    <p>还在憋…...</p>
   </section>
   <footer class="entry-footer">
-    <time>March 17, 2016</time>
+    <time>2016/03/03</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/03/17/front-end-optimization/"></a>
 </article>
@@ -176,15 +165,10 @@ deb http://nginx.org/packages/debian/ codename nginx deb-src http://nginx....</p
     <h2>Git 一般实践</h2>
   </header>
   <section class="entry-content">
-   <p>之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意义上讲，绝大多数时候我只是把 Git 当成了个人代码存储而不是协作开发的版本管理工具。Git 还有很多强大的功能并没有在个人小型开发中使用到，而在 JD 的工作中，实际上遇到了不少在使用 Git 协作开发时的问题。正好组长让我总结其间的问题和最佳实践，就把这些实践经验记录在本文中。另，Git 本来就是一个命令工具集，所以我就以类 Unix 系统下的命令行操作为基准，各个平台下的 Git GUI 工具花样百出，操作也不统一，就一并略过了。
- 其实很多问题都是在你并不了解规律的情况下产生的，不仅仅是对 coding 而言
- 常用操作 创建 Git 仓库 创建 Git 仓库有几种不同的情况：
-创建空的 Git 仓库，很简单，一条命令
-git init &lt;repo-name&gt; 该目录就是一个 Git 本地仓库了，目录下会有一个隐藏文件夹 .git/，看看它的目录结构
-tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├── description ├── FETCH_HEAD ├── HEAD ├── hooks ├── index ├── info │ └── exclude ├── logs │ ├── HEAD │ └── refs │ ├── heads │ │ ├── master │ │ └── source │ └── remotes │ └── origin │ ├── HEAD │ ├── master │ └── source ├── objects │ ├── 18 │ │ └── f66c7ed1e9d6dadb9aa71836fdf58d5217fd26 │ ├── info │ └── pack │ ├── pack-137f36f2b48c9ee4fb17518f99ec9b9f842fcd81....</p>
+   <p>之前一个人玩开发时，用 Git 做版本管理很舒心愉快，因为从来不会有冲突，Git 玩来玩去就是 git pull、git commit、git push 的三件套。严格意...</p>
   </section>
   <footer class="entry-footer">
-    <time>March 10, 2016</time>
+    <time>2016/03/03</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/03/10/git-general-practice/"></a>
 </article>
@@ -194,14 +178,10 @@ tree .git .git ├── branches ├── COMMIT_EDITMSG ├── config ├�
     <h2>String, StringBuilder, StringBuffer 区别</h2>
   </header>
   <section class="entry-content">
-   <p>今天下午浏览代码时看到 IDEA 给出了一段提示： StringBuffer variables may be declared as StringBuilder.
-回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场景的差异。遂谷歌之，看到阿里的 Android 大牛 Trinea 在 Github 上提的 issue，正好是关于它们之间区别的讨论。我也凑个热闹，查漏补缺。
-CharSequence 首先，String、StringBuilder 和 StringBuffer 都是实现的 CharSequence 接口。下面是 CharSequence 的源码：
-package java.lang; public interface CharSequence { int length(); char charAt(int index); CharSequence subSequence(int start, int end); public String toString(); } CharSequence 抽象了 char 序列，提供了求序列长度的方法 length()，获取指定位置字符的方法 charAt()，截取子序列的方法 subSequence() 和转换为 String 型的方法 toString()。实际运用中，我们很少直接用等到 CharSequence，因为它的实现 String、StringBuffer 和 StringBuilder 满足绝大多数使用场景。
-String 先看 JDK 里的源码：...</p>
+   <p>今天下午浏览代码时看到 IDEA 给出了一段提示： StringBuffer variables may be declared as StringBuilder. 回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场...</p>
   </section>
   <footer class="entry-footer">
-    <time>February 17, 2016</time>
+    <time>2016/02/02</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/02/17/difference-between-string-stringbuilder-stringbuffer/"></a>
 </article>
@@ -211,15 +191,10 @@ String 先看 JDK 里的源码：...</p>
     <h2>阿里大鱼短信 SDK 迁移到 Python 3.x</h2>
   </header>
   <section class="entry-content">
-   <p>近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定阿里大鱼的解决方案。
-然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python 3，导致很多时候用 Python 会有些捉襟见肘，尤其是像我这种野路子的 Python 开发。
-比如阿里大鱼的短信方案，虽然相比其他厂商很良心的在 PHP 、 Java 版 SDK 之外，友情附赠了 Python 版，但集成进 Django 工程并 debug 后，真是握了棵草，它是基于 Python 2.x 开发的，翻了下开发包源码文件，署名为 “lihao” 的这位阿里同学是在 2012 年更新的源码，这竟是一份蒙尘多年的代码啊，当时我的内心是奔溃的……
- 自己动手，丰衣足食。——《毛选》
- 阿里大鱼短信开发包的源码并不复杂，来来去去无非一些 request，response 和 string 的处理，底层都是在阿里服务端 api 里实现的，短信包只是提供 api 调用、处理功能，因此迁移工作倒也不是很令人拙计。下面就把我填的坑一一道来（难免有遗忘和疏漏，见谅）——
-一号坑 # 如果parameters是字典类 keys = parameters.keys() 不出所料的话，控制台会输出 &gt;&gt;&gt;TypeError: &#39;dict_keys&#39; object does not support indexing 这是一大坑，在 Python 3....</p>
+   <p>近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定阿里大鱼的解决方案。 然而，选 Python 作为技术栈的悲催之处在于...</p>
   </section>
   <footer class="entry-footer">
-    <time>February 2, 2016</time>
+    <time>2016/02/02</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/02/02/migrate-alidayu-to-py3-from-py2/"></a>
 </article>
@@ -229,14 +204,10 @@ String 先看 JDK 里的源码：...</p>
     <h2>LeetCode 1-5</h2>
   </header>
   <section class="entry-content">
-   <p>上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免篇幅太长，每篇记录 3 - 5 道题。大致会按照“翻译 - 思考 - 解法”的套路来记录。能力有限，算法可能很糟糕，尽力而为。
-Two Sum 第 1 题 Two Sum 算是简单题，题意大致为：
- 给一个整型数组，请返回数组中加和的结果为目标值的两个元素的索引位置。假定整形数组有且仅有两个元素符合该条件。 伪代码： nums = [2, 7, 11, 15], target = 9 nums[0] &#43; nums[1] = 2 &#43; 7 = 9 return [0, 1]
- 这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答
-// TwoSum.java public class Solution { public int[] twoSum(int[] nums, int target) { int len = nums.length; int[] res = new int[2]; if (len &lt; 2) { return res; } for (int i = 0; i &lt; len; i&#43;&#43;) { for (int j = i &#43; 1; j &lt; len; j&#43;&#43;) { if (nums[i] &#43; nums[j] == target) { res[0] = i &#43; 1; res[1] = j &#43; 1; break; } } } return res; } } # two_sum....</p>
+   <p>上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免...</p>
   </section>
   <footer class="entry-footer">
-    <time>November 23, 2015</time>
+    <time>2015/11/11</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2015/11/23/leetcode-1st-week/"></a>
 </article>
@@ -246,15 +217,10 @@ Two Sum 第 1 题 Two Sum 算是简单题，题意大致为：
     <h2>神器有价，情怀无价 —— HHKB</h2>
   </header>
   <section class="entry-content">
-   <p>It’s to keyboards what Leica is to cameras; what Rimowa is to luggage; what Moleskine is to notebooks; what Rolls Royce is to cars; what Grey Goose is to vodka. Or at least, that’s the reputation it carries. If someone is discussing the “best mechanical keyboard”, it will be mentioned right away.
- 流水账 上面这段引文里指的键盘究竟是什么？当然是本文的主角啦 —— HHKB。
-HHKB，即 Happy Hacking Keyboard，透着复古气息的 Geek 范儿。如此个性而备受推崇的一把键盘，很难不吸引码农，尤其是单身码农（莫问为什么，此时应有金馆长捂脸表情）。
-言归正传，对于程序员而言，键盘就是朝夕相处，亲密无间的伙伴，头脑里所有蹿着火苗的想法和纠缠在一起的头绪都在键盘上跳跃。孙悟空需要称手的金箍棒，码农也需要一把值得信赖的键盘。看过这样一个类比，讲的是骑马的人可以换骑不同的马，但始终都会佩着自己的马鞍。
-键盘构造不同，有薄膜，机械，静电容之分。严格的讲呢，HHKB并不是引文中所提到的 “mechanical keyboard”，而是静电容键盘。至于静电容结构，无非就是不需要物理接触就能获得电位信号。抛开这些概念，HHKB 的素质几乎都切中了程序员的痛点，简单讲——
- 适配 Linux 和 Mac 的键位。比如 A 键的左侧的是 Ctrl 键，1 键左侧的是 ESC 键，这些有别与标准键盘的设计恰恰更符合类 Unix 系统的操作 精简低频按键。HHKB 是 60% 键盘，没有数字小键，功能键，甚至连方向键都省去了。实际上这些按键在平常 coding 过程中使用到的频率并不高，方向键的缺省可能会造成一点困扰，但类 Unix 系统一般都常用 Ctrl &#43; p,n,f,b来实现 多种配置模式。HHKB 的背侧有 6 个 dips 开关，通过组合可以实现不同的键位，映射出 Windows 的 win 键，Mac 系统的 Meta 键等特殊键位  此外日系工业产品的做工品质自是无需赘述，但最吸引我还是上述三点特质。终于在1024这个特殊的日子里，所有被压抑已久的欲望化为最原始的冲动，就是要 买！买！！买！！！...</p>
+   <p>It’s to keyboards what Leica is to cameras; what Rimowa is to luggage; what Moleskine is to notebooks; what Rolls Royce is to cars; what Grey Goose is to vodka. Or at least, that’s the reputation it carries. If someone is discussing the “best mechanical keyboard”, it will be mentioned right away....</p>
   </section>
   <footer class="entry-footer">
-    <time>October 29, 2015</time>
+    <time>2015/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2015/10/29/my-hhkb-pro2-type-s/"></a>
 </article>
@@ -265,10 +231,10 @@ HHKB，即 Happy Hacking Keyboard，透着复古气息的 Geek 范儿。如此�
 <footer class="page-footer">
   <nav class="pagination">
     
-    <a class="prev" href="/posts/page/5/">← Prev Page</a>
+    <a class="prev" href="/posts/page/5/">← 上一页</a>
     
     
-    <a class="next" href="/posts/page/7/">Next Page →</a>
+    <a class="next" href="/posts/page/7/">下一页 →</a>
     
   </nav>
 </footer>
@@ -287,5 +253,6 @@ HHKB，即 Happy Hacking Keyboard，透着复古气息的 Geek 范儿。如此�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

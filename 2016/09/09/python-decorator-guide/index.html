@@ -1,89 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>理解 Python 装饰器 - I sudo X</title>
-    
-    <meta name="description" content="前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 @decorator 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。
-管窥装饰器 下面是一个很简单的 Python 方法：
-def call(): print(&#39;call me&#39;) call() 很简单，这会得到 &ldquo;call me&rdquo; 的文本输出。现在增加一个时间标记，告知是什么时间呼叫的我，可以这么改：
-import time def call(): print(&#39;call me&#39;) print(&#39;at &#39;, time.strftime(&#39;%Y-%m-%d%H:%M:%S&#39;, time.localtime(time.time())))) call() 这么做有一个麻烦的地方，就是在 call() 方法内部做了改动。在很多场景下，我们不希望去改变方法本身的行为，因为这个方法可能在很多地方都被调用了，如果在方法内部做了修改，那么对每个调用都会产生影响，但我们只希望在某些调用时才去改变它的行为。比较常见的实用场景如用户登录拦截。
-不改变函数本身，那么该如何对 call() 加上时间标记呢？这就到装饰器大显身手的时候了。装饰器可以把被装饰的方法包裹起来，被装饰者本身的行为不会变，装饰器只是在它之外添加了额外的功能。下面这张图解释的很形象：
-import time def call(): print(&#39;call me &#39;) def mark_time(func): def wrapper(*args, **kwargs): func() print(&#39;at&#39;, time.strftime(&#39;%Y-%m-%d%H:%M:%S&#39;, time.localtime(time.time()))) return wrapper call = mark_time(call) call() 上面就实现了简朴的装饰器，Python 内置了对装饰器的语法支持，可以更便捷的实现装饰功能，就是上面提到的 @decorator，这相当于是 func = decorator(func) 的作用。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>理解 Python 装饰器 - I sudo X</title>
+  
+  <meta name="description" content="前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">理解 Python 装饰器</h1>
-    <div class="post-meta">September 9, 2016</div>
+    <div class="post-meta">2016/09/09</div>
   </header>
   <div class="post-content"><p>前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 <code>@decorator</code> 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。</p>
 <!-- raw HTML omitted -->
@@ -274,11 +276,10 @@ say_hello(<span style="color:#e6db74">&#39;sudoz&#39;</span>)  <span style="colo
       <li><a href="https://isudox.com/tags/python">Python</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -287,9 +288,10 @@ say_hello(<span style="color:#e6db74">&#39;sudoz&#39;</span>)  <span style="colo
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -303,5 +305,6 @@ say_hello(<span style="color:#e6db74">&#39;sudoz&#39;</span>)  <span style="colo
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

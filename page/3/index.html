@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>I sudo X - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>I sudo X - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list home">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <h1 class="logo"><a href="https://isudox.com/">I sudo X</a></h1>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list home">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <h1 class="logo"><a href="https://isudox.com/">I sudo X</a></h1>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -91,16 +98,10 @@
     <h2>2016 前端补习 Webpack 篇</h2>
   </header>
   <section class="entry-content">
-   <p>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。
- 因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。
- Webpack 基础命令 Hello World Webpack 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：
-# globally install yarn global add webpack@2.1.0-beta.20 # locally install yarn add webpack@2.1.0-beta.20 -D 安装完后，就可以在控制台使用 webpack 命令了。在目录下执行 webpack，首先需要配置 webpack.config.js 文件，由该配置文件来控制 webpack 的操作。参考阮一峰老师 GitHub 上的示例如下：
-// webpack.config.js module.exports = { entry: &#39;./main.js&#39;, output: { filename: &#39;bundle.js&#39; } }; 然后执行 webpack 命令就可以按照配置文件的设置，把目录下的 main.js 打包成 bundle.js。
-核心概念 Webpack 有 4 个核心概念必须要了解：Entry、Output、Loaders 和 Plugins。
-Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告诉 webpack 这张图表的入口位置并循着依赖关系去打包，webpack 通过对 webpack configuration object 设置 entry 属性来定义 Entry，参考下面的代码：...</p>
+   <p>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外...</p>
   </section>
   <footer class="entry-footer">
-    <time>December 26, 2016</time>
+    <time>2016/12/12</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/"></a>
 </article>
@@ -110,16 +111,10 @@ Entry webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告
     <h2>CORS 跨域调试记录</h2>
   </header>
   <section class="entry-content">
-   <p>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运用中会存在不同的状况，只是看文档理解概念并不能真正成为实战派。
-这次联调采用前后端分离的方式，后端由 Spring MVC 提供数据接口，前端通过异步的方式做数据渲染，和以往不同的是，由于前端开发全部交给深圳的凹凸实验室，所以静态文件都跑在独立的一个域名上，就是京东的通天塔项目。因此所有来自前端的请求都成了跨域请求。
-JSONP 确实是通过一种巧妙的伎俩解决了跨域请求被浏览器拒绝的问题，但是它并不能解决 POST 跨域，联调的接口是跨域上传头像，采用 POST 发送 FormData 对象的方式。所以由服务端 CORS 来处理。
-对于服务端，Spring MVC 设置 CORS 很简单，如果 springframework 版本是 4.2 及以上，Spring MVC 可以直接由注解 @CrossOrigin 对标记的控制器方法设置 CORS。例如下面的示例代码：
-@CrossOrigin(origins = &#34;http://localhost:9000&#34;) @GetMapping(&#34;/greeting&#34;) public Greeting greeting(@RequestParam(required=false, defaultValue=&#34;World&#34;) String name) { System.out.println(&#34;==== in greeting ====&#34;); return new Greeting(counter.incrementAndGet(), String.format(template, name)); } @CrossOrigin 注解可以通过设置 origins、methods、maxAge、allowHeaders、allowCredentials 等参数来确定 CORS 接受跨域的来源域，请求类型，请求头等。如果 origins 设置为星号，则对所有来源域的请求都允许跨域，methods 设置为 POST 就只允许请求类型为 POST 的跨域请求。
-前端正常发送异步请求，类似如下代码：
-var formData = new FormData(); formData....</p>
+   <p>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运...</p>
   </section>
   <footer class="entry-footer">
-    <time>November 12, 2016</time>
+    <time>2016/11/11</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/11/12/cors-in-action/"></a>
 </article>
@@ -129,13 +124,10 @@ var formData = new FormData(); formData....</p>
     <h2>理解 Python 生成器</h2>
   </header>
   <section class="entry-content">
-   <p>在 Python 里创建一个有一定规律的序列，很直观的做法就是在循环里创建序列的各个元素。但 Python 有更加符合 Pythonic 风格的做法，就是用生成器来实现。
-举个被写滥的例子吧，用 Python 生成 Fibonacci 数列的前 n 个数字，该怎么做？
-def fib(n): if n &lt; 2: return 1 return fib(n - 1) &#43; fib(n - 2) def gen_fib(n): res = [] for i in range(n): res.append(fib(i)) return res 而 Pythonic 的写法是像下面这样：
-def fib(n): if n &lt; 2: return 1 return fib(n - 1) &#43; fib(n - 2) def gen_fib(n): for i in range(n): yield fib(i) 查看把上面两种做法的返回结果，可以找到二者的不同：...</p>
+   <p>在 Python 里创建一个有一定规律的序列，很直观的做法就是在循环里创建序列的各个元素。但 Python 有更加符合 Pythonic 风格的做法，就是用生成器来实现。 举个被写滥的例子...</p>
   </section>
   <footer class="entry-footer">
-    <time>October 26, 2016</time>
+    <time>2016/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/10/26/python-generator-guide/"></a>
 </article>
@@ -145,16 +137,10 @@ def fib(n): if n &lt; 2: return 1 return fib(n - 1) &#43; fib(n - 2) def gen_fib
     <h2>LeetCode 26-30</h2>
   </header>
   <section class="entry-content">
-   <p>三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。
-Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Array
- 给定一个有序数组，去掉其中重复的元素，并返回新数组的长度。 不要为其他数组分配额外的空间，必须在给定的内存中完成。
- 假设传入的数组是 [1, 1, 2]，得到的结果应该是 2。题意很简单，但是有两个注意点，一个是该数组是有序的，即从小到大排列，另一个是不允许分配新数组的存储空间，这就意味着不用创建新的数组来保存数据，也不能通过 Set 来过滤重复元素。
-因为第二点的限，只能在给定的数组上进行数值比较的同时，计算非重复元素的数量；因为第一点的设定，所以可以做到对数组只遍历一次。具体做法就是，在遍历数组元素时，比较前后两个元素，如果相等，则重复元素的数量加一，同时移动当前遍历位置，直到遍历到数组最末元素。
-编写 Java 解法如下：
-// Rejected × public class Solution { public int removeDuplicates(int[] nums) { int count = nums.length; int dup = 0; if (count &lt; 2) return count; for (int i = 0; i &lt; count - 1; i&#43;&#43;) { if (nums[i] == nums[i &#43; 1]) dup&#43;&#43;; } return count - dup; } } 本地测试结果是正确的，但是提交的 LeetCode 上却被否决，因为上面的方法只计算出了非重复元素的个数 n，没有考虑把有序数组前 n 位修改成正确的有序非重复元素。因此在遍历的同时，需要修改发现重复的位置上的元素。...</p>
+   <p>三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。 Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Array 给定一个有序数组，去掉其中重复的...</p>
   </section>
   <footer class="entry-footer">
-    <time>October 17, 2016</time>
+    <time>2016/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/10/17/leetcode-26-30/"></a>
 </article>
@@ -164,15 +150,10 @@ Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Arr
     <h2>敏捷开发实战：AOP &#43; 反射</h2>
   </header>
   <section class="entry-content">
-   <p>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。
-如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！
-Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。
-写法一 后端部分 假设创建的 AOP 类为 DemoAspect，在 Spring 的配置文件中，将其注册到 aop 配置中：
-&lt;bean id=&#34;demoAspect&#34; class=&#34;com.isudox.aspect.DemoAspect&#34;/&gt; &lt;aop:aspectj-autoproxy&gt; &lt;aop:include name=&#34;demoAspect&#34;/&gt; &lt;/aop:aspectj-autoproxy&gt; 把流程改造相关的服务 bean 再次声明一份，修改其 id 和新流程的分组，以作为新流程所需服务的 bean（配置就省略了）。下面用 Java 的方式来声明切面和织入的方法：
-@Aspect public class DemoAspect { @Resource private CartService cartService2; @Around(&#34;bean(cartService)&#34;) public Object advice(ProceedingJoinPoint joinPoint) throws Throwable { Object result; try { MethodSignature signature = (MethodSignature) joinPoint....</p>
+   <p>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过...</p>
   </section>
   <footer class="entry-footer">
-    <time>October 11, 2016</time>
+    <time>2016/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/10/11/spring-aop-with-reflection/"></a>
 </article>
@@ -182,16 +163,10 @@ Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会�
     <h2>JUnit &#43; Mockito 单元测试的风云际会</h2>
   </header>
   <section class="entry-content">
-   <p>JUnit 是 2015 年 Java 开发者引用最多的库，是 Java 单元测试框架里无可争议的 No.1。JUnit 基本上能覆盖大部分接口的测试，但如果待测接口依赖外部服务，比如我之前写的这篇小文里描述的情况，JUnit 就可能捉襟见肘了。而 Mockito 在 Mock 数据方面功能强大，正好弥补了 JUnit 在这方面的不足。风云合璧，摩诃无量。
-上面其实已经点到 JUnit 和 Mockito 的不同了，虽然二者都是运用在单元测试中，但 JUnit 侧重对接口的运行状态和结果的测试，而 Mockito 侧重 “Mock” 数据，即对对象的模拟，尤其是不容易构造的复杂对象。
-JUnit &#43; Mockito 组合的优势是显而易见的，对于服务化的系统，有了这个组合，就能实现各上下游模块并行开发，同时进行单元测试验证可用性，减少串行联调的时间。
-JUnit  PS: 虽然 JUnit5 已经发布，但目前使用最多的还是 JUnit4，所以本文仍然基于 JUnit4。
- 利用 Maven 初始化一个简单的 Java 应用：
-mvn archetype:generate -DgroupId=com.isudox -DartifactId=test-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false Maven 会自动创建好类文件和测试类，路径如下：
-test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源码路径 ├── main ---- 类文件 │ └── java │ └── com │ └── isudox │ └── App....</p>
+   <p>JUnit 是 2015 年 Java 开发者引用最多的库，是 Java 单元测试框架里无可争议的 No.1。JUnit 基本上能覆盖大部分接口的测试，但如果待测接口依赖外部服务，比如...</p>
   </section>
   <footer class="entry-footer">
-    <time>October 10, 2016</time>
+    <time>2016/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/10/10/unit-test-with-junit-mockito/"></a>
 </article>
@@ -201,13 +176,10 @@ test-demo ├── pom.xml ---- pom 依赖配置文件 └── src ---- 源�
     <h2>读 Flask 源码：Context</h2>
   </header>
   <section class="entry-content">
-   <p>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那么它可以独立运行了；如果程序需要外部环境的支持，Context 的存在就有意义。比如 Flask Web 开发中常用的 current_app、request 都是 Context，可以在不同方法中调用，并且实现通信及交互。
-Context 的实现 Flask 提供了 4 个 Context：
-   Context 类型 说明     flask.current_app Application Context 当前 app 的实例对象   flask.g Application Context 处理请求时用作临时存储的对象   flask.request Request Context 封装了 HTTP 请求中的内容   flask.session Request Context 存储了用户回话    这些 Context 分为 Application Context 和 Request Context 两类：
- Application Context: 是提供给由 app = Flask(__name__) 所创建的 Flask app 的 Context； Request Context: 是客户端发起 HTTP 请求时，Flask 对象为 HTTP 请求对象所创建的 Context；  这些 Context 定义在 Flask 源码（v0....</p>
+   <p>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那...</p>
   </section>
   <footer class="entry-footer">
-    <time>October 2, 2016</time>
+    <time>2016/10/10</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/10/02/flask-context-guide/"></a>
 </article>
@@ -217,16 +189,10 @@ Context 的实现 Flask 提供了 4 个 Context：
     <h2>跨域请求之 JSONP 和 CORS</h2>
   </header>
   <section class="entry-content">
-   <p>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。
-首先理清一个经常会被混淆的概念，AJAX(Asynchronous JavaScript and XML) 和跨域请求是两个不同的概念，AJAX 是异步请求和解析处理 XML 文档的方式，它在服务器端没有提供支持（CORS 是一种解决方案）的前提下，也是无法跨域的。
-跨域请求 跨域请求，顾名思义，就是从 A 地址向非同源的 B 地址发起了请求。参考 MDN 上对同源的定义:
- 如果两个页面拥有相同的协议（protocol），端口（如果指定）和主机，那么这两个页面就属于同一个源（origin）。
- MDN 给了同源检测的示例，如果是相对 http://store.company.com/dir/page.html，那么
-   URL 结果 原因     http://store.company.com/dir2/other.html 成功    http://store.company.com/dir/inner/another.html 成功    https://store.company.com/secure.html 失败 协议不同   http://store.company.com:81/dir/etc.html 失败 端口不同   http://news.company.com/dir/other.html 失败 主机名不同    严格的说，浏览器并不是拒绝所有的跨域请求，否则如果想从百度搜索结果页跳转到其他页面就是个伪命题，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：
- 通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向； 通常浏览器允许跨域资源嵌入（Cross-origin embedding），如 img、script 标签； 通常浏览器不允许跨域读操作（Cross-origin reads）。  对于跨域资源的嵌入，实际开发中用的非常频繁，从外部引入 js、css、img 这些静态文件，都是被浏览器接受的。...</p>
+   <p>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。 首先理...</p>
   </section>
   <footer class="entry-footer">
-    <time>September 24, 2016</time>
+    <time>2016/09/09</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/"></a>
 </article>
@@ -236,13 +202,10 @@ Context 的实现 Flask 提供了 4 个 Context：
     <h2>Java 常用容器小结</h2>
   </header>
   <section class="entry-content">
-   <p>无论是什么编程语言，容器都是非常重要的概念，在 Java 的实际开发中更是无处不在，各种 List、Set、Map。很多时候就是随着编程的惯性用了 ArrayList 或者 HashMap，但是并没对其特性和适用场景作更多的思考。开发者对 Java 容器的讨论比较多，我自己从源码的角度做个粗浅的整理。
-Collection java.util 包中的基于 Collection 接口的有 List、Set 和 Queue，下面这张图清楚的显示了 Collection 接口的向下实现和继承关系。
-Collection 接口继承了 Iterable 接口，表明所有 Collection 的实现都是可迭代的。Collection 提供最基础的接口方法，如 add()、remove()、contains()、isEmpty()、hashCode() 等。
-List  An ordered collection (also known as a sequence). The user of this interface has precise control over where in the list each element is inserted. The user can access elements by their integer index (position in the list), and search for elements in the list....</p>
+   <p>无论是什么编程语言，容器都是非常重要的概念，在 Java 的实际开发中更是无处不在，各种 List、Set、Map。很多时候就是随着编程的惯性用了 ArrayList 或者...</p>
   </section>
   <footer class="entry-footer">
-    <time>September 13, 2016</time>
+    <time>2016/09/09</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/09/13/java-collections-overview/"></a>
 </article>
@@ -252,15 +215,10 @@ List  An ordered collection (also known as a sequence). The user of this interfa
     <h2>理解 Python 装饰器</h2>
   </header>
   <section class="entry-content">
-   <p>前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用很简单，只需要在需要装饰的方法前加上注解 @decorator 函数进行包裹。但是经常用不代表能理解到位，下文就来尝试捋一捋 Python 装饰器的来龙去脉。
-管窥装饰器 下面是一个很简单的 Python 方法：
-def call(): print(&#39;call me&#39;) call() 很简单，这会得到 “call me” 的文本输出。现在增加一个时间标记，告知是什么时间呼叫的我，可以这么改：
-import time def call(): print(&#39;call me&#39;) print(&#39;at &#39;, time.strftime(&#39;%Y-%m-%d%H:%M:%S&#39;, time.localtime(time.time())))) call() 这么做有一个麻烦的地方，就是在 call() 方法内部做了改动。在很多场景下，我们不希望去改变方法本身的行为，因为这个方法可能在很多地方都被调用了，如果在方法内部做了修改，那么对每个调用都会产生影响，但我们只希望在某些调用时才去改变它的行为。比较常见的实用场景如用户登录拦截。
-不改变函数本身，那么该如何对 call() 加上时间标记呢？这就到装饰器大显身手的时候了。装饰器可以把被装饰的方法包裹起来，被装饰者本身的行为不会变，装饰器只是在它之外添加了额外的功能。下面这张图解释的很形象：
-import time def call(): print(&#39;call me &#39;) def mark_time(func): def wrapper(*args, **kwargs): func() print(&#39;at&#39;, time.strftime(&#39;%Y-%m-%d%H:%M:%S&#39;, time.localtime(time.time()))) return wrapper call = mark_time(call) call() 上面就实现了简朴的装饰器，Python 内置了对装饰器的语法支持，可以更便捷的实现装饰功能，就是上面提到的 @decorator，这相当于是 func = decorator(func) 的作用。...</p>
+   <p>前一篇水文里记录的 Click 包，大量的运用了 Python 的装饰器。装饰器是非常实用的编程思想，Java 开发里经常看到的 AOP 也是同样的思想。Python 装饰器使用...</p>
   </section>
   <footer class="entry-footer">
-    <time>September 9, 2016</time>
+    <time>2016/09/09</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/09/09/python-decorator-guide/"></a>
 </article>
@@ -271,10 +229,10 @@ import time def call(): print(&#39;call me &#39;) def mark_time(func): def wrapp
 <footer class="page-footer">
   <nav class="pagination">
     
-    <a class="prev" href="/page/2/">← Prev Page</a>
+    <a class="prev" href="/page/2/">← 上一页</a>
     
     
-    <a class="next" href="/page/4/">Next Page →</a>
+    <a class="next" href="/page/4/">下一页 →</a>
     
   </nav>
 </footer>
@@ -293,5 +251,6 @@ import time def call(): print(&#39;call me &#39;) def mark_time(func): def wrapp
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

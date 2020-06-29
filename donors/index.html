@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>感谢 - I sudo X</title>
+  
+  <meta name="description" content="感谢以下这些认识或不认识的朋友的捐赠和认可。:) Donor Amount Date li***25 ￥6.60 2016-06-21 S_***st ￥10.24 2016-06-03 ds***14 ￥10.24 2016-05-27 wa***20 ￥10.24 2016-05-16 S_***st ￥10.24 2016-05-11 分***">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
+
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
+
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
+      }
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">感谢</h1>
+    <div class="post-meta">2016/05/05</div>
+  </header>
+  <div class="post-content"><p>感谢以下这些认识或不认识的朋友的捐赠和认可。:)</p>
+<table>
+<thead>
+<tr>
+<th align="center">Donor</th>
+<th align="center">Amount</th>
+<th align="center">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">li***25</td>
+<td align="center">￥6.60</td>
+<td align="center">2016-06-21</td>
+</tr>
+<tr>
+<td align="center">S_***st</td>
+<td align="center">￥10.24</td>
+<td align="center">2016-06-03</td>
+</tr>
+<tr>
+<td align="center">ds***14</td>
+<td align="center">￥10.24</td>
+<td align="center">2016-05-27</td>
+</tr>
+<tr>
+<td align="center">wa***20</td>
+<td align="center">￥10.24</td>
+<td align="center">2016-05-16</td>
+</tr>
+<tr>
+<td align="center">S_***st</td>
+<td align="center">￥10.24</td>
+<td align="center">2016-05-11</td>
+</tr>
+<tr>
+<td align="center">分***飞</td>
+<td align="center">￥9.90</td>
+<td align="center">2016-05-10</td>
+</tr>
+<tr>
+<td align="center">wa***20</td>
+<td align="center">￥23.33</td>
+<td align="center">2016-05-09</td>
+</tr>
+<tr>
+<td align="center">ds***14</td>
+<td align="center">￥0.01</td>
+<td align="center">2016-04-05</td>
+</tr>
+</tbody>
+</table>
+</div>
+</article></main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+
+</html>
+

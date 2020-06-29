@@ -1,87 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Spring Boot 学习笔记 1：起手式 Hello World - I sudo X</title>
-    
-    <meta name="description" content="Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convention over configuration)的设计范式。从零搭建 Spring Boot 项目几乎是傻瓜化的，因为框架把大量配置自动完成了。
-Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 Spring Boot 项目初始化工具，为开发者实现一个基本的项目骨架。很多 Java IDE 也集成了这个工具，以 Intellij IDEA 为例，新建项目，选择 Spring Initializr，进入如下组件选择面板
-其中 Core 包含了像 AOP Cashe 这些核心组件，Web 包含了 SpringMVC Thymeleaf 等 Web 开发组件，还有数据库相关，配置中心相关等一系列组件……因为是 Hello World 程序演示，就不选组件了，直接点下一步，创建空项目。空项目结构如下图。
- DemonApplication.java：是应用程序的启动引导类（bootstrap class），也是主要的 Spring 配置类； DemoApplicationTest.java：集成 JUnit 的测试类； application.properties：配置应用程序和 Spring Boot 的属性；  OK，到此为止，第一个 Spring Boot 项目就创建完成了！是的，几乎什么都不需要做，一个能编译能运行的 Spring 项目已经搭建好了，真是幸福到泪奔啊o(&gt;_&lt;)o 但是空项目什么效果都看不到，所以接下来就往里面填充内容，实现一个简单的 Web 应用。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Spring Boot 学习笔记 1：起手式 Hello World - I sudo X</title>
+  
+  <meta name="description" content="Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convent">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Spring Boot 学习笔记 1：起手式 Hello World</h1>
-    <div class="post-meta">February 10, 2017</div>
+    <div class="post-meta">2017/02/02</div>
   </header>
   <div class="post-content"><p><a href="https://projects.spring.io/spring-boot/">Spring Boot</a> 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convention over configuration)的设计范式。从零搭建 Spring Boot 项目几乎是傻瓜化的，因为框架把大量配置自动完成了。</p>
 <!-- raw HTML omitted -->
@@ -121,11 +125,10 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
       <li><a href="https://isudox.com/tags/java">Java</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -134,9 +137,10 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -150,5 +154,6 @@ Spring Initializr 创建空项目 Spring Initializr 是 Spring 官方提供的 S
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

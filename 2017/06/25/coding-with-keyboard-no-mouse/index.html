@@ -1,92 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>扔掉鼠标，开始键盘流编程 - I sudo X</title>
-    
-    <meta name="description" content="之前曾和朋友讨论，为什么很多程序员舍得买千元价位的键盘，却很少愿意买个同级别的鼠标……最后一致认为原因在于代码是键盘敲出来的，不是鼠标点出来的。如果以后编程简化到拖拽下控件就搞定，那价值天平恐怕就能向鼠标倾斜了。
-在开始尝试键盘流编程前，需要达成一个共识──
- 不依赖鼠标的编程，不仅很酷，更重要的是非常高效。
- 以 Java 编程来说，我使用的软硬件是 MacBook Pro、IntelliJ IDEA、Vim。脱离鼠标编程的关键在于──
- 熟悉代码定位的快捷键，包括目标文件的打开，方法定义/实现的跳转等； 熟悉文档操作的快捷键，复制粘贴是最最基础的，复杂高阶的甚至可以是宏操作；  纯熟的掌握以上两个技能，基本可以实现不依赖鼠标，双手不离开键盘地进行编程了。而 MacBook &#43; IntelliJ IDEA &#43; Vim 的组合工具最大化的降低了上述两点的习得门槛。为什么下这样的结论，其一，macOS 常用的组合键是 Command 键，这样就释放了大量潜在的以 Control 键为基础的快捷键，此外 macOS 支持 Emacs 的光标移动快捷键，这非常高效；其二，IntelliJ IDEA 是最棒的 Java IDE 没有之一，它的快捷键也是最出色的；其三，Vim 是久经考验的编辑器之神。
-吹工具的话到此为止，下面就具体写写怎么用这些工具实现键盘流编程。
-IDEA 本身并不支持 Vim 操作，需要安装一个堪称神器的插件 IdeaVim，几乎可以说是模拟 Vim 最好的一个插件了。IDEA 的完善快捷键加上 Vim 强大的文本编辑能力，多加练习就完全可以脱离对鼠标的依赖。
-先来看 IDEA 自带的快捷键，哪些能带来强大的生产力。
-IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以打开全局文件查找和最近访问文件查找； 在文件查找框中输入 / &#43; 文件夹名，可以定位到文件夹所在位置； 通过 Command &#43; E 打开最近访问文件的查找框； 通过 Command &#43; Shift &#43; O 查找文档名，精确定位文档； 在选择文档时，你根本不需要移动鼠标去点击，扔掉鼠标，试着用 Ctrl &#43; N (P, F, B) 来对光标进行向下、向上、向前和向后移动。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>扔掉鼠标，开始键盘流编程 - I sudo X</title>
+  
+  <meta name="description" content="之前曾和朋友讨论，为什么很多程序员舍得买千元价位的键盘，却很少愿意买个同级别的鼠标……最后一致认为原因在于代码是键盘敲出来的，不是鼠标点出来">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">扔掉鼠标，开始键盘流编程</h1>
-    <div class="post-meta">June 25, 2017</div>
+    <div class="post-meta">2017/06/06</div>
   </header>
   <div class="post-content"><p>之前曾和朋友讨论，为什么很多程序员舍得买千元价位的键盘，却很少愿意买个同级别的鼠标……最后一致认为原因在于代码是键盘敲出来的，不是鼠标点出来的。如果以后编程简化到拖拽下控件就搞定，那价值天平恐怕就能向鼠标倾斜了。</p>
 <!-- raw HTML omitted -->
@@ -127,11 +126,10 @@ IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以�
       <li><a href="https://isudox.com/tags/vim">Vim</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -140,9 +138,10 @@ IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以�
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -156,5 +155,6 @@ IDEA 键盘流 快速定位文档 IDEA 通过连续点击两次 Shift 键可以�
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

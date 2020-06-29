@@ -1,87 +1,91 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Travis CI 持续部署静态站方案 - I sudo X</title>
-    
-    <meta name="description" content="这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓库会设置 hook，使得有新的 Commit 被 Push 上来后，自动把 Nginx 下的站点目录进行 Pull 更新。这种方案只是一开始的设置比较麻烦，之后就能一劳永逸，但我觉得还可以再抢救下。
-初步方案 既然核心目标都是一键部署，为什么不利用持续集成，那就用 Travis CI 吧，和 GitHub 无缝结合。
-先来梳理下整个部署思路：
- 源码文件 Push 到 GitHub Page source 分支; Travis-CI 在 GitHub Page source 分支更新后，自动构建生成站点文件； Travis-CI 将站点文件推送到 GtiHub Page master 分支，使得 username.github.io 更新； VPS 从 GitHub Page master 分支拉取更新；  也就是说，整个部署过程只需要将写好源码文件 Push 到 GitHub 相应分支，后面的操作全部交给 Travis-CI 处理。">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Travis CI 持续部署静态站方案 - I sudo X</title>
+  
+  <meta name="description" content="这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Travis CI 持续部署静态站方案</h1>
-    <div class="post-meta">January 24, 2017</div>
+    <div class="post-meta">2017/01/01</div>
   </header>
   <div class="post-content"><p>这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓库会设置 hook，使得有新的 Commit 被 Push 上来后，自动把 Nginx 下的站点目录进行 Pull 更新。这种方案只是一开始的设置比较麻烦，之后就能一劳永逸，但我觉得还可以再抢救下。</p>
 <!-- raw HTML omitted -->
@@ -206,11 +210,10 @@ npm run deploy
       <li><a href="https://isudox.com/tags/ci">CI</a></li>
     </ul>
   </footer>
-  
   <div id="disqus_thread"></div>
   <script>
     var disqus_shortname = 'isudox';
-    (function() {
+    (function () {
       var d = document, s = d.createElement('script');
       s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
@@ -219,9 +222,10 @@ npm run deploy
   </script>
   <noscript>
     Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.
+    </a>
   </noscript>
-  
 </article></main>
 <footer class="footer">
   <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
@@ -235,5 +239,6 @@ npm run deploy
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

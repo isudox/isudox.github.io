@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <title>Linux - I sudo X</title>
-    
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://isudox.com/style.css" rel="stylesheet">
-    <link href="https://isudox.com/custom.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
-    <link rel="icon" href="https://isudox.com/favicon.ico">
-    <meta name="generator" content="Hugo 0.72.0" />
-    
-    <link rel="alternate" type="application/rss+xml" href="https://isudox.com/categories/linux/index.xml" title="I sudo X" />
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+<html lang="zh">
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Linux - I sudo X</title>
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.73.0" />
+  
+  <link rel="alternate" type="application/rss+xml" href="https://isudox.com/categories/linux/index.xml" title="I sudo X" />
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
 
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
       }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
-      </nav>
-    </header>
-    <main class="main">
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="list">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
 
 
 
@@ -93,13 +100,10 @@
     <h2>通过代理安装 AUR 软件包</h2>
   </header>
   <section class="entry-content">
-   <p>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无法安装的问题。比如之前我试图安装 Atom，但屡试屡败，其中的苦你一定懂。
-这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。
-就以上面提到的 atom-editor 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为
-# Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt; # Contributor: John Reese &lt;jreese@noswap.com&gt; # Upstream URL: https://github.com/atom/atom # # For improvements/fixes to this package, please send a pull request: # https://github.com/sjug/atom-editor pkgname=atom-editor pkgver=1.7.3 pkgrel=1 pkgdesc=&#39;Chrome-based text editor from Github&#39; arch=(&#39;x86_64&#39; &#39;i686&#39;) url=&#39;https://github.com/atom/atom&#39; license=(&#39;MIT&#39;) depends=(&#39;alsa-lib&#39; &#39;desktop-file-utils&#39; &#39;gconf&#39; &#39;gtk2&#39; &#39;libgnome-keyring&#39; &#39;libnotify&#39; &#39;libxtst&#39; &#39;nodejs&#39; &#39;nss&#39; &#39;python2&#39;) optdepends=(&#39;gvfs: file deletion support&#39;) makedepends=(&#39;git&#39; &#39;npm&#39;) conflicts=(&#39;atom-editor-bin&#39; &#39;atom-editor-git&#39;) install=atom....</p>
+   <p>Arch 最迷人的地方莫过于完善的 Wiki 和强大的 AUR(Arch User Repository)。然而由于某些{不可说}的人为原因，在 Arch 里安装 AUR 包时不时就会遇到连接失败导致无...</p>
   </section>
   <footer class="entry-footer">
-    <time>May 9, 2016</time>
+    <time>2016/05/05</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2016/05/09/install-aur-packages-by-proxy/"></a>
 </article>
@@ -109,18 +113,10 @@
     <h2>开启 Arch 之旅</h2>
   </header>
   <section class="entry-content">
-   <p>iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry…
-最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而言，这不啻一个新的玩点。
-在 V2EX 上混的时候，被多次安利 Arch Linux，传闻中的 K.I.S.S 风格，滚动升级，业界良心的 Wiki，强大的社区支持，让常在 Linux 下搬砖的我心生向往。于是就在别人轻抚刚发货的 iPhone 6S 的夜晚，开始第 N &#43; 1 次折腾。
-故事就在这样一个夜晚发生了…
-准备工作 Arch 的镜像很小，仅不到 700M，由于光驱已经退役，因此就用了 U 盘做启动。在 Linux 下用 dd 命令就可以将镜像文件烧写进 U 盘：
-$ dd bs=4M if=/path_archlinux.iso of=/dev/sdx &amp;&amp; sync 其中 sdx 为 /dev 下挂载的 U 盘文件符。片刻功夫，烧写完毕，准备工作就绪！
-躁起来吧，骚年 重启选择 U 盘启动，U 盘里的镜像文件释放展开，屏幕上显现启动列表，选择第一个 x86-64 进入 Arch 配置安装。前方没有任何图形，黑白两色的屏幕像极了窗外的夜。
-联网 相比 Debian、CentOS 这些动辄 3,4G 的安装镜像，Arch 有着诱人的小而美，也意味这很多包都需要联网下载。所以安装过程中，必须要联网。
-$ wifi-mune 输入 Wifi 密码，ping 测试。...</p>
+   <p>iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry… 最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而...</p>
   </section>
   <footer class="entry-footer">
-    <time>September 26, 2015</time>
+    <time>2015/09/09</time>
   </footer>
   <a class="entry-link" href="https://isudox.com/2015/09/26/begin-arch-linux/"></a>
 </article>
@@ -142,5 +138,6 @@ $ wifi-mune 输入 Wifi 密码，ping 测试。...</p>
   hljs.initHighlightingOnLoad();
 </script>
 </body>
+
 </html>
 

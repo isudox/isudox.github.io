@@ -5,7 +5,7 @@
     <link>https://isudox.com/tags/postgresql/</link>
     <description>Recent content in PostgreSQL on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh</language>
     <lastBuildDate>Fri, 22 Jul 2016 10:49:49 +0000</lastBuildDate>
     
 	<atom:link href="https://isudox.com/tags/postgresql/index.xml" rel="self" type="application/rss+xml" />
@@ -17,12 +17,7 @@
       <pubDate>Fri, 22 Jul 2016 10:49:49 +0000</pubDate>
       
       <guid>https://isudox.com/2016/07/22/guide-for-postgresql-beginners/</guid>
-      <description>最近开始做的一个课余项目用 Flask + PostgreSQL + Bootstrap 快速开发。之前本地开发和生产部署都用 MySQL，而 PostgreSQL 是关系型数据库阵营中的另一大高手。这俩的口号放在一起看相当好玩。
-一个自称 &amp;ldquo;The world&amp;rsquo;s most popular open source database&amp;rdquo;，另一个自称 &amp;ldquo;The world&amp;rsquo;s most advanced open source database&amp;rdquo;。论针锋相对，我就服这俩。→_→
-至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细，顺便还拉上了 SQLite。 SQLite vs MySQL vs PostgreSQL: A Comparison Of Relational Database Management Systems
-菜鸟入门三板斧，安装、配置和使用——
-安装 服务器端我习惯用 Debian 系统。Debian/Ubuntu 内置的 APT 源已经包含了 PostgreSQL，但版本上会稍滞后于 PostgreSQL 最新版本。如果像我一样激进的，可以把 PostgreSQL 官方维护的 APT 源加进 Debian/Ubuntu 的 APT 列表中。比如在 Debian 系统下，新建文件 /etc/apt/sources.list.d/pgdg.list，添加源地址和版本，再导入该源的签名。
-deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main wget --quiet -O - https://www.</description>
+      <description>最近开始做的一个课余项目用 Flask + PostgreSQL + Bootstrap 快速开发。之前本地开发和生产部署都用 MySQL，而 PostgreSQL 是关系型数据库阵营中的另一大高手。这俩的口号放在一起</description>
     </item>
     
   </channel>
