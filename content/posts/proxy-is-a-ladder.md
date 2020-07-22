@@ -24,7 +24,7 @@ tags:
 
 限于能力和时间，在这篇文章里我只能对第一点做一些展开。要实现代理的整个数据流如下所示——
 
-![Imgur](https://i.imgur.com/F2CD5p3.png)
+![Imgur](/images/F2CD5p3.png)
 
 类似 shadowsocks 这类的工具，会在本地客户端和远程代理服务器上分别部署自己的 client 和 server，用来加解密数据包。 就 ss 而言，它的核心就两个部分，分别是 ss-local 和 ss-server，对应上图的 local-proxy 和 remote-proxy。
 
@@ -181,7 +181,7 @@ AES 是一种对称加密算法，它的加密过程涉及字节替代（SubByte
 
 字节替换是通过矩阵 S 把原字节转换为另一个字节。下图分别是矩阵 S 和逆矩阵 S<sup>-1</sup>：
 
-![Imgur](https://i.imgur.com/5h2FroL.png)
+![Imgur](/images/5h2FroL.png)
 
 16 x 16 的矩阵可以完成 8 比特的替换，其中高 4 位是行坐标，低 4 位是列坐标。比如输入 a=a7a6a5a4a3a2a1a0，输出值为 S[a7a6a5a4][a3a2a1a0]，S-1的变换也同理。
 
@@ -193,15 +193,15 @@ AES 是一种对称加密算法，它的加密过程涉及字节替代（SubByte
 
 左乘一个混淆算子（N * N 常量矩阵），运算过程举例如下：
 
-![Imgur](https://i.imgur.com/Neatfhd.png)
+![Imgur](/images/Neatfhd.png)
 
 2) 逆向列混淆
 
-![Imgur](https://i.imgur.com/AcXFyvd.png)
+![Imgur](/images/AcXFyvd.png)
 
 注意，正向列混淆和逆向列混淆的算子互逆，所以经过一次逆向列混淆后即可恢复原文。
 
-![Imgur](https://i.imgur.com/NWzCnMy.png)
+![Imgur](/images/NWzCnMy.png)
 
 - **加轮密钥**
 

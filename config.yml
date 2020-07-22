@@ -1,5 +1,8 @@
 # internal settings
 baseURL: "https://isudox.com/"
+params:
+  author: isudox
+  description: My personal blog site.
 languageCode: "zh"
 title: "I sudo X"
 theme: "nova"
@@ -11,10 +14,42 @@ hasCJKLanguage: true
 defaultContentLanguage: "zh"
 menu:
   main:
+  - identifier: archive
+    name: Archive
+    pre: <i class='fa fa-heart'></i>
+    url: /posts/
+    weight: 100
+  - identifier: tag
+    name: Tag
+    pre: <i class='fa fa-heart'></i>
+    url: /tags/
+    weight: 100
   - identifier: about
     name: About
     pre: <i class='fa fa-heart'></i>
     url: /about/
     weight: -110
+privacy:
+  disqus:
+    disable: false
+  googleAnalytics:
+    anonymizeIP: false
+    disable: false
+    respectDoNotTrack: false
+    useSessionStorage: false
+  instagram:
+    disable: false
+    simple: false
+  twitter:
+    disable: false
+    enableDNT: false
+    simple: false
+  vimeo:
+    disable: false
+    simple: false
+  youtube:
+    disable: false
+    privacyEnhanced: false
+
 # custom settings
 disqusShortname: "isudox"

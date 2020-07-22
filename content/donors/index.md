@@ -3,6 +3,7 @@ title: 感谢
 date: 2016-05-10 18:55:37
 type: "donors"
 show_comments: false
+show_date: false
 ---
 
 感谢以下这些认识或不认识的朋友的捐赠和认可。:)
