@@ -9,7 +9,7 @@
   <title>JDK 8 中 HashMap 的工作原理 - I sudo X</title>
   
   <meta name="description" content="Java 容器类中，HashMap 是一个绕不开的重点，无论是实际开发还是求职面试。由于对 JDK 6 下 HashMap 的讨论已经很多了，而且 JDK 8 对 HashMap 做了比较大的改进，本文">
-  <meta name="author" content="">
+  <meta name="author" content="isudox">
   
   <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.74.2" />
   
   
   
@@ -76,6 +76,12 @@
         <li>
           <a href="/about/">About</a>
         </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -85,7 +91,7 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">JDK 8 中 HashMap 的工作原理</h1>
-    <div class="post-meta">2016/08/08</div>
+    <div class="post-meta">2016/08/08</div> 
   </header>
   <div class="post-content"><p>Java 容器类中，<code>HashMap</code> 是一个绕不开的重点，无论是实际开发还是求职面试。由于对 JDK 6 下 <code>HashMap</code> 的讨论已经很多了，而且 JDK 8 对 <code>HashMap</code> 做了比较大的改进，本文仅对 <strong>JDK 8</strong> 中 HashMap 的实现和工作原理做一点粗浅的讨论。</p>
 <!-- raw HTML omitted -->
@@ -312,25 +318,34 @@
       <li><a href="https://isudox.com/tags/java">Java</a></li>
     </ul>
   </footer>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_shortname = 'isudox';
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
     (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
-  </script>
-  <noscript>
-    Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-      comments powered by Disqus.
-    </a>
-  </noscript>
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </article></main>
 <footer class="footer">
-  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

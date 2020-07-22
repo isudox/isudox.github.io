@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MySQL on I sudo X</title>
+    <link>https://isudox.com/tags/mysql/</link>
+    <description>Recent content in MySQL on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 28 Feb 2020 13:41:33 +0800</lastBuildDate>
+    
+	<atom:link href="https://isudox.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MySQL Binlog 解析组件 open-replicator 原理介绍</title>
+      <link>https://isudox.com/2020/02/28/dive-into-open-replicator/</link>
+      <pubDate>Fri, 28 Feb 2020 13:41:33 +0800</pubDate>
+      
+      <guid>https://isudox.com/2020/02/28/dive-into-open-replicator/</guid>
+      <description>open-replicator 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。 在探索 open-replicator 原</description>
+    </item>
+    
+  </channel>
+</rss>

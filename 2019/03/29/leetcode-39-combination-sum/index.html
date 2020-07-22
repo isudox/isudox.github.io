@@ -15,7 +15,7 @@ The same repeated number may be chosen from candidates unlimited number of times
 Note:
  All numbers (including target) will be positive integers. The solution set must not contain duplicate combinations.  Example 1:
 Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] Example 2:">
-  <meta name="author" content="">
+  <meta name="author" content="isudox">
   
   <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
@@ -23,7 +23,7 @@ Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] E
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.74.2" />
   
   
   
@@ -82,6 +82,12 @@ Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] E
         <li>
           <a href="/about/">About</a>
         </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -91,7 +97,7 @@ Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] E
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">LeetCode-39 Combination Sum</h1>
-    <div class="post-meta">2019/03/03</div>
+    <div class="post-meta">2019/03/03</div> 
   </header>
   <div class="post-content"><blockquote>
 <p><a href="https://leetcode.com/problems/combination-sum/">39. Combination Sum</a></p>
@@ -215,25 +221,34 @@ Let's focus on the code :)
       <li><a href="https://isudox.com/tags/leetcode">LeetCode</a></li>
     </ul>
   </footer>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_shortname = 'isudox';
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
     (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
-  </script>
-  <noscript>
-    Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-      comments powered by Disqus.
-    </a>
-  </noscript>
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </article></main>
 <footer class="footer">
-  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

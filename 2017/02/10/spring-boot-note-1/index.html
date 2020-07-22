@@ -9,7 +9,7 @@
   <title>Spring Boot 学习笔记 1：起手式 Hello World - I sudo X</title>
   
   <meta name="description" content="Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convent">
-  <meta name="author" content="">
+  <meta name="author" content="isudox">
   
   <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.74.2" />
   
   
   
@@ -76,6 +76,12 @@
         <li>
           <a href="/about/">About</a>
         </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -85,7 +91,7 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">Spring Boot 学习笔记 1：起手式 Hello World</h1>
-    <div class="post-meta">2017/02/02</div>
+    <div class="post-meta">2017/02/02</div> 
   </header>
   <div class="post-content"><p><a href="https://projects.spring.io/spring-boot/">Spring Boot</a> 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convention over configuration)的设计范式。从零搭建 Spring Boot 项目几乎是傻瓜化的，因为框架把大量配置自动完成了。</p>
 <!-- raw HTML omitted -->
@@ -125,25 +131,34 @@
       <li><a href="https://isudox.com/tags/java">Java</a></li>
     </ul>
   </footer>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_shortname = 'isudox';
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
     (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
-  </script>
-  <noscript>
-    Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-      comments powered by Disqus.
-    </a>
-  </noscript>
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </article></main>
 <footer class="footer">
-  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

@@ -9,7 +9,7 @@
   <title>阿里大鱼短信 SDK 迁移到 Python 3.x - I sudo X</title>
   
   <meta name="description" content="近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定阿里大鱼的解决方案。 然而，选 Python 作为技术栈的悲催之处在于">
-  <meta name="author" content="">
+  <meta name="author" content="isudox">
   
   <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.74.2" />
   
   
   
@@ -76,6 +76,12 @@
         <li>
           <a href="/about/">About</a>
         </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -85,7 +91,7 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">阿里大鱼短信 SDK 迁移到 Python 3.x</h1>
-    <div class="post-meta">2016/02/02</div>
+    <div class="post-meta">2016/02/02</div> 
   </header>
   <div class="post-content"><p>近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定<a href="http://www.alidayu.com/">阿里大鱼</a>的解决方案。</p>
 <p>然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python 3，导致很多时候用 Python 会有些捉襟见肘，尤其是像我这种野路子的 Python 开发。</p>
@@ -475,25 +481,34 @@ N_REST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/ro
       <li><a href="https://isudox.com/tags/python">Python</a></li>
     </ul>
   </footer>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_shortname = 'isudox';
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
     (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
-  </script>
-  <noscript>
-    Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-      comments powered by Disqus.
-    </a>
-  </noscript>
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </article></main>
 <footer class="footer">
-  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

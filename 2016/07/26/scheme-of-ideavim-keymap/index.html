@@ -9,7 +9,7 @@
   <title>JetBrains IDE Vim 模式的方案 - I sudo X</title>
   
   <meta name="description" content="之前的一篇博客翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用">
-  <meta name="author" content="">
+  <meta name="author" content="isudox">
   
   <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.74.2" />
   
   
   
@@ -76,6 +76,12 @@
         <li>
           <a href="/about/">About</a>
         </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -85,7 +91,7 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">JetBrains IDE Vim 模式的方案</h1>
-    <div class="post-meta">2016/07/07</div>
+    <div class="post-meta">2016/07/07</div> 
   </header>
   <div class="post-content"><p>之前的一篇<a href="/2016/05/17/intellij-idea-keymap-zh/">博客</a>翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 <a href="https://github.com/JetBrains/ideavim">Ideavim</a>，模拟 Vim 编辑器的操作。</p>
 <!-- raw HTML omitted -->
@@ -261,25 +267,34 @@
       <li><a href="https://isudox.com/tags/jetbrains">JetBrains</a></li>
     </ul>
   </footer>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_shortname = 'isudox';
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
     (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
-  </script>
-  <noscript>
-    Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-      comments powered by Disqus.
-    </a>
-  </noscript>
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </article></main>
 <footer class="footer">
-  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

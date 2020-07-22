@@ -9,7 +9,7 @@
   <title>JavaScript ES6 和 Python 中的 Generator - I sudo X</title>
   
   <meta name="description" content="这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 redux-saga，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 generator、y">
-  <meta name="author" content="">
+  <meta name="author" content="isudox">
   
   <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.74.2" />
   
   
   
@@ -76,6 +76,12 @@
         <li>
           <a href="/about/">About</a>
         </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -85,7 +91,7 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">JavaScript ES6 和 Python 中的 Generator</h1>
-    <div class="post-meta">2018/04/04</div>
+    <div class="post-meta">2018/04/04</div> 
   </header>
   <div class="post-content"><p>这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 <code>redux-saga</code>，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 <code>generator</code>、<code>yield</code> 从思想上到写法上基本是一致的，之前也写过 Python 里的用法，这里也简单的写下我对动态语言里 <code>generator</code> 的学习和理解。</p>
 <!-- raw HTML omitted -->
@@ -209,25 +215,34 @@ book<span style="color:#f92672">.</span>__getattribute__(<span style="color:#e6d
       <li><a href="https://isudox.com/tags/javascript">JavaScript</a></li>
     </ul>
   </footer>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_shortname = 'isudox';
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
     (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
-  </script>
-  <noscript>
-    Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-      comments powered by Disqus.
-    </a>
-  </noscript>
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </article></main>
 <footer class="footer">
-  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>

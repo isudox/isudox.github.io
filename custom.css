@@ -19,6 +19,18 @@
   --code-bg: #f5f5f5;
   --border: #eee;
 }
+.dark {
+  --theme: #1d1e20;
+  --entry: #2e2e33;
+  --primary: rgba(255, 255, 255, 0.84);
+  --secondary: rgba(255, 255, 255, 0.56);
+  --tertiary: rgba(255, 255, 255, 0.16);
+  --content: rgba(255, 255, 255, 0.64);
+
+  --hljs-bg: #2e2e33;
+  --code-bg: #37383e;
+  --border: #5b5d67;
+}
 .post-content pre {
   margin-left: 0;
   margin-right: 0;
@@ -38,4 +50,13 @@
   margin: 0 0 0 0;
   padding: 0 0 0 21px;
   border-left: 3px solid var(--primary);
+}
+.post-meta {
+  color: var(--secondary);
+  font-size: 14px;
+  margin-top: 10px;
+}
+.post-footer {
+  margin-top: 56px;
+  margin-bottom: 56px;
 }

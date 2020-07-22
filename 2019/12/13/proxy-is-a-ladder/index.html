@@ -9,7 +9,7 @@
   <title>动手搭建一个梯子 - I sudo X</title>
   
   <meta name="description" content="由于众所周知的原因，大陆的互联网在一定程度上受限的。这归功于北京某高校校长主导的防火墙项目，我们时不时会看到类似下面这种地图—— 出现防火墙后">
-  <meta name="author" content="">
+  <meta name="author" content="isudox">
   
   <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.74.2" />
   
   
   
@@ -76,6 +76,12 @@
         <li>
           <a href="/about/">About</a>
         </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -85,7 +91,7 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">动手搭建一个梯子</h1>
-    <div class="post-meta">2019/12/12</div>
+    <div class="post-meta">2019/12/12</div> 
   </header>
   <div class="post-content"><p>由于众所周知的原因，大陆的互联网在一定程度上受限的。这归功于北京某高校校长主导的防火墙项目，我们时不时会看到类似下面这种地图——</p>
 <p><img src="/images/SZyhwKa.png" alt="Imgur"></p>
@@ -98,7 +104,7 @@
 </blockquote>
 <p>首先基于上面的第一点，要让墙无法解析数据包里的内容，就是通过加密，比如 AES。而第二点，是决定一个代理服务器是否能藏匿起来，躲过墙的试探而不被封锁的关键。</p>
 <p>限于能力和时间，在这篇文章里我只能对第一点做一些展开。要实现代理的整个数据流如下所示——</p>
-<p><img src="https://i.imgur.com/F2CD5p3.png" alt="Imgur"></p>
+<p><img src="/images/F2CD5p3.png" alt="Imgur"></p>
 <p>类似 shadowsocks 这类的工具，会在本地客户端和远程代理服务器上分别部署自己的 client 和 server，用来加解密数据包。 就 ss 而言，它的核心就两个部分，分别是 ss-local 和 ss-server，对应上图的 local-proxy 和 remote-proxy。</p>
 <p>本地客户端需要对请求进行加密，这是最基础的功能。ss-local 会在本地监听端口，本地发起的网络请求都会发送到这个端口进行加密处理，再转发到 ss-server 所在的代理服务器上。</p>
 <p>远程服务端接收来自 ss-local 的请求，解密出原始请求信息，并转发到真实的目标服务器上，在接收到响应后会再次对响应做加密，转发给 ss-local，ss-local 再做一次解密，拿到真实的响应信息。</p>
@@ -250,7 +256,7 @@ server -&gt; client:   X'05'   X'00'   X'00'   X'01'   X'00' X'00' X'00' X'00'  
 <li><strong>字节替代</strong></li>
 </ul>
 <p>字节替换是通过矩阵 S 把原字节转换为另一个字节。下图分别是矩阵 S 和逆矩阵 S<!-- raw HTML omitted -->-1<!-- raw HTML omitted -->：</p>
-<p><img src="https://i.imgur.com/5h2FroL.png" alt="Imgur"></p>
+<p><img src="/images/5h2FroL.png" alt="Imgur"></p>
 <p>16 x 16 的矩阵可以完成 8 比特的替换，其中高 4 位是行坐标，低 4 位是列坐标。比如输入 a=a7a6a5a4a3a2a1a0，输出值为 S[a7a6a5a4][a3a2a1a0]，S-1的变换也同理。</p>
 <p>字节 00000000B 替换后的值为 (S[0][0])=63H，再通过 S-1 即可得到替换前的值 (S-1 [6][3])=00H。</p>
 <ul>
@@ -260,13 +266,13 @@ server -&gt; client:   X'05'   X'00'   X'00'   X'01'   X'00' X'00' X'00' X'00'  
 <li>正向列混淆</li>
 </ol>
 <p>左乘一个混淆算子（N * N 常量矩阵），运算过程举例如下：</p>
-<p><img src="https://i.imgur.com/Neatfhd.png" alt="Imgur"></p>
+<p><img src="/images/Neatfhd.png" alt="Imgur"></p>
 <ol start="2">
 <li>逆向列混淆</li>
 </ol>
-<p><img src="https://i.imgur.com/AcXFyvd.png" alt="Imgur"></p>
+<p><img src="/images/AcXFyvd.png" alt="Imgur"></p>
 <p>注意，正向列混淆和逆向列混淆的算子互逆，所以经过一次逆向列混淆后即可恢复原文。</p>
-<p><img src="https://i.imgur.com/NWzCnMy.png" alt="Imgur"></p>
+<p><img src="/images/NWzCnMy.png" alt="Imgur"></p>
 <ul>
 <li><strong>加轮密钥</strong></li>
 </ul>
@@ -372,25 +378,34 @@ decrypt_table <span style="color:#f92672">=</span> string<span style="color:#f92
       <li><a href="https://isudox.com/tags/networks">Networks</a></li>
     </ul>
   </footer>
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_shortname = 'isudox';
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
     (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
-  </script>
-  <noscript>
-    Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-      comments powered by Disqus.
-    </a>
-  </noscript>
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </article></main>
 <footer class="footer">
-  <span>&copy; 2020 <a href="https://isudox.com/">I sudo X</a></span>
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
   <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
   <span>&middot;</span>
