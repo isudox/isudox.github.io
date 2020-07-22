@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>简历（未完成更新） - I sudo X</title>
+  
+  <meta name="description" content="个人信息 章健 手机：185****8421 邮箱：me@isudox.com 博客：https://isudox.com 教育经历： 2013 - 2015 北京理工大">
+  <meta name="author" content="isudox">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.74.2" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
+
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
+
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
+      }
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">简历（未完成更新）</h1> 
+  </header>
+  <div class="post-content"><h1 id="个人信息">个人信息</h1>
+<ul>
+<li>章健</li>
+<li>手机：185****8421</li>
+<li>邮箱：me@isudox.com</li>
+<li>博客：<a href="https://isudox.com">https://isudox.com</a></li>
+<li>教育经历：
+<ul>
+<li>2013 - 2015 北京理工大学 - 电子与通信工程 - 硕士</li>
+<li>2009 - 2013 中国农业大学 - 电子信息工程 - 本科</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="工作经历">工作经历</h1>
+<h2 id="美团点评---支付平台201703---至今">美团点评 - 支付平台（2017.03 - 至今）</h2>
+<h3 id="账户系统-201703---201903">账户系统 (2017.03 - 2019.03)</h3>
+<p>负责美团支付平台账户系统的开发，包括核心业务、基础性能、稳定性的建设，支撑起日处理记账请求 8 千万，流水过亿，峰值 QPS 4000 的大型分布式系统。</p>
+<h3 id="支付单元化-201903---至今">支付单元化 (2019.03 - 至今)</h3>
+<p>参与支付平台的单元化架构建设，实现从同城到异地的容灾体系。逐步完成从应用到存储的单元化，解决流量的路由，数据的拆分，以及存储副本间的同步。目前已完成以聚合支付为核心的链路的单元化，并在北京地区实现同城双活的容灾能力。</p>
+<hr>
+<h2 id="京东商城---交易平台201507---201703">京东商城 - 交易平台（2015.07 - 2017.03）</h2>
+<h3 id="京东陪伴计划">京东陪伴计划</h3>
+<p>陪伴计划是京东针对母婴品类精准营销的战略项目，营销覆盖商品、社区和内容。本人负责陪伴计划的前后端及后台管理的开发，并在后续迭代中重构优化代码。</p>
+<ul>
+<li>基于 Spring / SpringMVC 开发后端中间件，前台 Web 应用（PC 端和移动端），基于 Bootstrap 开发管理后台；</li>
+<li>重构优惠券代码，通过设计模式把耦合代码分拆，使得优惠券业务彼此独立且灵活可控；</li>
+<li>重构数据模型，由 ElasticSearch 取代 MySQL 存储，并统一数据结构和前台数据获取方式，提升项目新增或修改需求时的开发效率；</li>
+<li>前端模板引擎采用 Thymeleaf 取代 Velocity，尝试实现前后端分离，降低前后端开发联调的时间成本；</li>
+</ul>
+<h3 id="京东医药城">京东医药城</h3>
+<p>医药城是京东的医药垂直业务，是京东电商的核心业务之一，涉及自营和第三方商家 OTC 商品。京东垂直业务链包括单品页、购物车、结算页、订单等，本人参与医药城的购物车和结算页的开发。</p>
+<ul>
+<li>基于 Spring / Struts 开发购物车和结算页，继承主站逻辑并定制垂直业务需求，接入同时优化并重构原有代码；</li>
+<li>通过设计模式把原本复杂的购物车结算页参数功能分拆，实现参数构建职责单一明确，不再冗余；</li>
+<li>面向接口编程，重构原有信息校验逻辑，将原有复杂冗余逻辑简化为灵活的链式逻辑；</li>
+<li>尝试运用恰当的编程思想对部分紧急业务敏捷开发，快速上线交付；</li>
+</ul>
+<h3 id="京东全球购">京东全球购</h3>
+<p>全球购是京东海外业务的拓展，是电商核心业务之一。本人参与全球购的购物车和结算页的开发。</p>
+<ul>
+<li>对接京东整套交易系统，设计用户、运营、券卡、订单、仓储、金融等；</li>
+<li>在开发业务代码的同时，重构原有逻辑，利用装饰器、建造者、责任链等设计模式进行重构；</li>
+</ul>
+<h3 id="京东共读">京东共读</h3>
+<p>京东共读是类播客的微信端项目，碎片化阅读和创新付费阅读的一次尝试。本人参与了项目的全程开发。</p>
+<ul>
+<li>利用状态机模型，将用户的动作和状态更迭抽象化，使业务逻辑和代码更加清晰可扩展；</li>
+<li>优化原有的复杂跳转逻辑，改成星状网结构，统一请求的分发和跳转；</li>
+<li>通过反射统一 RPC 的调用入口，使得 Provider 和 Consumer 可以并行开发；</li>
+<li>在付费阅读业务中，将微信支付接入京东的台账系统；</li>
+</ul>
+</div>
+
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+
+</html>
+
