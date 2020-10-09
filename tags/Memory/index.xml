@@ -6,11 +6,7 @@
     <description>Recent content in Memory on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 22 Jun 2016 13:00:53 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/memory/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 22 Jun 2016 13:00:53 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/memory/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Java String 的内存模型</title>
       <link>https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/</link>

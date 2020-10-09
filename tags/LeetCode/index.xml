@@ -6,11 +6,7 @@
     <description>Recent content in LeetCode on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 29 Mar 2019 21:54:41 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/leetcode/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 29 Mar 2019 21:54:41 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/leetcode/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>LeetCode-39 Combination Sum</title>
       <link>https://isudox.com/2019/03/29/leetcode-39-combination-sum/</link>

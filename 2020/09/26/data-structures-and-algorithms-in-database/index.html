@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>数据结构和算法在存储中的经典应用 - I sudo X</title>
+  
+  <meta name="description" content="Algorithms &#43; Data Structures = Programs —— Niklaus Wirth 先搬出写了 Pascal、又拿了图灵奖的大师的名言，这里不讨论该断言的合理性，只作为本文的引子。在数据库领域，究其原理，绕">
+  <meta name="author" content="isudox">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.76.3" />
+  
+  
+  
+  <script>
+    function setTheme() {
+      const time = new Date();
+
+      const prev = localStorage.getItem('date');
+      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+      const now = time.getTime();
+      let sunrise;
+      let sunset;
+
+      function setBodyClass() {
+        if (now > sunrise && now < sunset) return;
+        document.body.classList.add('dark');
+      }
+
+      if (date !== prev) {
+        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+          .then(res => res.json())
+          .then(data => {
+            sunrise = data.sunrise.split(':').map(Number);
+            sunset = data.sunset.split(':').map(Number);
+          })
+          .catch(() => {
+            sunrise = [7, 0];
+            sunset = [19, 0];
+          })
+          .finally(() => {
+            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+            sunset = time.setHours(sunset[0], sunset[1], 0);
+            setBodyClass();
+            localStorage.setItem('sunrise', sunrise);
+            localStorage.setItem('sunset', sunset);
+          });
+        localStorage.setItem('date', date);
+      } else {
+        sunrise = Number(localStorage.getItem('sunrise'));
+        sunset = Number(localStorage.getItem('sunset'));
+        setBodyClass();
+      }
+    }
+  </script>
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+        <li>
+          <a href="/tags/">Tag</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">数据结构和算法在存储中的经典应用</h1>
+    <div class="post-meta">2020/09/09</div> 
+  </header>
+  <div class="post-content"><blockquote>
+<p>Algorithms + Data Structures = Programs —— Niklaus Wirth</p>
+</blockquote>
+<p>先搬出写了 Pascal、又拿了图灵奖的大师的名言，这里不讨论该断言的合理性，只作为本文的引子。在数据库领域，究其原理，绕不开数据存储。本文从几个经典应用出发，管窥数据结构在存储中所起到的作用。</p>
+<!-- more -->
+<h1 id="引入">引入</h1>
+<h2 id="磁盘-io">磁盘 I/O</h2>
+<p>对数据库的读写离不开磁盘 I/O，在讲存储中的数据结构之前，先简单介绍磁盘 I/O 特性对数据库设计的影响，详细的解释可以阅读美团技术博客 <a href="https://tech.meituan.com/2017/05/19/about-desk-io.html">磁盘 I/O 那些事</a>。</p>
+<p>传统意义上数据库需要将数据以文件的形式存储到磁盘上，对数据库操作的操作可以简单抽象为对磁盘文件的读写，而磁盘 I/O 消耗的时间影响了数据库的读写性能。一次磁盘 I/O 可以拆分为：磁头寻道时间、扇区旋转延迟时间、数据传输时间，参考下图示意。</p>
+<p><img src="/images/Hard_drive_geometry_-_English_-_2019-05-30.svg" alt="磁道-磁头-扇区"></p>
+<ul>
+<li>磁头寻道：磁头移动到数据所在磁道位置，参考值 3-15ms；</li>
+<li>扇区旋转：通过盘片的旋转，将数据所在扇区移动到磁头下方，参考值 2-5ms；</li>
+<li>数据传输：不同接口的传输速率有差异，通常小于 1ms；</li>
+</ul>
+<p>寻道时间 &gt; 旋转延迟 &gt;&gt; 数据传输，所以磁盘 I/O 耗时 ≈ 寻道时间 + 旋转延迟时间，IOPS = 1000 / (寻道时间 + 旋转延迟)。</p>
+<p>我们已经知道，磁盘的顺序 I/O 比随机 I/O 更快（参考下图），原因就在于顺序 I/O 磁头几乎不用换道，或者换道的时间很短；而随机 I/O 磁头会频繁换道。对随机 I/O 而言，7200 转的磁盘，随机 I/O 的 IOPS 通常为 70 ~ 80。而对顺序 I/O，比如读取一块连续存储的文件，理想的情况是在一次 I/O 后就可以顺序读写，其 IOPS 会非常高。因此在包括数据库在内的诸多系统的存储，都会通过顺序 I/O 来提高性能。</p>
+<p><img src="/images/jacobs3.jpg" alt="Comparing Random and Sequential Access in Disk and Memory"></p>
+<p>通常而言，相对于读，写的性能瓶颈会更凸显，因此对存储的设计会优先考虑提升写性能。由于文件系统保证了文件是顺序写入，所以可以采用追加写如文件的方式实现顺序写。由于是对文件的增量追加写入，所以在数据读取时，需要倒过来检索，从最新的文件逐个往回查，比如通过简单的二分，二叉搜索树等再进一步优化，减少 I/O 次数，归根结底性能优化还是索引。</p>
+<h2 id="索引">索引</h2>
+<p>假如我们要从零开始设计一个数据库系统，实现最基础的数据写入/读取功能，直接的思路就是把数据逐行写入到磁盘上的文件中，并通过对应的 key-value 的形式映射到数据行，例如简单的 csv 文件。但数据库的设计目标不光是存储数据，还要快速找到先前存储的数据，这就带来了问题，因为从文件中逐行检索的时间复杂度是 O(n)，在大数据量的情况下几乎是不可用的。</p>
+<p>索引应运而生。如果只是为了最优化检索的时间复杂度，我们可以使用哈希实现 O(1) 的检索。但前提是哈希表存储在内存中，这在大数据量的情况下难以实现。</p>
+<ul>
+<li>如果哈希表存储在磁盘上，会由于大量磁盘随机 I/O 导致性能不足；</li>
+<li>另外哈希表索引在范围查询时，需要对区间内所有键逐个检索，效率低下。</li>
+</ul>
+<p>因此大多数数据库系统并没有采用哈希表做索引，以 MySQL 为典型的 RDBMS 使用的是大家比较熟悉的 <code>B-Tree</code>（各类变体均以 <code>B-Tree</code> 统称）。</p>
+<p>合理地设计索引的数据结构，可以减少检索的数据量，将随机 I/O 优化为顺序 I/O，从而提升数据库的查询性能。实际上，数据库索引本身就是数据结构（参考 MySQL 对索引的定义）。</p>
+<h1 id="b-tree">B-Tree</h1>
+<p>结合前文的分析，索引存储在磁盘上需要拥有良好的性能，并且尽可能连续，减少磁盘 I/O，比较容易想到通过有序的数据结构来实现，比如下面的二叉搜索树——</p>
+<pre><code>     12            +-------------------------------+
+   /    \          | 12 | 5 | 30 | 3 | 8 | 23 | 99 |
+  5      30        +-------------------------------+
+ / \     / \
+3   8  23   99
+</code></pre><p>BST 可以提供 O(LogN) 时间复杂度的检索，但由于 BST 的度 &lt;= 2，导致整个树的高度会比较大（想象成一棵瘦高树），检索到目标节点所需的对比次数就越多，耗时相应增加，所以并没有实际应用在数据库系统中。得到广泛应用的是另一棵树——就是下面要讲的 B-Tree（想象成一棵矮胖树）。</p>
+<h2 id="b-tree-结构">B-Tree 结构</h2>
+<p>B-Tree 是一种 Self-balancing Tree，它用来存储有序的数据，支持检索，顺序访问。B-Tree 脱胎于 BST，但是 B-Tree 度支持大于 2。其结构参考下图——</p>
+<pre><code>              +-------------------------------+
+              | 7 | 16 | 30 | 3 | 8 | 23 | 99 |
+              +-------------------------------+
+              /   \________              \
+             /            |               \  
++---------------+      +--------+       +---------+
+| 1 | 2 | 5 | 6 |      | 9 | 12 |       | 25 | 31 |
++---------------+      +--------+       +---------+
+                         |
+                         |
+                       +---------+
+                       | 10 | 11 |
+                       +---------+
+</code></pre><p>其中，B-Tree 和变体 B+ Tree 在树的节点设计上有所差异：</p>
+<ul>
+<li>B-Tree 所有节点（内节点 + 叶子节点）都存储 data；而 B+ Tree 只有叶子节点存储 data，内节点只存储 key；</li>
+<li>B+ Tree 的叶子节点额外设计了一个指针，指向下一个相邻叶子节点；</li>
+</ul>
+<p>B-Tree 的插入、更新、删除操作会变更树的结构，从而使树保持平衡。</p>
+<ul>
+<li>B-Tree 更新已有 data， 先检索到 key，再更改 data， 写回到磁盘；</li>
+<li>B-Tree 添加新键，先定位到包含对应 key 的区间，将其插入到对应父节点下。如果节点所在的页已满，则需要将当前页裂变为两个半满的页，同时更新父节点以包含裂变后的页（父节点如果也满，则也进行裂变）。插入-裂变的过程示意参考下图；</li>
+<li>B-Tree 删除键，涉及的情况比较多，包括删叶子节点，删内节点，节点内 key 的数量，相对比较复杂；</li>
+</ul>
+<pre><code>          +---------------------------+
+          | 10 | 20 | 30 | free space |
+          +---------------------------+
+                     |
+           +------------------------+
+           | 21 | 23 | 25 | 27 | 29 |
+           +------------------------+
+插入 24：
+              +--------------------------------+
+              | 10 | 20 | 25 | 30 | free space |
+              +--------------------------------+
+                       |    |
+                /------+    +---\
+  +--------------+          +--------------+ 
+  | 21 | 23 | 24 |          | 25 | 27 | 29 |
+  +--------------+          +--------------+   
+</code></pre><p>B-Tree 的上述操作都是基于树的遍历，因此都是 O(LogN) 的时间复杂度。另外，没有改变节点的深度，因此 B-Tree 始终能保持平衡，这也是它 Self-balancing 的原因。</p>
+<h2 id="b-tree-性能">B-Tree 性能</h2>
+<p>B-Tree 检索的本质是遍历，假设树的高度为 <code>h</code>，B-Tree 检索到目标数据最多需要 <code>h-1</code> 次 I/O，这是因为一次磁盘 I/O 加载一个节点。所以树高 <code>h</code> 决定了检索的效率。来看一次完整的检索过程：</p>
+<ol>
+<li>
+<p>读取根节点，对根节点内的键做二分查找，找到正确范围的字节点；</p>
+</li>
+<li>
+<p>对子节点继续做二分查找；</p>
+</li>
+<li>
+<p>找到目标键值；</p>
+<p>因为二分查找的过程全内存处理，不涉及磁盘 I/O，耗时可以忽略。所以检索耗时约等于 B-Tree 目标节点到根节点的深度 * 磁盘 I/O 耗时。因此 <code>h</code> 越小，B-Tree 的检索性能越高。这也解释了为什么 B+ Tree 比 B-Tree 更适合作为磁盘存储的索引：因为 B+ Tree 内节点不存储 data，使得节点的度 <code>d</code> 比 B-Tree 大，因此降低了树高 <code>h</code>。相关公式参考如下，其中 <code>N</code> 为树的节点数——</p>
+</li>
+</ol>
+<pre><code>d = page_size / (key_size + data_size + ptr_size)
+h = lg(N) / lg(d)
+</code></pre><p>此外，在实际应用中，B-Tree 的根节点和高层的部分内节点会提前缓存进内存中，检索性能会比理论结果要好。</p>
+<h2 id="b-tree-的不足">B-Tree 的不足</h2>
+<p>由此可见，<code>B-Tree</code> 的瓶颈在于写。那对于这种高并发写的场景，有没有其它适用的数据结构可以优化写问题？<code>LSM Tree</code> 的出现优化了这个问题，这种树结构将随机读写优化为顺序读写，从而提升数据库并发写的吞吐能力</p>
+<h1 id="lsm-tree">LSM Tree</h1>
+<h2 id="引入-1">引入</h2>
+<p>先抛出问题，假如要实现一个数据库系统，实现最简单的写入/读取数据的功能，该如何设计它的存储。我们已经知道，磁盘的顺序读写比随机读写更快<sup>[1]</sup>（参考下图），那么最佳的写入方案就是把数据行更新到文件末尾。为了避免 <code>O(N)</code> 的逐行查询，我们还需要建立索引，可以考虑 Hash，但是要付出 <code>O(N)</code> 的空间复杂度。如果数据写入时已经做好排序，树就可以派上用场。由于树的特点，在索引查询起到至关重要的作用，比如 <code>B-Tree</code>、<code>B+ Tree</code> 以及变体 <code>B* Tree</code>（后文均以 <code>B-Tree</code> 统称）。</p>
+<p><img src="/images/jacobs3.jpg" alt="Comparing Random and Sequential Access in Disk and Memory">
+上图援引自 <a href="https://queue.acm.org/detail.cfm?id=1563874">ACM Queue</a></p>
+<p>当数据库用户越来越多，并发写入量越来越大，<code>B-Tree</code> 需要处理大量的数据，不断变更树的结构，因此类似 MySQL InnoDB 采用的方法是通过 WAL(Write Ahead Log) 减少对 <code>B-Tree</code> 的写次数。</p>
+<p>由此可见，<code>B-Tree</code> 的瓶颈在于写。那对于这种高并发写的场景，有没有其它适用的数据结构可以优化写问题？<code>LSM Tree</code> 的出现优化了这个问题，这种树结构将随机读写优化为顺序读写，从而提升数据库并发写的吞吐能力。</p>
+<h2 id="lsm-tree-基本原理">LSM Tree 基本原理</h2>
+<p>数据库保障事务正确可靠的 ACID，其中 A 和 C 通过 WAL(Write-ahead Logging) 机制来实现，即事务提交前预写日志，在 MySQL 中就是 redo 和 undo 日志。先写 WAL，再插入到内存中的 <code>MemTable</code><sup>[2]</sup>，它同时提供数据的读写，并且 Key-Value 按 Key 排序，从而在 flush 到磁盘时能保持顺序性。</p>
+<p>当 <code>MemTable</code> 写入到一定阈值后，系统会将其转变成 <code>Immutable Memtable</code>，再 flush 到磁盘，它只读，同时创建新的 <code>MemTable</code> 提供写。存储中设计这两种 <code>MemTable</code> 本质是空间换时间的朴素思想，目的是在 <code>MemTable</code> flush 到磁盘时不阻塞新数据的写入。</p>
+<p><code>SSTable</code>(Sorted String Table)<sup>[3]</sup> 是 <code>MemTable</code> flush 到磁盘的文件 ，其存储结构如下图示。当文件很大时，可以采用图中左边的 <code>key:offset</code> 索引快速定位到 KV 的偏移量。<code>SSTable</code> 只读，新的写入操作会存储到新的文件中。</p>
+<p><img src="/images/sstable.png" alt="SSTable Storage">
+上图援引自 <a href="https://www.igvita.com/2012/02/06/sstable-and-log-structured-storage-leveldb/">SSTable and Log Structured Storage: LevelDB</a></p>
+<p>所以数据流的整个过程可以简单理解为：<code>MemTable</code> -&gt; <code>Immutable MemTable</code> -&gt; <code>SSTable</code></p>
+<p>那么 <code>LSM Tree</code> 又是如何解决 <code>B-Tree</code> 在定时 flush WAL 时随机 I/O 导致的写瓶颈？</p>
+<h1 id="skiplist">Skiplist</h1>
+<p>前面提到 <code>MemTable</code>，比较典型的实现是通过 <code>Skiplist</code>。</p>
+<h1 id="circular-buffer">Circular Buffer</h1>
+<p>在 MySQL 数据同步中，核心处理是订阅 binary log，转换并存储事件，等待消费，这是典型的发布-订阅模型。其中对事件的存储，直观的思路是采用队列。包括开源的 Databus、open-replicator，美团 DTS，都使用到了一种特殊的队列——Circular Buffer。</p>
+<hr>
+<h1 id="参考资料">参考资料</h1>
+<ul>
+<li><a href="https://tech.meituan.com/2017/05/19/about-desk-io.html">磁盘 I/O 那些事</a></li>
+<li><a href="https://queue.acm.org/detail.cfm?id=1563874">The Pathologies of Big Data</a></li>
+<li><a href="https://www.cs.umb.edu/~poneil/lsmtree.pdf">LSM Tree 论文</a></li>
+<li><a href="http://mysql.taobao.org/monthly/2018/11/01/">论 B+ 树索引的演进方向（上）</a></li>
+<li><a href="http://www.vldb.org/pvldb/vol13/p3217-matsunobu.pdf">MyRocks: LSM-Tree Database Storage Engine Serving Facebook&rsquo;s Social Graph</a></li>
+<li><a href="https://github.com/facebook/rocksdb/wiki/MemTable">MemTable</a></li>
+<li><a href="https://github.com/linkedin/databus/wiki/Databus-2.0-event-buffer-design">Databus 2.0 Event Buffer Design</a></li>
+</ul>
+<h1 id="注释">注释</h1>
+<ul>
+<li>[1] 对 HDD 而言，顺序读写时磁头几乎不用换道，或者换道的时间很短；而随机读写时磁头会频繁换道。</li>
+<li>[2] <code>MemTable</code> 更多细节参考 <a href="https://github.com/facebook/rocksdb/wiki/MemTable">RocksDB Wiki</a></li>
+<li>[3] <code>SSTable</code> 顾名思义是按 Key 排序、不可修改的字符串 KV 文件</li>
+</ul>
+</div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://isudox.com/tags/algorithm">Algorithm</a></li>
+      <li><a href="https://isudox.com/tags/database">Database</a></li>
+      <li><a href="https://isudox.com/tags/data-structure">Data Structure</a></li>
+    </ul>
+  </footer>
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
+    (function () {
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article></main>
+<footer class="footer">
+  <span>&copy; 2020</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+
+</html>
+

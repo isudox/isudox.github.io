@@ -6,11 +6,7 @@
     <description>Recent content in Java on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 12 Jul 2017 11:10:03 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 12 Jul 2017 11:10:03 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Java 8 Stream API 和函数式编程</title>
       <link>https://isudox.com/2017/07/12/java-8-streams-api-fp-intro/</link>

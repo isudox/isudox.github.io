@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/08/08</div> 
   </header>
   <div class="post-content"><p>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 <a href="https://about.gitlab.com/">GitLab</a>。顺便实践了一把 Docker 的应用部署。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>GitLab 的外部依赖很多，有 Nginx、Rails、Postgres、Redis、MySQL、unicorn、Go 等。如果单独安装各个依赖，一大堆的配置会让人抓狂。如果用官网提供的 omni 集成包，除非是全新的服务器，否则很大可能就导致依赖的重复安装，比如进程里有多个 Nginx、MySQL，很容易把服务器环境弄得很乱。像 GitLab 这样的程序，其实很适合用 Docker 来部署，一则和实机环境隔离开，另外运行性能相当好。</p>
 <h3 id="安装-docker-环境">安装 Docker 环境</h3>
 <h4 id="安装配置">安装配置</h4>
@@ -244,94 +244,94 @@ server {
 &lt;html&gt;&lt;body&gt;You are being &lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://45.33.47.109:10080/users/sign_in&#34;</span>&gt;redirected&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;
 </code></pre></div><p>验收下最终的成果，<a href="http://git.isudox.com">GitLab</a></p>
 <p>最后，贴上我的 <code>docker-composer.yml</code> 配置，仅作备忘。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#39;2&#39;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;2&#39;</span>
 
-<span style="color:#66d9ef">services</span>:
-  <span style="color:#66d9ef">redis</span>:
-    <span style="color:#66d9ef">restart</span>: always
-    <span style="color:#66d9ef">image</span>: sameersbn/redis:latest
-    <span style="color:#66d9ef">command</span>:
-    - --loglevel warning
-    <span style="color:#66d9ef">volumes</span>:
-    - /srv/docker/gitlab/redis:/var/lib/redis:Z
+<span style="color:#f92672">services</span>:
+  <span style="color:#f92672">redis</span>:
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">sameersbn/redis:latest</span>
+    <span style="color:#f92672">command</span>:
+    - --<span style="color:#ae81ff">loglevel warning</span>
+    <span style="color:#f92672">volumes</span>:
+    - <span style="color:#ae81ff">/srv/docker/gitlab/redis:/var/lib/redis:Z</span>
 
-  <span style="color:#66d9ef">postgresql</span>:
-    <span style="color:#66d9ef">restart</span>: always
-    <span style="color:#66d9ef">image</span>: sameersbn/postgresql:<span style="color:#ae81ff">9.4-24</span>
-    <span style="color:#66d9ef">volumes</span>:
-    - /srv/docker/gitlab/postgresql:/var/lib/postgresql:Z
-    <span style="color:#66d9ef">environment</span>:
-    - DB_USER=gitlab
-    - DB_PASS=helloworld
-    - DB_NAME=gitlabhq_production
-    - DB_EXTENSION=pg_trgm
+  <span style="color:#f92672">postgresql</span>:
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">sameersbn/postgresql:9.4-24</span>
+    <span style="color:#f92672">volumes</span>:
+    - <span style="color:#ae81ff">/srv/docker/gitlab/postgresql:/var/lib/postgresql:Z</span>
+    <span style="color:#f92672">environment</span>:
+    - <span style="color:#ae81ff">DB_USER=gitlab</span>
+    - <span style="color:#ae81ff">DB_PASS=helloworld</span>
+    - <span style="color:#ae81ff">DB_NAME=gitlabhq_production</span>
+    - <span style="color:#ae81ff">DB_EXTENSION=pg_trgm</span>
 
-  <span style="color:#66d9ef">gitlab</span>:
-    <span style="color:#66d9ef">restart</span>: always
-    <span style="color:#66d9ef">image</span>: sameersbn/gitlab:<span style="color:#ae81ff">8.10.3</span>
-    <span style="color:#66d9ef">depends_on</span>:
-    - redis
-    - postgresql
-    <span style="color:#66d9ef">ports</span>:
+  <span style="color:#f92672">gitlab</span>:
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">sameersbn/gitlab:8.10.3</span>
+    <span style="color:#f92672">depends_on</span>:
+    - <span style="color:#ae81ff">redis</span>
+    - <span style="color:#ae81ff">postgresql</span>
+    <span style="color:#f92672">ports</span>:
     - <span style="color:#e6db74">&#34;10080:80&#34;</span>
     - <span style="color:#e6db74">&#34;10022:22&#34;</span>
-    <span style="color:#66d9ef">volumes</span>:
-    - /srv/docker/gitlab/gitlab:/home/git/data:Z
-    <span style="color:#66d9ef">environment</span>:
-    - DEBUG=<span style="color:#66d9ef">false</span>
+    <span style="color:#f92672">volumes</span>:
+    - <span style="color:#ae81ff">/srv/docker/gitlab/gitlab:/home/git/data:Z</span>
+    <span style="color:#f92672">environment</span>:
+    - <span style="color:#ae81ff">DEBUG=false</span>
 
-    - DB_ADAPTER=postgresql
-    - DB_HOST=postgresql
-    - DB_PORT=<span style="color:#ae81ff">5432</span>
-    - DB_USER=gitlab
-    - DB_PASS=helloworld
-    - DB_NAME=gitlabhq_production
+    - <span style="color:#ae81ff">DB_ADAPTER=postgresql</span>
+    - <span style="color:#ae81ff">DB_HOST=postgresql</span>
+    - <span style="color:#ae81ff">DB_PORT=5432</span>
+    - <span style="color:#ae81ff">DB_USER=gitlab</span>
+    - <span style="color:#ae81ff">DB_PASS=helloworld</span>
+    - <span style="color:#ae81ff">DB_NAME=gitlabhq_production</span>
 
-    - REDIS_HOST=redis
-    - REDIS_PORT=<span style="color:#ae81ff">6379</span>
+    - <span style="color:#ae81ff">REDIS_HOST=redis</span>
+    - <span style="color:#ae81ff">REDIS_PORT=6379</span>
 
-    - TZ=Asia/Shanghai
-    - GITLAB_TIMEZONE=Beijing
+    - <span style="color:#ae81ff">TZ=Asia/Shanghai</span>
+    - <span style="color:#ae81ff">GITLAB_TIMEZONE=Beijing</span>
 
-    - GITLAB_HTTPS=<span style="color:#66d9ef">true</span>
-    - SSL_SELF_SIGNED=<span style="color:#66d9ef">false</span>
+    - <span style="color:#ae81ff">GITLAB_HTTPS=true</span>
+    - <span style="color:#ae81ff">SSL_SELF_SIGNED=false</span>
 
-    - GITLAB_HOST=git.isudox.com
-    - GITLAB_PORT=<span style="color:#ae81ff">443</span>
-    - GITLAB_SSH_PORT=<span style="color:#ae81ff">10022</span>
-    - GITLAB_RELATIVE_URL_ROOT=
-    - GITLAB_SECRETS_DB_KEY_BASE=qwertyuiopasdfghjklzxcvbnm
+    - <span style="color:#ae81ff">GITLAB_HOST=git.isudox.com</span>
+    - <span style="color:#ae81ff">GITLAB_PORT=443</span>
+    - <span style="color:#ae81ff">GITLAB_SSH_PORT=10022</span>
+    - <span style="color:#ae81ff">GITLAB_RELATIVE_URL_ROOT=</span>
+    - <span style="color:#ae81ff">GITLAB_SECRETS_DB_KEY_BASE=qwertyuiopasdfghjklzxcvbnm</span>
 
-    - GITLAB_ROOT_PASSWORD=
-    - GITLAB_ROOT_EMAIL=
+    - <span style="color:#ae81ff">GITLAB_ROOT_PASSWORD=</span>
+    - <span style="color:#ae81ff">GITLAB_ROOT_EMAIL=</span>
 
-    - GITLAB_NOTIFY_ON_BROKEN_BUILDS=<span style="color:#66d9ef">true</span>
-    - GITLAB_NOTIFY_PUSHER=<span style="color:#66d9ef">false</span>
+    - <span style="color:#ae81ff">GITLAB_NOTIFY_ON_BROKEN_BUILDS=true</span>
+    - <span style="color:#ae81ff">GITLAB_NOTIFY_PUSHER=false</span>
 
-    - GITLAB_EMAIL=hi@gmail.com
-    - GITLAB_EMAIL_DISPLAY_NAME=GitLab
-    - GITLAB_EMAIL_REPLY_TO=hi@gmail.com
-    - GITLAB_EMAIL_ENABLED=<span style="color:#66d9ef">true</span>
+    - <span style="color:#ae81ff">GITLAB_EMAIL=hi@gmail.com</span>
+    - <span style="color:#ae81ff">GITLAB_EMAIL_DISPLAY_NAME=GitLab</span>
+    - <span style="color:#ae81ff">GITLAB_EMAIL_REPLY_TO=hi@gmail.com</span>
+    - <span style="color:#ae81ff">GITLAB_EMAIL_ENABLED=true</span>
 
-    - GITLAB_BACKUP_SCHEDULE=daily
-    - GITLAB_BACKUP_TIME=<span style="color:#ae81ff">05</span>:<span style="color:#ae81ff">00</span>
+    - <span style="color:#ae81ff">GITLAB_BACKUP_SCHEDULE=daily</span>
+    - <span style="color:#ae81ff">GITLAB_BACKUP_TIME=05:00</span>
 
-    - SMTP_ENABLED=enable
-    - SMTP_DOMAIN=www.gmail.com
-    - SMTP_HOST=smtp.gmail.com
-    - SMTP_PORT=<span style="color:#ae81ff">587</span>
-    - SMTP_USER=hi@gmail.com
-    - SMTP_PASS=helloworld
-    - SMTP_STARTTLS=<span style="color:#66d9ef">true</span>
-    - SMTP_AUTHENTICATION=login
+    - <span style="color:#ae81ff">SMTP_ENABLED=enable</span>
+    - <span style="color:#ae81ff">SMTP_DOMAIN=www.gmail.com</span>
+    - <span style="color:#ae81ff">SMTP_HOST=smtp.gmail.com</span>
+    - <span style="color:#ae81ff">SMTP_PORT=587</span>
+    - <span style="color:#ae81ff">SMTP_USER=hi@gmail.com</span>
+    - <span style="color:#ae81ff">SMTP_PASS=helloworld</span>
+    - <span style="color:#ae81ff">SMTP_STARTTLS=true</span>
+    - <span style="color:#ae81ff">SMTP_AUTHENTICATION=login</span>
 
-    - IMAP_ENABLED=<span style="color:#66d9ef">false</span>
-    - IMAP_HOST=imap.gmail.com
-    - IMAP_PORT=<span style="color:#ae81ff">993</span>
-    - IMAP_USER=hi@gmail.com
-    - IMAP_PASS=helloworld
-    - IMAP_SSL=<span style="color:#66d9ef">true</span>
-    - IMAP_STARTTLS=<span style="color:#66d9ef">false</span>
+    - <span style="color:#ae81ff">IMAP_ENABLED=false</span>
+    - <span style="color:#ae81ff">IMAP_HOST=imap.gmail.com</span>
+    - <span style="color:#ae81ff">IMAP_PORT=993</span>
+    - <span style="color:#ae81ff">IMAP_USER=hi@gmail.com</span>
+    - <span style="color:#ae81ff">IMAP_PASS=helloworld</span>
+    - <span style="color:#ae81ff">IMAP_SSL=true</span>
+    - <span style="color:#ae81ff">IMAP_STARTTLS=false</span>
 </code></pre></div></div>
   <footer class="post-footer">
     <ul class="post-tags">

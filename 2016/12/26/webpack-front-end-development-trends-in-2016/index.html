@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/12/12</div> 
   </header>
   <div class="post-content"><p>对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外加黑人问号脸。为了以后和前端协作时不被鄙视，努力在 2016 年结束前，赶紧先上车，这就是我一个后端开发做前端补习的动机，本文是 Webpack 篇，后续还会更新 Yarn、React、Redux 等。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <blockquote>
 <p>因为我对前端的认知停留在三脚猫的水平，因此本文不会执著于对不同框架/工具的优劣比较，谨作为个人浅尝辄止的学习记录。</p>
 </blockquote>
@@ -123,7 +123,7 @@ yarn add webpack@2.1.0-beta.20 -D
 <span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
   <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./path/to/my/entry/file.js&#39;</span>
 };
-</code></pre></div><p>如果要指定多个 Entry，则需要将 <code>entry</code> 属性从 <code>string</code> 改为 <code>Array&lt;string&gt;</code>，比如 [&rsquo;./main.js&rsquo;, &lsquo;./index.js&rsquo;]。也可以使用 Object 语法，把 <code>entry</code> 属性设置为一个 key-value 对象，这是更具扩展性的定义 <code>entry</code> 的写法：</p>
+</code></pre></div><p>如果要指定多个 Entry，则需要将 <code>entry</code> 属性从 <code>string</code> 改为 <code>Array&lt;string&gt;</code>，比如 ['./main.js', &lsquo;./index.js&rsquo;]。也可以使用 Object 语法，把 <code>entry</code> 属性设置为一个 key-value 对象，这是更具扩展性的定义 <code>entry</code> 的写法：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">config</span> <span style="color:#f92672">=</span> {
   <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> {
     <span style="color:#a6e22e">app</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./src/app.js&#39;</span>,

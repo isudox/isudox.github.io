@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/06/06</div> 
   </header>
   <div class="post-content"><p>加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，review 自己写的代码时，好像一直在 repeat yourself。代码不应该那样写，把复杂业务拆分，松耦合，利用设计模式将业务代码简化，而不是一味的去用过程编程的思维去实现业务逻辑，又苦又累毫无乐趣。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h3 id="重构之前">重构之前</h3>
 <p>趁着 JD 618 大促的机会，把陪伴计划项目部分业务重构了下。前期开发时因为业务需求多、时间紧张，没有对业务逻辑深入的分析，代码拿上来就写，导致逻辑的紧耦合、难以更改，难以扩展，面对新增的业务只能从头再写而无法做到有效复用。</p>
 <p>要做到代码的合理复用，直接有效的途径就是把业务逻辑拆分细化，颗粒度最细的拆分就是将业务逻辑拆分成原子操作，但这样做会导致代码过于细碎，未免过犹不及。业务松耦合，并非零耦合。让每一个细分业务只负责单一逻辑，通过灵活可配的组合实现复杂逻辑，这是实现松耦合，提高扩展性行之有效的办法。</p>

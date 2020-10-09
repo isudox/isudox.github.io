@@ -6,11 +6,7 @@
     <description>Recent content in HTML5 on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 18 Apr 2016 19:55:14 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/html5/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 18 Apr 2016 19:55:14 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/html5/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>移动端仿微信朋友圈发布图文</title>
       <link>https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/</link>

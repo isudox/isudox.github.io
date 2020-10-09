@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -95,7 +95,7 @@
   </header>
   <div class="post-content"><p>今天上班偷闲逛 v 站时感受到了一阵强烈的安利风，好像所有个人站都已经从 HTTP/1.1 升级到了 HTTP/2 。呵呵，跟风也要讲基本法！立即着手升级工作。
 上 Google 搜索关键字，才知道自己已经滞后了6个月，Nginx 从1.9.5版本开始已经加入了对 HTTP/2 的官方支持 <a href="https://www.nginx.com/blog/nginx-1-9-5/">Nginx Open Source 1.9.5 Released with HTTP/2 Support</a>。这篇文章里也提到了 Nginx 从 1.9.5 开始，会停止对SPDY的支持，同时移除 Nginx 的 SPDY 模块。OK，看明白了之后，剩下的工作就简单了，升级 Nginx，开启 HTTP/2。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>挂着小站的服务器上跑着的 Nginx 一直是 Nginx1.8.x，看了一眼 conf 文件，没有 SPDY 的参数设置，可以平滑升级到 1.10.0了。由于 Nginx1.10.0 发布在 mainline 上，如果想采用 <code>apt</code> 方式升级，还需要配置下 source 源。先安装 Nginx 的 apt 源的签名<a href="http://nginx.org/keys/nginx_signing.key">key</a>，把 key 添加进 apt 源。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-key add nginx_signing.key
 </code></pre></div><p>修改<code>/etc/apt/sources.list</code>，在文件后追加 nginx mainline 的 deb 包源和 deb-src 源</p>

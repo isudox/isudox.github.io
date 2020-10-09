@@ -6,11 +6,7 @@
     <description>Recent content in Frontend on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 27 Dec 2016 22:39:09 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/frontend/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 27 Dec 2016 22:39:09 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/frontend/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>2016 前端补习 Yarn 篇</title>
       <link>https://isudox.com/2016/12/27/yarn-front-end-development-trends-in-2016/</link>
@@ -63,15 +59,6 @@
       
       <guid>https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/</guid>
       <description>最近一个项目需要在移动端开发一个类似微信朋友圈的功能，从前端到后端都碰到了一些坑，自认为还是挺值得记录下来的。 由于微信朋友圈的火爆和用户基础</description>
-    </item>
-    
-    <item>
-      <title>前端优化实践</title>
-      <link>https://isudox.com/2016/03/17/front-end-optimization/</link>
-      <pubDate>Thu, 17 Mar 2016 20:47:21 +0000</pubDate>
-      
-      <guid>https://isudox.com/2016/03/17/front-end-optimization/</guid>
-      <description>还在憋&amp;hellip;</description>
     </item>
     
     <item>

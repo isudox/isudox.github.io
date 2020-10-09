@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/07/07</div> 
   </header>
   <div class="post-content"><p>最近开始做的一个课余项目用 Flask + PostgreSQL + Bootstrap 快速开发。之前本地开发和生产部署都用 <a href="https://www.mysql.com/">MySQL</a>，而 <a href="https://www.postgresql.org/">PostgreSQL</a> 是关系型数据库阵营中的另一大高手。这俩的口号放在一起看相当好玩。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p><img src="https://o70e8d1kb.qnssl.com/mysql-vs-postgresql.png" alt=""></p>
 <p>一个自称 &ldquo;The world&rsquo;s most popular open source database&rdquo;，另一个自称 &ldquo;The world&rsquo;s most advanced open source database&rdquo;。论针锋相对，我就服这俩。→_→</p>
 <p>至于 MySQL 和 PostgreSQL 之间的比较，可以参考 Digital Ocean 社区里的一篇文章，写的很详细，顺便还拉上了 SQLite。
@@ -134,7 +134,7 @@ postgres=#
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">psql <span style="color:#f92672">(</span>9.5.3<span style="color:#f92672">)</span>
 Type <span style="color:#e6db74">&#34;help&#34;</span> <span style="color:#66d9ef">for</span> help.
 
-mytestdb<span style="color:#f92672">=</span>#
+mytestdb<span style="color:#f92672">=</span><span style="color:#75715e">#</span>
 </code></pre></div><p>将数据库的所有权限赋予给数据库用户</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">ALL</span> <span style="color:#66d9ef">ON</span> mytestdb.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> dbuser;
 </code></pre></div><p>在控制台里输入 <code>\h</code> 查看所有可使用命令的帮助文档，或者指定要查询的命令 <code>\h command</code>。</p>

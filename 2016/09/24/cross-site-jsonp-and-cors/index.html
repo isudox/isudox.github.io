@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/09/09</div> 
   </header>
   <div class="post-content"><p>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>(JSON with Padding) 和 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a>(Cross-Origin Resource Sharing)。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>首先理清一个经常会被混淆的概念，AJAX(Asynchronous JavaScript and XML) 和跨域请求是两个不同的概念，AJAX 是异步请求和解析处理 XML 文档的方式，它在服务器端没有提供支持（CORS 是一种解决方案）的前提下，也是无法跨域的。</p>
 <h3 id="跨域请求">跨域请求</h3>
 <p>跨域请求，顾名思义，就是从 A 地址向非同源的 B 地址发起了请求。参考 MDN 上对同源的定义:</p>
@@ -105,36 +105,36 @@
 <table>
 <thead>
 <tr>
-<th align="center">URL</th>
-<th align="center">结果</th>
-<th align="center">原因</th>
+<th style="text-align:center">URL</th>
+<th style="text-align:center">结果</th>
+<th style="text-align:center">原因</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><a href="http://store.company.com/dir2/other.html">http://store.company.com/dir2/other.html</a></td>
-<td align="center">成功</td>
-<td align="center"></td>
+<td style="text-align:center"><a href="http://store.company.com/dir2/other.html">http://store.company.com/dir2/other.html</a></td>
+<td style="text-align:center">成功</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="center"><a href="http://store.company.com/dir/inner/another.html">http://store.company.com/dir/inner/another.html</a></td>
-<td align="center">成功</td>
-<td align="center"></td>
+<td style="text-align:center"><a href="http://store.company.com/dir/inner/another.html">http://store.company.com/dir/inner/another.html</a></td>
+<td style="text-align:center">成功</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
-<td align="center"><a href="https://store.company.com/secure.html">https://store.company.com/secure.html</a></td>
-<td align="center">失败</td>
-<td align="center">协议不同</td>
+<td style="text-align:center"><a href="https://store.company.com/secure.html">https://store.company.com/secure.html</a></td>
+<td style="text-align:center">失败</td>
+<td style="text-align:center">协议不同</td>
 </tr>
 <tr>
-<td align="center"><a href="http://store.company.com">http://store.company.com</a>:81/dir/etc.html</td>
-<td align="center">失败</td>
-<td align="center">端口不同</td>
+<td style="text-align:center"><a href="http://store.company.com">http://store.company.com</a>:81/dir/etc.html</td>
+<td style="text-align:center">失败</td>
+<td style="text-align:center">端口不同</td>
 </tr>
 <tr>
-<td align="center"><a href="http://news.company.com/dir/other.html">http://news.company.com/dir/other.html</a></td>
-<td align="center">失败</td>
-<td align="center">主机名不同</td>
+<td style="text-align:center"><a href="http://news.company.com/dir/other.html">http://news.company.com/dir/other.html</a></td>
+<td style="text-align:center">失败</td>
+<td style="text-align:center">主机名不同</td>
 </tr>
 </tbody>
 </table>

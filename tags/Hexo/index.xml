@@ -6,11 +6,7 @@
     <description>Recent content in Hexo on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 14 Jul 2016 16:01:06 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/hexo/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 14 Jul 2016 16:01:06 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/hexo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hexo 主题美化</title>
       <link>https://isudox.com/2016/07/14/customize-hexo-theme/</link>

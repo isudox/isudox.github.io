@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/09/09</div> 
   </header>
   <div class="post-content"><p>无论是什么编程语言，容器都是非常重要的概念，在 Java 的实际开发中更是无处不在，各种 List、Set、Map。很多时候就是随着编程的惯性用了 ArrayList 或者 HashMap，但是并没对其特性和适用场景作更多的思考。开发者对 Java 容器的讨论比较多，我自己从源码的角度做个粗浅的整理。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h2 id="collection">Collection</h2>
 <p>java.util 包中的基于 Collection 接口的有 List、Set 和 Queue，下面这张图清楚的显示了 Collection 接口的向下实现和继承关系。</p>
 <p><img src="https://o70e8d1kb.qnssl.com/java-collection-hierarchy.png" alt=""></p>
@@ -259,105 +259,105 @@
 <table>
 <thead>
 <tr>
-<th align="center">Collection class</th>
-<th align="center">Base class</th>
-<th align="center">Base interfaces</th>
-<th align="center">Duplicate elements?</th>
-<th align="center">Ordered?</th>
-<th align="center">Sorted?</th>
-<th align="center">Thread-safe?</th>
+<th style="text-align:center">Collection class</th>
+<th style="text-align:center">Base class</th>
+<th style="text-align:center">Base interfaces</th>
+<th style="text-align:center">Duplicate elements?</th>
+<th style="text-align:center">Ordered?</th>
+<th style="text-align:center">Sorted?</th>
+<th style="text-align:center">Thread-safe?</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">ArrayList<!-- raw HTML omitted --></td>
-<td align="center">AbstractList<!-- raw HTML omitted --></td>
-<td align="center">List<!-- raw HTML omitted --></td>
-<td align="center">Y</td>
-<td align="center">Y</td>
-<td align="center">N</td>
-<td align="center">N</td>
+<td style="text-align:center">ArrayList<E></td>
+<td style="text-align:center">AbstractList<E></td>
+<td style="text-align:center">List<E></td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
 </tr>
 <tr>
-<td align="center">LinkedList<!-- raw HTML omitted --></td>
-<td align="center">AbstractSequentialList<!-- raw HTML omitted --></td>
-<td align="center">List<!-- raw HTML omitted -->; Deque<!-- raw HTML omitted --></td>
-<td align="center">Y</td>
-<td align="center">Y</td>
-<td align="center">N</td>
-<td align="center">N</td>
+<td style="text-align:center">LinkedList<E></td>
+<td style="text-align:center">AbstractSequentialList<E></td>
+<td style="text-align:center">List<E>; Deque<E></td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
 </tr>
 <tr>
-<td align="center">Vector<!-- raw HTML omitted --></td>
-<td align="center">AbstractList<!-- raw HTML omitted --></td>
-<td align="center">List<!-- raw HTML omitted --></td>
-<td align="center">Y</td>
-<td align="center">Y</td>
-<td align="center">N</td>
-<td align="center">Y</td>
+<td style="text-align:center">Vector<E></td>
+<td style="text-align:center">AbstractList<E></td>
+<td style="text-align:center">List<E></td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
 </tr>
 <tr>
-<td align="center">HashSet<!-- raw HTML omitted --></td>
-<td align="center">AbstractSet<!-- raw HTML omitted --></td>
-<td align="center">Set<!-- raw HTML omitted --></td>
-<td align="center">N</td>
-<td align="center">N</td>
-<td align="center">N</td>
-<td align="center">N</td>
+<td style="text-align:center">HashSet<E></td>
+<td style="text-align:center">AbstractSet<E></td>
+<td style="text-align:center">Set<E></td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
 </tr>
 <tr>
-<td align="center">LinkedHashSet<!-- raw HTML omitted --></td>
-<td align="center">HashSet<!-- raw HTML omitted --></td>
-<td align="center">Set<!-- raw HTML omitted --></td>
-<td align="center">N</td>
-<td align="center">Y</td>
-<td align="center">N</td>
-<td align="center">N</td>
+<td style="text-align:center">LinkedHashSet<E></td>
+<td style="text-align:center">HashSet<E></td>
+<td style="text-align:center">Set<E></td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
 </tr>
 <tr>
-<td align="center">TreeSet<!-- raw HTML omitted --></td>
-<td align="center">AbstractSet<!-- raw HTML omitted --></td>
-<td align="center">NavigableSet<!-- raw HTML omitted --></td>
-<td align="center">N</td>
-<td align="center">Y</td>
-<td align="center">Y</td>
-<td align="center">N</td>
+<td style="text-align:center">TreeSet<E></td>
+<td style="text-align:center">AbstractSet<E></td>
+<td style="text-align:center">NavigableSet<E></td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
 </tr>
 <tr>
-<td align="center">HashMap&lt;K, V&gt;</td>
-<td align="center">AbstractMap&lt;K, V&gt;</td>
-<td align="center">Map&lt;K, V&gt;</td>
-<td align="center">N</td>
-<td align="center">N</td>
-<td align="center">N</td>
-<td align="center">N</td>
+<td style="text-align:center">HashMap&lt;K, V&gt;</td>
+<td style="text-align:center">AbstractMap&lt;K, V&gt;</td>
+<td style="text-align:center">Map&lt;K, V&gt;</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
 </tr>
 <tr>
-<td align="center">LinkedHashMap&lt;K, V&gt;</td>
-<td align="center">HashMap&lt;K, V&gt;</td>
-<td align="center">Map&lt;K, V&gt;</td>
-<td align="center">N</td>
-<td align="center">Y</td>
-<td align="center">N</td>
-<td align="center">N</td>
+<td style="text-align:center">LinkedHashMap&lt;K, V&gt;</td>
+<td style="text-align:center">HashMap&lt;K, V&gt;</td>
+<td style="text-align:center">Map&lt;K, V&gt;</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
 </tr>
 <tr>
-<td align="center">Hashtable&lt;K, V&gt;</td>
-<td align="center">Dictionary&lt;K, V&gt;</td>
-<td align="center">Map&lt;K, V&gt;</td>
-<td align="center">N</td>
-<td align="center">N</td>
-<td align="center">N</td>
-<td align="center">Y</td>
+<td style="text-align:center">Hashtable&lt;K, V&gt;</td>
+<td style="text-align:center">Dictionary&lt;K, V&gt;</td>
+<td style="text-align:center">Map&lt;K, V&gt;</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
 </tr>
 <tr>
-<td align="center">TreeMap&lt;K, V&gt;</td>
-<td align="center">AbstractMap&lt;K, V&gt;</td>
-<td align="center">NavigableMap&lt;K, V&gt;</td>
-<td align="center">N</td>
-<td align="center">Y</td>
-<td align="center">Y</td>
-<td align="center">N</td>
+<td style="text-align:center">TreeMap&lt;K, V&gt;</td>
+<td style="text-align:center">AbstractMap&lt;K, V&gt;</td>
+<td style="text-align:center">NavigableMap&lt;K, V&gt;</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
 </tr>
 </tbody>
 </table>

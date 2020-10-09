@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/08/08</div> 
   </header>
   <div class="post-content"><p>成熟的互联网公司内部一般都会有多个线上环境，像在 JD，就有测试环境，预发布环境，生产环境。开发过程通常是现在本地编写代码，功能差不多了提到测试环境，再到预发布联调，测试通过再提交上线包部署到生产环境。但这是理想状况，实际开发中会有上下游系统联调的问题。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>JD 的项目绝大多数都已经服务化了，服务的提供者和消费者分别在服务中心注册，消费者就能调用服务者的接口。但由于 JD 内部系统繁多，各有不同的开发团队维护各自的项目，除了生产环境和预发布环境能保证各系统间能互联互通，很多情况下，本地运行或在测试环境上运行时，没法调用到服务提供者的接口，这就很尴尬了，因为测试资源的不到位，只能上预发布环境进行上下游系统的对接联调，这是很烦人的，比较好的开发方案是，如果测试环境不完善，就把预发布环境上服务接口的真实数据截流并重定向到本地文件，把它打包成一个本地的测试数据源，以后直接在本地运行就行了。</p>
 <p>如何拦截数据？这就需要 AOP 大显身手了。Spring AOP 可以通过 <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/aop/framework/autoproxy/BeanNameAutoProxyCreator.html">BeanNameAutoProxyCreatoraaaa</a> 自动代理目标 bean，属性 <code>beanNames</code> 和 <code>interceptorNames</code> 分别设置要代理的目标 bean 列表和拦截器数组。这样就很方便的实现了对目标 bean 的切入拦截。</p>
 <p>简单说下具体的实现流程：</p>

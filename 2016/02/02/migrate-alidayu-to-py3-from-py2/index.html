@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -95,7 +95,7 @@
   </header>
   <div class="post-content"><p>近期课余时间开发一个基于 Django 的 RESTful Web Service，需要接入短信验证发送功能，比较之后选定<a href="http://www.alidayu.com/">阿里大鱼</a>的解决方案。</p>
 <p>然而，选 Python 作为技术栈的悲催之处在于，虽然 Python 的第三方库和生态很强大，但是就国内的开发圈而言，Python 是一个相对小众的流派，又由于 Python 2.x 和 Python 3.x 的分化，许多第三方库并没有跟进 Python 3，导致很多时候用 Python 会有些捉襟见肘，尤其是像我这种野路子的 Python 开发。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>比如阿里大鱼的短信方案，虽然相比其他厂商很良心的在 PHP 、 Java 版 SDK 之外，友情附赠了 Python 版，但集成进 Django 工程并 debug 后，真是握了棵草，它是基于 Python 2.x 开发的，翻了下开发包源码文件，署名为 “lihao” 的这位阿里同学是在 2012 年更新的源码，这竟是一份蒙尘多年的代码啊，当时我的内心是奔溃的……</p>
 <blockquote>
 <p>自己动手，丰衣足食。——《毛选》</p>

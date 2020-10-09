@@ -6,11 +6,7 @@
     <description>Recent content in Unittest on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 10 Oct 2016 22:12:35 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/unittest/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 10 Oct 2016 22:12:35 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/unittest/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>JUnit &#43; Mockito 单元测试的风云际会</title>
       <link>https://isudox.com/2016/10/10/unit-test-with-junit-mockito/</link>

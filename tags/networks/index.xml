@@ -6,11 +6,7 @@
     <description>Recent content in Networks on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 13 Dec 2019 10:14:44 +0800</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/networks/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 13 Dec 2019 10:14:44 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/networks/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>动手搭建一个梯子</title>
       <link>https://isudox.com/2019/12/13/proxy-is-a-ladder/</link>

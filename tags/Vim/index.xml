@@ -6,11 +6,7 @@
     <description>Recent content in Vim on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 25 Jun 2017 22:40:10 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/vim/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 25 Jun 2017 22:40:10 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/vim/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>扔掉鼠标，开始键盘流编程</title>
       <link>https://isudox.com/2017/06/25/coding-with-keyboard-no-mouse/</link>

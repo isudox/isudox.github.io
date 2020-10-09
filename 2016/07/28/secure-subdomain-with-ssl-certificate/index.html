@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -95,7 +95,7 @@
   </header>
   <div class="post-content"><p>今天把小站所在 Linode 服务器升级到了 4G 2CPU 的配置，可以搞搞大新闻了，打算用 Docker 部署下 GitLab 作为和前辈小伙伴们写作开发的代码库，把 GitLab 绑定到小站的子域名下。另外还得再加上 SSL 证书。
 Docker 部署 GitLab 的事后面再写，先记下给子域名安装证书的事。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h3 id="解析子域名">解析子域名</h3>
 <p>从域名提供商买到域名后，可以用在多个不同的网站上。比如经常可以看到类似这样的域名，<code>bss.example.com</code>，<code>blog.example.com</code>，其实这俩是彼此独立的网站，但是都访问到 <code>sample.com</code> 域名下，这就是在同一域名下部署多个网站的范例。</p>
 <p>域名和 IP 通过 DNS 关联在一起，所以无论常见多少个子域名，都是要通过 DNS 解析到关联 IP 的服务器上。如果要新增子域名，需要在提供 DNS 解析服务的提供商处建立一条解析，将子域名关联到根域名的 IP 上。</p>

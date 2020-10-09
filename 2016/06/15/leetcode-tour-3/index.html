@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,13 +94,13 @@
     <div class="post-meta">2016/06/06</div> 
   </header>
   <div class="post-content"><p>继上篇 <a href="/2016/05/17/leetcode-tour-2/">LeetCode 探险第二弹</a>，第三弹记录第 11 到 15 题。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h3 id="container-with-most-water">Container With Most Water</h3>
 <p>第 11 题 <a href="https://leetcode.com/problems/container-with-most-water/">Container With Most Water</a></p>
 <blockquote>
-<p>给出 n 个非负整数 a<!-- raw HTML omitted -->1<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->2<!-- raw HTML omitted -->, &hellip;, a<!-- raw HTML omitted -->n<!-- raw HTML omitted -->，每个数指向一个坐标点 (i, a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->)。该 n 个坐标点画出了 n 条纵线，即从 (i, a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。</p>
+<p>给出 n 个非负整数 a<sub>1</sub>, a<sub>2</sub>, &hellip;, a<sub>n</sub>，每个数指向一个坐标点 (i, a<sub>i</sub>)。该 n 个坐标点画出了 n 条纵线，即从 (i, a<sub>i</sub>) 到 (i, 0) 之间的线段。找出其中的两条线段和 x 轴形成的容器能装满最多的水。</p>
 </blockquote>
-<p>假设待求的这两条线段的坐标分别为(i, 0)-(i, a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->) 和 (j, 0)-(j, a<!-- raw HTML omitted -->j<!-- raw HTML omitted -->)，那么容器的底座长度 L=Math.abs(i - j)，高度 H=Math.min(a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->j<!-- raw HTML omitted -->)，容积 V=L*H。</p>
+<p>假设待求的这两条线段的坐标分别为(i, 0)-(i, a<sub>i</sub>) 和 (j, 0)-(j, a<sub>j</sub>)，那么容器的底座长度 L=Math.abs(i - j)，高度 H=Math.min(a<sub>i</sub>, a<sub>j</sub>)，容积 V=L*H。</p>
 <p>最笨也是最直接的办法就是在循环里暴力枚举。把所有能组成的容器都测量一遍，不多说了，直接撸代码：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ContainerWithMostWater.java v1.0
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
@@ -116,8 +116,8 @@
         <span style="color:#66d9ef">return</span> maxV<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>提交后被 Lee他Code 婉拒，因为 Time Limit Exceeded，这种解法时间复杂度是 O(n<!-- raw HTML omitted -->2<!-- raw HTML omitted -->)，当 n 很大时，运行时间随指数增长会非常可怕。只能想办法精简处理过程，是不是所有 0.5(n*(n-1)) 中组合都要计算一遍，必须不是。涉及两个变量长和高，因为长的最大值是已知的，从长度取最大开始比较：
-先取首末两个点 1 和 n，容积是 V=(n-1)*Math.min(a<!-- raw HTML omitted -->1<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->n<!-- raw HTML omitted -->)。除此之外的选点，长度不可能比这种情况大，要使长度变小的前提下，容积更大，必要条件就是 Math.min(a<!-- raw HTML omitted -->i<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->j<!-- raw HTML omitted -->) 要大于 Math.min(a<!-- raw HTML omitted -->1<!-- raw HTML omitted -->, a<!-- raw HTML omitted -->n<!-- raw HTML omitted -->)。所以可以从首末两端往中间移动，求取容积并存储当前最大容积后，放弃两侧高度较小的那个点，并向中心移动，这样处理可以省去很多不必要的计算，时间复杂度降低到 O(n)。</p>
+</code></pre></div><p>提交后被 Lee他Code 婉拒，因为 Time Limit Exceeded，这种解法时间复杂度是 O(n<sup>2</sup>)，当 n 很大时，运行时间随指数增长会非常可怕。只能想办法精简处理过程，是不是所有 0.5(n*(n-1)) 中组合都要计算一遍，必须不是。涉及两个变量长和高，因为长的最大值是已知的，从长度取最大开始比较：
+先取首末两个点 1 和 n，容积是 V=(n-1)*Math.min(a<sub>1</sub>, a<sub>n</sub>)。除此之外的选点，长度不可能比这种情况大，要使长度变小的前提下，容积更大，必要条件就是 Math.min(a<sub>i</sub>, a<sub>j</sub>) 要大于 Math.min(a<sub>1</sub>, a<sub>n</sub>)。所以可以从首末两端往中间移动，求取容积并存储当前最大容积后，放弃两侧高度较小的那个点，并向中心移动，这样处理可以省去很多不必要的计算，时间复杂度降低到 O(n)。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ContainerWithMostWater.java v1.1
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">maxArea</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> height<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -140,18 +140,18 @@
 </code></pre></div><table>
 <thead>
 <tr>
-<th align="center">Status</th>
-<th align="center">Tests</th>
-<th align="center">Run Time</th>
-<th align="center">Language</th>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Accepted</td>
-<td align="center">45 / 45</td>
-<td align="center">5 ms</td>
-<td align="center">Java</td>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">45 / 45</td>
+<td style="text-align:center">5 ms</td>
+<td style="text-align:center">Java</td>
 </tr>
 </tbody>
 </table>
@@ -196,18 +196,18 @@
 </code></pre></div><table>
 <thead>
 <tr>
-<th align="center">Status</th>
-<th align="center">Tests</th>
-<th align="center">Run Time</th>
-<th align="center">Language</th>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Accepted</td>
-<td align="center">3999 / 3999</td>
-<td align="center">15 ms</td>
-<td align="center">Java</td>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">15 ms</td>
+<td style="text-align:center">Java</td>
 </tr>
 </tbody>
 </table>
@@ -234,22 +234,22 @@
 </code></pre></div><table>
 <thead>
 <tr>
-<th align="center">Status</th>
-<th align="center">Tests</th>
-<th align="center">Run Time</th>
-<th align="center">Language</th>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Accepted</td>
-<td align="center">3999 / 3999</td>
-<td align="center">12 ms</td>
-<td align="center">Java</td>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">12 ms</td>
+<td style="text-align:center">Java</td>
 </tr>
 </tbody>
 </table>
-<p>另外再提供一个思路，罗马数字 1 - 3999 的匹配过程中，9*10<!-- raw HTML omitted -->n<!-- raw HTML omitted -->，5*10<!-- raw HTML omitted -->n<!-- raw HTML omitted --> 和 4*10<!-- raw HTML omitted -->n<!-- raw HTML omitted --> 是特殊的符号，因此把它们单独放进映射列表中。让整数从高位作消减，每减去一个数，就拼接该数所对应的罗马数字，直到不能再减为止。</p>
+<p>另外再提供一个思路，罗马数字 1 - 3999 的匹配过程中，9*10<sup>n</sup>，5*10<sup>n</sup> 和 4*10<sup>n</sup> 是特殊的符号，因此把它们单独放进映射列表中。让整数从高位作消减，每减去一个数，就拼接该数所对应的罗马数字，直到不能再减为止。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// IntegerToRoman.java v1.2
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">intToRoman</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -268,18 +268,18 @@
 </code></pre></div><table>
 <thead>
 <tr>
-<th align="center">Status</th>
-<th align="center">Tests</th>
-<th align="center">Run Time</th>
-<th align="center">Language</th>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Accepted</td>
-<td align="center">3999 / 3999</td>
-<td align="center">8 ms</td>
-<td align="center">Java</td>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">8 ms</td>
+<td style="text-align:center">Java</td>
 </tr>
 </tbody>
 </table>
@@ -311,18 +311,18 @@
 </code></pre></div><table>
 <thead>
 <tr>
-<th align="center">Status</th>
-<th align="center">Tests</th>
-<th align="center">Run Time</th>
-<th align="center">Language</th>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Accepted</td>
-<td align="center">3999 / 3999</td>
-<td align="center">10 ms</td>
-<td align="center">Java</td>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">10 ms</td>
+<td style="text-align:center">Java</td>
 </tr>
 </tbody>
 </table>
@@ -362,18 +362,18 @@
 </code></pre></div><table>
 <thead>
 <tr>
-<th align="center">Status</th>
-<th align="center">Tests</th>
-<th align="center">Run Time</th>
-<th align="center">Language</th>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Accepted</td>
-<td align="center">3999 / 3999</td>
-<td align="center">7 ms</td>
-<td align="center">Java</td>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">3999 / 3999</td>
+<td style="text-align:center">7 ms</td>
+<td style="text-align:center">Java</td>
 </tr>
 </tbody>
 </table>
@@ -408,18 +408,18 @@
 </code></pre></div><table>
 <thead>
 <tr>
-<th align="center">Status</th>
-<th align="center">Tests</th>
-<th align="center">Run Time</th>
-<th align="center">Language</th>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Accepted</td>
-<td align="center">117 / 117</td>
-<td align="center">2 ms</td>
-<td align="center">Java</td>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">117 / 117</td>
+<td style="text-align:center">2 ms</td>
+<td style="text-align:center">Java</td>
 </tr>
 </tbody>
 </table>
@@ -466,18 +466,18 @@
 </code></pre></div><table>
 <thead>
 <tr>
-<th align="center">Status</th>
-<th align="center">Tests</th>
-<th align="center">Run Time</th>
-<th align="center">Language</th>
+<th style="text-align:center">Status</th>
+<th style="text-align:center">Tests</th>
+<th style="text-align:center">Run Time</th>
+<th style="text-align:center">Language</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Accepted</td>
-<td align="center">311 / 311</td>
-<td align="center">9 ms</td>
-<td align="center">Java</td>
+<td style="text-align:center">Accepted</td>
+<td style="text-align:center">311 / 311</td>
+<td style="text-align:center">9 ms</td>
+<td style="text-align:center">Java</td>
 </tr>
 </tbody>
 </table>

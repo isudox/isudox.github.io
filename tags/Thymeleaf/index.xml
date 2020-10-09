@@ -6,11 +6,7 @@
     <description>Recent content in Thymeleaf on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 06 Jul 2016 15:25:45 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/thymeleaf/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 06 Jul 2016 15:25:45 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/thymeleaf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Spring MVC 集成 Thymeleaf</title>
       <link>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</link>

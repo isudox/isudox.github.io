@@ -6,11 +6,7 @@
     <description>Recent content in Docker on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 16 Jan 2017 13:30:31 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 16 Jan 2017 13:30:31 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker 容器化应用</title>
       <link>https://isudox.com/2017/01/16/dockerize-applications/</link>

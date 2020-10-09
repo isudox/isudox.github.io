@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/10/10</div> 
   </header>
   <div class="post-content"><p>在 Python 里创建一个有一定规律的序列，很直观的做法就是在循环里创建序列的各个元素。但 Python 有更加符合 Pythonic 风格的做法，就是用生成器来实现。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>举个被写滥的例子吧，用 Python 生成 Fibonacci 数列的前 n 个数字，该怎么做？</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fib</span>(n):
     <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>:

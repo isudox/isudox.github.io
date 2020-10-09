@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/10/10</div> 
   </header>
   <div class="post-content"><p>三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h3 id="remove-duplicates-from-sorted-array">Remove Duplicates from Sorted Array</h3>
 <p>第 26 题 <a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/">Remove Duplicates from Sorted Array</a></p>
 <blockquote>
@@ -192,7 +192,7 @@
 <blockquote>
 <p>两个整数做除法，要求不能使用乘法、除法、取余运算。如果结果溢出，则返回 MAX_INT。</p>
 </blockquote>
-<p>整数相除，又不允许使用乘法、除法、取余，那么能想到的只能是减法了。除数不断减去被除数，直到小于除数为止。但是这样做效率很低，试想如果计算 10000 和 1 相除，那么岂不是要做 10000 次减法！就是要找一种方法使得除数能快速接近被除数，除了幂运算外，乘法是最快的，既然不能直接用乘法，那就用位运算，向左位移 n 位就是乘以 2<!-- raw HTML omitted -->n<!-- raw HTML omitted -->。接下来就相当于做折半操作，每次减去 2<!-- raw HTML omitted -->n<!-- raw HTML omitted --> 个除数，再递减 n，直到不够做减法为止。当然这个方法有个前提，就是需要把两个整数都取绝对值。</p>
+<p>整数相除，又不允许使用乘法、除法、取余，那么能想到的只能是减法了。除数不断减去被除数，直到小于除数为止。但是这样做效率很低，试想如果计算 10000 和 1 相除，那么岂不是要做 10000 次减法！就是要找一种方法使得除数能快速接近被除数，除了幂运算外，乘法是最快的，既然不能直接用乘法，那就用位运算，向左位移 n 位就是乘以 2<sup>n</sup>。接下来就相当于做折半操作，每次减去 2<sup>n</sup> 个除数，再递减 n，直到不够做减法为止。当然这个方法有个前提，就是需要把两个整数都取绝对值。</p>
 <p>这里还需要注意，Java 里 <code>-2147483648</code> 取绝对值还是 <code>-2147483648</code>，因为试图把它变成正数时出现越界，又变成了 <code>-2147483648</code>。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">divide</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> dividend<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> divisor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>

@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2017/01/01</div> 
   </header>
   <div class="post-content"><p>最近看了一篇<a href="http://www.kkblog.me/notes/%E4%BD%BF%E7%94%A8Docker%E6%9E%84%E5%BB%BA%E9%AB%98%E6%95%88Web%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83">博文</a>，大受启发，也想着手尝试把自己 VPS 上的应用容器化，一方面尝试下新的开发方式，另一方面也便于应用迁移。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h2 id="dockerfile">Dockerfile</h2>
 <p>Docker 通过 <code>dockerfile</code> 配置来把应用构建成镜像，<code>dockerfile</code> 是一个包含了配置和创建应用的全部命令的文本。Docker 官网上有对 <code>dockerfile</code> 的详细<a href="https://docs.docker.com/engine/reference/builder/">说明文档</a></p>
 <p>看了文档后，对其使用有大致的了解，对不是太复杂的应用的容器化，已经能实践了，下面对 <code>dockerfile</code> 的编写和使用简单总结下。</p>
@@ -137,7 +137,7 @@
 <li><code>ENTRYPOINT command param1 param2</code>：shell 格式；</li>
 </ul>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile">docker run -i -t --rm -p 80:80 nginx<span style="color:#960050;background-color:#1e0010">
-</span></code></pre></div><p>例如上面的 nginx 容器启动命令，docker run <!-- raw HTML omitted --> -d 会将参数 <code>-d</code> 传递给 entry point，如果是在 <code>CMD</code> 中已经被设置的参数，则会被覆盖掉。启动时，如果要覆盖 <code>ENTRYPOINT</code>，可以通过 <code>--entrypoint</code> 标识设置新的 <code>ENTRYPOINT</code>。</p>
+</span></code></pre></div><p>例如上面的 nginx 容器启动命令，docker run <image> -d 会将参数 <code>-d</code> 传递给 entry point，如果是在 <code>CMD</code> 中已经被设置的参数，则会被覆盖掉。启动时，如果要覆盖 <code>ENTRYPOINT</code>，可以通过 <code>--entrypoint</code> 标识设置新的 <code>ENTRYPOINT</code>。</p>
 <p>只有最后一条 <code>ENTRYPOINT</code> 指令才会生效。</p>
 <h4 id="expose">EXPOSE</h4>
 <p><code>EXPOSE</code> 指令设置容器运行时监听的端口号。<code>EXPOSE</code> 并不能直接使容器内端口被主机访问，如果要实现主机访问容器端口，必须通过 <code>-p</code> 标识来指定可访问的容器端口。</p>
@@ -168,7 +168,7 @@
 <li><code>ADD &lt;src&gt;... &lt;dest&gt;</code></li>
 <li><code>ADD [&quot;&lt;src&gt;&quot;,... &quot;&lt;dest&gt;&quot;]</code>：当路径中存在空格时，需要采用这种格式；</li>
 </ul>
-<p><!-- raw HTML omitted --> 是绝对路径，或者基于 <code>WORKDIR</code> 的相对路径，例如：</p>
+<p><dest> 是绝对路径，或者基于 <code>WORKDIR</code> 的相对路径，例如：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">ADD</span> test relativeDir/          <span style="color:#75715e"># adds &#34;test&#34; to `WORKDIR`/relativeDir/</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> test /absoluteDir/         <span style="color:#75715e"># adds &#34;test&#34; to /absoluteDir/</span><span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><h4 id="workdir">WORKDIR</h4>
@@ -179,7 +179,7 @@
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pwd<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>得到的结果应该是 <code>/a/b/c</code>。</p>
 <h4 id="copy">COPY</h4>
-<p><code>COPY</code> 和 <code>ADD</code> 功能上基本相同，不同之处在于，<code>ADD</code> 支持从远程拉取文件复制到 <!-- raw HTML omitted -->，支持自动解压 <code>tar</code> 包并删除。</p>
+<p><code>COPY</code> 和 <code>ADD</code> 功能上基本相同，不同之处在于，<code>ADD</code> 支持从远程拉取文件复制到 <dest>，支持自动解压 <code>tar</code> 包并删除。</p>
 <h4 id="volume">VOLUME</h4>
 <p><code>VOLUME</code> 指令创建一个挂载点，使得容器内的该挂载点具有持久数据的功能，换句话说，就是容器和主机之间的共享目录，当关闭容器后，共享目录仍会保留。参考示例：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu</span><span style="color:#960050;background-color:#1e0010">
@@ -256,14 +256,14 @@ sudo make install
 </code></pre></div><p>一劳永逸！</p>
 <h3 id="docker-compose">docker-compose</h3>
 <p>如果每次启动 Docker 镜像都要手敲一大段命令来给容器配置参数的话，还是不够简洁优雅，docker-compose 就解决了这个问题，直接把配置写成文本，由 docker-compose 来读取配置文件 <code>docker-compose.yml</code> 并启动容器，真正做到一次编写，到处运行。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">shadowsocks</span>:
-  <span style="color:#66d9ef">image</span>: sudoz/shadowsocks-libev
-  <span style="color:#66d9ef">ports</span>:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">shadowsocks</span>:
+  <span style="color:#f92672">image</span>: <span style="color:#ae81ff">sudoz/shadowsocks-libev</span>
+  <span style="color:#f92672">ports</span>:
     - <span style="color:#e6db74">&#34;8388:8388&#34;</span>
-  <span style="color:#66d9ef">environment</span>:
-    - METHOD=aes<span style="color:#ae81ff">-256</span>-cfb
-    - PASSWORD=<span style="color:#ae81ff">123456</span>
-  <span style="color:#66d9ef">restart</span>: always
+  <span style="color:#f92672">environment</span>:
+    - <span style="color:#ae81ff">METHOD=aes-256-cfb</span>
+    - <span style="color:#ae81ff">PASSWORD=123456</span>
+  <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
 </code></pre></div><p>配置很明白，对应了 <code>docker run</code> 启动容器时的参数配置，现在只需要一行简单的命令来启动容器：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-compose up -d
 </code></pre></div><hr>

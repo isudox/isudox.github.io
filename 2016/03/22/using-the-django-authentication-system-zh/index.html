@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -96,7 +96,7 @@
   <div class="post-content"><blockquote>
 <p>译自 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/">Django Documentation</a>，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。</p>
 </blockquote>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>本文介绍了 Django 认证系统在默认配置下的使用。默认配置已经发展到能够满足大多数项目需求，处理相当数量的任务，而且具备严谨的密码和权限实现。对于有自定义验证需求的项目，Django 支持<a href="https://docs.djangoproject.com/en/1.9/topics/auth/customizing/">扩展验证</a>。
 Django 认证系统提供认证和授权功能，由于两部分功能有耦合，因此通常简称为认证系统。</p>
 <h2 id="user-对象">User 对象</h2>
@@ -141,7 +141,7 @@ Django 同时提供可能会用于用户修改自己密码的 <a href="https://d
 如果 Django 的 <a href="https://docs.djangoproject.com/en/1.9/ref/middleware/#django.contrib.auth.middleware.SessionAuthenticationMiddleware">SessionAuthenticationMiddleware</a> 已开启，则修改用户密码会登出改用户的所有 session。具体细节查阅<a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#session-invalidation-on-password-change">修改密码导致 session 失效</a>。</p>
 <hr>
 <h3 id="验证-users">验证 users</h3>
-<p><strong><!-- raw HTML omitted -->authenticate(**credentials)<!-- raw HTML omitted -->[<a href="https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/#authenticate">source</a>]</strong>
+<p><strong><font color="green">authenticate(**credentials)<font>[<a href="https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/#authenticate">source</a>]</strong>
 要验证给定的用户名和密码，使用 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.authenticate">authenticate()</a> 方法。它的入参形式为 keyword ，默认的设置为 <code>username</code> 和 <code>password</code>，如果验证通过，会返回一个 <code>User</code> 对象，如果验证失败，则返回 None 。例子如下：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> django.contrib.auth <span style="color:#f92672">import</span> authenticate
 user <span style="color:#f92672">=</span> authenticate(username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;john&#39;</span>, password<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;secret&#39;</span>)
@@ -303,7 +303,7 @@ permission <span style="color:#f92672">=</span> Permission<span style="color:#f9
         <span style="color:#66d9ef">return</span> render(request, <span style="color:#e6db74">&#39;myapp/login_error.html&#39;</span>)
     <span style="color:#75715e"># ...</span>
 </code></pre></div><h4 id="login_required-装饰器">login_required 装饰器</h4>
-<p>login_required(redirect_field_name='next&rsquo;, login_url=None)[<a href="https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/decorators/#login_required">source</a>]</p>
+<p>login_required(redirect_field_name=&lsquo;next&rsquo;, login_url=None)[<a href="https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/decorators/#login_required">source</a>]</p>
 <p>可以使用 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.decorators.login_required">login_required()</a> 装饰器作为便捷方式：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> django.contrib.auth.decorators <span style="color:#f92672">import</span> login_required
 

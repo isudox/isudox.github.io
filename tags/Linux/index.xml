@@ -6,11 +6,7 @@
     <description>Recent content in Linux on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 26 Sep 2015 18:02:05 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 26 Sep 2015 18:02:05 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>开启 Arch 之旅</title>
       <link>https://isudox.com/2015/09/26/begin-arch-linux/</link>

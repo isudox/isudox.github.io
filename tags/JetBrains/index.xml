@@ -6,11 +6,7 @@
     <description>Recent content in JetBrains on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 26 Jul 2016 16:47:03 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/jetbrains/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 26 Jul 2016 16:47:03 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/jetbrains/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>JetBrains IDE Vim 模式的方案</title>
       <link>https://isudox.com/2016/07/26/scheme-of-ideavim-keymap/</link>

@@ -6,11 +6,7 @@
     <description>Recent content in Web on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 18 Mar 2016 16:53:47 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/categories/web/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 18 Mar 2016 16:53:47 +0000</lastBuildDate><atom:link href="https://isudox.com/categories/web/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx 启用 HTTP/2</title>
       <link>https://isudox.com/2016/03/18/enable-http-2-on-nginx/</link>

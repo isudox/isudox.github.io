@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/05/05</div> 
   </header>
   <div class="post-content"><p>在公司项目的中间件代码里看到有些配置文件里有很多 <code>&quot;\uXXXX&quot;</code> 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是 UTF-8 编码，配置文件里的中文字符为什么还会被转码？</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h3 id="编码那些事儿">编码那些事儿</h3>
 <p>Spring 读取 <code>.properties</code> 文件并将配置内容加载进 <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Properties.html">Properties</a> 类，文档中明确写明</p>
 <blockquote>

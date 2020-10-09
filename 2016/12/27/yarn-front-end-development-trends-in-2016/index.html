@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/12/12</div> 
   </header>
   <div class="post-content"><p>目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包管理工具 Yarn，一阵横扫之势，GitHub 上狂收 2w+ stars，令人侧目……在上一篇讲 webpack 学习的博客中也尝试使用了 Yarn，本篇就专门写写 Yarn。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h2 id="基础操作">基础操作</h2>
 <p>如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。</p>
 <p>初始化新项目：</p>
@@ -144,90 +144,90 @@ yarn install
 <table>
 <thead>
 <tr>
-<th align="center">npm</th>
-<th align="center">Yarn</th>
+<th style="text-align:center">npm</th>
+<th style="text-align:center">Yarn</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">npm install</td>
-<td align="center">yarn install</td>
+<td style="text-align:center">npm install</td>
+<td style="text-align:center">yarn install</td>
 </tr>
 <tr>
-<td align="center">(N/A)</td>
-<td align="center">yarn install &ndash;flat</td>
+<td style="text-align:center">(N/A)</td>
+<td style="text-align:center">yarn install &ndash;flat</td>
 </tr>
 <tr>
-<td align="center">(N/A)</td>
-<td align="center">yarn install &ndash;har</td>
+<td style="text-align:center">(N/A)</td>
+<td style="text-align:center">yarn install &ndash;har</td>
 </tr>
 <tr>
-<td align="center">(N/A)</td>
-<td align="center">yarn install &ndash;no-lockfile</td>
+<td style="text-align:center">(N/A)</td>
+<td style="text-align:center">yarn install &ndash;no-lockfile</td>
 </tr>
 <tr>
-<td align="center">(N/A)</td>
-<td align="center">yarn install &ndash;pure-lockfile</td>
+<td style="text-align:center">(N/A)</td>
+<td style="text-align:center">yarn install &ndash;pure-lockfile</td>
 </tr>
 <tr>
-<td align="center">npm install [package]</td>
-<td align="center">(N/A)</td>
+<td style="text-align:center">npm install [package]</td>
+<td style="text-align:center">(N/A)</td>
 </tr>
 <tr>
-<td align="center">npm install &ndash;save [package]</td>
-<td align="center">yarn add [package]</td>
+<td style="text-align:center">npm install &ndash;save [package]</td>
+<td style="text-align:center">yarn add [package]</td>
 </tr>
 <tr>
-<td align="center">npm install &ndash;save-dev [package]</td>
-<td align="center">yarn add [package] [&ndash;dev/-D]</td>
+<td style="text-align:center">npm install &ndash;save-dev [package]</td>
+<td style="text-align:center">yarn add [package] [&ndash;dev/-D]</td>
 </tr>
 <tr>
-<td align="center">(N/A)</td>
-<td align="center">yarn add [package] [&ndash;peer/-P]</td>
+<td style="text-align:center">(N/A)</td>
+<td style="text-align:center">yarn add [package] [&ndash;peer/-P]</td>
 </tr>
 <tr>
-<td align="center">npm install &ndash;save-optional [package]</td>
-<td align="center">yarn add [package] [&ndash;optional/-O]</td>
+<td style="text-align:center">npm install &ndash;save-optional [package]</td>
+<td style="text-align:center">yarn add [package] [&ndash;optional/-O]</td>
 </tr>
 <tr>
-<td align="center">npm install &ndash;save-exact [package]</td>
-<td align="center">yarn add [package] [&ndash;exact/-E]</td>
+<td style="text-align:center">npm install &ndash;save-exact [package]</td>
+<td style="text-align:center">yarn add [package] [&ndash;exact/-E]</td>
 </tr>
 <tr>
-<td align="center">(N/A)</td>
-<td align="center">yarn add [package] [&ndash;tilde/-T]</td>
+<td style="text-align:center">(N/A)</td>
+<td style="text-align:center">yarn add [package] [&ndash;tilde/-T]</td>
 </tr>
 <tr>
-<td align="center">npm install &ndash;global [package]</td>
-<td align="center">yarn global add [package]</td>
+<td style="text-align:center">npm install &ndash;global [package]</td>
+<td style="text-align:center">yarn global add [package]</td>
 </tr>
 <tr>
-<td align="center">npm rebuild</td>
-<td align="center">yarn install &ndash;force</td>
+<td style="text-align:center">npm rebuild</td>
+<td style="text-align:center">yarn install &ndash;force</td>
 </tr>
 <tr>
-<td align="center">npm uninstall [package]</td>
-<td align="center">(N/A)</td>
+<td style="text-align:center">npm uninstall [package]</td>
+<td style="text-align:center">(N/A)</td>
 </tr>
 <tr>
-<td align="center">npm uninstall &ndash;save [package]</td>
-<td align="center">yarn remove [package]</td>
+<td style="text-align:center">npm uninstall &ndash;save [package]</td>
+<td style="text-align:center">yarn remove [package]</td>
 </tr>
 <tr>
-<td align="center">npm uninstall &ndash;save-dev [package]</td>
-<td align="center">yarn remove [package]</td>
+<td style="text-align:center">npm uninstall &ndash;save-dev [package]</td>
+<td style="text-align:center">yarn remove [package]</td>
 </tr>
 <tr>
-<td align="center">npm uninstall &ndash;save-optional [package]</td>
-<td align="center">yarn remove [package]</td>
+<td style="text-align:center">npm uninstall &ndash;save-optional [package]</td>
+<td style="text-align:center">yarn remove [package]</td>
 </tr>
 <tr>
-<td align="center">npm cache clean</td>
-<td align="center">yarn cache clean</td>
+<td style="text-align:center">npm cache clean</td>
+<td style="text-align:center">yarn cache clean</td>
 </tr>
 <tr>
-<td align="center">rm -rf node_modules &amp;&amp; npm install</td>
-<td align="center">yarn upgrade</td>
+<td style="text-align:center">rm -rf node_modules &amp;&amp; npm install</td>
+<td style="text-align:center">yarn upgrade</td>
 </tr>
 </tbody>
 </table>

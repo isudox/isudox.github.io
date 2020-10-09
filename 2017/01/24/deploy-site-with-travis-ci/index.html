@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2017/01/01</div> 
   </header>
   <div class="post-content"><p>这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓库会设置 hook，使得有新的 Commit 被 Push 上来后，自动把 Nginx 下的站点目录进行 Pull 更新。这种方案只是一开始的设置比较麻烦，之后就能一劳永逸，但我觉得还可以再抢救下。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h2 id="初步方案">初步方案</h2>
 <p>既然核心目标都是一键部署，为什么不利用持续集成，那就用 <a href="https://travis-ci.org/">Travis CI</a> 吧，和 GitHub 无缝结合。</p>
 <p>先来梳理下整个部署思路：</p>
@@ -155,30 +155,30 @@ npm install
 hexo generate
 hexo deploy
 </code></pre></div><h3 id="travisyml-配置">travis.yml 配置</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">language</span>: node_js
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">language</span>: <span style="color:#ae81ff">node_js</span>
 
-<span style="color:#66d9ef">node_js</span>:
+<span style="color:#f92672">node_js</span>:
   - <span style="color:#e6db74">&#39;6&#39;</span>
 
-<span style="color:#66d9ef">sudo</span>: <span style="color:#66d9ef">false</span>
+<span style="color:#f92672">sudo</span>: <span style="color:#66d9ef">false</span>
 
-<span style="color:#66d9ef">cache</span>:
-  <span style="color:#66d9ef">apt</span>: <span style="color:#66d9ef">true</span>
-  <span style="color:#66d9ef">directories</span>:
-    - node_modules
+<span style="color:#f92672">cache</span>:
+  <span style="color:#f92672">apt</span>: <span style="color:#66d9ef">true</span>
+  <span style="color:#f92672">directories</span>:
+    - <span style="color:#ae81ff">node_modules</span>
 
-<span style="color:#66d9ef">addons</span>:
-  <span style="color:#66d9ef">ssh_known_hosts</span>: github.com
+<span style="color:#f92672">addons</span>:
+  <span style="color:#f92672">ssh_known_hosts</span>: <span style="color:#ae81ff">github.com</span>
 
-<span style="color:#66d9ef">script</span>:
-  - npm run build
+<span style="color:#f92672">script</span>:
+  - <span style="color:#ae81ff">npm run build</span>
 
-<span style="color:#66d9ef">deploy</span>:
-  <span style="color:#66d9ef">provider</span>: script
-  <span style="color:#66d9ef">script</span>: .travis/deploy.sh
-  <span style="color:#66d9ef">skip_cleanup</span>: <span style="color:#66d9ef">true</span>
-  <span style="color:#66d9ef">on</span>:
-    <span style="color:#66d9ef">branch</span>: source
+<span style="color:#f92672">deploy</span>:
+  <span style="color:#f92672">provider</span>: <span style="color:#ae81ff">script</span>
+  <span style="color:#f92672">script</span>: <span style="color:#ae81ff">.travis/deploy.sh</span>
+  <span style="color:#f92672">skip_cleanup</span>: <span style="color:#66d9ef">true</span>
+  <span style="color:#f92672">on</span>:
+    <span style="color:#f92672">branch</span>: <span style="color:#ae81ff">source</span>
 </code></pre></div><p>Travis deploy script 参考如下——</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
 </span><span style="color:#75715e"></span>

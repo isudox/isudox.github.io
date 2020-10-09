@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/10/10</div> 
   </header>
   <div class="post-content"><p>双十一前遭到产品突袭，要把非自营商家的处方药购买流程改为预约流程（出于某种考虑），内心一万只草泥马呼啸而过，那么多接口只给几天时间怎么改的过来……好在需要调用的购物车服务已经为新的预约流程分离了单独的 Redis 存储分组，要做的工作就是在恰当的时候调用恰当的服务。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>如果直接在原有的相关接口方法中进行修改，一方面改动面太大，另一方面回归测试的压力也大，这种侵入式的代码不可取；从本质上看，从购买流程改预约流程无非就是改变相关服务的调用，是对行为的改变，这正是 AOP 的施展舞台。通过 AOP 在切面上织入切点，由 Advice 改变切面的行为，配合反射，根据业务决定动态的调用适配的方法，在不影响原有流程的同时，实现了业务行为的改变。总而言之四个字——亦可赛艇！</p>
 <p>Spring AOP 有多种写法，XML 写法的，Java 写法的，Java 的写法会比 XML 来的更灵活，但对 Spring 的版本要求会高一点。受 《Spring 实战》一书的影响，我倾向于 Java 写法（由于项目是基于 Spring 3.0.5，因此还是需要写一点 XML）。</p>
 <h3 id="写法一">写法一</h3>

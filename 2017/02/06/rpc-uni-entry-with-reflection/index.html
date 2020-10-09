@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2017/02/02</div> 
   </header>
   <div class="post-content"><p>最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一个专属的 Porcessor 去处理服务调用的结果。当然好处就是功能区分清晰，不好的地方就是当 Processor 多了后维护起来不太方便。一种思路就是利用反射思想，为 Processor 中的 RPC 调用添加统一入口，通过服务名和方法名对调用进行定位。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>代理的思路很简单，但真的非常实用，在实际开发中，合理使用代理，能精简很多固有代码。从代理的统一入口进入，根据传入的远程服务名和方法名，自动定位到需要被远程调用的方法，再传入入参并调用该方法，就能代理过多的 Processor 调用 RPC。</p>
 <p>代理入口的代码如下：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rpcEntry&#34;</span><span style="color:#f92672">)</span>

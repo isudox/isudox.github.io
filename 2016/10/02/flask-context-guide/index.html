@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,37 +94,37 @@
     <div class="post-meta">2016/10/10</div> 
   </header>
   <div class="post-content"><p>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那么它可以独立运行了；如果程序需要外部环境的支持，Context 的存在就有意义。比如 Flask Web 开发中常用的 <code>current_app</code>、<code>request</code> 都是 Context，可以在不同方法中调用，并且实现通信及交互。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h3 id="context-的实现">Context 的实现</h3>
 <p>Flask 提供了 4 个 Context：</p>
 <table>
 <thead>
 <tr>
-<th align="center">Context</th>
-<th align="center">类型</th>
-<th align="center">说明</th>
+<th style="text-align:center">Context</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">flask.current_app</td>
-<td align="center">Application Context</td>
-<td align="center">当前 app 的实例对象</td>
+<td style="text-align:center">flask.current_app</td>
+<td style="text-align:center">Application Context</td>
+<td style="text-align:center">当前 app 的实例对象</td>
 </tr>
 <tr>
-<td align="center">flask.g</td>
-<td align="center">Application Context</td>
-<td align="center">处理请求时用作临时存储的对象</td>
+<td style="text-align:center">flask.g</td>
+<td style="text-align:center">Application Context</td>
+<td style="text-align:center">处理请求时用作临时存储的对象</td>
 </tr>
 <tr>
-<td align="center">flask.request</td>
-<td align="center">Request Context</td>
-<td align="center">封装了 HTTP 请求中的内容</td>
+<td style="text-align:center">flask.request</td>
+<td style="text-align:center">Request Context</td>
+<td style="text-align:center">封装了 HTTP 请求中的内容</td>
 </tr>
 <tr>
-<td align="center">flask.session</td>
-<td align="center">Request Context</td>
-<td align="center">存储了用户回话</td>
+<td style="text-align:center">flask.session</td>
+<td style="text-align:center">Request Context</td>
+<td style="text-align:center">存储了用户回话</td>
 </tr>
 </tbody>
 </table>

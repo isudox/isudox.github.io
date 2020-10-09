@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2016/07/07</div> 
   </header>
   <div class="post-content"><p>之前的一篇<a href="/2016/05/17/intellij-idea-keymap-zh/">博客</a>翻译了 IntelliJ IDEA 的默认快捷键操作。快捷操作的功能覆盖面已经很全了，但如果想进阶键盘流，可能还需要一点文本编辑上的快操，比如 Vim 模式。用户有需求，良心厂商 JetBrains 就自己开发了一款强大插件 <a href="https://github.com/JetBrains/ideavim">Ideavim</a>，模拟 Vim 编辑器的操作。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>在安装 ideavim 插件后，IDE 可能会处在几种不同的模式下：</p>
 <ul>
 <li>Vim 模拟器关闭模式（Vim Emulator off）</li>
@@ -108,151 +108,151 @@
 <p>Vim 模拟器的很多快捷键都和 IDE 默认的快捷键有冲突，比如常用的 <code>Ctrl</code> + <code>C</code>，IDE 在第一次检测到快捷键冲突时会弹框让用户选择该快捷键的功能是 IDE 默认还是 Vim 模式，我的选择是尽量把冲突的快捷键定义为 Vim 模式，然后去修改 IDE 的默认快捷键。下面列了一张 vim 和 IDEA 快捷键的冲突表，并标注了自己的取舍修改方案——</p>
 <blockquote>
 <p>注：<code>Ctrl</code> <code>Alt</code> <code>Shift</code> 键下面用了缩写，比如 C + A 表示 Ctrl + A， C_A + A 表示 Ctrl + Alt + A，C_S + A 表示 Ctrl + Shift + A；
-标记有 √ 符的表示采用该快捷键，被<!-- raw HTML omitted -->标记划掉<!-- raw HTML omitted -->则表示舍去该方案，如果 Vim 内置快捷键中不包含该功能，则提供建议的替代方案来实现原功能；</p>
+标记有 √ 符的表示采用该快捷键，被<del>标记划掉</del>则表示舍去该方案，如果 Vim 内置快捷键中不包含该功能，则提供建议的替代方案来实现原功能；</p>
 </blockquote>
 <table>
 <thead>
 <tr>
-<th align="center">快捷键</th>
-<th align="center">JetBrains IDE 功能</th>
-<th align="center">Vim 功能</th>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">JetBrains IDE 功能</th>
+<th style="text-align:center">Vim 功能</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Ctrl+2</td>
-<td align="center">Project Directory √</td>
-<td align="center"><!-- raw HTML omitted -->空缺<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+2</td>
+<td style="text-align:center">Project Directory √</td>
+<td style="text-align:center"><del>空缺</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+Shift+2</td>
-<td align="center">插入/取消标记 2 √</td>
-<td align="center"><!-- raw HTML omitted -->空缺<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+Shift+2</td>
+<td style="text-align:center">插入/取消标记 2 √</td>
+<td style="text-align:center"><del>空缺</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+Shift+6</td>
-<td align="center">插入/取消标记 6 √</td>
-<td align="center"><!-- raw HTML omitted -->空缺<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+Shift+6</td>
+<td style="text-align:center">插入/取消标记 6 √</td>
+<td style="text-align:center"><del>空缺</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+A</td>
-<td align="center">全选 √</td>
-<td align="center"><!-- raw HTML omitted -->光标所在数字递增<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+A</td>
+<td style="text-align:center">全选 √</td>
+<td style="text-align:center"><del>光标所在数字递增</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+B</td>
-<td align="center">跳转至引用 √</td>
-<td align="center"><!-- raw HTML omitted -->向上翻一屏<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+B</td>
+<td style="text-align:center">跳转至引用 √</td>
+<td style="text-align:center"><del>向上翻一屏</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+C</td>
-<td align="center"><!-- raw HTML omitted -->复制<!-- raw HTML omitted --></td>
-<td align="center">退出插入模式 √</td>
+<td style="text-align:center">Ctrl+C</td>
+<td style="text-align:center"><del>复制</del></td>
+<td style="text-align:center">退出插入模式 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+D</td>
-<td align="center"><!-- raw HTML omitted -->复写当前行<!-- raw HTML omitted --></td>
-<td align="center">向下翻半屏 √</td>
+<td style="text-align:center">Ctrl+D</td>
+<td style="text-align:center"><del>复写当前行</del></td>
+<td style="text-align:center">向下翻半屏 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+E</td>
-<td align="center"><!-- raw HTML omitted -->打开最近的文档<!-- raw HTML omitted --> <strong>（改成 C_A + R）</strong></td>
-<td align="center">向下滚动行 √</td>
+<td style="text-align:center">Ctrl+E</td>
+<td style="text-align:center"><del>打开最近的文档</del> <strong>（改成 C_A + R）</strong></td>
+<td style="text-align:center">向下滚动行 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+F</td>
-<td align="center">查找 √</td>
-<td align="center"><!-- raw HTML omitted -->向下翻一屏<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+F</td>
+<td style="text-align:center">查找 √</td>
+<td style="text-align:center"><del>向下翻一屏</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+G</td>
-<td align="center"><!-- raw HTML omitted -->跳转到指定行<!-- raw HTML omitted --></td>
-<td align="center">打印当前文件名 √</td>
+<td style="text-align:center">Ctrl+G</td>
+<td style="text-align:center"><del>跳转到指定行</del></td>
+<td style="text-align:center">打印当前文件名 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+H</td>
-<td align="center"><!-- raw HTML omitted -->当前类型的继承关系<!-- raw HTML omitted --> <strong>（改为 Alt + H）</strong></td>
-<td align="center">光标退格 √</td>
+<td style="text-align:center">Ctrl+H</td>
+<td style="text-align:center"><del>当前类型的继承关系</del> <strong>（改为 Alt + H）</strong></td>
+<td style="text-align:center">光标退格 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+I</td>
-<td align="center"><!-- raw HTML omitted -->Implement 方法<!-- raw HTML omitted --> <strong>（改为 Alt + I）</strong></td>
-<td align="center">跳转到 <a href="http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations">Jump List</a> 下一个位置 √</td>
+<td style="text-align:center">Ctrl+I</td>
+<td style="text-align:center"><del>Implement 方法</del> <strong>（改为 Alt + I）</strong></td>
+<td style="text-align:center">跳转到 <a href="http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations">Jump List</a> 下一个位置 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+M</td>
-<td align="center"><!-- raw HTML omitted -->光标所在行滚动到屏幕中央<!-- raw HTML omitted --> <strong>（改为 Alt + M）</strong></td>
-<td align="center">移动到下一行的首个非空字符 √</td>
+<td style="text-align:center">Ctrl+M</td>
+<td style="text-align:center"><del>光标所在行滚动到屏幕中央</del> <strong>（改为 Alt + M）</strong></td>
+<td style="text-align:center">移动到下一行的首个非空字符 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+N</td>
-<td align="center"><!-- raw HTML omitted -->查找指定 Class<!-- raw HTML omitted --> <strong>（改为 Alt + N）</strong></td>
-<td align="center">移动到下一行，光标相对位置不变 √</td>
+<td style="text-align:center">Ctrl+N</td>
+<td style="text-align:center"><del>查找指定 Class</del> <strong>（改为 Alt + N）</strong></td>
+<td style="text-align:center">移动到下一行，光标相对位置不变 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+O</td>
-<td align="center"><!-- raw HTML omitted -->Override 方法<!-- raw HTML omitted --> <strong>（改为 Alt + O）</strong></td>
-<td align="center">跳转到 <a href="http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations">Jump List</a> 上一位置 √</td>
+<td style="text-align:center">Ctrl+O</td>
+<td style="text-align:center"><del>Override 方法</del> <strong>（改为 Alt + O）</strong></td>
+<td style="text-align:center">跳转到 <a href="http://vim.wikia.com/wiki/Jumping_to_previously_visited_locations">Jump List</a> 上一位置 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+P</td>
-<td align="center"><!-- raw HTML omitted -->Show/Hide path text<!-- raw HTML omitted --> <strong>（改为 Alt + P）</strong></td>
-<td align="center">移动到上一行，光标相对位置不变 √</td>
+<td style="text-align:center">Ctrl+P</td>
+<td style="text-align:center"><del>Show/Hide path text<del> <strong>（改为 Alt + P）</strong></td>
+<td style="text-align:center">移动到上一行，光标相对位置不变 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+Q</td>
-<td align="center"><!-- raw HTML omitted -->Quick Documentation<!-- raw HTML omitted --> <strong>（改为 C_A + Q）</strong></td>
-<td align="center">代替 Ctrl-V 开启 Visual</td>
+<td style="text-align:center">Ctrl+Q</td>
+<td style="text-align:center"><del>Quick Documentation</del> <strong>（改为 C_A + Q）</strong></td>
+<td style="text-align:center">代替 Ctrl-V 开启 Visual</td>
 </tr>
 <tr>
-<td align="center">Ctrl+R</td>
-<td align="center"><!-- raw HTML omitted -->替换文本<!-- raw HTML omitted --> <strong>（改为 Alt + R）</strong></td>
-<td align="center">恢复上一次修改 √</td>
+<td style="text-align:center">Ctrl+R</td>
+<td style="text-align:center"><del>替换文本</del> <strong>（改为 Alt + R）</strong></td>
+<td style="text-align:center">恢复上一次修改 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+S</td>
-<td align="center">保存全部改动 √</td>
-<td align="center"><!-- raw HTML omitted -->分割窗口<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+S</td>
+<td style="text-align:center">保存全部改动 √</td>
+<td style="text-align:center"><del>分割窗口</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+T</td>
-<td align="center"><!-- raw HTML omitted -->更新工程<!-- raw HTML omitted --> <strong>（改为 Alt + T）</strong></td>
-<td align="center">跳转到 <a href="http://vim.wikia.com/wiki/Browsing_programs_with_tags">Tag Stack</a> 上一位置 √</td>
+<td style="text-align:center">Ctrl+T</td>
+<td style="text-align:center"><del>更新工程<del> <strong>（改为 Alt + T）</strong></td>
+<td style="text-align:center">跳转到 <a href="http://vim.wikia.com/wiki/Browsing_programs_with_tags">Tag Stack</a> 上一位置 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+U</td>
-<td align="center"><!-- raw HTML omitted -->跳转至父类方法<!-- raw HTML omitted --> <strong>（改为 Alt + U）</strong></td>
-<td align="center">向上翻半屏 √</td>
+<td style="text-align:center">Ctrl+U</td>
+<td style="text-align:center"><del>跳转至父类方法</del> <strong>（改为 Alt + U）</strong></td>
+<td style="text-align:center">向上翻半屏 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+V</td>
-<td align="center">粘贴 √</td>
-<td align="center"><!-- raw HTML omitted -->开启 Visual 模式<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+V</td>
+<td style="text-align:center">粘贴 √</td>
+<td style="text-align:center"><del>开启 Visual 模式</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+W</td>
-<td align="center"><!-- raw HTML omitted -->智能选中<!-- raw HTML omitted --> <strong>（改为 Alt + W）</strong></td>
-<td align="center">窗口命令，后接具体指令</td>
+<td style="text-align:center">Ctrl+W</td>
+<td style="text-align:center"><del>智能选中</del> <strong>（改为 Alt + W）</strong></td>
+<td style="text-align:center">窗口命令，后接具体指令</td>
 </tr>
 <tr>
-<td align="center">Ctrl+X</td>
-<td align="center">剪切 √</td>
-<td align="center"><!-- raw HTML omitted -->光标所在数字递减<!-- raw HTML omitted --></td>
+<td style="text-align:center">Ctrl+X</td>
+<td style="text-align:center">剪切 √</td>
+<td style="text-align:center"><del>光标所在数字递减</del></td>
 </tr>
 <tr>
-<td align="center">Ctrl+Y</td>
-<td align="center"><!-- raw HTML omitted -->删除光标所在行<!-- raw HTML omitted --></td>
-<td align="center">向上滚动行 √</td>
+<td style="text-align:center">Ctrl+Y</td>
+<td style="text-align:center"><del>删除光标所在行</del></td>
+<td style="text-align:center">向上滚动行 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+[</td>
-<td align="center"><!-- raw HTML omitted -->光标移动到代码块的起始位置<!-- raw HTML omitted --> <strong>（改为 Alt + [）</strong></td>
-<td align="center">退出插入模式 √</td>
+<td style="text-align:center">Ctrl+[</td>
+<td style="text-align:center"><del>光标移动到代码块的起始位置</del> <strong>（改为 Alt + [）</strong></td>
+<td style="text-align:center">退出插入模式 √</td>
 </tr>
 <tr>
-<td align="center">Ctrl+]</td>
-<td align="center"><!-- raw HTML omitted -->光标移动到代码块的结束位置<!-- raw HTML omitted --> <strong>（改为 Alt + ]）</strong></td>
-<td align="center">跳转到关键字的声明处 √</td>
+<td style="text-align:center">Ctrl+]</td>
+<td style="text-align:center"><del>光标移动到代码块的结束位置</del> <strong>（改为 Alt + ]）</strong></td>
+<td style="text-align:center">跳转到关键字的声明处 √</td>
 </tr>
 </tbody>
 </table>

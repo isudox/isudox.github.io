@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2015/10/10</div> 
   </header>
   <div class="post-content"><p>毕业来 JD 后完成的第一个任务是写选号中心的前端。由于和 PM 没有及时沟通，其间改了几次需求，导致一部分工作推倒重来。这个过程中体会较多的是谨慎使用 <code>JavaScript</code> 全局变量，带来便利的同时也有意想不到的坑，更不应滥用，很多时候全局变量并不是一个好选择。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>一个很重要的原因就是，页面所引用的 JS 文件里所有变量和函数都是在同一个域(scope)中运行，重名的变量和函数被覆盖，bug 将随之而来。如果仅仅只是一个展示页或由个人独立开发的项目，这个问题或许并不明显，但对于团队开发，组件化开发而言，全局变量会是深埋的地雷，你不知道什么时候自己会踩上，或者下一时刻会是谁踩上。举个简单的栗子：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// example1.js
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">vim_fan</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;

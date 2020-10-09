@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -94,7 +94,7 @@
     <div class="post-meta">2017/04/04</div> 
   </header>
   <div class="post-content"><p>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的是自己改写的 Thrift，这两天也在看相关的文档，汇总成学习笔记。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <p>Thrift 是由 Facebook 开源、Apache 维护的跨语言 RPC 框架。类似 Google 的 protobuf，Thrift 是典型的 C/S 架构，RPC 客户端和服务端间需要定义 IDL(Interface Description Language) 来实现跨语言通信。本文是对 Thrift IDL 学习的总结。</p>
 <h2 id="基础类型">基础类型</h2>
 <p>参考官方<a href="http://thrift.apache.org/docs/types">文档</a>，Thrift IDL 的基础类型覆盖了绝大多数编程语言的关键类型，共有以下 7 种：</p>
@@ -166,62 +166,62 @@ service MyService extends test.FacebookService{
 <table>
 <thead>
 <tr>
-<th align="left">Thrift</th>
-<th align="left">Java</th>
+<th style="text-align:left">Thrift</th>
+<th style="text-align:left">Java</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">bool</td>
-<td align="left">布尔值</td>
+<td style="text-align:left">bool</td>
+<td style="text-align:left">布尔值</td>
 </tr>
 <tr>
-<td align="left">byte</td>
-<td align="left">8 位有符号整型</td>
+<td style="text-align:left">byte</td>
+<td style="text-align:left">8 位有符号整型</td>
 </tr>
 <tr>
-<td align="left">i16</td>
-<td align="left">16 位有符号整型</td>
+<td style="text-align:left">i16</td>
+<td style="text-align:left">16 位有符号整型</td>
 </tr>
 <tr>
-<td align="left">i32</td>
-<td align="left">32 位有符号整型</td>
+<td style="text-align:left">i32</td>
+<td style="text-align:left">32 位有符号整型</td>
 </tr>
 <tr>
-<td align="left">i64</td>
-<td align="left">64 位有符号整型</td>
+<td style="text-align:left">i64</td>
+<td style="text-align:left">64 位有符号整型</td>
 </tr>
 <tr>
-<td align="left">double</td>
-<td align="left">64 位浮点数</td>
+<td style="text-align:left">double</td>
+<td style="text-align:left">64 位浮点数</td>
 </tr>
 <tr>
-<td align="left">string</td>
-<td align="left">UTF-8 编码的字符串</td>
+<td style="text-align:left">string</td>
+<td style="text-align:left">UTF-8 编码的字符串</td>
 </tr>
 <tr>
-<td align="left">struct</td>
-<td align="left">公共的对象</td>
+<td style="text-align:left">struct</td>
+<td style="text-align:left">公共的对象</td>
 </tr>
 <tr>
-<td align="left">list</td>
-<td align="left">元素可重复的有序列表，ArrayList</td>
+<td style="text-align:left">list</td>
+<td style="text-align:left">元素可重复的有序列表，ArrayList</td>
 </tr>
 <tr>
-<td align="left">set</td>
-<td align="left">元素不可重复的无序列表，HashSet</td>
+<td style="text-align:left">set</td>
+<td style="text-align:left">元素不可重复的无序列表，HashSet</td>
 </tr>
 <tr>
-<td align="left">map</td>
-<td align="left">key 唯一的字典，HashMap</td>
+<td style="text-align:left">map</td>
+<td style="text-align:left">key 唯一的字典，HashMap</td>
 </tr>
 <tr>
-<td align="left">exception</td>
-<td align="left">Exception</td>
+<td style="text-align:left">exception</td>
+<td style="text-align:left">Exception</td>
 </tr>
 <tr>
-<td align="left">service</td>
-<td align="left">服务的接口</td>
+<td style="text-align:left">service</td>
+<td style="text-align:left">服务的接口</td>
 </tr>
 </tbody>
 </table>

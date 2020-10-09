@@ -6,11 +6,7 @@
     <description>Recent content in MySQL on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 28 Feb 2020 13:41:33 +0800</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 28 Feb 2020 13:41:33 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MySQL Binlog 解析组件 open-replicator 原理介绍</title>
       <link>https://isudox.com/2020/02/28/dive-into-open-replicator/</link>

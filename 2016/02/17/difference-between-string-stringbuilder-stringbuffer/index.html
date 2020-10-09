@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.74.2" />
+  <meta name="generator" content="Hugo 0.76.3" />
   
   
   
@@ -96,7 +96,7 @@
   <div class="post-content"><p>今天下午浏览代码时看到 IDEA 给出了一段提示：
 StringBuffer variables may be declared as StringBuilder.</p>
 <p>回想了下，除了印象中 StringBuffer 是线程安全，而 StringBuilder 非线程安全之外，已经想不到二者其他的区别和使用场景的差异。遂谷歌之，看到阿里的 Android 大牛 Trinea 在 Github 上提的 <a href="https://github.com/android-cn/android-discuss/issues/5">issue</a>，正好是关于它们之间区别的讨论。我也凑个热闹，查漏补缺。</p>
-<!-- raw HTML omitted -->
+<!-- more -->
 <h4 id="charsequence">CharSequence</h4>
 <p>首先，String、StringBuilder 和 StringBuffer 都是实现的 CharSequence 接口。下面是 CharSequence 的源码：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> java.lang<span style="color:#f92672">;</span>
@@ -164,36 +164,36 @@ StringBuffer variables may be declared as StringBuilder.</p>
 <table>
 <thead>
 <tr>
-<th align="center"></th>
-<th align="center">String</th>
-<th align="center">StringBuilder</th>
-<th align="center">StringBuffer</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">String</th>
+<th style="text-align:center">StringBuilder</th>
+<th style="text-align:center">StringBuffer</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">内存区</td>
-<td align="center">常量 String 池</td>
-<td align="center">堆</td>
-<td align="center">堆</td>
+<td style="text-align:center">内存区</td>
+<td style="text-align:center">常量 String 池</td>
+<td style="text-align:center">堆</td>
+<td style="text-align:center">堆</td>
 </tr>
 <tr>
-<td align="center">线程安全</td>
-<td align="center">是</td>
-<td align="center">否</td>
-<td align="center">是</td>
+<td style="text-align:center">线程安全</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
 </tr>
 <tr>
-<td align="center">可变性</td>
-<td align="center">否</td>
-<td align="center">是</td>
-<td align="center">是</td>
+<td style="text-align:center">可变性</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
 </tr>
 <tr>
-<td align="center">性能</td>
-<td align="center">快</td>
-<td align="center">快</td>
-<td align="center">慢</td>
+<td style="text-align:center">性能</td>
+<td style="text-align:center">快</td>
+<td style="text-align:center">快</td>
+<td style="text-align:center">慢</td>
 </tr>
 </tbody>
 </table>

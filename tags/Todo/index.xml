@@ -6,11 +6,7 @@
     <description>Recent content in Todo on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 01 Jan 2017 00:39:29 +0000</lastBuildDate>
-    
-	<atom:link href="https://isudox.com/tags/todo/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 01 Jan 2017 00:39:29 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/todo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>展望 2017</title>
       <link>https://isudox.com/2017/01/01/todo-list-2017/</link>
