@@ -18,23 +18,23 @@ tags:
 
 ## 磁盘 I/O
 
-对数据库的读写离不开磁盘 I/O，在讲存储中的数据结构之前，先简单介绍磁盘 I/O 特性对数据库设计的影响，详细的解释可以阅读美团技术博客 [磁盘 I/O 那些事](https://tech.meituan.com/2017/05/19/about-desk-io.html)。
+对数据库的读写本质是磁盘 I/O（这里忽略 Redis 等内存数据库）。在讲存储中的数据结构之前，先简单介绍磁盘 I/O 特性对数据库设计的影响，详细的解释可以阅读美团技术博客 《磁盘 I/O 那些事》<sup>[1]</sup>。
 
-传统意义上数据库需要将数据以文件的形式存储到磁盘上，对数据库操作的操作可以简单抽象为对磁盘文件的读写，而磁盘 I/O 消耗的时间影响了数据库的读写性能。一次磁盘 I/O 可以拆分为：磁头寻道时间、扇区旋转延迟时间、数据传输时间，参考下图示意。
+传统意义上数据库需要将数据以文件的形式存储到磁盘上，对数据库操作的操作可以简单抽象为对磁盘文件的读写，而磁盘 I/O 耗时会影响数据库的读写性能。一次磁盘 I/O 可以拆分为：磁头寻道时间 seek time、扇区旋转延迟时间 latency time、数据传输时间 transmission time，参考下图示意。
 
 ![磁道-磁头-扇区](/images/Hard_drive_geometry_-_English_-_2019-05-30.svg)
 
 - 磁头寻道：磁头移动到数据所在磁道位置，参考值 3-15ms；
 - 扇区旋转：通过盘片的旋转，将数据所在扇区移动到磁头下方，参考值 2-5ms；
-- 数据传输：不同接口的传输速率有差异，通常小于 1ms；
+- 数据传输：数据通过系统总线从磁盘加载到内存的时间，通常小于 1ms；
 
-寻道时间 > 旋转延迟 \>\> 数据传输，所以磁盘 I/O 耗时 ≈ 寻道时间 + 旋转延迟时间，IOPS = 1000 / (寻道时间 + 旋转延迟)。
+寻道时间 > 旋转延迟 \>\> 数据传输，所以磁盘 I/O 耗时 ≈ seek time + latency time，IOPS = 1000 / (seek time + latency time)。
 
-我们已经知道，磁盘的顺序 I/O 比随机 I/O 更快（参考下图），原因就在于顺序 I/O 磁头几乎不用换道，或者换道的时间很短；而随机 I/O 磁头会频繁换道。对随机 I/O 而言，7200 转的磁盘，随机 I/O 的 IOPS 通常为 70 ~ 80。而对顺序 I/O，比如读取一块连续存储的文件，理想的情况是在一次 I/O 后就可以顺序读写，其 IOPS 会非常高。因此在包括数据库在内的诸多系统的存储，都会通过顺序 I/O 来提高性能。
+我们已经知道，磁盘的顺序 I/O 比随机 I/O 更快（参考下图），原因就在于顺序 I/O 磁头几乎不用换道，或者换道的时间很短；而随机 I/O 磁头则会频繁换道。对随机 I/O 而言，7200 转的磁盘，随机 I/O 的 IOPS 通常为 70 ~ 80。而对顺序 I/O，比如读取一块连续存储的文件，理想的情况是在一次 I/O 后就可以顺序读写，其 IOPS 会非常高。因此在包括数据库在内的诸多系统的存储，都会通过顺序 I/O 来提高性能。
 
 ![Comparing Random and Sequential Access in Disk and Memory](/images/jacobs3.jpg)
 
-通常而言，相对于读，写的性能瓶颈会更凸显，因此对存储的设计会优先考虑提升写性能。由于文件系统保证了文件是顺序写入，所以可以采用追加写如文件的方式实现顺序写。由于是对文件的增量追加写入，所以在数据读取时，需要倒过来检索，从最新的文件逐个往回查，比如通过简单的二分，二叉搜索树等再进一步优化，减少 I/O 次数，归根结底性能优化还是索引。
+通常而言，相对于读，写的性能瓶颈会更凸显，因此对存储的设计会优先考虑提升写性能。由于文件系统保证了文件是顺序写入，所以可以采用追加写入文件的方式实现顺序写。由于是对文件的增量追加写入，所以在数据读取时，需要倒过来检索，从最新的文件逐个往回查，比如通过简单的二分，二叉搜索树等算法进一步优化，减少 I/O 次数，归根结底性能优化还是索引。
 
 ## 索引
 
@@ -126,71 +126,140 @@ B-Tree 检索的本质是遍历，假设树的高度为 `h`，B-Tree 检索到�
 
 3. 找到目标键值；
 
-   因为二分查找的过程全内存处理，不涉及磁盘 I/O，耗时可以忽略。所以检索耗时约等于 B-Tree 目标节点到根节点的深度 * 磁盘 I/O 耗时。因此 `h` 越小，B-Tree 的检索性能越高。这也解释了为什么 B+ Tree 比 B-Tree 更适合作为磁盘存储的索引：因为 B+ Tree 内节点不存储 data，使得节点的度 `d` 比 B-Tree 大，因此降低了树高 `h`。相关公式参考如下，其中 `N` 为树的节点数——
+   因为二分查找的过程全内存处理，不涉及磁盘 I/O，耗时可以忽略。所以检索耗时约等于 B-Tree 目标节点到根节点的深度 * 磁盘 I/O 耗时。因此 `h` 越小，B-Tree 的检索性能越高。这也解释了为什么 B+ Tree 比 B-Tree 更适合作为磁盘存储的索引：因为 B+ Tree 内节点不存储 data，使得节点的度 `d` 比 B-Tree 大，因此降低了树高 `h`。相关计算参考如下，其中 `N` 为树的节点数量——
 
 ```
 d = page_size / (key_size + data_size + ptr_size)
 h = lg(N) / lg(d)
 ```
 
-此外，在实际应用中，B-Tree 的根节点和高层的部分内节点会提前缓存进内存中，检索性能会比理论结果要好。
+在具体应用中，由于 B-Tree 的根节点和高层的部分内节点会提前缓存进内存，实际检索性能会比上述计算结果要好。
 
 ## B-Tree 的不足
 
+B-Tree 索引提高了数据读取的效率，但也带来了负面的影响：在写操作频繁的场景下，B-Tree 需要处理大量更新，变更树的结构，这导致大量的随机 I/O。因此 B-Tree 的瓶颈在于写，MySQL 对此做了优化，引入WAL(Write-ahead Logging) 和组提交（5.7+） 。
 
+- WAL：即在事务提交前预写日志，将事务的变更记录在日志中，而不是立即写入 B-Tree 和数据。这使得原来的随机 I/O 替换为日志文件的顺序 I/O。再批量将内存中的脏页 flush 到磁盘。
+- 组提交：将写 WAL 的动作，从每次提交都要 flush，优化为多个提交合并为一次 flush。
 
-由此可见，`B-Tree` 的瓶颈在于写。那对于这种高并发写的场景，有没有其它适用的数据结构可以优化写问题？`LSM Tree` 的出现优化了这个问题，这种树结构将随机读写优化为顺序读写，从而提升数据库并发写的吞吐能力
+但这部分优化并没有解决内存脏页 flush 到磁盘时，磁盘数据页物理不连续的问题。这个过程中的随机 I/O，在大写入量的情况下依然会导致性能问题。
+
+![WAL-Flush](/images/wal_flush.svg)
+
+那对于高并发写的场景，有没有其它适用的数据结构可以优化写问题？LSM Tree 优化了这个问题，这种树结构将随机读写优化为顺序读写，从而提升数据库并发写的吞吐能力。
 
 # LSM Tree
 
-## 引入
+LSM Tree(Log-structured Merge Tree)<sup>[3]</sup> 严格意义上并不是单一的一棵树，而是包括内存 + 磁盘，融合多种数据结构的复合结构。具体实现有写在内存中的 MemTable，写在磁盘中的 SSTable。
 
-先抛出问题，假如要实现一个数据库系统，实现最简单的写入/读取数据的功能，该如何设计它的存储。我们已经知道，磁盘的顺序读写比随机读写更快<sup>[1]</sup>（参考下图），那么最佳的写入方案就是把数据行更新到文件末尾。为了避免 `O(N)` 的逐行查询，我们还需要建立索引，可以考虑 Hash，但是要付出 `O(N)` 的空间复杂度。如果数据写入时已经做好排序，树就可以派上用场。由于树的特点，在索引查询起到至关重要的作用，比如 `B-Tree`、`B+ Tree` 以及变体 `B* Tree`（后文均以 `B-Tree` 统称）。
+Log-structured 是指以写日志文件的方式，增量写入磁盘，通过顺序 I/O 提升写性能；Merge 是指数据写入过程中进行数据合并，减少数据集合，精简存储空间。
 
-![Comparing Random and Sequential Access in Disk and Memory](/images/jacobs3.jpg)
-上图援引自 [ACM Queue](https://queue.acm.org/detail.cfm?id=1563874)
+这是和 B-Tree 差异的地方：B-Tree 原地更新数据，即数据只留存最新的一份，对于查询而言可以快速命中，但物理不连续的页写入带来的随机 I/O 导致写性能成为瓶颈；而 LSM Tree 通过追加日志的方式将随机 I/O 转换为顺序 I/O，但数据存在多个版本，查询时需要倒序检索多个层级的文件。
 
-当数据库用户越来越多，并发写入量越来越大，`B-Tree` 需要处理大量的数据，不断变更树的结构，因此类似 MySQL InnoDB 采用的方法是通过 WAL(Write Ahead Log) 减少对 `B-Tree` 的写次数。
-
-由此可见，`B-Tree` 的瓶颈在于写。那对于这种高并发写的场景，有没有其它适用的数据结构可以优化写问题？`LSM Tree` 的出现优化了这个问题，这种树结构将随机读写优化为顺序读写，从而提升数据库并发写的吞吐能力。
+简言之，LSM Tree 面向写优化，B-Tree 面向读优化。LSM Tree 通过牺牲部分读性能，换取写性能的提升。
 
 ## LSM Tree 基本原理
 
-数据库保障事务正确可靠的 ACID，其中 A 和 C 通过 WAL(Write-ahead Logging) 机制来实现，即事务提交前预写日志，在 MySQL 中就是 redo 和 undo 日志。先写 WAL，再插入到内存中的 `MemTable`<sup>[2]</sup>，它同时提供数据的读写，并且 Key-Value 按 Key 排序，从而在 flush 到磁盘时能保持顺序性。
+LSM Tree 存储的数据包括两个或多个树形的组件，下图所示为最简的两组件示意图。
 
-当 `MemTable` 写入到一定阈值后，系统会将其转变成 `Immutable Memtable`，再 flush 到磁盘，它只读，同时创建新的 `MemTable` 提供写。存储中设计这两种 `MemTable` 本质是空间换时间的朴素思想，目的是在 `MemTable` flush 到磁盘时不阻塞新数据的写入。
+1. 位于内存的小体积的树，为 c<sub>0</sub> tree
+2. 位于磁盘的大体积的树，为 c<sub>1</sub> tree ~ c<sub>k</sub> tree；
 
-`SSTable`(Sorted String Table)<sup>[3]</sup> 是 `MemTable` flush 到磁盘的文件 ，其存储结构如下图示。当文件很大时，可以采用图中左边的 `key:offset` 索引快速定位到 KV 的偏移量。`SSTable` 只读，新的写入操作会存储到新的文件中。
+![c0 c1 tree](/images/c0_c1_tree.svg)
 
-![SSTable Storage](/images/sstable.png)
-上图援引自 [SSTable and Log Structured Storage: LevelDB](https://www.igvita.com/2012/02/06/sstable-and-log-structured-storage-leveldb/)
+LSM Tree 具有以下特点：
 
-所以数据流的整个过程可以简单理解为：`MemTable` -> `Immutable MemTable` -> `SSTable`
+- 每一层级的树都按 key 排序；
+- 层级越低，体积越小，所存储的数据越新；
+- c<sub>k-1</sub> tree 是 c<sub>k</sub> tree 的增量数据，检索过程为低层树到高层树；
 
-那么 `LSM Tree` 又是如何解决 `B-Tree` 在定时 flush WAL 时随机 I/O 导致的写瓶颈？
+LSM Tree 的写入过程如下，参考下方示意图：
 
-# Skiplist
+0. 顺序写入 WAL，这步虽然不涉及 LSM Tree，但它防止因内存掉电而丢失数据；
+1. 索引写入到内存中的 c<sub>0</sub> tree；
+2. 从 c<sub>0</sub> tree 开始，数据不断被渐次 merge 到磁盘中更高层级的树（这个操作也是顺序写入）；
+3. 高层级树在 merge 过程中，覆盖旧版本数据，删掉冗余文件，释放存储空间；
 
-前面提到 `MemTable`，比较典型的实现是通过 `Skiplist`。
+![](/images/lsm-tree-merge.svg)
 
-# Circular Buffer
+在 Google Bigtable 论文中，给出的 c<sub>0</sub> tree 和 c<sub>1</sub> tree 具体实现是 MemTable 和 SSTable，分别作为内存中可变数据写入、磁盘中不可变文件持久化的载体。其运转的模型如下图所示，业界主流的开源方案大都基于此实现。
 
-在 MySQL 数据同步中，核心处理是订阅 binary log，转换并存储事件，等待消费，这是典型的发布-订阅模型。其中对事件的存储，直观的思路是采用队列。包括开源的 Databus、open-replicator，美团 DTS，都使用到了一种特殊的队列——Circular Buffer。
+![LSM Model](/images/lsm_model.svg)
+
+### MemTable
+
+处理数据写入时，先把备份写入 WAL，再将数据插入到内存中的 MemTable，并按 key 排序。同时 MemTable 提供数据的查询。当 MemTable 写入达到一定阈值后，系统会将其转变为 Immutable MemTable，只读不可写，再 flush 到磁盘上，生成不可修改的新文件。同时在内存中创建新的 MemTable 记录后续的写入。内存中设计这两种 MemTable 本质是通过空间换时间，使得 MemTable flush 到磁盘的过程中不阻塞新数据的写入。
+
+### SSTable
+
+SSTable(Sorted String Table) 是 MemTable 从内存 flush 到磁盘上的文件。SSTable 一旦创建就不再更新，即静态文件，后续的更新只会存储在新的 SSTable 中，重复的记录会在新的 SSTable 中覆盖。SSTable 的存储结构如下图所示：
+
+![SSTable Storage](/images/sstable.svg)
+
+![](/images/memtable_to_sstable.svg)
+
+随着内存中的 MemTable 不断被 flush 到磁盘，SSTable 文件数量会逐渐增多，且 update 请求多的话，SSTable 间会产生相当比例的交集冗余数据。因此 LSM Tree 会对 SSTable 进行 merge 操作，移除重复、已删除的记录，减少文件数量。Merge 操作的目的，一方面是减少冗余、释放磁盘空间；另一方面，优化数据读取的效率。
+
+LSM Tree 中写入数据流的整个过程为 MemTable -> Immutable MemTable -> SSTable，是增量写入到存量刷盘的过程。因此，LSM Tree 处理读请求时，也是按这个流程依次检索。首先检查内存中的 MemTable 和 Immutable MemTable，不存在时转到磁盘逆序检索 SSTable。因为 SSTable 有序，可以实现 O(logN) 的查找，但整体检索效率和 SSTable 数量相关，SSTable 越少，查询效率越高。
+
+SSTable 的读性能可以在上述基础上进一步优化，比如结合布隆过滤器，提前过滤掉不存在的 key，避免不必要的全量文件读取。
+
+### SSTable 归并算法
+
+前面提到了随着 SSTable 的堆积，将其合并是平衡 LSM Tree 读写性能的关键。原始的 LSM Tree 在对磁盘上的 SSTable 做 merge 操作时是基于 size-based 的策略，比如 HBase 采用这个算法；另一种算法是基于 level-based 策略，LevelDB、RocksDB 则选用了该算法。
+
+size-based 顾名思义是基于 SSTable 文件大小进行分层。每层都是最多 N 个 SSTable 的集合，因为最上层的 SSTable 是由 MemTable 写入到一定阈值后持久化生成，因此同一层的 SSTable 大小可以认为相同。当某一层的 SSTable 满时，将该层的 SSTable 合并为下一层的新 SSTable。由此可以推得，相邻层的体积比为 N。这个过程就是不断的创建数量更少、体积更大的 SSTable。下图形象地展示了该过程——
+
+![SSTable Merge](/images/size-compaction-1.png)
+
+这个算法的弊端在于，大量 SSTable 被创建，且越往下层的 SSTable 体积越大，从概率上分析，查询落到最底层 SSTable 上的概率最大。这导致在最坏情况下，LSM Tree 的查询会检索全量文件。
+
+level-based 策略则是按分层，而不是按文件大小进行合并。这里也有「层」，但和 size-based 策略区别之处在于：前者是按层的既定大小划分，每层 SSTable 大小差别不大；后者是直接按 SSTable 的大小划分。比如第一层是 300M，第二层是 3G，第三层是 30G，依此类推。参考下图示例。
+
+![](/images/leveled-compaction-1.png)
+
+假如 Level K 层大小超过目标大小，则从该层中选择至少一个 SSTable，将该集合和 Level K+1 层有交集的部分合并，生成的新文件写入 K+1 层。如果 K+1 层在接受上一层的合并后又超出了该层大小限制，则继续触发 K+1 层到 K+2 层的合并。下图展示该算法的逻辑：
+
+![Level-based Merge](/images/leveled_based_compaction.svg)
+
+除了由 MemTable flush 到磁盘生成的 Level 0 层，每层的 SSTable 都是独立排序、互不相交。这样的好处在于检索目标数据时，只需要先定位 SSTable，再二分查找即可，无需检索全部 SSTable。
+
+## LSM Tree 的不足和优化
+
+### 三个放大
+
+存储上有一个 RUM 猜想<sup>[7]</sup>，意思是达到一定阈值后，**R**ead Overhead、**U**pdate Overhead、**M**emory Overhead，系统最多只能满足其中两项，而不能全部满足。这三者之间的权衡引出了三个放大：读放大、写放大、空间放大。
+
+- 读放大：一次查询需要读取的数据页数量，通过加索引可以实现 O(1)、O(logN) 的检索，但会写入更多的数据，需要更多的存储空间；
+- 写放大：物理存储的写入量和逻辑写入量的币值。写放大越大，磁盘 I/O 次数越多；
+- 空间放大：存储介质中空间占用和数据库中实际空间的比值。空间放大和冗余数据、临时存储有关；
+
+上文提及 LSM Tree 的两种归并算法，在三个放大上有不同的取舍。
+
+size-based 归并策略中，相邻层的体积比为 N，则「扇出数」等于 N。其归并过程是将当前层 N 个 SSTable 合并成为下一层的 1 个 SSTable，即写放大为 1，但读取的效率相对低，且文件之间有更多的冗余，有更大的读放大和空间放大。
+
+level-based 策略中，「扇出数」也是 N，归并过程中将当前层部分 SSTable 和下一层存在交集的 SSTable 合并，当一个大数据写入时，可能会导致多层同时发生归并，因此它的写放大是比较大的。而另一面，它提高了检索效率、减少了冗余数据，优化了读放大和空间放大。
+
+### 优化思路
+
+读放大的优化，目的是要减少读取时的磁盘 I/O 次数。前文提到的布隆过滤器可以优化，但只适用于单行点读，对范围读无能为力，还可以使用 Cache 缓存已经被打开的 SSTable 避免磁盘 I/O 读取，比如 LevelDB 使用了 LRUCache。
+
+写放大优化，将 key-value 分开存储，合并重写数据时，只要重写 key，而不用重写 value，这样可以大幅减少写入量。但问题是分开存储后，对 key-value 读写需要操作不同文件，特别是在范围读时，会产生多次磁盘随机 I/O。
+
+# 小结
+
+存储中还有很多有趣的数据结构，都是基于大学计算机课程上最基础的数据结构，叠加数学思想来适配使用场景。
+
+比如前文提到的 MemTable 比较典型的实现是通过 Skiplist，将简单的链表查找通过区间跳跃优化了时间复杂度；基于 binlog 进行数据同步时使用的 RingBuffer，本质就是数组。还有图数据库中的图的应用，在涉及类似社交网络等复杂关系运算的领域起到了不可替代的作用。
 
 ----
 
 # 参考资料
 
-- [磁盘 I/O 那些事](https://tech.meituan.com/2017/05/19/about-desk-io.html)
-- [The Pathologies of Big Data](https://queue.acm.org/detail.cfm?id=1563874)
-- [LSM Tree 论文](https://www.cs.umb.edu/~poneil/lsmtree.pdf)
-- [论 B+ 树索引的演进方向（上）](http://mysql.taobao.org/monthly/2018/11/01/)
+- [1]: [磁盘 I/O 那些事](https://tech.meituan.com/2017/05/19/about-desk-io.html)
+- [2]: [论 B+ 树索引的演进方向（上）](http://mysql.taobao.org/monthly/2018/11/01/)
+- [3]: [LSM Tree 论文](https://www.cs.umb.edu/~poneil/lsmtree.pdf)
+- [SSTable and Log Structured Storage: LevelDB](https://www.igvita.com/2012/02/06/sstable-and-log-structured-storage-leveldb/)
 - [MyRocks: LSM-Tree Database Storage Engine Serving Facebook's Social Graph](http://www.vldb.org/pvldb/vol13/p3217-matsunobu.pdf)
 - [MemTable](https://github.com/facebook/rocksdb/wiki/MemTable)
-- [Databus 2.0 Event Buffer Design](https://github.com/linkedin/databus/wiki/Databus-2.0-event-buffer-design)
-
-# 注释
-
-- [1] 对 HDD 而言，顺序读写时磁头几乎不用换道，或者换道的时间很短；而随机读写时磁头会频繁换道。
-- [2] `MemTable` 更多细节参考 [RocksDB Wiki](https://github.com/facebook/rocksdb/wiki/MemTable)
-- [3] `SSTable` 顾名思义是按 Key 排序、不可修改的字符串 KV 文件
+- [7]: [Designing Access Methods: The RUM Conjecture](https://stratos.seas.harvard.edu/files/stratos/files/rum.pdf)
