@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.76.3" />
+  <meta name="generator" content="Hugo 0.76.5" />
   
   
   
@@ -91,7 +91,7 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">MySQL Binlog 解析组件 open-replicator 原理介绍</h1>
-    <div class="post-meta">2020/02/02</div> 
+    <div class="post-meta">2020/02/28</div>
   </header>
   <div class="post-content"><p><a href="https://github.com/whitesock/open-replicator">open-replicator</a> 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。</p>
 <p>在探索 open-replicator 原理前，可以先思考一个问题，如果是自己来开发这个组件该怎么做。

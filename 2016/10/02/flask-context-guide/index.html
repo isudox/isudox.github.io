@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.76.3" />
+  <meta name="generator" content="Hugo 0.76.5" />
   
   
   
@@ -91,7 +91,7 @@
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">读 Flask 源码：Context</h1>
-    <div class="post-meta">2016/10/10</div> 
+    <div class="post-meta">2016/10/02</div>
   </header>
   <div class="post-content"><p>Flask Context 类似 Spring 框架的核心组件 Context，给应用程序提供运行时所需的环境（包含状态、变量等）的快照。如果程序本身就包含了运行所需的完备条件，那么它可以独立运行了；如果程序需要外部环境的支持，Context 的存在就有意义。比如 Flask Web 开发中常用的 <code>current_app</code>、<code>request</code> 都是 Context，可以在不同方法中调用，并且实现通信及交互。</p>
 <!-- more -->
