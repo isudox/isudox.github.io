@@ -12,23 +12,23 @@ permalinks:
 paginate: 10
 hasCJKLanguage: true
 defaultContentLanguage: "zh"
-menu:
-  main:
-  - identifier: archive
-    name: Archive
-    pre: <i class='fa fa-heart'></i>
-    url: /posts/
-    weight: 100
-  - identifier: tag
-    name: Tag
-    pre: <i class='fa fa-heart'></i>
-    url: /tags/
-    weight: 100
-  - identifier: about
-    name: About
-    pre: <i class='fa fa-heart'></i>
-    url: /about/
-    weight: -110
+# menu:
+#   main:
+  # - identifier: archive
+  #   name: Archive
+  #   pre: <i class='fa fa-heart'></i>
+  #   url: /posts/
+  #   weight: 100
+  # - identifier: tag
+  #   name: Tag
+  #   pre: <i class='fa fa-heart'></i>
+  #   url: /tags/
+  #   weight: 100
+  # - identifier: about
+  #   name: About
+  #   pre: <i class='fa fa-heart'></i>
+  #   url: /about/
+  #   weight: -110
 privacy:
   disqus:
     disable: false
