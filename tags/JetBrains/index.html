@@ -17,53 +17,10 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.77.0" />
+  <meta name="generator" content="Hugo 0.78.2" />
   
   <link rel="alternate" type="application/rss+xml" href="https://isudox.com/tags/jetbrains/index.xml" title="I sudo X" />
   
-  
-  <script>
-    function setTheme() {
-      const time = new Date();
-
-      const prev = localStorage.getItem('date');
-      const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
-
-      const now = time.getTime();
-      let sunrise;
-      let sunset;
-
-      function setBodyClass() {
-        if (now > sunrise && now < sunset) return;
-        document.body.classList.add('dark');
-      }
-
-      if (date !== prev) {
-        fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-          .then(res => res.json())
-          .then(data => {
-            sunrise = data.sunrise.split(':').map(Number);
-            sunset = data.sunset.split(':').map(Number);
-          })
-          .catch(() => {
-            sunrise = [7, 0];
-            sunset = [19, 0];
-          })
-          .finally(() => {
-            sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-            sunset = time.setHours(sunset[0], sunset[1], 0);
-            setBodyClass();
-            localStorage.setItem('sunrise', sunrise);
-            localStorage.setItem('sunset', sunset);
-          });
-        localStorage.setItem('date', date);
-      } else {
-        sunrise = Number(localStorage.getItem('sunrise'));
-        sunset = Number(localStorage.getItem('sunset'));
-        setBodyClass();
-      }
-    }
-  </script>
 </head>
 
 <body class="list">
@@ -73,6 +30,14 @@
   <header class="header">
     <nav class="nav">
       <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a href="/about/">About</a>
+        </li>
+        <li>
+          <a href="/posts/">Archive</a>
+        </li>
+      </ul>
     </nav>
   </header>
   <main class="main">
