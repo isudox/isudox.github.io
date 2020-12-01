@@ -60,3 +60,9 @@
   margin-top: 56px;
   margin-bottom: 56px;
 }
+article hr {
+  /* background-color: #fff; */
+  /* border-top: 2px dashed #8c8b8b; */
+  /* border-top: 3px double #8c8b8b; */
+  border-top: 1px dotted #8c8b8b;
+}
