@@ -174,6 +174,7 @@ img {
 }
 .menu a {
   font-size: 16px;
+  font-weight: 400;
 }
 /* Main
 -------------------------------------------------- */
@@ -245,6 +246,15 @@ img {
   background: var(--entry);
   border-radius: var(--radius);
   transition: transform 0.1s;
+}
+.post-item {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.post-info {
+  float: left;
+  width: 125px;
+  color: #4b4b4b;
 }
 .post-entry:active {
   transform: scale(0.96);

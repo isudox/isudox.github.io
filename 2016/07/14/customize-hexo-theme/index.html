@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <title>Hexo 主题美化 - I sudo X</title>
+  <title>Hexo 主题美化</title>
   
   <meta name="description" content="小站有段时间没折{no}腾{zuo}前{no}端{die}了，在浏览别的个人站时总会时不时被里面的设计吸引到，最近闲着没事干，就把别人的主题">
   <meta name="author" content="isudox">
@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.78.2" />
+  <meta name="generator" content="Hugo 0.79.0" />
   
   
 </head>
@@ -31,10 +31,12 @@
       <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
       <ul class="menu">
         <li>
-          <a href="/about/">About</a>
+          <a class="menu-list-link" href="/posts/">文档</a>
+          
         </li>
         <li>
-          <a href="/posts/">Archive</a>
+          <a class="menu-list-link" href="/about/">关于</a>
+          
         </li>
       </ul>
     </nav>
@@ -78,59 +80,59 @@
 <h3 id="侧边滚动条">侧边滚动条</h3>
 <p><a href="https://github.com/litten/hexo-theme-yilia">Yilia</a> 也是 GitHub 上非常受欢迎的一款 Hexo 主题， 虽然我用的不是 Yilia 主题，但是不妨碍我喜欢它的侧边滚动条，灰色系的性冷淡风很契合我的小站。所以我就把这个样式挪到了我的小站里。
 为了不影响小站原主题的样式，最好不要直接在原有样式上做修改。在 <code>source/css/_custom</code> 里的 <code>custom.stl</code> 模板文件里编写对滚动条的自定义样式。不过有一点，自定义的滚动条只支持 webkit 内核的浏览器，比如 Firefox 和 IE 就爱莫能助了。当然，在 Chrome 上的体验完美！</p>
-<pre><code class="language-styl" data-lang="styl">// Custom styles.
-::-webkit-scrollbar {
-  width: 10px;
-	height: 10px;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-styl" data-lang="styl"><span style="color:#f92672">//</span> <span style="color:#960050;background-color:#1e0010">Custom</span> <span style="color:#960050;background-color:#1e0010">styles</span><span style="color:#f92672">.</span>
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span> {
+  width: <span style="color:#960050;background-color:#1e0010">10px</span>;
+	height: <span style="color:#960050;background-color:#1e0010">10px</span>;
 }
-::-webkit-scrollbar-button {
-	width: 0;
-	height: 0;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span> {
+	width: <span style="color:#960050;background-color:#1e0010">0</span>;
+	height: <span style="color:#960050;background-color:#1e0010">0</span>;
 }
-::-webkit-scrollbar-button:start:increment,::-webkit-scrollbar-button:end:decrement {
-	display: none;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span>:<span style="color:#960050;background-color:#1e0010">start</span>:<span style="color:#960050;background-color:#1e0010">increment</span>,::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span>:<span style="color:#960050;background-color:#1e0010">end</span>:<span style="color:#960050;background-color:#1e0010">decrement</span> {
+	display: <span style="color:#66d9ef">none</span>;
 }
-::-webkit-scrollbar-corner {
-	display: block;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">corner</span> {
+	display: <span style="color:#66d9ef">block</span>;
 }
-::-webkit-scrollbar-thumb {
-	border-radius: 8px;
-	background-color: rgba(0,0,0,.2);
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">thumb</span> {
+	border<span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">radius</span>: <span style="color:#960050;background-color:#1e0010">8px</span>;
+	background<span style="color:#f92672">-</span>color: <span style="color:#a6e22e">rgba</span>(<span style="color:#960050;background-color:#1e0010">0</span>,<span style="color:#960050;background-color:#1e0010">0</span>,<span style="color:#960050;background-color:#1e0010">0</span>,.<span style="color:#a6e22e">2</span>);
 }
-::-webkit-scrollbar-thumb:hover {
-	border-radius: 8px;
-	background-color: rgba(0,0,0,.5);
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">thumb</span>:<span style="color:#960050;background-color:#1e0010">hover</span> {
+	border<span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">radius</span>: <span style="color:#960050;background-color:#1e0010">8px</span>;
+	background<span style="color:#f92672">-</span>color: <span style="color:#a6e22e">rgba</span>(<span style="color:#960050;background-color:#1e0010">0</span>,<span style="color:#960050;background-color:#1e0010">0</span>,<span style="color:#960050;background-color:#1e0010">0</span>,.<span style="color:#a6e22e">5</span>);
 }
-::-webkit-scrollbar-track,::-webkit-scrollbar-thumb {
-	border-right: 1px solid transparent;
-	border-left: 1px solid transparent;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">track</span>,::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">thumb</span> {
+	border<span style="color:#f92672">-</span>right: <span style="color:#960050;background-color:#1e0010">1px</span> <span style="color:#960050;background-color:#1e0010">solid</span> <span style="color:#66d9ef">transparent</span>;
+	border<span style="color:#f92672">-</span>left: <span style="color:#960050;background-color:#1e0010">1px</span> <span style="color:#960050;background-color:#1e0010">solid</span> <span style="color:#66d9ef">transparent</span>;
 }
-::-webkit-scrollbar-track:hover {
-	background-color: rgba(0,0,0,.15);
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">track</span>:<span style="color:#960050;background-color:#1e0010">hover</span> {
+	background<span style="color:#f92672">-</span>color: <span style="color:#a6e22e">rgba</span>(<span style="color:#960050;background-color:#1e0010">0</span>,<span style="color:#960050;background-color:#1e0010">0</span>,<span style="color:#960050;background-color:#1e0010">0</span>,.<span style="color:#a6e22e">15</span>);
 }
-::-webkit-scrollbar-button:start {
-	width: 10px;
-	height: 10px;
-	background: url(../images/scrollbar_arrow.png) no-repeat 0 0;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span>:<span style="color:#960050;background-color:#1e0010">start</span> {
+	width: <span style="color:#960050;background-color:#1e0010">10px</span>;
+	height: <span style="color:#960050;background-color:#1e0010">10px</span>;
+	background: <span style="color:#a6e22e">url</span>(<span style="color:#f92672">../</span><span style="color:#960050;background-color:#1e0010">images</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">scrollbar_arrow</span>.<span style="color:#a6e22e">png</span>) <span style="color:#960050;background-color:#1e0010">no</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">repeat</span> <span style="color:#960050;background-color:#1e0010">0</span> <span style="color:#960050;background-color:#1e0010">0</span>;
 }
-::-webkit-scrollbar-button:start:hover {
-	background: url(../images/scrollbar_arrow.png) no-repeat -15px 0;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span>:<span style="color:#960050;background-color:#1e0010">start</span>:<span style="color:#960050;background-color:#1e0010">hover</span> {
+	background: <span style="color:#a6e22e">url</span>(<span style="color:#f92672">../</span><span style="color:#960050;background-color:#1e0010">images</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">scrollbar_arrow</span>.<span style="color:#a6e22e">png</span>) <span style="color:#960050;background-color:#1e0010">no</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">repeat</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">15px</span> <span style="color:#960050;background-color:#1e0010">0</span>;
 }
-::-webkit-scrollbar-button:start:active {
-	background: url(../images/scrollbar_arrow.png) no-repeat -30px 0;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span>:<span style="color:#960050;background-color:#1e0010">start</span>:<span style="color:#960050;background-color:#1e0010">active</span> {
+	background: <span style="color:#a6e22e">url</span>(<span style="color:#f92672">../</span><span style="color:#960050;background-color:#1e0010">images</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">scrollbar_arrow</span>.<span style="color:#a6e22e">png</span>) <span style="color:#960050;background-color:#1e0010">no</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">repeat</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">30px</span> <span style="color:#960050;background-color:#1e0010">0</span>;
 }
-::-webkit-scrollbar-button:end {
-	width: 10px;
-	height: 10px;
-	background: url(../images/scrollbar_arrow.png) no-repeat 0 -18px;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span>:<span style="color:#960050;background-color:#1e0010">end</span> {
+	width: <span style="color:#960050;background-color:#1e0010">10px</span>;
+	height: <span style="color:#960050;background-color:#1e0010">10px</span>;
+	background: <span style="color:#a6e22e">url</span>(<span style="color:#f92672">../</span><span style="color:#960050;background-color:#1e0010">images</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">scrollbar_arrow</span>.<span style="color:#a6e22e">png</span>) <span style="color:#960050;background-color:#1e0010">no</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">repeat</span> <span style="color:#960050;background-color:#1e0010">0</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">18px</span>;
 }
-::-webkit-scrollbar-button:end:hover {
-	background: url(../images/scrollbar_arrow.png) no-repeat -15px -18px;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span>:<span style="color:#960050;background-color:#1e0010">end</span>:<span style="color:#960050;background-color:#1e0010">hover</span> {
+	background: <span style="color:#a6e22e">url</span>(<span style="color:#f92672">../</span><span style="color:#960050;background-color:#1e0010">images</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">scrollbar_arrow</span>.<span style="color:#a6e22e">png</span>) <span style="color:#960050;background-color:#1e0010">no</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">repeat</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">15px</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">18px</span>;
 }
-::-webkit-scrollbar-button:end:active {
-	background: url(../images/scrollbar_arrow.png) no-repeat -30px -18px;
+::-webkit-<span style="color:#960050;background-color:#1e0010">scrollbar</span><span style="color:#f92672">-</span><span style="color:#f92672">button</span>:<span style="color:#960050;background-color:#1e0010">end</span>:<span style="color:#960050;background-color:#1e0010">active</span> {
+	background: <span style="color:#a6e22e">url</span>(<span style="color:#f92672">../</span><span style="color:#960050;background-color:#1e0010">images</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">scrollbar_arrow</span>.<span style="color:#a6e22e">png</span>) <span style="color:#960050;background-color:#1e0010">no</span><span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">repeat</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">30px</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">18px</span>;
 }
-</code></pre><p>前后对比
+</code></pre></div><p>前后对比
 <img src="https://o70e8d1kb.qnssl.com/scrollbars.png" alt=""></p>
 <h3 id="顶部阅读进度条">顶部阅读进度条</h3>
 <p>阅读进度条的宽度是随着页面上下滚动而变化的。当滚动条在顶部时，阅读进度条宽度为浏览器宽度的 0%，当滚动条在页面底部时，阅读进度条宽度为浏览器宽度的 100%。很简单，写好进度条的样式和高度计算的脚本就能轻松实现。
