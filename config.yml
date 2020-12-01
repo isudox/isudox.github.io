@@ -1,8 +1,8 @@
 # internal settings
 baseURL: "https://isudox.com/"
 params:
-  author: isudox
-  description: My personal blog site.
+  author: "isudox"
+  description: "My personal blog site."
 languageCode: "zh"
 title: "I sudo X"
 theme: "nova"
@@ -15,20 +15,15 @@ defaultContentLanguage: "zh"
 menu:
   main:
   - identifier: archive
-    name: Archive
+    name: archive
     pre: <i class='fa fa-heart'></i>
     url: /posts/
-    weight: 100
-  # - identifier: tag
-  #   name: Tag
-  #   pre: <i class='fa fa-heart'></i>
-  #   url: /tags/
-  #   weight: 100
+    weight: 1
   - identifier: about
     name: About
     pre: <i class='fa fa-heart'></i>
     url: /about/
-    weight: -110
+    weight: 10
 privacy:
   disqus:
     disable: false
