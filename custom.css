@@ -66,3 +66,9 @@ article hr {
   /* border-top: 3px double #8c8b8b; */
   border-top: 1px dotted #8c8b8b;
 }
+.page-header {
+  margin-bottom: 80px;
+}
+.page-header h1 {
+  font-size: 40px;
+}
