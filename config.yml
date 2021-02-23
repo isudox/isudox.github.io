@@ -3,6 +3,7 @@ baseURL: "https://isudox.com/"
 params:
   author: "isudox"
   description: "My personal blog site."
+  startYear: 2015
 languageCode: "zh"
 title: "I sudo X"
 theme: "nova"
@@ -19,6 +20,11 @@ menu:
     pre: <i class='fa fa-heart'></i>
     url: /posts/
     weight: 1
+  - identifier: tag
+    name: tag
+    pre: <i class='fa fa-heart'></i>
+    url: /tags/
+    weight: 2
   - identifier: about
     name: About
     pre: <i class='fa fa-heart'></i>
