@@ -6,16 +6,7 @@
     <description>Recent content in Database on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 26 Sep 2020 14:25:46 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/database/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>数据结构和算法在存储中的经典应用</title>
-      <link>https://isudox.com/2020/09/26/data-structures-and-algorithms-in-database/</link>
-      <pubDate>Sat, 26 Sep 2020 14:25:46 +0800</pubDate>
-      
-      <guid>https://isudox.com/2020/09/26/data-structures-and-algorithms-in-database/</guid>
-      <description>Algorithms + Data Structures = Programs —— Niklaus Wirth 先搬出写了 Pascal、又拿了图灵奖的大师的名言，这里不讨论该断言的合理性，只作为本文的引子。在数据库领域，究其原理，绕</description>
-    </item>
-    
+    <lastBuildDate>Fri, 28 Feb 2020 13:41:33 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/database/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MySQL Binlog 解析组件 open-replicator 原理介绍</title>
       <link>https://isudox.com/2020/02/28/dive-into-open-replicator/</link>

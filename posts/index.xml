@@ -6,7 +6,16 @@
     <description>Recent content in Posts on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 26 Sep 2020 14:25:46 +0800</lastBuildDate><atom:link href="https://isudox.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Feb 2021 19:39:00 +0800</lastBuildDate><atom:link href="https://isudox.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>分布式系统中的时间、时钟和顺序</title>
+      <link>https://isudox.com/2021/02/23/time-clock-ordering-in-distributed-system/</link>
+      <pubDate>Tue, 23 Feb 2021 19:39:00 +0800</pubDate>
+      
+      <guid>https://isudox.com/2021/02/23/time-clock-ordering-in-distributed-system/</guid>
+      <description>TBD</description>
+    </item>
+    
     <item>
       <title>数据结构和算法在存储中的经典应用</title>
       <link>https://isudox.com/2020/09/26/data-structures-and-algorithms-in-database/</link>

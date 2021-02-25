@@ -6,7 +6,16 @@
     <description>Recent content on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 26 Sep 2020 14:25:46 +0800</lastBuildDate><atom:link href="https://isudox.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Feb 2021 19:39:00 +0800</lastBuildDate><atom:link href="https://isudox.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>分布式系统中的时间、时钟和顺序</title>
+      <link>https://isudox.com/2021/02/23/time-clock-ordering-in-distributed-system/</link>
+      <pubDate>Tue, 23 Feb 2021 19:39:00 +0800</pubDate>
+      
+      <guid>https://isudox.com/2021/02/23/time-clock-ordering-in-distributed-system/</guid>
+      <description>TBD</description>
+    </item>
+    
     <item>
       <title>简历（内部版本）</title>
       <link>https://isudox.com/9afbd5fc213d64e04bf72d3de9853395/</link>
@@ -40,7 +49,7 @@
       <pubDate>Mon, 29 Jun 2020 19:31:18 +0800</pubDate>
       
       <guid>https://isudox.com/about/</guid>
-      <description></description>
+      <description>关于我 专注于后端开发，并对算法和分布式系统充满好奇的一名普通程序员。 职业履历： 时间 公司 工作 2017/03 - 至今 美团点评 高级开发工程师 2015/07 - 2017/03 京东商城 开发工</description>
     </item>
     
     <item>
