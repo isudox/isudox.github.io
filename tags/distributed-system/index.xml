@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Distributed System on I sudo X</title>
+    <link>https://isudox.com/tags/distributed-system/</link>
+    <description>Recent content in Distributed System on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 23 Feb 2021 19:39:00 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/distributed-system/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>分布式系统中的时间、时钟和顺序</title>
+      <link>https://isudox.com/2021/02/23/time-clock-ordering-in-distributed-system/</link>
+      <pubDate>Tue, 23 Feb 2021 19:39:00 +0800</pubDate>
+      
+      <guid>https://isudox.com/2021/02/23/time-clock-ordering-in-distributed-system/</guid>
+      <description>TBD</description>
+    </item>
+    
+  </channel>
+</rss>
