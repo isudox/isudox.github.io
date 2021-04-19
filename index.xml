@@ -6,23 +6,23 @@
     <description>Recent content on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 10 Mar 2021 23:19:09 +0800</lastBuildDate><atom:link href="https://isudox.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 19 Apr 2021 14:28:46 +0800</lastBuildDate><atom:link href="https://isudox.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Metaspace 堆积引起 FGC 的排查</title>
+      <title>Time, Clocks, and the Ordering of Events in a Distributed System 论文</title>
+      <link>https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</link>
+      <pubDate>Mon, 19 Apr 2021 14:28:46 +0800</pubDate>
+      
+      <guid>https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</guid>
+      <description>摘要：论文研究在分布式系统中，事件发生先后顺序的概念，并展示了如何定义事件之间的偏序。论文给出了一种用于同步逻辑时钟系统的分布式算法，该逻辑</description>
+    </item>
+    
+    <item>
+      <title>Metaspace 堆积引起 Full GC 的排查</title>
       <link>https://isudox.com/2021/03/10/metaspace-threshold-fullgc-analyze/</link>
       <pubDate>Wed, 10 Mar 2021 23:19:09 +0800</pubDate>
       
       <guid>https://isudox.com/2021/03/10/metaspace-threshold-fullgc-analyze/</guid>
       <description>摘要：线上系统频繁 Full GC，通过监控告警、GC 日志、Heap 分析，逐步定位根因，并确定修复思路。 问题现象 支付服务异地部署前，需要提前打开北京、</description>
-    </item>
-    
-    <item>
-      <title>分布式系统中的时间、时钟和顺序</title>
-      <link>https://isudox.com/2021/02/23/time-clock-ordering-in-distributed-system/</link>
-      <pubDate>Tue, 23 Feb 2021 19:39:00 +0800</pubDate>
-      
-      <guid>https://isudox.com/2021/02/23/time-clock-ordering-in-distributed-system/</guid>
-      <description>TBD</description>
     </item>
     
     <item>

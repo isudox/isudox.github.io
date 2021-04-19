@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Time, Clocks, and the Ordering of Events in a Distributed System 论文</title>
+  
+  <meta name="description" content="摘要：论文研究在分布式系统中，事件发生先后顺序的概念，并展示了如何定义事件之间的偏序。论文给出了一种用于同步逻辑时钟系统的分布式算法，该逻辑">
+  <meta name="author" content="isudox">
+  
+  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.82.0" />
+  
+  
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a class="menu-list-link" href="/posts/">文档</a>
+          
+        </li>
+        <li>
+          <a class="menu-list-link" href="/tags/">标签</a>
+          
+        </li>
+        <li>
+          <a class="menu-list-link" href="/about/">关于</a>
+          
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Time, Clocks, and the Ordering of Events in a Distributed System 论文</h1>
+    <div class="post-meta">2021/04/19</div>
+  </header>
+  <div class="post-content"><blockquote>
+<p>摘要：论文研究在分布式系统中，事件发生先后顺序的概念，并展示了如何定义事件之间的偏序。论文给出了一种用于同步逻辑时钟系统的分布式算法，该逻辑时钟可用于对事件做全序排序。其中，全序是描述解决同步问题的一种方法。该算法专门用于同步物理时钟。</p>
+</blockquote>
+<h1 id="引入">引入</h1>
+<p>时间的概念是我们思考的基础。而它源于事件发生顺序这一更基础的概念。当一件事情发生在时钟显示 3:15 且未到 3:16 之前，那我们就说它发生在 3:15。对事件的时间顺序概念遍布于我们对系统的思考。例如，我们在机票预定系统中发起的预定请求，如果它发生在航班订满之前，那就应该被接受。但在分布式系统中，我们会发现事件的时间顺序概念需要被重新审视。</p>
+<p>分布式系统由空间上彼此分开的一组独立进程组成，进程间通过交换消息进行通信。计算机互联的网络，比如 ARPANET（阿帕网）就是一个分布式系统。一台集成了 CPU、内存、I/O 通道等独立处理单元的计算机也可以被视为分布式系统。如果相对于单进程中事件之间的时间，消息传输的延时大到不可忽略时，系统就是分布式的。</p>
+<p>本文主要关注空间分离的计算机系统。但我们的诸多观点可以得到更普遍的应用。特别的，由于不可预知的事件发生顺序，单机上多进程系统也涉及到类似分布式系统中的问题。</p>
+<p>在分布式系统中，有时候无法确定两个事件哪个先发生。「之前发生」（happened before）只是系统中事件之间的偏序（Partial Ordering）。我们发现，由于人们没有充分认知到这个事实和它的含义，导致问题的出现。</p>
+<p>在本论文中，我们讨论由「之前发生」所定义的偏序，提供一个分布式算法来将其扩展成对所有事件一致的全序（Total Ordering）。该算法提供了实现分布式系统的有效途径。我们用解决同步问题的一个简单方法，来说明该算法的使用。然而，如果通过该算法获取的事件顺序和用户感知的不同时，会导致异常行为。这可以通过引入真实的物理时钟来规避。我们描述了一种用于同步这些时钟的简单方法，并推导了时钟同步漂移的误差上限。</p>
+<h1 id="偏序the-partial-ordering">偏序｜The Partial Ordering</h1>
+<p>大部分人会认为，如果事件 A 发生的时间比事件 B 发生时间早，则事件 A 是在事件 B 「之前发生」。他们根据物理时间的理论来证明该定义的正确性。然而，如果系统要正确地满足一项规约，则该规约必须根据系统可观测的事件给出。如果规约是基于物理时间，那么系统必须要包含真实的时钟。即使包含了真实时钟，仍然存在时钟非完美精确和保持精准物理时间的问题。因此我们不使用物理时钟来定义「之前发生」这一关系。</p>
+<p>我们从更精准的定义系统开始。假设系统由一组进程组成。每个进程包含了一系列事件。根据应用程序的不同，事件可以是执行子程序，或者是执行单个机器指令。我们假设一个进程中的事件组成一个序列，当<code>a</code>在<code>b</code>「之前发生」，则事件序列里<code>a</code>就在<code>b</code>之前。换个说法，进程是一组全序事件的集合。这似乎也是通常意义上进程的含义。我们也可以把上述定义扩展到子进程，但没必要这么做。</p>
+<p>假设发送或接受消息是进程中的事件。我们可以用符号<code>-&gt;</code>表示「之前发生」，如下所示：</p>
+<p><strong>定义</strong>。系统中一组事件之间的<code>-&gt;</code>关系，是满足以下三个条件的最小关系：</p>
+<ol>
+<li>如果<code>a</code>和<code>b</code>是同一进程中的事件，且<code>a</code>在<code>b</code>之前，则<code>a -&gt; b</code>；</li>
+<li>如果<code>a</code>是一个进程的消息发送事件，<code>b</code>是另一进程的消息接收事件，则<code>a -&gt; b</code>；</li>
+<li>如果<code>a -&gt; b</code>且<code>b -&gt; c</code>，则<code>a -&gt; c</code>。如果两个独立事件满足<code>a !-&gt; b</code>且<code>b !-&gt; a</code>，则二者并行（concurrent）；</li>
+</ol>
+<p>假设任意事件<code>a</code>，<code>a !-&gt; a</code>（事件在自身之前发生的系统，并不存在物理意义）。这表明<code>-&gt;</code>表示的是，系统中事件之间非自反性的偏序关系。</p>
+<h1 id="逻辑时钟logical-clocks">逻辑时钟｜Logical Clocks</h1>
+<h1 id="全局事件顺序ordering-the-events-totally">全局事件顺序｜Ordering the Events Totally</h1>
+<h1 id="反常行为anomalous-behavior">反常行为｜Anomalous Behavior</h1>
+<h1 id="结论">结论</h1>
+<h1 id="附">附</h1>
+<hr>
+<p><a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">论文链接</a></p>
+</div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://isudox.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F">分布式系统</a></li>
+    </ul>
+  </footer>
+
+  
+
+<div id="disqus_thread"></div>
+<script>
+    
+
+    
+
+    (function () {
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+        var d = document, s = d.createElement('script');
+        
+        var disqus_shortname = 'isudox';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article></main>
+<footer class="footer">
+  <span>&copy; 2015 - 2021</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+<script src="https://isudox.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+
+</html>
+

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <title>Metaspace 堆积引起 FGC 的排查</title>
+  <title>Metaspace 堆积引起 Full GC 的排查</title>
   
   <meta name="description" content="摘要：线上系统频繁 Full GC，通过监控告警、GC 日志、Heap 分析，逐步定位根因，并确定修复思路。 问题现象 支付服务异地部署前，需要提前打开北京、">
   <meta name="author" content="isudox">
@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.81.0" />
+  <meta name="generator" content="Hugo 0.82.0" />
   
   
 </head>
@@ -50,7 +50,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <h1 class="post-title">Metaspace 堆积引起 FGC 的排查</h1>
+    <h1 class="post-title">Metaspace 堆积引起 Full GC 的排查</h1>
     <div class="post-meta">2021/03/10</div>
   </header>
   <div class="post-content"><blockquote>
