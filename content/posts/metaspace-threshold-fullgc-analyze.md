@@ -1,5 +1,5 @@
 ---
-title: "Metaspace 堆积引起 FGC 的排查"
+title: "Metaspace 堆积引起 Full GC 的排查"
 date: 2021-03-10T23:19:09+08:00
 tag: JVM
 ---
