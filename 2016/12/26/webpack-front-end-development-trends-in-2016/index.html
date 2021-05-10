@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.82.0" />
+  <meta name="generator" content="Hugo 0.83.1" />
   
   
 </head>
@@ -99,7 +99,7 @@ yarn add webpack@2.1.0-beta.20 -D
 <span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
   <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./path/to/my/entry/file.js&#39;</span>,
   <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
+    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
     <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;my-first-webpack.bundle.js&#39;</span>
   }
 };
@@ -111,7 +111,7 @@ yarn add webpack@2.1.0-beta.20 -D
   },
   <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
     <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;[name].js&#39;</span>,
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">__dirname</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;/build&#39;</span>
+    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;/build&#39;</span>
   }
 }
 </code></pre></div><p>对于 <code>output.path</code> 属性，必须设为绝对路径，占位符 <code>[hash]</code> 会被编译后文件的 hash 值替换：</p>
@@ -130,7 +130,7 @@ yarn add webpack@2.1.0-beta.20 -D
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">config</span> <span style="color:#f92672">=</span> {
   <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./path/to/my/entry/file.js&#39;</span>,
   <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),  <span style="color:#75715e">// bundle 文件的绝对路径
+    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),  <span style="color:#75715e">// bundle 文件的绝对路径
 </span><span style="color:#75715e"></span>    <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;/dist/&#34;</span>,  <span style="color:#75715e">// 网站运行时的访问路径
 </span><span style="color:#75715e"></span>    <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;my-first-webpack.bundle.js&#39;</span>  <span style="color:#75715e">// bundle 的文件名
 </span><span style="color:#75715e"></span>  },
@@ -269,13 +269,13 @@ yarn add react@15.3.0 react-dom@15.3.0
     <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;bundle.js&#39;</span>,
     <span style="color:#75715e">// the output bundle
 </span><span style="color:#75715e"></span>
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
+    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
 
     <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/&#39;</span>
     <span style="color:#75715e">// necessary for HMR to know where to load the hot update chunks
 </span><span style="color:#75715e"></span>  },
 
-  <span style="color:#a6e22e">context</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;src&#39;</span>),
+  <span style="color:#a6e22e">context</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;src&#39;</span>),
 
   <span style="color:#a6e22e">devtool</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;inline-source-map&#39;</span>,
 
@@ -283,7 +283,7 @@ yarn add react@15.3.0 react-dom@15.3.0
     <span style="color:#a6e22e">hot</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
     <span style="color:#75715e">// enable HMR on the server
 </span><span style="color:#75715e"></span>
-    <span style="color:#a6e22e">contentBase</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
+    <span style="color:#a6e22e">contentBase</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
     <span style="color:#75715e">// match the output path
 </span><span style="color:#75715e"></span>
     <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/&#39;</span>

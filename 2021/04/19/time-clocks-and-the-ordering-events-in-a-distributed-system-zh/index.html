@@ -17,7 +17,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.82.0" />
+  <meta name="generator" content="Hugo 0.83.1" />
   
   
 </head>
@@ -68,18 +68,74 @@
 <p>假设发送或接受消息是进程中的事件。我们可以用符号<code>-&gt;</code>表示「之前发生」，如下所示：</p>
 <p><strong>定义</strong>。系统中一组事件之间的<code>-&gt;</code>关系，是满足以下三个条件的最小关系：</p>
 <ol>
-<li>如果<code>a</code>和<code>b</code>是同一进程中的事件，且<code>a</code>在<code>b</code>之前，则<code>a -&gt; b</code>；</li>
-<li>如果<code>a</code>是一个进程的消息发送事件，<code>b</code>是另一进程的消息接收事件，则<code>a -&gt; b</code>；</li>
-<li>如果<code>a -&gt; b</code>且<code>b -&gt; c</code>，则<code>a -&gt; c</code>。如果两个独立事件满足<code>a !-&gt; b</code>且<code>b !-&gt; a</code>，则二者并行（concurrent）；</li>
+<li>如果 a 和 b 是同一进程中的事件，且 a 在 b 之前，则 a -&gt; b；</li>
+<li>如果 a 是一个进程的消息发送事件，b 是另一进程的消息接收事件，则 a -&gt; b ；</li>
+<li>如果 a -&gt; b 且 b -&gt; c ，则 a -&gt; c。如果两个独立事件满足 a !-&gt; b 且 b !-&gt; a ，则二者并行（concurrent）；</li>
 </ol>
-<p>假设任意事件<code>a</code>，<code>a !-&gt; a</code>（事件在自身之前发生的系统，并不存在物理意义）。这表明<code>-&gt;</code>表示的是，系统中事件之间非自反性的偏序关系。</p>
+<p>假设任意事件 a，a !-&gt; a（事件在自身之前发生的系统，并不存在物理意义）。这表明<code>-&gt;</code>表示的是，系统中事件之间非自反性的偏序关系。</p>
+<p>结合下图 1 所示的时空图，可以帮助我们理解上述定义。其中横轴表示空间，纵轴表示时间——时间靠后则纵坐标越大。图中的点表示事件，竖向的直线表示进程，曲线表示进程间传递的消息。显而易见，a -&gt; b 表示在进程间通过消息，从 a 到达 b。比如图 1 中有 <em>p</em><sub>1</sub> -&gt; <em>r</em><sub>4</sub>。</p>
+<p><img src="/images/clcok-space-time-fig-1.png" alt="space-time-fig-1"></p>
+<p>对该定义的另一种理解是，a -&gt; b 表示事件 a 有可能导致事件 b 发生。当两个事件互相不为因果时，两者就是并行的。举例来说，图 1 里的事件 <em>p</em><sub>3</sub> 和 <em>q</em><sub>3</sub> 是并行发生的，即使图中描述的情形是 <em>q</em><sub>3</sub> 发生的物理时间是在在 <em>p</em><sub>3</sub> 之前，但对进程 P 而言，在 <em>p</em><sub>4</sub> 时间点收到消息之前，它无法得知进程 Q 在 <em>q</em><sub>3</sub> 时在做什么。（在事件 <em>p</em><sub>4</sub> 之前，进程 P 最多知道进程 Q 在 <em>q</em><sub>3</sub> 时将要做什么）。</p>
+<p>这个定义对于熟悉狭义相对论不变时空方程的读者，理解起来非常自然。现实中，通过<strong>可能被发送</strong>的消息来定义事件顺序。但是我们采用更加务实的办法，即只考虑<strong>实际被发送</strong>的消息。当系统知道明确已发生的事件，我们就可以确定系统是否正确运行，而无需知道那些可能发生的事件。</p>
 <h1 id="逻辑时钟logical-clocks">逻辑时钟｜Logical Clocks</h1>
+<p>现在，我们引入时钟。从一个抽象的观点开始——时钟是为事件分配编号的方式，其中编号可看作为事件发生的时间。更精确的表述，对于任意进程 <em>P</em><sub>i</sub>，定义时钟 <em>C</em><sub>i</sub>，其中，<em>C</em><sub>i</sub>(a) 表示进程 <em>P</em><sub>i</sub> 中事件 a 的编号分配函数。整个时钟系统通过函数 C 来分配，如果事件 b 在进程 <em>P</em><sub>j</sub> 中，那么 <em>C</em>(b) = <em>C</em><sub>j</sub>(b)。到目前为止，我们没有做任何关于时钟 <em>C</em><sub>i</sub>(a) 和物理时间关系的假设，所以我们可以把 <em>C</em><sub>i</sub>(a) 看成是逻辑时钟而非物理时钟。逻辑时钟可以不通过真实的计时工具来进行计数。</p>
+<p>我们现在来思考该时钟系统正确性的含义。我们不能把定义的正确性建立在物理时钟之上，否则会导致引入记录物理时间的时钟。逻辑时钟的定义必须基于事件发生的顺序。最合理的条件是，如果事件 a 发生在事件 b 之前，那么 a 的发生事件应该比 b 更早。通过下面的式子更正式的进行表达该条件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">时钟条件，对于任意事件 a、b：
+            if a -&gt; b then C(a) &lt; C(b)
+</code></pre></div><p>注意，上述式子的反推是不成立的（C(a) &lt; C(b)，不能反推出 a -&gt; b），否则就意味着两个并行的事件必须发生在同一时间。在图 1 中，事件 <em>p</em><sub>2</sub>、<em>p</em><sub>3</sub> 均和事件 <em>q</em><sub>3</sub> 并行，如果要求它们必须和 <em>q</em><sub>3</sub> 在相同时间发生，就和时钟条件 <em>p</em><sub>2</sub> -&gt; <em>p</em><sub>3</sub> 相矛盾。</p>
+<p>从对<code>-&gt;</code>关系的定义中，容易得出，满足时钟条件需要符合以下两点：</p>
+<ul>
+<li>C1: 当进程 P<sub>i</sub> 中的事件 a 在事件 b 之前，则 <em>C</em><sub>i</sub>(a) &lt; <em>C</em><sub>i</sub>(b)</li>
+<li>C2: 当事件 a 是进程 P<sub>i</sub> 的消息发送事件，事件 b 是进程 P<sub>j</sub> 的消息接收事件，则 <em>C</em><sub>i</sub>(a) &lt; <em>C</em><sub>j</sub>(b)</li>
+</ul>
+<p>结合时间-空间图来分析时钟。我们想象一个进程的时钟会对每个数字做「滴答」，且「滴答」发生在进程中的事件之间。举个例子，如果进程 P<sub>i</sub> 中的相邻事件 a 和 b，有 <em>C</em><sub>i</sub>(a) = 4 和 <em>C</em><sub>i</sub>(b) = 7，那么时钟会在这两个事件中间，依次滴答 5，6，7。我们把不同进程间连续的「滴答」用虚线连接，图 1 就变成如下图 2。条件 C1 意味着同一进程中任意两个事件必然存在一条「滴答」虚线；条件 C2 意味着任意消息线必然会穿过一条「滴答」线。通过对<code>-&gt;</code>关系的图示，很容易明白为什么满足上述两个条件 C1、C2 意味着时钟条件的成立。</p>
+<p><img src="/images/clcok-space-time-fig-2.png" alt="space-time-fig-2"></p>
+<p>我们可以把「滴答」线作为时间-空间笛卡尔坐标系里的时间轴。将图 2 中的「滴答」线画直，就得到如下图 3。图 3 是图 2 所表达的事件系统的另一种表现形式。如果不引入物理时间（这会导致引入物理时钟），就无法决定哪个图示更好的表现了真实系统。</p>
+<p>读者可能发现，如果把二维的网络进程可视化，构成一个三维的时间-空间图，会很有帮助。进程和消息仍然用线条表示，而「滴答」线则用二维平面来表示。</p>
+<p>现在假设，执行过程就是算法，事件则表示执行的具体动作。我们会展示如何在进程执行过程中，引入满足时钟条件的时钟。进程 P<sub>i</sub> 的时钟用寄存器 C<sub>i</sub> 表示，因此 C<sub>i</sub>(a) 表示事件 a 发生时，寄存器 C<sub>i</sub> 的值。C<sub>i</sub> 的值会在事件之间变化，因此变更 C<sub>i</sub> 的值并不构成事件本身。</p>
+<p>要保证这个时钟系统可以满足时钟条件，我们要确保其同时满足条件 C1 和 C2。条件 C1 很简单，只需要进程遵循下面的规则：</p>
+<ul>
+<li>IR1. 进程 P<sub>i</sub> 中， C<sub>i</sub> 会在连续的事件中递增。</li>
+</ul>
+<p>要满足条件 C2，我们要求任意消息 m 包含它被发送的时间戳信息 T<sub>m</sub>。当另一进程接收到时间戳 T<sub>m</sub> 的消息时，该进程必须将其时钟调整到大于 T<sub>m</sub>。我们用下面的规则做更准确的描述：</p>
+<ul>
+<li>IR2. (a) 如果事件 a 是进程 P<sub>i</sub> 发送消息 m 的事件，而消息 m 包含了时间戳 T<sub>m</sub> = C<sub>i</sub>(a)。(b) 当进程 P<sub>j</sub> 接收到消息 m 时，P<sub>j</sub> 把 C<sub>j</sub> 设置为大于或等于它当前的值，且大于 T<sub>m</sub>。</li>
+</ul>
+<p>在规则 IR2(b) 中，我们认为接收消息 m 的事件发生在 C<sub>j</sub> 被设置之后。很明显，规则 IR2 保证满足条件 C2。因此，规则 IR1 和 IR2 的实现，满足了时钟条件，从而保证正确的逻辑时钟系统。</p>
 <h1 id="全局事件顺序ordering-the-events-totally">全局事件顺序｜Ordering the Events Totally</h1>
+<p>我们可以用满足时钟条件的时钟系统，给系统中所有事件设置全局的顺序。简单的通过事件发生的时间进行排序。为了打破平局，我们使用了进程间的任意的一个全序关系<code>&lt;</code>。更准确的说，我们定义了一种关系<code>=&gt;</code>:如果 a 是进程 P<sub>i</sub> 种的事件，b 是进程 P<sub>j</sub> 中的事件，则当且仅当满足以下任意条件时，a =&gt; b：</p>
+<ul>
+<li>C<sub>i</sub>(a) &lt; C<sub>j</sub>(b)</li>
+<li>C<sub>i</sub>(a) = C<sub>j</sub>(b) 且 P<sub>i</sub> &lt; P<sub>j</sub> 。</li>
+</ul>
+<p>容易发现这定义了全序（Total ordering），且时钟条件表明如果 a -&gt; b，则 a =&gt; b。换言之，<code>=&gt;</code> 关系是把「之前发生」（happened before）的偏序关系补全成全序关系的一种方式。</p>
+<p>全序关系<code>=&gt;</code>依赖时钟系统 C<sub>i</sub>，但并不唯一。选择不同的时钟，会产生不同的<code>=&gt;</code>关系。给定任意一个由偏序关系<code>-&gt;</code>扩展而来的全序关系<code>=&gt;</code>，都存在一个满足时钟条件的时钟，从而构成该关系。只有偏序关系<code>-&gt;</code>才是系统中的事件唯一确定的。</p>
+<p>确定事件的全序关系，对实现分布式系统非常有用。实际上，实现逻辑时钟系统的目的就是为了获取全序关系。我们会通过解决版本互斥问题来描述事件全序关系的使用。对于由一组共享单一资源的进程所组成的系统，同一时刻只能有一个进程使用该资源，因此进程间必须同步以避免冲突。我们希望找到一种满足以下 3 个条件的资源分配算法：</p>
+<ol>
+<li>进程要获取资源，必须要等待当前获取该资源的进程将其释放；</li>
+<li>对资源的多个请求，必须要按其创建的顺序依次处理；</li>
+<li>如果获取资源的进程最终都会释放掉资源，则所有对资源的请求都将最终成功；</li>
+</ol>
+<p>我们假定单一资源初始时被授予单个进程。</p>
+<p>这都是非常自然的条件。它们准确地说明了什么样的方案才是正确的。观察上述条件是是如何关系到事件顺序的。条件-2 没有说明对并发请求资源的授予顺序。</p>
+<p>意识到这是一个关键问题很重要。通过中心进程同一分配资源的方式不可取，除非设定额外的假设。来看这样一个场景，P<sub>0</sub> 是做资源分配的中心进程。假设进程 P<sub>1</sub> 向 P<sub>0</sub> 发送资源请求，再向 P<sub>2</sub> 发送一条消息。在接收到信息后，P<sub>2</sub>向 P<sub>0</sub> 发送资源请求。P<sub>2</sub> 的请求可能会比 P<sub>1</sub> 先到达 P<sub>0</sub>，如果 P<sub>2</sub> 的资源请求被先授予，则违背了条件-2 的要求。</p>
+<p>要解决该问题，我们实现了一个符合 IR1 和 IR2 的时钟系统，并且通过该时钟系统来定义所有事件的全序关系<code>=&gt;</code>。这提供了所有资源请求和释放处理的全序关系。有了这个顺序，找到解决方案变得直观可行。只要确保每个进程知道所有其他进程的处理。</p>
+<p>为了简化问题，我们做出一些假设。它们非必需，但它们的引入可以规避过多的细节。首先假设任意两个进程 P<sub>i</sub> 和 P<sub>j</sub>，P<sub>i</sub> 发送到 P<sub>j</sub> 的多个消息，会按照它们的发送顺序依次被接收。此外，我们假设所有消息最终都会被接收（避免引入消息序号和消息确认协议）。我们还假设进程可以直接向其他任意进程发送消息。</p>
+<p>每个进程维护其请求队列，并对其他进程不可见。假设请求队列初始时包含一条资源请求消息 T<sub>0</sub>:P<sub>0</sub><D-2>，其中 P<sub>0</sub> 表示初始时获得资源的进程，T<sub>0</sub> 小于任意时钟的初始时间。</p>
+<p>算法由以下 5 条规则定义。为了方便，假定每个规则定义的动作都构成一个事件。</p>
+<ol>
+<li>blah</li>
+<li>blah</li>
+<li>blah</li>
+<li>blah</li>
+<li>blah</li>
+</ol>
+<p><img src="/images/clcok-space-time-fig-3.png" alt="space-time-fig-3"></p>
 <h1 id="反常行为anomalous-behavior">反常行为｜Anomalous Behavior</h1>
 <h1 id="结论">结论</h1>
 <h1 id="附">附</h1>
 <hr>
-<p><a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">论文链接</a></p>
+<p><a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Lamport 论文链接</a></p>
 </div>
   <footer class="post-footer">
     <ul class="post-tags">
