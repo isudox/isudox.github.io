@@ -7,7 +7,9 @@ tags:
 
 > 摘要：论文研究在分布式系统中，事件发生先后顺序的概念，并展示了如何定义事件之间的偏序。论文给出了一种用于同步逻辑时钟系统的分布式算法，该逻辑时钟可用于对事件做全序排序。其中，全序是描述解决同步问题的一种方法。该算法专门用于同步物理时钟。
 
-# 引入
+# 引入｜Introduction
+
+> The concept of time is fundamental to our way of thinking. It is derived from the more basic concept of the order in which events occur. We say that something happened at 3:15 if it occurred after our clock read 3:15 and before it read 3:16. The concept of the temporal ordering of events pervades our thinking about systems. For example, in an airline reservation system we specify that a request for a reservation should be granted if it is made before the flight is filled. However, we will see that this concept must be carefully reexamined when considering events in a distributed system.
 
 时间的概念是我们思考的基础。而它源于事件发生顺序这一更基础的概念。当一件事情发生在时钟显示 3:15 且未到 3:16 之前，那我们就说它发生在 3:15。对事件的时间顺序概念遍布于我们对系统的思考。例如，我们在机票预定系统中发起的预定请求，如果它发生在航班订满之前，那就应该被接受。但在分布式系统中，我们会发现事件的时间顺序概念需要被重新审视。
 
@@ -109,13 +111,27 @@ tags:
 
 每个进程维护其请求队列，并对其他进程不可见。假设请求队列初始时包含一条资源请求消息 T<sub>0</sub>:P<sub>0</sub><D-2>，其中 P<sub>0</sub> 表示初始时获得资源的进程，T<sub>0</sub> 小于任意时钟的初始时间。
 
-算法由以下 5 条规则定义。为了方便，假定每个规则定义的动作都构成一个事件。
+算法由以下 5 条规则定义。方便起见，假定每个规则定义的动作都构成一个单一事件。
 
-1. blah
-2. blah
-3. blah
-4. blah
-5. blah
+1. 规则 1: 为了请求资源，进程 P<sub>i</sub> 发送消息 T<sub>m</sub>:P<sub>i</sub> 到所有其他进程，并把该消息放进自己的请求队列里。T<sub>m</sub> 是消息的时间戳。
+2. 规则 2: 当进程 P<sub>j</sub> 接收到消息 T<sub>m</sub>:P<sub>i</sub>，将其放入到自己的请求队列，并发送一个带时间戳的 ack 消息到 P<sub>i</sub>。
+3. 规则 3: 为了释放资源，进程 P<sub>i</sub> 移除自己所有 T<sub>m</sub>:P<sub>i</sub> 消息，并发送一个带时间戳的 P<sub>i</sub> 释放资源的消息给所有其他进程。
+4. 规则 4: 当进程 P<sub>j</sub> 接收到 P<sub>i</sub> 释放资源的消息，就删除自己请求队列中的所有 T<sub>m</sub>:P<sub>i</sub> 消息。
+5. 规则 5: 进程 P<sub>i</sub> 在满足下列两个条件时，会被授予资源：i. P<sub>i</sub> 的请求队列中有一条消息 T<sub>m</sub>:P<sub>i</sub> 位于队头，即`=>`关系。（为了定义消息的`=>`关系，我们会识别发送消息的事件）ii. P<sub>i</sub> 接收到所有其他进程返回的时间戳晚于 T<sub>m</sub> 的 ack 消息。注意，条件 i 和 ii 只需由 P<sub>i</sub> 本地确认。
+
+验证由以上规则所定义的算法满足前面定义的条件 I 到条件 III 很简单。首先，观察规则 5 的条件 ii，结合对消息有序接收的前提设定，则可以保证 P<sub>i</sub> 已经接收到所有排在它当前请求之前的请求。规则 3、4 是仅有的会删除消息的规则，所以很容易看出符合条件 I。条件 II 基于全序`=>`由偏序`->`扩展的事实而来。规则 2 保证了在 P<sub>i</sub> 发出资源请求后，规则 5 条件 ii 最终一定会满足。规则 3 和规则 4 意味着如果进程被授予资源后最终会释放资源，则规则 5 条件 i 最终会满足，从而证明条件 III。
+
+> This is a distributed algorithm. Each process independently follows these rules, and there is no central synchronizing process or central storage. This approach can be generalized to implement any desired synchronization for such a distributed multiprocess system. The synchronization is specified in terms of a State Machine, consisting of a set C of possible commands, a set S of possible states, and a function e: C×S->S. The relation e(C, S) = S' means that executing the command C with the machine in state S causes the machine state to change to S'. In our example, the set C consists of all the commands P<sub>i</sub> requests resource and P<sub>i</sub> releases resource, and the state consists of a queue of waiting request commands, where the request at the head of the queue is the currently granted one. Executing a request command adds the request to the tail of the queue, and executing a release command removes a command from the queue.
+
+这是一个分布式算法。每个进程各自遵循上述规则，且不存在中心化的同步进程或存储。该方法可以通用化的实现任何分布式系统的同步机制。同步过程是依据**状态机**来指定，由集合`C`表示可能的指令，集合`S`表示可能的状态，以及函数`e: C * S -> S` 组成。关系式`e(C, S) = S'`表示在状态为`S`时执行命令`C`，使状态机流转到`S'`。在前面的例子中，集合`C`包括 P<sub>i</sub> 所有请求资源和释放资源的命令，集合`S`包括包括处于等待状态的请求命令队列，该队列头部是正要被授予资源的请求。执行申请资源命令会添加到队尾，而执行释放资源的命令则会从队头移除命令。
+
+> Each process independently simulates the execution of the State Machine, using the commands issued by all the processes. Synchronization is achieved because all processes order the commands according to their timestamps (using the relation =>), so each process uses the same sequence of commands. A process can execute a command timestamped T when it has learned of all commands issued by all other processes with timestamps less than or equal to T. The precise algorithm is straightforward, and we will not bother to describe it.
+
+每个进程使用所有进程发出的命令，独立地模拟状态机的执行。之所以能够实现同步，是因为所有进程都根据其时间戳对命令进行排序（使用全序关系`=>`），所以每个进程使用相同的命令序列。当进程已经获悉所有其他进程发出的`<= T`的命令时，就可以执行带有时间戳`T`的命令。精确的算法已经很直观了，本文不再赘述。
+
+> This method allows one to implement any desired form of multiprocess synchronization in a distributed system. However, the resulting algorithm requires the active participation of all the processes. A process must know all the commands issued by other processes, so that the failure of a single process will make it impossible for any other process to execute State Machine commands, thereby halting the system.
+
+这个方法可是在分布式系统中实现任何形式的多进程同步。TODO: P562-
 
 ![space-time-fig-3](/images/clcok-space-time-fig-3.png)
 
