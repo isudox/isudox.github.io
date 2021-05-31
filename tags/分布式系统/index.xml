@@ -13,7 +13,7 @@
       <pubDate>Mon, 19 Apr 2021 14:28:46 +0800</pubDate>
       
       <guid>https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</guid>
-      <description>摘要：论文研究在分布式系统中，事件发生先后顺序的概念，并展示了如何定义事件之间的偏序。论文给出了一种用于同步逻辑时钟系统的分布式算法，该逻辑</description>
+      <description>摘要：本文研究在分布式系统中，事件发生先后顺序的概念，并说明如何定义事件之间的偏序关系。论文给出了一种用于同步逻辑时钟系统的分布式算法，该逻</description>
     </item>
     
   </channel>
