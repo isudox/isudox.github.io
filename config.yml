@@ -4,6 +4,7 @@ params:
   author: "isudox"
   description: "My personal blog site."
   startYear: 2015
+  toc: true
 languageCode: "zh"
 title: "I sudo X"
 theme: "nova"
@@ -60,6 +61,18 @@ disqusShortname: "isudox"
 
 # https://gohugo.io/getting-started/configuration-markup
 markup:
+  highlight:
+    anchorLineNos: false
+    codeFences: true
+    guessSyntax: false
+    hl_Lines: ""
+    lineAnchors: ""
+    lineNoStart: 1
+    lineNos: no
+    lineNumbersInTable: false
+    noClasses: true
+    style: solarized-light
+    tabWidth: 4
   goldmark:
     renderer:
       unsafe: true

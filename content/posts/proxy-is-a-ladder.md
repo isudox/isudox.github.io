@@ -44,7 +44,7 @@ tags:
 
 1) client 向 server 发起握手请求，会先发送一个表明协议和方法的消息，格式如下：
 
-```
+```plaintext
 +----+----------+----------+
 |VER | NMETHODS | METHODS  |
 +----+----------+----------+
@@ -60,7 +60,7 @@ tags:
 
 2) server 接收到 client 的连接请求后，会选择一个 method，返回给 client 一个 method-selection 消息，格式如下：
 
-```
+```plaintext
 +----+--------+
 |VER | METHOD |
 +----+--------+
@@ -70,7 +70,7 @@ tags:
 
 同样的，VER 表示协议版本，METHOD 表示选定的方法，1 字节，各枚举值含义如下：
 
-```
+```plaintext
 X'00' NO AUTHENTICATION REQUIRED
 X'01' GSSAPI
 X'02' USERNAME/PASSWORD
@@ -81,7 +81,7 @@ X'FF' NO ACCEPTABLE METHODS
 
 在上面这个请求-响应过程，数据包可能类似下面的情况——
 
-```
+```plaintext
                     VER     NMETHODS    METHODS
 client -> server:   X'05'   X'01'       X'00'
                     VER     METHOD
@@ -100,7 +100,7 @@ server -> client:   X'05'   X'FF'
 
 3) 完成 method-dependent 的握手后，client 和 server 开始建立连接。client 再向 server 发起请求，格式如下：
 
-```
+```plaintext
 +----+-----+-------+------+----------+----------+
 |VER | CMD |  RSV  | ATYP | DST.ADDR | DST.PORT |
 +----+-----+-------+------+----------+----------+
@@ -138,7 +138,7 @@ server -> client:   X'05'   X'FF'
 
 4) server 收到上面的请求后，向 client 发送 reply 消息，reply 的结构如下：
 
-```
+```plaintext
 +----+-----+-------+------+----------+----------+
 |VER | REP |  RSV  | ATYP | BND.ADDR | BND.PORT |
 +----+-----+-------+------+----------+----------+
@@ -154,7 +154,7 @@ server -> client:   X'05'   X'FF'
 
 这个阶段，client 和 server 之间的请求-响应可能是如下情形，以访问 127.0.0.1:8080 为例：
 
-```
+```plaintext
                     VER     CMD     RSV     ATYP    DST.ADDR                    DST.PORT
 client -> server:   X'05'   X'01'   X'00'   X'01'   X'7F' X'00' X'00' X'01'     X'1F' X'90'
                     VER     REP     RSV     ATYP    BND.ADDR                    BND.PORT
@@ -207,7 +207,7 @@ AES 是一种对称加密算法，它的加密过程涉及字节替代（SubByte
 
 这个操作相对简单，其依据的原理是 X ⊕ X = 0，X ⊕ 0 = X。加密过程中，每轮的输入与轮子密钥异或一次；因此，解密时再异或上该轮的轮子密钥即可恢复。即：
 
-```
+```plaintext
 encrypt: input ⊕ round_key = output, decrypt: output ⊕ round_key = input
 （input ⊕ round_key ⊕ round_key = input ⊕ 0 = input）
 ```

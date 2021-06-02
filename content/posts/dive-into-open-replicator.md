@@ -31,7 +31,7 @@ MySQL 主从复制的过程：
 - `binlogParser`: binlog 的解析器，根据 eventType 适配对应的 parser；
 - `binlogEventListener`: 委托 binlog 事件的监听处理；
 
-初始化 `OpenReplicator` 的示例代码：
+初始化`OpenReplicator`的示例代码：
 
 ```java
 final OpenReplicator or = new OpenReplicator();
@@ -78,7 +78,7 @@ if(this.level2BufferSize <= 0) {
 
 ## 发送 binlog 请求
 
-连接建立后，open-replicator 开始向目标 MySQL 发送 binlog 请求。参考 `dumpBinlog()` 方法：
+连接建立后，open-replicator 开始向目标 MySQL 发送 binlog 请求。参考`dumpBinlog()`方法：
 
 ```java
 protected void dumpBinlog() throws Exception {
@@ -135,7 +135,7 @@ protected ReplicationBasedBinlogParser getDefaultBinlogParser() throws Exception
 
 binlog event header payload 格式如下：
 
-```
+```plaintext
 length         field
 4              timestamp: 注，此时间戳为秒
 1              event type

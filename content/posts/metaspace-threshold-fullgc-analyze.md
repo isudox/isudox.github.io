@@ -1,7 +1,7 @@
 ---
 title: "Metaspace 堆积引起 Full GC 的排查"
 date: 2021-03-10T23:19:09+08:00
-tag: JVM
+tags: [JVM]
 ---
 
 > 摘要：线上系统频繁 Full GC，通过监控告警、GC 日志、Heap 分析，逐步定位根因，并确定修复思路。
@@ -30,7 +30,7 @@ tag: JVM
 
 可以看到，在 FGC 时老年代使用率并不高，处在正常水平，远远没有到达触发 FGC 的阈值。loader 模块的 jvm 主要参数有：
 
-```
+```text
 -Xmx4g
 -Xms4g
 -XX:NewRatio=2
