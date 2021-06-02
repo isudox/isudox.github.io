@@ -11,7 +11,6 @@
   <meta name="description" content="在之前写的一篇博客中(String, StringBuilder, StringBuffer 区别)，提到了 String 对象在内存中的存储问题，当时只是一笔带过，在本篇里，对这个问题做一点深入的探讨。 字符">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -57,17 +56,17 @@
 <!-- more -->
 <h4 id="字符串比较">字符串比较</h4>
 <p>字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 通过字面值
-</span><span style="color:#75715e"></span>String s2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">);</span> <span style="color:#75715e">// 通过 new 关键字
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;hello,world!&#34;</span>; <span style="color:#93a1a1;font-style:italic">// 通过字面值
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">String</span> <span style="color:#268bd2">s2</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;hello,world!&#34;</span>); <span style="color:#93a1a1;font-style:italic">// 通过 new 关键字
 </span></code></pre></div><p>字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Debug</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">;</span>
-        String s2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s2<span style="color:#f92672">);</span> <span style="color:#75715e">// false
-</span><span style="color:#75715e"></span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>s1<span style="color:#f92672">,</span> s2<span style="color:#f92672">));</span> <span style="color:#75715e">// true
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Debug</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;hello,world!&#34;</span>;
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s2</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;hello,world!&#34;</span>);
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s1</span> == <span style="color:#268bd2">s2</span>); <span style="color:#93a1a1;font-style:italic">// false
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">Objects</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">s1</span>, <span style="color:#268bd2">s2</span>)); <span style="color:#93a1a1;font-style:italic">// true
+</span><span style="color:#93a1a1;font-style:italic"></span>    }
+}
 </code></pre></div><p>值都是 &ldquo;hello,world!&rdquo; 的字符串，然而两种比较的方式所得到的结果却不相同。字符串 s1 是通过字面值创建，字符串 s2 是通过关键字 new 创建，在分析这两种创建字符串方式的区别之前，先比较下 <code>==</code> 操作符和 <code>equals()</code> 方法在进行字符串比较时的差异。</p>
 <p><code>==</code> 操作符比较的是两个对象的引用是否指向同一内存地址，如果内存地址相同，则返回 true；<code>equals()</code> 比较的只是两个字符串对象的引用指向的内存地址所存储的字面值，而忽略内存地址是否相同。这样再去看上面的代码，从输出结果逆推，s1 和 s2 的引用的值都是 &ldquo;hello,world!&quot;，因此调用 <code>equals()</code> 比较返回 true 不难理解，那 s1 和 s2 内存地址不同，又该怎么解释，下面就进入正题，探讨 Java 里 String 在内存中的存储模型。</p>
 <h4 id="内存模型">内存模型</h4>
@@ -80,59 +79,59 @@
 <p>下图展示了堆区和栈区存储内容的差异，图片来自 vikashazrati.files.wordpress.com
 <img src="https://o70e8d1kb.qnssl.com/stacknheap.png" alt=""></p>
 <p>用接近系统底层的 C++ 语言程序简单演示下堆区和栈区分配内存的示例</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// example.cpp
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">foo</span>()
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#93a1a1;font-style:italic">// example.cpp
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">foo</span>()
 {
-    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>pBuffer; <span style="color:#75715e">// 没有分配空间，除了指针本身，它被分配在了栈区
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> b <span style="color:#f92672">=</span> true; <span style="color:#75715e">// 分配在栈区
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span>(b)
+    <span style="color:#859900;font-weight:bold">char</span> *<span style="color:#268bd2">pBuffer</span>; <span style="color:#93a1a1;font-style:italic">// 没有分配空间，除了指针本身，它被分配在了栈区
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900;font-weight:bold">bool</span> <span style="color:#268bd2">b</span> = <span style="color:#cb4b16">true</span>; <span style="color:#93a1a1;font-style:italic">// 分配在栈区
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">if</span>(<span style="color:#268bd2">b</span>)
     {
-        <span style="color:#75715e">// 在栈区分配 500 byte 空间
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">char</span> buffer[<span style="color:#ae81ff">500</span>];
-        <span style="color:#75715e">// 在堆区分配 500 byte 空间
-</span><span style="color:#75715e"></span>        pBuffer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">char</span>[<span style="color:#ae81ff">500</span>];
-    } <span style="color:#75715e">// buffer 的内存被释放, pBuffer 的还存在
-</span><span style="color:#75715e"></span>} <span style="color:#75715e">// 如果没有执行 delete[] pBuffer，就会发生内存泄漏;
+        <span style="color:#93a1a1;font-style:italic">// 在栈区分配 500 byte 空间
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#859900;font-weight:bold">char</span> <span style="color:#268bd2">buffer</span>[<span style="color:#2aa198;font-weight:bold">500</span>];
+        <span style="color:#93a1a1;font-style:italic">// 在堆区分配 500 byte 空间
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#268bd2">pBuffer</span> = <span style="color:#859900">new</span> <span style="color:#859900;font-weight:bold">char</span>[<span style="color:#2aa198;font-weight:bold">500</span>];
+    } <span style="color:#93a1a1;font-style:italic">// buffer 的内存被释放, pBuffer 的还存在
+</span><span style="color:#93a1a1;font-style:italic"></span>} <span style="color:#93a1a1;font-style:italic">// 如果没有执行 delete[] pBuffer，就会发生内存泄漏;
 </span></code></pre></div><p>通过字面值和 <code>new</code> 关键字创建字符串对象引用 s1、s2 和字符串 &ldquo;hello,world!&rdquo; 分别都存储在内存什么地方，一个个分析。
 字符串 &ldquo;hello,world!&rdquo; 在堆区申请空间存储，因为字符串是常量具有不可变性，它被存储在堆区的一块名叫 &ldquo;String Constant Pool&rdquo; 的字符串常量池中，字符串常量池中的字符串只存在一份，即如果常量池中已存在 &ldquo;hello,world!&quot;，那么 s1 不会在常量池中申请新的空间，而是直接把引用指向已存在的字符串内存地址。另外，s1 是字符串 &ldquo;hello,world!&rdquo; 的引用，存储在栈区。前面讲到，由关键字 <code>new</code> 创建的对象被分配在了堆区，但和字面值赋值不同的是，<code>new</code> 出来的对象不只是在分配在堆区的字符串常量池，在 <code>new</code> 一个新的 String 对象时，首先会在堆区创建该 String 对象，并让栈区的对象引用指向它，然后在常量池中查询是否已存在相同内容的字符串，如果有，就将堆区的空间和常量池中的空间通过 <code>String.inter()</code> 关联起来，如果没有，则在常量池中申请空间存放该字符串对象，再做关联。参考下面的代码和实例图。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;abc&#34;</span><span style="color:#f92672">;</span> 
-String s2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;xyz&#34;</span><span style="color:#f92672">;</span>
-String s3 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;123&#34;</span><span style="color:#f92672">;</span>
-String s4 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;abc&#34;</span>; 
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">s2</span> = <span style="color:#2aa198">&#34;xyz&#34;</span>;
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">s3</span> = <span style="color:#2aa198">&#34;123&#34;</span>;
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">s4</span> = <span style="color:#2aa198">&#34;A&#34;</span>;
 
-String s5 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;abc&#34;</span><span style="color:#f92672">);</span>
-<span style="color:#66d9ef">char</span><span style="color:#f92672">[]</span> c <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#39;J&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;V&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">};</span>
-String s6 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
-String s7 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> StringBuffer<span style="color:#f92672">());</span>
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">s5</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;abc&#34;</span>);
+<span style="color:#859900;font-weight:bold">char</span>[] <span style="color:#268bd2">c</span> = {<span style="color:#2aa198">&#39;J&#39;</span>, <span style="color:#2aa198">&#39;A&#39;</span>, <span style="color:#2aa198">&#39;V&#39;</span>, <span style="color:#2aa198">&#39;A&#39;</span>};
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">s6</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#268bd2">c</span>);
+<span style="color:#268bd2">String</span> <span style="color:#268bd2">s7</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">StringBuffer</span>());
 </code></pre></div><p><img src="https://o70e8d1kb.qnssl.com/String-Constant-Pool.png" alt=""></p>
 <h4 id="测试结果">测试结果</h4>
 <p>梳理了那么多理论，还是要用实践来印证。测试下面的代码，看看结果如何——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestString</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// 由字面值创建字符串
-</span><span style="color:#75715e"></span>        String s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">;</span>
-        String s2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s2<span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>s1<span style="color:#f92672">,</span> s2<span style="color:#f92672">));</span>
-        <span style="color:#75715e">// 由 new 关键字创建字符串
-</span><span style="color:#75715e"></span>        String s3 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">);</span>
-        String s4 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello,world!&#34;</span><span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s3 <span style="color:#f92672">==</span> s4<span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>s3<span style="color:#f92672">,</span> s4<span style="color:#f92672">));</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">TestString</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+        <span style="color:#93a1a1;font-style:italic">// 由字面值创建字符串
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;hello,world!&#34;</span>;
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s2</span> = <span style="color:#2aa198">&#34;hello,world!&#34;</span>;
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s1</span> == <span style="color:#268bd2">s2</span>);
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">Objects</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">s1</span>, <span style="color:#268bd2">s2</span>));
+        <span style="color:#93a1a1;font-style:italic">// 由 new 关键字创建字符串
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s3</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;hello,world!&#34;</span>);
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s4</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;hello,world!&#34;</span>);
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s3</span> == <span style="color:#268bd2">s4</span>);
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">Objects</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">s3</span>, <span style="color:#268bd2">s4</span>));
 
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s3<span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s3<span style="color:#f92672">.</span><span style="color:#a6e22e">intern</span><span style="color:#f92672">());</span>
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s1</span> == <span style="color:#268bd2">s3</span>);
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s1</span> == <span style="color:#268bd2">s3</span>.<span style="color:#268bd2">intern</span>());
 
-        String s5 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello,&#34;</span><span style="color:#f92672">;</span>
-        String s6 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;world!&#34;</span><span style="color:#f92672">;</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> s5 <span style="color:#f92672">+</span> s6<span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;hello,&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;world!&#34;</span><span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s3 <span style="color:#f92672">==</span> s5 <span style="color:#f92672">+</span> s6<span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>s1 <span style="color:#f92672">==</span> <span style="color:#f92672">(</span>s5 <span style="color:#f92672">+</span> s6<span style="color:#f92672">).</span><span style="color:#a6e22e">intern</span><span style="color:#f92672">());</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s5</span> = <span style="color:#2aa198">&#34;hello,&#34;</span>;
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s6</span> = <span style="color:#2aa198">&#34;world!&#34;</span>;
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s1</span> == <span style="color:#268bd2">s5</span> + <span style="color:#268bd2">s6</span>);
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s1</span> == <span style="color:#2aa198">&#34;hello,&#34;</span> + <span style="color:#2aa198">&#34;world!&#34;</span>);
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s3</span> == <span style="color:#268bd2">s5</span> + <span style="color:#268bd2">s6</span>);
+        <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">s1</span> == (<span style="color:#268bd2">s5</span> + <span style="color:#268bd2">s6</span>).<span style="color:#268bd2">intern</span>());
+    }
+}
 
-<span style="color:#75715e">// output: true true false true false true false true false true
+<span style="color:#93a1a1;font-style:italic">// output: true true false true false true false true false true
 </span></code></pre></div></div>
   <footer class="post-footer">
     <ul class="post-tags">
@@ -172,10 +171,6 @@ String s7 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

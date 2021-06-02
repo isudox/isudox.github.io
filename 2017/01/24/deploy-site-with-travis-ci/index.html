@@ -11,7 +11,6 @@
   <meta name="description" content="这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -69,12 +68,12 @@
 <h3 id="travis-关联-github">Travis 关联 GitHub</h3>
 <p>首先要让 Travis 监听 GitHub 的更新，打开 Travis，选择要监听的 GitHub 仓库，选中后记得勾选 &ldquo;Build only if .travis.yml is present&rdquo; 和 &ldquo;Build pushes&rdquo; 两个选项。</p>
 <p>Travis 要有更改 GitHub 仓库的权限，因此还要到 GitHub 那为 Travis 设置权限 key。打开上面所关联的 GitHub 仓库的 Settings，在 Deploy keys 选项中，为 Travis 添加 SSH key。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 生成 ssh key 私钥公钥对，无需 passphrase</span>
-ssh-keygen -t rsa -C <span style="color:#e6db74">&#34;your_email@example.com&#34;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># 生成 ssh key 私钥公钥对，无需 passphrase</span>
+ssh-keygen -t rsa -C <span style="color:#2aa198">&#34;your_email@example.com&#34;</span>
 </code></pre></div><p>然后讲 SSH 公钥 <code>id_rsa.pub</code> 粘贴到 Deploy key 中，如下图示——</p>
 <p><img src="https://o70e8d1kb.qnssl.com/deploy-key.png" alt="deploy-key"></p>
 <p>接下来就是将 SSH 私钥赋给 Travis，参考下面的操作：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">travis encrypt-file ~/.ssh/id_rsa --add
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">travis encrypt-file ~/.ssh/id_rsa --add
 </code></pre></div><p>Travis 命令行工具会根据私钥自动匹配到对应的 GitHub 仓库，控制台会得到类似如下回显——</p>
 <blockquote>
 <p>Detected repository as isudox/isudox.github.io, is this correct? |yes|
@@ -88,76 +87,76 @@ Commit all changes to your .travis.yml.</p>
 <p>对 Travis 添加私钥后，就能在 Travis 网站上看到新增的环境变量配置，如下图示——</p>
 <p><img src="https://o70e8d1kb.qnssl.com/travis-env-var.png" alt="travis-environment-variables"></p>
 <p>上面的操作会对私钥再次加密，并在当前路径下生成加密文件 <code>id_rsa.enc</code>，同时在当前路径下的 <code>.travis.yml</code> 配置中添加一条解密命令——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl aes-256-cbc -K $encrypted_xxx_key -iv $encrypted_xxx_iv -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl aes-256-cbc -K <span style="color:#268bd2">$encrypted_xxx_key</span> -iv <span style="color:#268bd2">$encrypted_xxx_iv</span> -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
 </code></pre></div><p>然后对加密文件解密，存放在 <code>~/.ssh/</code> 下，并配置 <code>~/.ssh/config</code> 指定要使用的私钥文件，这些操作和普通的 SSH 操作是一致的，很易懂。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Set the permission of the key</span>
-chmod <span style="color:#ae81ff">600</span> ~/.ssh/id_rsa
-<span style="color:#75715e"># Start SSH agent</span>
-eval <span style="color:#66d9ef">$(</span>ssh-agent<span style="color:#66d9ef">)</span>
-<span style="color:#75715e"># Add the private key to the system</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Set the permission of the key</span>
+chmod <span style="color:#2aa198;font-weight:bold">600</span> ~/.ssh/id_rsa
+<span style="color:#93a1a1;font-style:italic"># Start SSH agent</span>
+<span style="color:#cb4b16">eval</span> <span style="color:#859900">$(</span>ssh-agent<span style="color:#859900">)</span>
+<span style="color:#93a1a1;font-style:italic"># Add the private key to the system</span>
 ssh-add ~/.ssh/id_rsa
 </code></pre></div><p>下面是 <code>~/.ssh/config</code> 的参考——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Host github.com
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Host github.com
   HostName github.com
   User git
   StrictHostKeyChecking no
   IdentityFile ~/.ssh/id_rsa
   IdentitiesOnly yes
 </code></pre></div><p>Push 到 GitHub 前还得对 Git 的全局参数进行配置，例如 username 和 email 信息——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Set Git config</span>
-git config --global user.name <span style="color:#e6db74">&#39;sudoz&#39;</span>
-git config --global user.email <span style="color:#e6db74">&#39;me@isudox.com&#39;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Set Git config</span>
+git config --global user.name <span style="color:#2aa198">&#39;sudoz&#39;</span>
+git config --global user.email <span style="color:#2aa198">&#39;me@isudox.com&#39;</span>
 </code></pre></div><p>剩下的工作就都是 Hexo 的操作了，安装依赖，构建静态文件，部署静态站点——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Install Hexo</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Install Hexo</span>
 npm install hexo-cli -g
 npm install
 
 hexo generate
 hexo deploy
 </code></pre></div><h3 id="travisyml-配置">travis.yml 配置</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">language</span>: <span style="color:#ae81ff">node_js</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#268bd2;font-weight:bold">language</span>: <span style="color:#2aa198">node_js</span>
 
-<span style="color:#f92672">node_js</span>:
-  - <span style="color:#e6db74">&#39;6&#39;</span>
+<span style="color:#268bd2;font-weight:bold">node_js</span>:
+  - <span style="color:#2aa198">&#39;6&#39;</span>
 
-<span style="color:#f92672">sudo</span>: <span style="color:#66d9ef">false</span>
+<span style="color:#268bd2;font-weight:bold">sudo</span>: <span style="color:#859900;font-weight:bold">false</span>
 
-<span style="color:#f92672">cache</span>:
-  <span style="color:#f92672">apt</span>: <span style="color:#66d9ef">true</span>
-  <span style="color:#f92672">directories</span>:
-    - <span style="color:#ae81ff">node_modules</span>
+<span style="color:#268bd2;font-weight:bold">cache</span>:
+  <span style="color:#268bd2;font-weight:bold">apt</span>: <span style="color:#859900;font-weight:bold">true</span>
+  <span style="color:#268bd2;font-weight:bold">directories</span>:
+    - <span style="color:#2aa198">node_modules</span>
 
-<span style="color:#f92672">addons</span>:
-  <span style="color:#f92672">ssh_known_hosts</span>: <span style="color:#ae81ff">github.com</span>
+<span style="color:#268bd2;font-weight:bold">addons</span>:
+  <span style="color:#268bd2;font-weight:bold">ssh_known_hosts</span>: <span style="color:#2aa198">github.com</span>
 
-<span style="color:#f92672">script</span>:
-  - <span style="color:#ae81ff">npm run build</span>
+<span style="color:#268bd2;font-weight:bold">script</span>:
+  - <span style="color:#2aa198">npm run build</span>
 
-<span style="color:#f92672">deploy</span>:
-  <span style="color:#f92672">provider</span>: <span style="color:#ae81ff">script</span>
-  <span style="color:#f92672">script</span>: <span style="color:#ae81ff">.travis/deploy.sh</span>
-  <span style="color:#f92672">skip_cleanup</span>: <span style="color:#66d9ef">true</span>
-  <span style="color:#f92672">on</span>:
-    <span style="color:#f92672">branch</span>: <span style="color:#ae81ff">source</span>
+<span style="color:#268bd2;font-weight:bold">deploy</span>:
+  <span style="color:#268bd2;font-weight:bold">provider</span>: <span style="color:#2aa198">script</span>
+  <span style="color:#268bd2;font-weight:bold">script</span>: <span style="color:#2aa198">.travis/deploy.sh</span>
+  <span style="color:#268bd2;font-weight:bold">skip_cleanup</span>: <span style="color:#859900;font-weight:bold">true</span>
+  <span style="color:#268bd2;font-weight:bold">on</span>:
+    <span style="color:#268bd2;font-weight:bold">branch</span>: <span style="color:#2aa198">source</span>
 </code></pre></div><p>Travis deploy script 参考如下——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e"># Decrypt the private key</span>
-openssl aes-256-cbc -K $encrypted_xxx_key -iv $encrypted_xxx_iv -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
-<span style="color:#75715e"># Set the permission of the key</span>
-chmod <span style="color:#ae81ff">600</span> ~/.ssh/id_rsa
-<span style="color:#75715e"># Start SSH agent</span>
-eval <span style="color:#66d9ef">$(</span>ssh-agent<span style="color:#66d9ef">)</span>
-<span style="color:#75715e"># Add the private key to the system</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic">#!/bin/bash
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#93a1a1;font-style:italic"># Decrypt the private key</span>
+openssl aes-256-cbc -K <span style="color:#268bd2">$encrypted_xxx_key</span> -iv <span style="color:#268bd2">$encrypted_xxx_iv</span> -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+<span style="color:#93a1a1;font-style:italic"># Set the permission of the key</span>
+chmod <span style="color:#2aa198;font-weight:bold">600</span> ~/.ssh/id_rsa
+<span style="color:#93a1a1;font-style:italic"># Start SSH agent</span>
+<span style="color:#cb4b16">eval</span> <span style="color:#859900">$(</span>ssh-agent<span style="color:#859900">)</span>
+<span style="color:#93a1a1;font-style:italic"># Add the private key to the system</span>
 ssh-add ~/.ssh/id_rsa
-<span style="color:#75715e"># Copy SSH config</span>
+<span style="color:#93a1a1;font-style:italic"># Copy SSH config</span>
 cp .travis/ssh_config ~/.ssh/config
-<span style="color:#75715e"># Set Git config</span>
-git config --global user.name <span style="color:#e6db74">&#39;sudoz&#39;</span>
-git config --global user.email <span style="color:#e6db74">&#39;me@isudox.com&#39;</span>
-<span style="color:#75715e"># Clone the repository</span>
+<span style="color:#93a1a1;font-style:italic"># Set Git config</span>
+git config --global user.name <span style="color:#2aa198">&#39;sudoz&#39;</span>
+git config --global user.email <span style="color:#2aa198">&#39;me@isudox.com&#39;</span>
+<span style="color:#93a1a1;font-style:italic"># Clone the repository</span>
 git clone --branch master git@github.com:isudox/isudox.github.io.git .deploy_git
-<span style="color:#75715e"># Deploy to GitHub</span>
+<span style="color:#93a1a1;font-style:italic"># Deploy to GitHub</span>
 npm run deploy
 </code></pre></div><blockquote>
 <p>需要注意，上面的 deploy.sh 需要有执行权限，<code>chmod +x deploy.sh</code></p>
@@ -209,10 +208,6 @@ npm run deploy
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

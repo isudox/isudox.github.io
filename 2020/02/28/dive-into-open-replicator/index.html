@@ -11,7 +11,6 @@
   <meta name="description" content="open-replicator 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。 在探索 open-replicator 原">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -77,83 +76,83 @@ open-replicator 的做法是参照 MySQL 主从复制的方式，像 slave 一�
 <li><code>binlogParser</code>: binlog 的解析器，根据 eventType 适配对应的 parser；</li>
 <li><code>binlogEventListener</code>: 委托 binlog 事件的监听处理；</li>
 </ul>
-<p>初始化 <code>OpenReplicator</code> 的示例代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> OpenReplicator or <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> OpenReplicator<span style="color:#f92672">();</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">setUser</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nextop&#34;</span><span style="color:#f92672">);</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">setPassword</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nextop&#34;</span><span style="color:#f92672">);</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">setHost</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;192.168.1.216&#34;</span><span style="color:#f92672">);</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">setPort</span><span style="color:#f92672">(</span>3306<span style="color:#f92672">);</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">setServerId</span><span style="color:#f92672">(</span>6789<span style="color:#f92672">);</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">setBinlogPosition</span><span style="color:#f92672">(</span>120<span style="color:#f92672">);</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">setBinlogFileName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mysql-bin.000003&#34;</span><span style="color:#f92672">);</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">setBinlogEventListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> BinlogEventListener<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onEvents</span><span style="color:#f92672">(</span>BinlogEventV4 event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;{}&#34;</span><span style="color:#f92672">,</span> event<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">});</span>
-or<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+<p>初始化<code>OpenReplicator</code>的示例代码：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">final</span> <span style="color:#268bd2">OpenReplicator</span> <span style="color:#268bd2">or</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">OpenReplicator</span>();
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">setUser</span>(<span style="color:#2aa198">&#34;nextop&#34;</span>);
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">setPassword</span>(<span style="color:#2aa198">&#34;nextop&#34;</span>);
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">setHost</span>(<span style="color:#2aa198">&#34;192.168.1.216&#34;</span>);
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">setPort</span>(<span style="color:#268bd2">3306</span>);
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">setServerId</span>(<span style="color:#268bd2">6789</span>);
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">setBinlogPosition</span>(<span style="color:#268bd2">120</span>);
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">setBinlogFileName</span>(<span style="color:#2aa198">&#34;mysql-bin.000003&#34;</span>);
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">setBinlogEventListener</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">BinlogEventListener</span>() {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onEvents</span>(<span style="color:#268bd2">BinlogEventV4</span> <span style="color:#268bd2">event</span>) {
+        <span style="color:#268bd2">LOGGER</span>.<span style="color:#268bd2">info</span>(<span style="color:#2aa198">&#34;{}&#34;</span>, <span style="color:#268bd2">event</span>);
+    }
+});
+<span style="color:#268bd2">or</span>.<span style="color:#268bd2">start</span>();
 </code></pre></div><p>接下来了解下 <code>start()</code> 方法里都做了些哪些工作。</p>
 <h2 id="建立-socket-连接">建立 socket 连接</h2>
 <p>首先是初始化 <code>Transport</code> 建立 socket 连接：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">transport</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">transport</span> <span style="color:#f92672">=</span> getDefaultTransport<span style="color:#f92672">();</span>
-<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">transport</span><span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">host</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">port</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">if</span> (<span style="color:#859900">this</span>.<span style="color:#268bd2">transport</span> == <span style="color:#859900;font-weight:bold">null</span>)
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">transport</span> = <span style="color:#268bd2">getDefaultTransport</span>();
+<span style="color:#859900">this</span>.<span style="color:#268bd2">transport</span>.<span style="color:#268bd2">connect</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">host</span>, <span style="color:#859900">this</span>.<span style="color:#268bd2">port</span>);
 </code></pre></div><p>其中 <code>getDefaultTransport()</code> 方法设置成员参数，<code>connect()</code> 完成 socket 通信的建立——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socketFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> port<span style="color:#f92672">);</span>
-<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">os</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TransportOutputStreamImpl<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">());</span>
-<span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level2BufferSize</span> <span style="color:#f92672">&lt;=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">is</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TransportInputStreamImpl<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level1BufferSize</span><span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">is</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TransportInputStreamImpl<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ActiveBufferedInputStream<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level2BufferSize</span><span style="color:#f92672">),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level1BufferSize</span><span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">this</span>.<span style="color:#268bd2">socket</span> = <span style="color:#859900">this</span>.<span style="color:#268bd2">socketFactory</span>.<span style="color:#268bd2">create</span>(<span style="color:#268bd2">host</span>, <span style="color:#268bd2">port</span>);
+<span style="color:#859900">this</span>.<span style="color:#268bd2">os</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">TransportOutputStreamImpl</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">socket</span>.<span style="color:#268bd2">getOutputStream</span>());
+<span style="color:#859900">if</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">level2BufferSize</span> &lt;= <span style="color:#268bd2">0</span>) {
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">is</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">TransportInputStreamImpl</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">socket</span>.<span style="color:#268bd2">getInputStream</span>(), <span style="color:#859900">this</span>.<span style="color:#268bd2">level1BufferSize</span>);
+} <span style="color:#859900">else</span> {
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">is</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">TransportInputStreamImpl</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">ActiveBufferedInputStream</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">socket</span>.<span style="color:#268bd2">getInputStream</span>(), <span style="color:#859900">this</span>.<span style="color:#268bd2">level2BufferSize</span>), <span style="color:#859900">this</span>.<span style="color:#268bd2">level1BufferSize</span>);
+}
 </code></pre></div><p>这里注意有一层逻辑判断，是否开启二级缓存，后面会提到其中的区别。</p>
 <h2 id="发送-binlog-请求">发送 binlog 请求</h2>
-<p>连接建立后，open-replicator 开始向目标 MySQL 发送 binlog 请求。参考 <code>dumpBinlog()</code> 方法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dumpBinlog</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">final</span> ComBinlogDumpPacket command <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ComBinlogDumpPacket<span style="color:#f92672">();</span>
-    command<span style="color:#f92672">.</span><span style="color:#a6e22e">setBinlogFlag</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-    command<span style="color:#f92672">.</span><span style="color:#a6e22e">setServerId</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">serverId</span><span style="color:#f92672">);</span>
-    command<span style="color:#f92672">.</span><span style="color:#a6e22e">setBinlogPosition</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">binlogPosition</span><span style="color:#f92672">);</span>
-    command<span style="color:#f92672">.</span><span style="color:#a6e22e">setBinlogFileName</span><span style="color:#f92672">(</span>StringColumn<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">binlogFileName</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">encoding</span><span style="color:#f92672">)));</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">transport</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">writePacket</span><span style="color:#f92672">(</span>command<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">transport</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+<p>连接建立后，open-replicator 开始向目标 MySQL 发送 binlog 请求。参考<code>dumpBinlog()</code>方法：</p>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">protected</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">dumpBinlog</span>() <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
+    <span style="color:#859900">final</span> <span style="color:#268bd2">ComBinlogDumpPacket</span> <span style="color:#268bd2">command</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ComBinlogDumpPacket</span>();
+    <span style="color:#268bd2">command</span>.<span style="color:#268bd2">setBinlogFlag</span>(<span style="color:#268bd2">0</span>);
+    <span style="color:#268bd2">command</span>.<span style="color:#268bd2">setServerId</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">serverId</span>);
+    <span style="color:#268bd2">command</span>.<span style="color:#268bd2">setBinlogPosition</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">binlogPosition</span>);
+    <span style="color:#268bd2">command</span>.<span style="color:#268bd2">setBinlogFileName</span>(<span style="color:#268bd2">StringColumn</span>.<span style="color:#268bd2">valueOf</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">binlogFileName</span>.<span style="color:#268bd2">getBytes</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">encoding</span>)));
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">transport</span>.<span style="color:#268bd2">getOutputStream</span>().<span style="color:#268bd2">writePacket</span>(<span style="color:#268bd2">command</span>);
+    <span style="color:#859900">this</span>.<span style="color:#268bd2">transport</span>.<span style="color:#268bd2">getOutputStream</span>().<span style="color:#268bd2">flush</span>();
     
-    <span style="color:#66d9ef">final</span> Packet packet <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">transport</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">readPacket</span><span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>packet<span style="color:#f92672">.</span><span style="color:#a6e22e">getPacketBody</span><span style="color:#f92672">()[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> ErrorPacket<span style="color:#f92672">.</span><span style="color:#a6e22e">PACKET_MARKER</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> ErrorPacket error <span style="color:#f92672">=</span> ErrorPacket<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>packet<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> TransportException<span style="color:#f92672">(</span>error<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span> 
-<span style="color:#f92672">}</span>
+    <span style="color:#859900">final</span> <span style="color:#268bd2">Packet</span> <span style="color:#268bd2">packet</span> = <span style="color:#859900">this</span>.<span style="color:#268bd2">transport</span>.<span style="color:#268bd2">getInputStream</span>().<span style="color:#268bd2">readPacket</span>();
+    <span style="color:#859900">if</span>(<span style="color:#268bd2">packet</span>.<span style="color:#268bd2">getPacketBody</span>()[<span style="color:#268bd2">0</span>] == <span style="color:#268bd2">ErrorPacket</span>.<span style="color:#268bd2">PACKET_MARKER</span>) {
+        <span style="color:#859900">final</span> <span style="color:#268bd2">ErrorPacket</span> <span style="color:#268bd2">error</span> = <span style="color:#268bd2">ErrorPacket</span>.<span style="color:#268bd2">valueOf</span>(<span style="color:#268bd2">packet</span>);
+        <span style="color:#859900">throw</span> <span style="color:#859900">new</span> <span style="color:#268bd2">TransportException</span>(<span style="color:#268bd2">error</span>);
+    } 
+}
 </code></pre></div><h2 id="binlog-解析">binlog 解析</h2>
 <p>MySQL 接收到 binlog 请求后，会返回 binlog 信息，open-replicator 进行 binlog 解析。解析动作由 open-replicator 注册的 parser 执行，默认注册的 parser 如下——</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> ReplicationBasedBinlogParser <span style="color:#a6e22e">getDefaultBinlogParser</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">final</span> ReplicationBasedBinlogParser r <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ReplicationBasedBinlogParser<span style="color:#f92672">();</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> StopEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RotateEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> IntvarEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> XidEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RandEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> QueryEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> UserVarEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> IncidentEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TableMapEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> WriteRowsEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> UpdateRowsEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> DeleteRowsEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> WriteRowsEventV2Parser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> UpdateRowsEventV2Parser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> DeleteRowsEventV2Parser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FormatDescriptionEventParser<span style="color:#f92672">());</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">registerEventParser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> GtidEventParser<span style="color:#f92672">());</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">protected</span> <span style="color:#268bd2">ReplicationBasedBinlogParser</span> <span style="color:#268bd2">getDefaultBinlogParser</span>() <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
+    <span style="color:#859900">final</span> <span style="color:#268bd2">ReplicationBasedBinlogParser</span> <span style="color:#268bd2">r</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ReplicationBasedBinlogParser</span>();
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">StopEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">RotateEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">IntvarEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">XidEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">RandEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">QueryEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">UserVarEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">IncidentEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">TableMapEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">WriteRowsEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">UpdateRowsEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">DeleteRowsEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">WriteRowsEventV2Parser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">UpdateRowsEventV2Parser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">DeleteRowsEventV2Parser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">FormatDescriptionEventParser</span>());
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">registerEventParser</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">GtidEventParser</span>());
     
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">setTransport</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">transport</span><span style="color:#f92672">);</span>
-    r<span style="color:#f92672">.</span><span style="color:#a6e22e">setBinlogFileName</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">binlogFileName</span><span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">return</span> r<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">setTransport</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">transport</span>);
+    <span style="color:#268bd2">r</span>.<span style="color:#268bd2">setBinlogFileName</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">binlogFileName</span>);
+    <span style="color:#859900">return</span> <span style="color:#268bd2">r</span>;
+}
 </code></pre></div><p>因此 parser 是可插拔的，开发者可自定义配置。<code>binlogParser</code> 内部创建了一个线程，由该线程解析 binlog，这部分逻辑比较长，拆开讲。</p>
 <h3 id="解析-binlog-event-header">解析 binlog event header</h3>
 <p>binlog event header payload 格式如下：</p>
-<pre><code>length         field
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">length         field
 4              timestamp: 注，此时间戳为秒
 1              event type
 4              server-id
@@ -161,73 +160,73 @@ or<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><s
    if binlog-version &gt; 1:
 4              log position: position of the next event
 2              flags: binlog 标识，参考[官方文档](https://dev.mysql.com/doc/internals/en/binlog-event-flag.html)
-</code></pre><p>按上述 payload 格式，从 socket 中读取字节流并解析对应的属性值，完成 header 的解析。</p>
+</code></pre></div><p>按上述 payload 格式，从 socket 中读取字节流并解析对应的属性值，完成 header 的解析。</p>
 <p>参考 <a href="https://dev.mysql.com/doc/internals/en/binlog-event-header.html">Binlog Event header</a>。</p>
 <h3 id="解析-binlog-event-body">解析 binlog event body</h3>
 <p>从 binlog header 中获取到 <code>event type</code> 后，从之前注册的 <code>BinlogEventParser</code> 列表中找出匹配的解析器，实际的解析过程委托给解析器接口的对应实现。
 以 <code>WriteRowsEventV2Parser</code> 实现为例，其中 <code>WRITE_ROWS_EVENTv2</code> 的 payload 格式参考 <a href="https://dev.mysql.com/doc/internals/en/rows-event.html#write-rows-eventv2">write-rows-eventv2</a>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">parse</span><span style="color:#f92672">(</span>XInputStream is<span style="color:#f92672">,</span> BinlogEventV4Header header<span style="color:#f92672">,</span> BinlogParserContext context<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> tableId <span style="color:#f92672">=</span> is<span style="color:#f92672">.</span><span style="color:#a6e22e">readLong</span><span style="color:#f92672">(</span>6<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">final</span> TableMapEvent tme <span style="color:#f92672">=</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">getTableMapEvent</span><span style="color:#f92672">(</span>tableId<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rowEventFilter</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rowEventFilter</span><span style="color:#f92672">.</span><span style="color:#a6e22e">accepts</span><span style="color:#f92672">(</span>header<span style="color:#f92672">,</span> context<span style="color:#f92672">,</span> tme<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-        is<span style="color:#f92672">.</span><span style="color:#a6e22e">skip</span><span style="color:#f92672">(</span>is<span style="color:#f92672">.</span><span style="color:#a6e22e">available</span><span style="color:#f92672">());</span>
-        <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">parse</span>(<span style="color:#268bd2">XInputStream</span> <span style="color:#268bd2">is</span>, <span style="color:#268bd2">BinlogEventV4Header</span> <span style="color:#268bd2">header</span>, <span style="color:#268bd2">BinlogParserContext</span> <span style="color:#268bd2">context</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">IOException</span> {
+    <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">long</span> <span style="color:#268bd2">tableId</span> = <span style="color:#268bd2">is</span>.<span style="color:#268bd2">readLong</span>(<span style="color:#268bd2">6</span>);
+    <span style="color:#859900">final</span> <span style="color:#268bd2">TableMapEvent</span> <span style="color:#268bd2">tme</span> = <span style="color:#268bd2">context</span>.<span style="color:#268bd2">getTableMapEvent</span>(<span style="color:#268bd2">tableId</span>);
+    <span style="color:#859900">if</span> (<span style="color:#859900">this</span>.<span style="color:#268bd2">rowEventFilter</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; !<span style="color:#859900">this</span>.<span style="color:#268bd2">rowEventFilter</span>.<span style="color:#268bd2">accepts</span>(<span style="color:#268bd2">header</span>, <span style="color:#268bd2">context</span>, <span style="color:#268bd2">tme</span>)) {
+        <span style="color:#268bd2">is</span>.<span style="color:#268bd2">skip</span>(<span style="color:#268bd2">is</span>.<span style="color:#268bd2">available</span>());
+        <span style="color:#859900">return</span>;
+    }
     
-    <span style="color:#66d9ef">final</span> WriteRowsEventV2 event <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> WriteRowsEventV2<span style="color:#f92672">(</span>header<span style="color:#f92672">);</span>
-    event<span style="color:#f92672">.</span><span style="color:#a6e22e">setTableId</span><span style="color:#f92672">(</span>tableId<span style="color:#f92672">);</span>
-    event<span style="color:#f92672">.</span><span style="color:#a6e22e">setReserved</span><span style="color:#f92672">(</span>is<span style="color:#f92672">.</span><span style="color:#a6e22e">readInt</span><span style="color:#f92672">(</span>2<span style="color:#f92672">));</span>
-    event<span style="color:#f92672">.</span><span style="color:#a6e22e">setExtraInfoLength</span><span style="color:#f92672">(</span>is<span style="color:#f92672">.</span><span style="color:#a6e22e">readInt</span><span style="color:#f92672">(</span>2<span style="color:#f92672">));</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>event<span style="color:#f92672">.</span><span style="color:#a6e22e">getExtraInfoLength</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 2<span style="color:#f92672">)</span> 
-        event<span style="color:#f92672">.</span><span style="color:#a6e22e">setExtraInfo</span><span style="color:#f92672">(</span>is<span style="color:#f92672">.</span><span style="color:#a6e22e">readBytes</span><span style="color:#f92672">(</span>event<span style="color:#f92672">.</span><span style="color:#a6e22e">getExtraInfoLength</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 2<span style="color:#f92672">));</span>
-    event<span style="color:#f92672">.</span><span style="color:#a6e22e">setColumnCount</span><span style="color:#f92672">(</span>is<span style="color:#f92672">.</span><span style="color:#a6e22e">readUnsignedLong</span><span style="color:#f92672">());</span> 
-    event<span style="color:#f92672">.</span><span style="color:#a6e22e">setUsedColumns</span><span style="color:#f92672">(</span>is<span style="color:#f92672">.</span><span style="color:#a6e22e">readBit</span><span style="color:#f92672">(</span>event<span style="color:#f92672">.</span><span style="color:#a6e22e">getColumnCount</span><span style="color:#f92672">().</span><span style="color:#a6e22e">intValue</span><span style="color:#f92672">()));</span>
-    event<span style="color:#f92672">.</span><span style="color:#a6e22e">setRows</span><span style="color:#f92672">(</span>parseRows<span style="color:#f92672">(</span>is<span style="color:#f92672">,</span> tme<span style="color:#f92672">,</span> event<span style="color:#f92672">));</span>
+    <span style="color:#859900">final</span> <span style="color:#268bd2">WriteRowsEventV2</span> <span style="color:#268bd2">event</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">WriteRowsEventV2</span>(<span style="color:#268bd2">header</span>);
+    <span style="color:#268bd2">event</span>.<span style="color:#268bd2">setTableId</span>(<span style="color:#268bd2">tableId</span>);
+    <span style="color:#268bd2">event</span>.<span style="color:#268bd2">setReserved</span>(<span style="color:#268bd2">is</span>.<span style="color:#268bd2">readInt</span>(<span style="color:#268bd2">2</span>));
+    <span style="color:#268bd2">event</span>.<span style="color:#268bd2">setExtraInfoLength</span>(<span style="color:#268bd2">is</span>.<span style="color:#268bd2">readInt</span>(<span style="color:#268bd2">2</span>));
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">event</span>.<span style="color:#268bd2">getExtraInfoLength</span>() &gt; <span style="color:#268bd2">2</span>) 
+        <span style="color:#268bd2">event</span>.<span style="color:#268bd2">setExtraInfo</span>(<span style="color:#268bd2">is</span>.<span style="color:#268bd2">readBytes</span>(<span style="color:#268bd2">event</span>.<span style="color:#268bd2">getExtraInfoLength</span>() - <span style="color:#268bd2">2</span>));
+    <span style="color:#268bd2">event</span>.<span style="color:#268bd2">setColumnCount</span>(<span style="color:#268bd2">is</span>.<span style="color:#268bd2">readUnsignedLong</span>()); 
+    <span style="color:#268bd2">event</span>.<span style="color:#268bd2">setUsedColumns</span>(<span style="color:#268bd2">is</span>.<span style="color:#268bd2">readBit</span>(<span style="color:#268bd2">event</span>.<span style="color:#268bd2">getColumnCount</span>().<span style="color:#268bd2">intValue</span>()));
+    <span style="color:#268bd2">event</span>.<span style="color:#268bd2">setRows</span>(<span style="color:#268bd2">parseRows</span>(<span style="color:#268bd2">is</span>, <span style="color:#268bd2">tme</span>, <span style="color:#268bd2">event</span>));
 
-    context<span style="color:#f92672">.</span><span style="color:#a6e22e">getEventListener</span><span style="color:#f92672">().</span><span style="color:#a6e22e">onEvents</span><span style="color:#f92672">(</span>event<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#268bd2">context</span>.<span style="color:#268bd2">getEventListener</span>().<span style="color:#268bd2">onEvents</span>(<span style="color:#268bd2">event</span>);
+}
 </code></pre></div><p>按 payload 格式读取字节流并获取相应属性，再调用 <code>BinlogEventListener#onEvents()</code> 回调进行对应的处理。</p>
 <p>举个例子，我们自定义的回调处理逻辑可以是如下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onEvents</span><span style="color:#f92672">(</span>BinlogEventV4 event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-        blockingQueue<span style="color:#f92672">.</span><span style="color:#a6e22e">offer</span><span style="color:#f92672">(</span>event<span style="color:#f92672">,</span> timeout<span style="color:#f92672">,</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">MILLISECONDS</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>InterruptedException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Failed to put binlog event to queue, event: &#34;</span> <span style="color:#f92672">+</span> event<span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">onEvents</span>(<span style="color:#268bd2">BinlogEventV4</span> <span style="color:#268bd2">event</span>) {
+    <span style="color:#859900">try</span> {
+        <span style="color:#268bd2">blockingQueue</span>.<span style="color:#268bd2">offer</span>(<span style="color:#268bd2">event</span>, <span style="color:#268bd2">timeout</span>, <span style="color:#268bd2">TimeUnit</span>.<span style="color:#268bd2">MILLISECONDS</span>);
+    } <span style="color:#859900">catch</span> (<span style="color:#268bd2">InterruptedException</span> <span style="color:#268bd2">e</span>) {
+        <span style="color:#268bd2">log</span>.<span style="color:#268bd2">error</span>(<span style="color:#2aa198">&#34;Failed to put binlog event to queue, event: &#34;</span> + <span style="color:#268bd2">event</span>, <span style="color:#268bd2">e</span>);
+    }
+}
 </code></pre></div><p>即把 binlog event 放进内存队列中，再从队列中拉取做相应处理。</p>
 <p>open-replicator 的核心逻辑如上过程，整体就是建立连接 -&gt; 获取 binlog -&gt; 解析 binlog -&gt; 回调处理。整理下流程图——</p>
 <p><img src="/images/open-replicator_sequence.svg" alt="流程图"></p>
 <h1 id="细节分析">细节分析</h1>
 <h2 id="二级缓存设置">二级缓存设置</h2>
 <p>在前面讲建立 socket 通信时，会根据 open-replicator 初始化参数 <code>level2BufferSize</code>，决定是否开启二级缓存。相关代码如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> TransportInputStream is<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">protected</span> <span style="color:#268bd2">TransportInputStream</span> <span style="color:#268bd2">is</span>;
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">connect</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> port<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// skip some code.
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level2BufferSize</span> <span style="color:#f92672">&lt;=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">is</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TransportInputStreamImpl<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level1BufferSize</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">is</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TransportInputStreamImpl<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ActiveBufferedInputStream<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level2BufferSize</span><span style="color:#f92672">),</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">level1BufferSize</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">connect</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">host</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">port</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
+    <span style="color:#93a1a1;font-style:italic">// skip some code.
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">if</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">level2BufferSize</span> &lt;= <span style="color:#268bd2">0</span>) {
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">is</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">TransportInputStreamImpl</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">socket</span>.<span style="color:#268bd2">getInputStream</span>(), <span style="color:#859900">this</span>.<span style="color:#268bd2">level1BufferSize</span>);
+    } <span style="color:#859900">else</span> {
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">is</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">TransportInputStreamImpl</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">ActiveBufferedInputStream</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">socket</span>.<span style="color:#268bd2">getInputStream</span>(), <span style="color:#859900">this</span>.<span style="color:#268bd2">level2BufferSize</span>), <span style="color:#859900">this</span>.<span style="color:#268bd2">level1BufferSize</span>);
+    }
+}
 </code></pre></div><p>区别在于开启二级缓存后，是从封装的 <code>ActiveBufferedInputStream</code> 中获取流。<code>ActiveBufferedInputStream</code> 初始化是创建了一个线程去不断从 <code>socket</code> 的输入流里读取字节流，并存储在 <code>RingBuffer</code> 中，这个数据结构的容量即二级缓存的大小，所以 open-replicator 里所谓的「二级缓存」即内存中的 <code>RingBuffer</code>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> buffer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>512 <span style="color:#f92672">*</span> 1024<span style="color:#f92672">];</span>
-        <span style="color:#66d9ef">while</span><span style="color:#f92672">(!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">closed</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">int</span> r <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">is</span><span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>r <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span> <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> EOFException<span style="color:#f92672">();</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">new</span> <span style="color:#268bd2">Thread</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">Runnable</span>() {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">run</span>() {
+        <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">byte</span>[] <span style="color:#268bd2">buffer</span> = <span style="color:#859900">new</span> <span style="color:#859900;font-weight:bold">byte</span>[<span style="color:#268bd2">512</span> * <span style="color:#268bd2">1024</span>];
+        <span style="color:#859900">while</span>(!<span style="color:#859900">this</span>.<span style="color:#268bd2">closed</span>.<span style="color:#268bd2">get</span>()) {
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">r</span> = <span style="color:#859900">this</span>.<span style="color:#268bd2">is</span>.<span style="color:#268bd2">read</span>(<span style="color:#268bd2">buffer</span>, <span style="color:#268bd2">0</span>, <span style="color:#268bd2">buffer</span>.<span style="color:#268bd2">length</span>);
+            <span style="color:#859900">if</span>(<span style="color:#268bd2">r</span> &lt; <span style="color:#268bd2">0</span>) <span style="color:#859900">throw</span> <span style="color:#859900">new</span> <span style="color:#268bd2">EOFException</span>();
             
-            <span style="color:#66d9ef">int</span> offset <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>r <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> w <span style="color:#f92672">=</span> write<span style="color:#f92672">(</span>buffer<span style="color:#f92672">,</span> offset<span style="color:#f92672">,</span> r<span style="color:#f92672">);</span>
-                r <span style="color:#f92672">-=</span> w<span style="color:#f92672">;</span>
-                offset <span style="color:#f92672">+=</span> w<span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">})</span>
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">offset</span> = <span style="color:#268bd2">0</span>;
+            <span style="color:#859900">while</span>(<span style="color:#268bd2">r</span> &gt; <span style="color:#268bd2">0</span>) {
+                <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">w</span> = <span style="color:#268bd2">write</span>(<span style="color:#268bd2">buffer</span>, <span style="color:#268bd2">offset</span>, <span style="color:#268bd2">r</span>);
+                <span style="color:#268bd2">r</span> -= <span style="color:#268bd2">w</span>;
+                <span style="color:#268bd2">offset</span> += <span style="color:#268bd2">w</span>;
+            }
+        }
+    }
+})
 </code></pre></div><p><code>ActiveBufferedInputStream</code> 通过内部的 <code>RingBuffer</code> 缓存实现了「生产-消费」模型，生产者向 <code>RingBuffer</code> 写入数据，消费者独处数据。</p>
 <h3 id="ringbuffer-数据结构">RingBuffer 数据结构</h3>
 <p>作者自己实现了 <code>RingBuffer</code> 的数据结构，本质上是一个有界的 FIFO 数组，由 head、tail 两个指针标识数据的开始和结束，通过这两个指针的归零实现了逻辑上的环状结构。<code>size</code> 是数组当前存储数据的长度，<code>capcity</code> 是最大容量。
@@ -292,10 +291,6 @@ or<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><s
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

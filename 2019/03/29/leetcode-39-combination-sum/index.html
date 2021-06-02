@@ -11,7 +11,6 @@
   <meta name="description" content="39. Combination Sum Medium Problem Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target. The same repeated number may be chosen from candidates unlimited number of times. Note: All numbers (including target) will be positive integers. The solution set must not contain duplicate combinations. Example 1: Input: candidates = [2,3,6,7], target =">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -97,69 +96,69 @@ A solution set is:
 </ul>
 <p>Here we make it clear that this is a recursive algorithm, which we should record current list which contains the numbers we get from the ordered candidates and the index of the number we start to test.</p>
 <p>Show you the code:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>:
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">combination_sum</span>(self, candidates: List[int], target: int) \
-            <span style="color:#f92672">-&gt;</span> List[List[int]]:
-        ans <span style="color:#f92672">=</span> []
-        <span style="color:#75715e"># important, we need it sorted</span>
-        candidates<span style="color:#f92672">.</span>sort()
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>:
+    <span style="color:#859900">def</span> <span style="color:#268bd2">combination_sum</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">candidates</span>: <span style="color:#268bd2">List</span>[<span style="color:#cb4b16">int</span>], <span style="color:#268bd2">target</span>: <span style="color:#cb4b16">int</span>) \
+            -&gt; <span style="color:#268bd2">List</span>[<span style="color:#268bd2">List</span>[<span style="color:#cb4b16">int</span>]]:
+        <span style="color:#268bd2">ans</span> = []
+        <span style="color:#93a1a1;font-style:italic"># important, we need it sorted</span>
+        <span style="color:#268bd2">candidates</span>.<span style="color:#268bd2">sort</span>()
 
-        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">backtrack</span>(nums: List[int], targ: int, start: int, store: List[int]):
-            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(start, len(nums)):
-                <span style="color:#75715e"># test the number from `start` position</span>
-                num <span style="color:#f92672">=</span> nums[i]
-                <span style="color:#66d9ef">if</span> targ <span style="color:#f92672">&lt;</span> num:
-                    <span style="color:#75715e"># current number is gt current target, break</span>
-                    <span style="color:#66d9ef">break</span>
+        <span style="color:#859900">def</span> <span style="color:#268bd2">backtrack</span>(<span style="color:#268bd2">nums</span>: <span style="color:#268bd2">List</span>[<span style="color:#cb4b16">int</span>], <span style="color:#268bd2">targ</span>: <span style="color:#cb4b16">int</span>, <span style="color:#268bd2">start</span>: <span style="color:#cb4b16">int</span>, <span style="color:#268bd2">store</span>: <span style="color:#268bd2">List</span>[<span style="color:#cb4b16">int</span>]):
+            <span style="color:#859900">for</span> <span style="color:#268bd2">i</span> <span style="color:#859900">in</span> <span style="color:#cb4b16">range</span>(<span style="color:#268bd2">start</span>, <span style="color:#cb4b16">len</span>(<span style="color:#268bd2">nums</span>)):
+                <span style="color:#93a1a1;font-style:italic"># test the number from `start` position</span>
+                <span style="color:#268bd2">num</span> = <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>]
+                <span style="color:#859900">if</span> <span style="color:#268bd2">targ</span> &lt; <span style="color:#268bd2">num</span>:
+                    <span style="color:#93a1a1;font-style:italic"># current number is gt current target, break</span>
+                    <span style="color:#859900">break</span>
 
-                <span style="color:#75715e"># then we can append current number confidently</span>
-                store<span style="color:#f92672">.</span>append(num)
-                <span style="color:#66d9ef">if</span> targ <span style="color:#f92672">==</span> num:
-                    <span style="color:#75715e"># if equals, we find it, pop the number</span>
-                    nonlocal ans
-                    <span style="color:#75715e"># deep-copy, important detail</span>
-                    ans<span style="color:#f92672">.</span>append(store[:])
-                    store<span style="color:#f92672">.</span>pop()
-                    <span style="color:#66d9ef">break</span>
-                <span style="color:#75715e"># keep testing next number from current position</span>
-                backtrack(nums, targ <span style="color:#f92672">-</span> num, i, store)
-                <span style="color:#75715e"># pop current number and test sibling number</span>
-                store<span style="color:#f92672">.</span>pop()
+                <span style="color:#93a1a1;font-style:italic"># then we can append current number confidently</span>
+                <span style="color:#268bd2">store</span>.<span style="color:#268bd2">append</span>(<span style="color:#268bd2">num</span>)
+                <span style="color:#859900">if</span> <span style="color:#268bd2">targ</span> == <span style="color:#268bd2">num</span>:
+                    <span style="color:#93a1a1;font-style:italic"># if equals, we find it, pop the number</span>
+                    <span style="color:#268bd2">nonlocal</span> <span style="color:#268bd2">ans</span>
+                    <span style="color:#93a1a1;font-style:italic"># deep-copy, important detail</span>
+                    <span style="color:#268bd2">ans</span>.<span style="color:#268bd2">append</span>(<span style="color:#268bd2">store</span>[:])
+                    <span style="color:#268bd2">store</span>.<span style="color:#268bd2">pop</span>()
+                    <span style="color:#859900">break</span>
+                <span style="color:#93a1a1;font-style:italic"># keep testing next number from current position</span>
+                <span style="color:#268bd2">backtrack</span>(<span style="color:#268bd2">nums</span>, <span style="color:#268bd2">targ</span> - <span style="color:#268bd2">num</span>, <span style="color:#268bd2">i</span>, <span style="color:#268bd2">store</span>)
+                <span style="color:#93a1a1;font-style:italic"># pop current number and test sibling number</span>
+                <span style="color:#268bd2">store</span>.<span style="color:#268bd2">pop</span>()
 
-        backtrack(candidates, target, <span style="color:#ae81ff">0</span>, [])
+        <span style="color:#268bd2">backtrack</span>(<span style="color:#268bd2">candidates</span>, <span style="color:#268bd2">target</span>, <span style="color:#2aa198;font-weight:bold">0</span>, [])
 
-        <span style="color:#66d9ef">return</span> ans
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CombinationSum</span> <span style="color:#f92672">{</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">ans</span>
+</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">CombinationSum</span> {
 
-    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">combinationSum</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> candidates<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>candidates<span style="color:#f92672">);</span>
-        List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> ans <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-        backtrack<span style="color:#f92672">(</span>candidates<span style="color:#f92672">,</span> target<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(),</span> ans<span style="color:#f92672">);</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">combinationSum</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">candidates</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
+        <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">sort</span>(<span style="color:#268bd2">candidates</span>);
+        <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">ans</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
+        <span style="color:#268bd2">backtrack</span>(<span style="color:#268bd2">candidates</span>, <span style="color:#268bd2">target</span>, <span style="color:#268bd2">0</span>, <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;(), <span style="color:#268bd2">ans</span>);
 
-        <span style="color:#66d9ef">return</span> ans<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">ans</span>;
+    }
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">backtrack</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> candidates<span style="color:#f92672">,</span>
-                           <span style="color:#66d9ef">int</span> target<span style="color:#f92672">,</span>
-                           <span style="color:#66d9ef">int</span> start<span style="color:#f92672">,</span>
-                           List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> list<span style="color:#f92672">,</span>
-                           List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> ans<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> start<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> candidates<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">int</span> num <span style="color:#f92672">=</span> candidates<span style="color:#f92672">[</span>i<span style="color:#f92672">];</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>target <span style="color:#f92672">&lt;</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>num<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>target <span style="color:#f92672">==</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                ans<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>list<span style="color:#f92672">));</span>
-                list<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            backtrack<span style="color:#f92672">(</span>candidates<span style="color:#f92672">,</span> target <span style="color:#f92672">-</span> num<span style="color:#f92672">,</span> i<span style="color:#f92672">,</span> list<span style="color:#f92672">,</span> ans<span style="color:#f92672">);</span>
-            list<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">backtrack</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">candidates</span>,
+                           <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>,
+                           <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">start</span>,
+                           <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">list</span>,
+                           <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">ans</span>) {
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">start</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">candidates</span>.<span style="color:#268bd2">length</span>; <span style="color:#268bd2">i</span>++) {
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">num</span> = <span style="color:#268bd2">candidates</span>[<span style="color:#268bd2">i</span>];
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">target</span> &lt; <span style="color:#268bd2">num</span>) {
+                <span style="color:#859900">break</span>;
+            }
+            <span style="color:#268bd2">list</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">num</span>);
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">target</span> == <span style="color:#268bd2">num</span>) {
+                <span style="color:#268bd2">ans</span>.<span style="color:#268bd2">add</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;(<span style="color:#268bd2">list</span>));
+                <span style="color:#268bd2">list</span>.<span style="color:#268bd2">remove</span>(<span style="color:#268bd2">list</span>.<span style="color:#268bd2">size</span>() - <span style="color:#268bd2">1</span>);
+                <span style="color:#859900">break</span>;
+            }
+            <span style="color:#268bd2">backtrack</span>(<span style="color:#268bd2">candidates</span>, <span style="color:#268bd2">target</span> - <span style="color:#268bd2">num</span>, <span style="color:#268bd2">i</span>, <span style="color:#268bd2">list</span>, <span style="color:#268bd2">ans</span>);
+            <span style="color:#268bd2">list</span>.<span style="color:#268bd2">remove</span>(<span style="color:#268bd2">list</span>.<span style="color:#268bd2">size</span>() - <span style="color:#268bd2">1</span>);
+        }
+    }
+}
 </code></pre></div><h2 id="complexity-analysis">Complexity Analysis</h2>
 <p>Time complexity of this approach is <code>O(N*logN)</code>;</p>
 <p>Space complexity is <code>O(N)</code>;</p>
@@ -207,10 +206,6 @@ Let's focus on the code :)
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

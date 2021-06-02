@@ -11,7 +11,6 @@
   <meta name="description" content="摘要：线上系统频繁 Full GC，通过监控告警、GC 日志、Heap 分析，逐步定位根因，并确定修复思路。 问题现象 支付服务异地部署前，需要提前打开北京、">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -68,7 +67,7 @@
 <p>发生 FGC 首先想到的是老年代使用空间超限，下图是 FGC 发生时，老年代的使用情况监控：</p>
 <p><img src="/images/689270419.png" alt=""></p>
 <p>可以看到，在 FGC 时老年代使用率并不高，处在正常水平，远远没有到达触发 FGC 的阈值。loader 模块的 jvm 主要参数有：</p>
-<pre><code>-Xmx4g
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-Xmx4g
 -Xms4g
 -XX:NewRatio=2
 -XX:SurvivorRatio=8
@@ -91,7 +90,7 @@
 -XX:+UseCMSInitiatingOccupancyOnly
 -XX:MaxMetaspaceSize=256m
 -XX:MetaspaceSize=128m
-</code></pre><p>由此根因可以排除老年代增长过快导致 FGC。</p>
+</code></pre></div><p>由此根因可以排除老年代增长过快导致 FGC。</p>
 <h2 id="gc-日志分析">GC 日志分析</h2>
 <p>选择一台主机，查看 GC 日志，直接定位 <code>Full GC</code> 关键字。</p>
 <p><img src="/images/689197960.png" alt=""></p>
@@ -127,169 +126,174 @@
 </ol>
 <h2 id="代码分析">代码分析</h2>
 <p>下面是 loader 模块中，动态解析 groovy 脚本的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isNotEmpty</span><span style="color:#f92672">(</span>cleanRule<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-    dataCleanService<span style="color:#f92672">.</span><span style="color:#a6e22e">clean</span><span style="color:#f92672">(</span>rows<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> CleanRule<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> Boolean <span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> stringObjectMap<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            String field <span style="color:#f92672">=</span> GroovyParser<span style="color:#f92672">.</span><span style="color:#a6e22e">getField</span><span style="color:#f92672">(</span>cleanRule<span style="color:#f92672">);</span>
-            String value <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>String<span style="color:#f92672">)</span> stringObjectMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>field<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isNotEmpty</span><span style="color:#f92672">(</span>field<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-                Binding binding <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Binding<span style="color:#f92672">();</span>
-                binding<span style="color:#f92672">.</span><span style="color:#a6e22e">setVariable</span><span style="color:#f92672">(</span>field<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
-                GroovyShell shell <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GroovyShell<span style="color:#f92672">(</span>binding<span style="color:#f92672">);</span>
-                String command <span style="color:#f92672">=</span> GroovyParser<span style="color:#f92672">.</span><span style="color:#a6e22e">genCommand</span><span style="color:#f92672">(</span>cleanRule<span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Boolean<span style="color:#f92672">)</span> shell<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span>command<span style="color:#f92672">);</span>
-            <span style="color:#f92672">}</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">});</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">if</span> (<span style="color:#268bd2">StringUtils</span>.<span style="color:#268bd2">isNotEmpty</span>(<span style="color:#268bd2">cleanRule</span>)) {
+    <span style="color:#268bd2">dataCleanService</span>.<span style="color:#268bd2">clean</span>(<span style="color:#268bd2">rows</span>, <span style="color:#859900">new</span> <span style="color:#268bd2">CleanRule</span>() {
+        <span style="color:#268bd2">@Override</span>
+        <span style="color:#859900">public</span> <span style="color:#268bd2">Boolean</span> <span style="color:#268bd2">apply</span>(<span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">Object</span>&gt; <span style="color:#268bd2">stringObjectMap</span>) {
+            <span style="color:#268bd2">String</span> <span style="color:#268bd2">field</span> = <span style="color:#268bd2">GroovyParser</span>.<span style="color:#268bd2">getField</span>(<span style="color:#268bd2">cleanRule</span>);
+            <span style="color:#268bd2">String</span> <span style="color:#268bd2">value</span> = (<span style="color:#268bd2">String</span>) <span style="color:#268bd2">stringObjectMap</span>.<span style="color:#268bd2">get</span>(<span style="color:#268bd2">field</span>);
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">StringUtils</span>.<span style="color:#268bd2">isNotEmpty</span>(<span style="color:#268bd2">field</span>)) {
+                <span style="color:#268bd2">Binding</span> <span style="color:#268bd2">binding</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Binding</span>();
+                <span style="color:#268bd2">binding</span>.<span style="color:#268bd2">setVariable</span>(<span style="color:#268bd2">field</span>, <span style="color:#268bd2">value</span>);
+                <span style="color:#268bd2">GroovyShell</span> <span style="color:#268bd2">shell</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">GroovyShell</span>(<span style="color:#268bd2">binding</span>);
+                <span style="color:#268bd2">String</span> <span style="color:#268bd2">command</span> = <span style="color:#268bd2">GroovyParser</span>.<span style="color:#268bd2">genCommand</span>(<span style="color:#268bd2">cleanRule</span>);
+                <span style="color:#859900">return</span> (<span style="color:#268bd2">Boolean</span>) <span style="color:#268bd2">shell</span>.<span style="color:#268bd2">evaluate</span>(<span style="color:#268bd2">command</span>);
+            }
+            <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">true</span>;
+        }
+    });
+}
 </code></pre></div><p>这里创建了 GroovyShell，并执行脚本。进入 <code>evaluate()</code> 方法看源码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">synchronized</span> String <span style="color:#a6e22e">generateScriptName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Script&#34;</span> <span style="color:#f92672">+</span> <span style="color:#f92672">(++</span>counter<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.groovy&#34;</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 此处就是 Script1 的由来
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-<span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String scriptText<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> CompilationFailedException <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> evaluate<span style="color:#f92672">(</span>scriptText<span style="color:#f92672">,</span> generateScriptName<span style="color:#f92672">(),</span> DEFAULT_CODE_BASE<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-<span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span>GroovyCodeSource codeSource<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> CompilationFailedException <span style="color:#f92672">{</span>
-    Script script <span style="color:#f92672">=</span> parse<span style="color:#f92672">(</span>codeSource<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">return</span> script<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-<span style="color:#66d9ef">public</span> Script <span style="color:#a6e22e">parse</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> GroovyCodeSource codeSource<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> CompilationFailedException <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> InvokerHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">createScript</span><span style="color:#f92672">(</span>parseClass<span style="color:#f92672">(</span>codeSource<span style="color:#f92672">),</span> context<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-<span style="color:#66d9ef">private</span> Class <span style="color:#a6e22e">parseClass</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> GroovyCodeSource codeSource<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> CompilationFailedException <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// Don&#39;t cache scripts
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> loader<span style="color:#f92672">.</span><span style="color:#a6e22e">parseClass</span><span style="color:#f92672">(</span>codeSource<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-<span style="color:#66d9ef">public</span> Class <span style="color:#a6e22e">parseClass</span><span style="color:#f92672">(</span>GroovyCodeSource codeSource<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> shouldCacheSource<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> CompilationFailedException <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span>sourceCache<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Class answer <span style="color:#f92672">=</span> sourceCache<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>codeSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>answer <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> answer<span style="color:#f92672">;</span>
-        answer <span style="color:#f92672">=</span> doParseClass<span style="color:#f92672">(</span>codeSource<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>shouldCacheSource<span style="color:#f92672">)</span> sourceCache<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>codeSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> answer<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> answer<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-<span style="color:#66d9ef">private</span> Class <span style="color:#a6e22e">doParseClass</span><span style="color:#f92672">(</span>GroovyCodeSource codeSource<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    validate<span style="color:#f92672">(</span>codeSource<span style="color:#f92672">);</span>
-    Class answer<span style="color:#f92672">;</span>  <span style="color:#75715e">// Was neither already loaded nor compiling, so compile and add to cache.
-</span><span style="color:#75715e"></span>    CompilationUnit unit <span style="color:#f92672">=</span> createCompilationUnit<span style="color:#f92672">(</span>config<span style="color:#f92672">,</span> codeSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getCodeSource</span><span style="color:#f92672">());</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>recompile<span style="color:#f92672">!=</span><span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> recompile <span style="color:#f92672">||</span> recompile<span style="color:#f92672">==</span><span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getRecompileGroovySource</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-        unit<span style="color:#f92672">.</span><span style="color:#a6e22e">addFirstPhaseOperation</span><span style="color:#f92672">(</span>TimestampAdder<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">,</span> CompilePhase<span style="color:#f92672">.</span><span style="color:#a6e22e">CLASS_GENERATION</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getPhaseNumber</span><span style="color:#f92672">());</span>
-    <span style="color:#f92672">}</span>
-    SourceUnit su <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-    File file <span style="color:#f92672">=</span> codeSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getFile</span><span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>file <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        su <span style="color:#f92672">=</span> unit<span style="color:#f92672">.</span><span style="color:#a6e22e">addSource</span><span style="color:#f92672">(</span>file<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-        URL url <span style="color:#f92672">=</span> codeSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getURL</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>url <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            su <span style="color:#f92672">=</span> unit<span style="color:#f92672">.</span><span style="color:#a6e22e">addSource</span><span style="color:#f92672">(</span>url<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            su <span style="color:#f92672">=</span> unit<span style="color:#f92672">.</span><span style="color:#a6e22e">addSource</span><span style="color:#f92672">(</span>codeSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> codeSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getScriptText</span><span style="color:#f92672">());</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">protected</span> <span style="color:#859900">synchronized</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">generateScriptName</span>() {
+    <span style="color:#859900">return</span> <span style="color:#2aa198">&#34;Script&#34;</span> + (++<span style="color:#268bd2">counter</span>) + <span style="color:#2aa198">&#34;.groovy&#34;</span>; <span style="color:#93a1a1;font-style:italic">// 此处就是 Script1 的由来
+</span><span style="color:#93a1a1;font-style:italic"></span>}
+<span style="color:#859900">public</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">evaluate</span>(<span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">scriptText</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">CompilationFailedException</span> {
+    <span style="color:#859900">return</span> <span style="color:#268bd2">evaluate</span>(<span style="color:#268bd2">scriptText</span>, <span style="color:#268bd2">generateScriptName</span>(), <span style="color:#268bd2">DEFAULT_CODE_BASE</span>);
+}
+<span style="color:#859900">public</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">evaluate</span>(<span style="color:#268bd2">GroovyCodeSource</span> <span style="color:#268bd2">codeSource</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">CompilationFailedException</span> {
+    <span style="color:#268bd2">Script</span> <span style="color:#268bd2">script</span> = <span style="color:#268bd2">parse</span>(<span style="color:#268bd2">codeSource</span>);
+    <span style="color:#859900">return</span> <span style="color:#268bd2">script</span>.<span style="color:#268bd2">run</span>();
+}
+<span style="color:#859900">public</span> <span style="color:#268bd2">Script</span> <span style="color:#268bd2">parse</span>(<span style="color:#859900">final</span> <span style="color:#268bd2">GroovyCodeSource</span> <span style="color:#268bd2">codeSource</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">CompilationFailedException</span> {
+    <span style="color:#859900">return</span> <span style="color:#268bd2">InvokerHelper</span>.<span style="color:#268bd2">createScript</span>(<span style="color:#268bd2">parseClass</span>(<span style="color:#268bd2">codeSource</span>), <span style="color:#268bd2">context</span>);
+}
+<span style="color:#859900">private</span> <span style="color:#268bd2">Class</span> <span style="color:#268bd2">parseClass</span>(<span style="color:#859900">final</span> <span style="color:#268bd2">GroovyCodeSource</span> <span style="color:#268bd2">codeSource</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">CompilationFailedException</span> {
+    <span style="color:#93a1a1;font-style:italic">// Don&#39;t cache scripts
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">return</span> <span style="color:#268bd2">loader</span>.<span style="color:#268bd2">parseClass</span>(<span style="color:#268bd2">codeSource</span>, <span style="color:#859900;font-weight:bold">false</span>);
+}
+<span style="color:#859900">public</span> <span style="color:#268bd2">Class</span> <span style="color:#268bd2">parseClass</span>(<span style="color:#268bd2">GroovyCodeSource</span> <span style="color:#268bd2">codeSource</span>, <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">shouldCacheSource</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">CompilationFailedException</span> {
+    <span style="color:#859900">synchronized</span> (<span style="color:#268bd2">sourceCache</span>) {
+        <span style="color:#268bd2">Class</span> <span style="color:#268bd2">answer</span> = <span style="color:#268bd2">sourceCache</span>.<span style="color:#268bd2">get</span>(<span style="color:#268bd2">codeSource</span>.<span style="color:#268bd2">getName</span>());
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">answer</span> != <span style="color:#859900;font-weight:bold">null</span>) <span style="color:#859900">return</span> <span style="color:#268bd2">answer</span>;
+        <span style="color:#268bd2">answer</span> = <span style="color:#268bd2">doParseClass</span>(<span style="color:#268bd2">codeSource</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">shouldCacheSource</span>) <span style="color:#268bd2">sourceCache</span>.<span style="color:#268bd2">put</span>(<span style="color:#268bd2">codeSource</span>.<span style="color:#268bd2">getName</span>(), <span style="color:#268bd2">answer</span>);
+        <span style="color:#859900">return</span> <span style="color:#268bd2">answer</span>;
+    }
+}
+<span style="color:#859900">private</span> <span style="color:#268bd2">Class</span> <span style="color:#268bd2">doParseClass</span>(<span style="color:#268bd2">GroovyCodeSource</span> <span style="color:#268bd2">codeSource</span>) {
+    <span style="color:#268bd2">validate</span>(<span style="color:#268bd2">codeSource</span>);
+    <span style="color:#268bd2">Class</span> <span style="color:#268bd2">answer</span>;  <span style="color:#93a1a1;font-style:italic">// Was neither already loaded nor compiling, so compile and add to cache.
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">CompilationUnit</span> <span style="color:#268bd2">unit</span> = <span style="color:#268bd2">createCompilationUnit</span>(<span style="color:#268bd2">config</span>, <span style="color:#268bd2">codeSource</span>.<span style="color:#268bd2">getCodeSource</span>());
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">recompile</span>!=<span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">recompile</span> || <span style="color:#268bd2">recompile</span>==<span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">config</span>.<span style="color:#268bd2">getRecompileGroovySource</span>()) {
+        <span style="color:#268bd2">unit</span>.<span style="color:#268bd2">addFirstPhaseOperation</span>(<span style="color:#268bd2">TimestampAdder</span>.<span style="color:#268bd2">INSTANCE</span>, <span style="color:#268bd2">CompilePhase</span>.<span style="color:#268bd2">CLASS_GENERATION</span>.<span style="color:#268bd2">getPhaseNumber</span>());
+    }
+    <span style="color:#268bd2">SourceUnit</span> <span style="color:#268bd2">su</span> = <span style="color:#859900;font-weight:bold">null</span>;
+    <span style="color:#268bd2">File</span> <span style="color:#268bd2">file</span> = <span style="color:#268bd2">codeSource</span>.<span style="color:#268bd2">getFile</span>();
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">file</span> != <span style="color:#859900;font-weight:bold">null</span>) {
+        <span style="color:#268bd2">su</span> = <span style="color:#268bd2">unit</span>.<span style="color:#268bd2">addSource</span>(<span style="color:#268bd2">file</span>);
+    } <span style="color:#859900">else</span> {
+        <span style="color:#268bd2">URL</span> <span style="color:#268bd2">url</span> = <span style="color:#268bd2">codeSource</span>.<span style="color:#268bd2">getURL</span>();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">url</span> != <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#268bd2">su</span> = <span style="color:#268bd2">unit</span>.<span style="color:#268bd2">addSource</span>(<span style="color:#268bd2">url</span>);
+        } <span style="color:#859900">else</span> {
+            <span style="color:#268bd2">su</span> = <span style="color:#268bd2">unit</span>.<span style="color:#268bd2">addSource</span>(<span style="color:#268bd2">codeSource</span>.<span style="color:#268bd2">getName</span>(), <span style="color:#268bd2">codeSource</span>.<span style="color:#268bd2">getScriptText</span>());
+        }
+    }
 
-    ClassCollector collector <span style="color:#f92672">=</span> createCollector<span style="color:#f92672">(</span>unit<span style="color:#f92672">,</span> su<span style="color:#f92672">);</span>
-    unit<span style="color:#f92672">.</span><span style="color:#a6e22e">setClassgenCallback</span><span style="color:#f92672">(</span>collector<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">int</span> goalPhase <span style="color:#f92672">=</span> Phases<span style="color:#f92672">.</span><span style="color:#a6e22e">CLASS_GENERATION</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>config <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getTargetDirectory</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> goalPhase <span style="color:#f92672">=</span> Phases<span style="color:#f92672">.</span><span style="color:#a6e22e">OUTPUT</span><span style="color:#f92672">;</span>
-    unit<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span>goalPhase<span style="color:#f92672">);</span>
+    <span style="color:#268bd2">ClassCollector</span> <span style="color:#268bd2">collector</span> = <span style="color:#268bd2">createCollector</span>(<span style="color:#268bd2">unit</span>, <span style="color:#268bd2">su</span>);
+    <span style="color:#268bd2">unit</span>.<span style="color:#268bd2">setClassgenCallback</span>(<span style="color:#268bd2">collector</span>);
+    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">goalPhase</span> = <span style="color:#268bd2">Phases</span>.<span style="color:#268bd2">CLASS_GENERATION</span>;
+    <span style="color:#859900">if</span> (<span style="color:#268bd2">config</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">config</span>.<span style="color:#268bd2">getTargetDirectory</span>() != <span style="color:#859900;font-weight:bold">null</span>) <span style="color:#268bd2">goalPhase</span> = <span style="color:#268bd2">Phases</span>.<span style="color:#268bd2">OUTPUT</span>;
+    <span style="color:#268bd2">unit</span>.<span style="color:#268bd2">compile</span>(<span style="color:#268bd2">goalPhase</span>);
 
-    answer <span style="color:#f92672">=</span> collector<span style="color:#f92672">.</span><span style="color:#a6e22e">generatedClass</span><span style="color:#f92672">;</span>
-    String mainClass <span style="color:#f92672">=</span> su<span style="color:#f92672">.</span><span style="color:#a6e22e">getAST</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMainClassName</span><span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Object o <span style="color:#f92672">:</span> collector<span style="color:#f92672">.</span><span style="color:#a6e22e">getLoadedClasses</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-        Class clazz <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Class<span style="color:#f92672">)</span> o<span style="color:#f92672">;</span>
-        String clazzName <span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
-        definePackageInternal<span style="color:#f92672">(</span>clazzName<span style="color:#f92672">);</span>
-        setClassCacheEntry<span style="color:#f92672">(</span>clazz<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>clazzName<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>mainClass<span style="color:#f92672">))</span> answer <span style="color:#f92672">=</span> clazz<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">return</span> answer<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-<span style="color:#66d9ef">protected</span> ClassCollector <span style="color:#a6e22e">createCollector</span><span style="color:#f92672">(</span>CompilationUnit unit<span style="color:#f92672">,</span> SourceUnit su<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    InnerLoader loader <span style="color:#f92672">=</span> AccessController<span style="color:#f92672">.</span><span style="color:#a6e22e">doPrivileged</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> PrivilegedAction<span style="color:#f92672">&lt;</span>InnerLoader<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">public</span> InnerLoader <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> InnerLoader<span style="color:#f92672">(</span>GroovyClassLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">this</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">});</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ClassCollector<span style="color:#f92672">(</span>loader<span style="color:#f92672">,</span> unit<span style="color:#f92672">,</span> su<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#268bd2">answer</span> = <span style="color:#268bd2">collector</span>.<span style="color:#268bd2">generatedClass</span>;
+    <span style="color:#268bd2">String</span> <span style="color:#268bd2">mainClass</span> = <span style="color:#268bd2">su</span>.<span style="color:#268bd2">getAST</span>().<span style="color:#268bd2">getMainClassName</span>();
+    <span style="color:#859900">for</span> (<span style="color:#268bd2">Object</span> <span style="color:#268bd2">o</span> : <span style="color:#268bd2">collector</span>.<span style="color:#268bd2">getLoadedClasses</span>()) {
+        <span style="color:#268bd2">Class</span> <span style="color:#268bd2">clazz</span> = (<span style="color:#268bd2">Class</span>) <span style="color:#268bd2">o</span>;
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">clazzName</span> = <span style="color:#268bd2">clazz</span>.<span style="color:#268bd2">getName</span>();
+        <span style="color:#268bd2">definePackageInternal</span>(<span style="color:#268bd2">clazzName</span>);
+        <span style="color:#268bd2">setClassCacheEntry</span>(<span style="color:#268bd2">clazz</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">clazzName</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">mainClass</span>)) <span style="color:#268bd2">answer</span> = <span style="color:#268bd2">clazz</span>;
+    }
+    <span style="color:#859900">return</span> <span style="color:#268bd2">answer</span>;
+}
+<span style="color:#859900">protected</span> <span style="color:#268bd2">ClassCollector</span> <span style="color:#268bd2">createCollector</span>(<span style="color:#268bd2">CompilationUnit</span> <span style="color:#268bd2">unit</span>, <span style="color:#268bd2">SourceUnit</span> <span style="color:#268bd2">su</span>) {
+    <span style="color:#268bd2">InnerLoader</span> <span style="color:#268bd2">loader</span> = <span style="color:#268bd2">AccessController</span>.<span style="color:#268bd2">doPrivileged</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">PrivilegedAction</span>&lt;<span style="color:#268bd2">InnerLoader</span>&gt;() {
+        <span style="color:#859900">public</span> <span style="color:#268bd2">InnerLoader</span> <span style="color:#268bd2">run</span>() {
+            <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">InnerLoader</span>(<span style="color:#268bd2">GroovyClassLoader</span>.<span style="color:#268bd2">this</span>);
+        }
+    });
+    <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">ClassCollector</span>(<span style="color:#268bd2">loader</span>, <span style="color:#268bd2">unit</span>, <span style="color:#268bd2">su</span>);
+}
 </code></pre></div><p>上面的源码，我按调用栈依次粘贴，比较乱。可以直接看最后一个方法：</p>
 <p><img src="/images/689461704.png" alt=""></p>
 <p>注意到，每次执行 <code>evaluate</code> 方法时，都会创建一个新的 <code>ClassCollector</code> 实例来对脚本进行编译，这个过程中，在 <code>createCollector</code> 方法中，创建了 <code>InnerLoader</code> 类加载器。这也是为什么从上面的 heap 分析中，观察到大量通过 <code>GroovyClassLoader$InnerLoader</code> 加载的同名类 <code>Script1.class</code>。正是因为 <code>InnerLoader</code> 类加载器的存在，可以运行时创建 Groovy 脚本的多个类。</p>
 <h1 id="场景复现和修复">场景复现和修复</h1>
 <p>通过源码基本定位根因，实现一个 demo 简单复现下故障场景。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MetaLeak</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">MetaLeak</span> {
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">loop</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        String rule <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;[\&#34;hello\&#34;,\&#34;world\&#34;].contains(text)&#34;</span><span style="color:#f92672">;</span>
-        Binding binding <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Binding<span style="color:#f92672">();</span>
-        binding<span style="color:#f92672">.</span><span style="color:#a6e22e">setVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;text&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;hi&#34;</span><span style="color:#f92672">);</span>
-        GroovyShell shell <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GroovyShell<span style="color:#f92672">(</span>binding<span style="color:#f92672">);</span>
-        shell<span style="color:#f92672">.</span><span style="color:#a6e22e">evaluate</span><span style="color:#f92672">(</span>rule<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">loop</span>() {
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">rule</span> = <span style="color:#2aa198">&#34;[\&#34;hello\&#34;,\&#34;world\&#34;].contains(text)&#34;</span>;
+        <span style="color:#268bd2">Binding</span> <span style="color:#268bd2">binding</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Binding</span>();
+        <span style="color:#268bd2">binding</span>.<span style="color:#268bd2">setVariable</span>(<span style="color:#2aa198">&#34;text&#34;</span>, <span style="color:#2aa198">&#34;hi&#34;</span>);
+        <span style="color:#268bd2">GroovyShell</span> <span style="color:#268bd2">shell</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">GroovyShell</span>(<span style="color:#268bd2">binding</span>);
+        <span style="color:#268bd2">shell</span>.<span style="color:#268bd2">evaluate</span>(<span style="color:#268bd2">rule</span>);
+    }
 
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">     * -Xms128m
-</span><span style="color:#75715e">     * -Xmx256m
-</span><span style="color:#75715e">     * -XX:+HeapDumpOnOutOfMemoryError
-</span><span style="color:#75715e">     * -XX:MetaspaceSize=10m
-</span><span style="color:#75715e">     * -XX:MaxMetaspaceSize=20m
-</span><span style="color:#75715e">     * -XX:+PrintGCDetails
-</span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        MetaLeak demo <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MetaLeak<span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
-                demo<span style="color:#f92672">.</span><span style="color:#a6e22e">loop</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#93a1a1;font-style:italic">/**
+</span><span style="color:#93a1a1;font-style:italic">     * -Xms128m
+</span><span style="color:#93a1a1;font-style:italic">     * -Xmx256m
+</span><span style="color:#93a1a1;font-style:italic">     * -XX:+HeapDumpOnOutOfMemoryError
+</span><span style="color:#93a1a1;font-style:italic">     * -XX:MetaspaceSize=10m
+</span><span style="color:#93a1a1;font-style:italic">     * -XX:MaxMetaspaceSize=20m
+</span><span style="color:#93a1a1;font-style:italic">     * -XX:+PrintGCDetails
+</span><span style="color:#93a1a1;font-style:italic">     */</span>
+    <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+        <span style="color:#268bd2">MetaLeak</span> <span style="color:#268bd2">demo</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">MetaLeak</span>();
+        <span style="color:#859900">try</span> {
+            <span style="color:#859900">while</span> (<span style="color:#859900;font-weight:bold">true</span>)
+                <span style="color:#268bd2">demo</span>.<span style="color:#268bd2">loop</span>();
+        } <span style="color:#859900">catch</span> (<span style="color:#268bd2">Exception</span> <span style="color:#268bd2">e</span>) {
+            <span style="color:#268bd2">e</span>.<span style="color:#268bd2">printStackTrace</span>();
+        }
+    }
+}
 </code></pre></div><p>MetaLeak 类是存在 metaspace 区被爆隐患的，因为 for 循环执行时都在加载 <code>Script</code> 类。下面是运行过程中的部分 GC 日志：</p>
 <p><img src="/images/689463877.png" alt=""></p>
 <p>高频出现 Metadata 被爆导致的 FGC，另外 Last ditch collection 是由于上一次 FGC 没有将 metaspace 区清理出足够空间。</p>
 <p>因此，修复思路是规避掉频繁解析规则，即已经解析过的规则，直接复用 Script 实例，不再动态编译加载。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MetaSafe</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">MetaSafe</span> {
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Script<span style="color:#f92672">&gt;</span> store <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcurrentHashMap<span style="color:#f92672">&lt;&gt;();</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> GroovyShell SHELL <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GroovyShell<span style="color:#f92672">();</span>
+    <span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">Script</span>&gt; <span style="color:#268bd2">store</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ConcurrentHashMap</span>&lt;&gt;();
+    <span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#268bd2">GroovyShell</span> <span style="color:#268bd2">SHELL</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">GroovyShell</span>();
 
-    <span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
-        SHELL<span style="color:#f92672">.</span><span style="color:#a6e22e">getContext</span><span style="color:#f92672">().</span><span style="color:#a6e22e">setVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;text&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;123456&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">static</span> {
+        <span style="color:#268bd2">SHELL</span>.<span style="color:#268bd2">getContext</span>().<span style="color:#268bd2">setVariable</span>(<span style="color:#2aa198">&#34;text&#34;</span>, <span style="color:#2aa198">&#34;123456&#34;</span>);
+    }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">loop</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        String rule <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;[\&#34;hello\&#34;,\&#34;world\&#34;].contains(text)&#34;</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>store<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>rule<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            store<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>rule<span style="color:#f92672">,</span> SHELL<span style="color:#f92672">.</span><span style="color:#a6e22e">parse</span><span style="color:#f92672">(</span>rule<span style="color:#f92672">));</span>
-        <span style="color:#f92672">}</span>
-        store<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>rule<span style="color:#f92672">).</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">loop</span>() {
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">rule</span> = <span style="color:#2aa198">&#34;[\&#34;hello\&#34;,\&#34;world\&#34;].contains(text)&#34;</span>;
+        <span style="color:#859900">if</span> (!<span style="color:#268bd2">store</span>.<span style="color:#268bd2">containsKey</span>(<span style="color:#268bd2">rule</span>)) {
+            <span style="color:#268bd2">store</span>.<span style="color:#268bd2">put</span>(<span style="color:#268bd2">rule</span>, <span style="color:#268bd2">SHELL</span>.<span style="color:#268bd2">parse</span>(<span style="color:#268bd2">rule</span>));
+        }
+        <span style="color:#268bd2">store</span>.<span style="color:#268bd2">get</span>(<span style="color:#268bd2">rule</span>).<span style="color:#268bd2">run</span>();
+    }
 
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">     * -Xms128m
-</span><span style="color:#75715e">     * -Xmx256m
-</span><span style="color:#75715e">     * -XX:+HeapDumpOnOutOfMemoryError
-</span><span style="color:#75715e">     * -XX:MetaspaceSize=10m
-</span><span style="color:#75715e">     * -XX:MaxMetaspaceSize=20m
-</span><span style="color:#75715e">     * -XX:+PrintGCDetails
-</span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        MetaSafe demo <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MetaSafe<span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
-                demo<span style="color:#f92672">.</span><span style="color:#a6e22e">loop</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#93a1a1;font-style:italic">/**
+</span><span style="color:#93a1a1;font-style:italic">     * -Xms128m
+</span><span style="color:#93a1a1;font-style:italic">     * -Xmx256m
+</span><span style="color:#93a1a1;font-style:italic">     * -XX:+HeapDumpOnOutOfMemoryError
+</span><span style="color:#93a1a1;font-style:italic">     * -XX:MetaspaceSize=10m
+</span><span style="color:#93a1a1;font-style:italic">     * -XX:MaxMetaspaceSize=20m
+</span><span style="color:#93a1a1;font-style:italic">     * -XX:+PrintGCDetails
+</span><span style="color:#93a1a1;font-style:italic">     */</span>
+    <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+        <span style="color:#268bd2">MetaSafe</span> <span style="color:#268bd2">demo</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">MetaSafe</span>();
+        <span style="color:#859900">try</span> {
+            <span style="color:#859900">while</span> (<span style="color:#859900;font-weight:bold">true</span>)
+                <span style="color:#268bd2">demo</span>.<span style="color:#268bd2">loop</span>();
+        } <span style="color:#859900">catch</span> (<span style="color:#268bd2">Exception</span> <span style="color:#268bd2">e</span>) {
+            <span style="color:#268bd2">e</span>.<span style="color:#268bd2">printStackTrace</span>();
+        }
+    }
+}
 </code></pre></div><p>运行后，Metaspace 区使用率正常。</p>
 </div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://isudox.com/tags/jvm">JVM</a></li>
+    </ul>
+  </footer>
 
   
 
@@ -323,10 +327,6 @@
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

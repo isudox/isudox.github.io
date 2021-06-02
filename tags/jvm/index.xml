@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JVM on I sudo X</title>
+    <link>https://isudox.com/tags/jvm/</link>
+    <description>Recent content in JVM on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 10 Mar 2021 23:19:09 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/jvm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Metaspace 堆积引起 Full GC 的排查</title>
+      <link>https://isudox.com/2021/03/10/metaspace-threshold-fullgc-analyze/</link>
+      <pubDate>Wed, 10 Mar 2021 23:19:09 +0800</pubDate>
+      
+      <guid>https://isudox.com/2021/03/10/metaspace-threshold-fullgc-analyze/</guid>
+      <description>摘要：线上系统频繁 Full GC，通过监控告警、GC 日志、Heap 分析，逐步定位根因，并确定修复思路。 问题现象 支付服务异地部署前，需要提前打开北京、</description>
+    </item>
+    
+  </channel>
+</rss>

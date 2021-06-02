@@ -11,7 +11,6 @@
   <meta name="description" content="进入 9 月了，开学季正拉开序幕，又是一个新的开始。对于刚结束学生生涯的我而言，这个开学季有长长的 todo list，排在队首的就是在这里码字开垦。 Blog 仿">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -74,42 +73,42 @@
 <p>首先得买一台可靠的 VPS，我选用的美帝 <a href="https://www.linode.com/?r=285e75ec2001be00899a5a81796260d2e5962a5b">Linode</a>。我在 VPS 上测试过两种方案，方案一是在 VPS 上也创建 Hexo 环境，同时新建一个 Git 裸仓库作为私有 Git 服务器，本地提交 Hexo 的源文件至 VPS 上的 Git 服务器，然后 VPS 上的 Hexo 程序生成静态文件并发布部署到 Web 目录下；方案二则是本地提交 Hexo 生成文件到 Git 裸仓库，VPS 直接将其部署到 Web 目录下。前者徒增 VPS 的压力，后者使得 Git 日志冗余，各有长短。两种方案我都测试通过，最后采用方案二。
 GitHub 提供 GitHub Pages 服务，原意是用来给开发者发布器在 GitHub 上项目的文档及说明，当然也可以作为开发者的个人站点使用。如果是创建 {username}.github.io 仓库，GitHub 会将其 master 分支下的内容作为站点文件发布；如果是创建其他自定义名称的仓库，GitHub 将以 gh-page 分支作为站点文件。</p>
 <p>创建新用户 git，在服务器上创建 git server 请参考 git <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server">官方文档</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo adduser git
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo adduser git
 $ git init --bare &lt;your_repo&gt;.git
 $ touch &lt;your_repo&gt;.git/hook/post-receive
 $ chmod +x post-receive
-$ cd &lt;path_to_your_blog&gt;
+$ <span style="color:#cb4b16">cd</span> &lt;path_to_your_blog&gt;
 $ git clone &lt;your_repo&gt;.git
 </code></pre></div><p>其中<code>post-receive</code>为 Git Hook，Git 通过该脚本实现本地提交改动后自动发布更新</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash -l
-</span><span style="color:#75715e"></span>
-GIT_REPO<span style="color:#f92672">=</span>/home/git/isudox-hexo.git
-GIT_TEMP<span style="color:#f92672">=</span>/home/git/repo/isudox-hexo
-WWW_HEXO<span style="color:#f92672">=</span>/home/git/www/isudox-hexo
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic">#!/bin/bash -l
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#268bd2">GIT_REPO</span>=/home/git/isudox-hexo.git
+<span style="color:#268bd2">GIT_TEMP</span>=/home/git/repo/isudox-hexo
+<span style="color:#268bd2">WWW_HEXO</span>=/home/git/www/isudox-hexo
 
-rm -rf <span style="color:#e6db74">${</span>GIT_TEMP<span style="color:#e6db74">}</span>
-git clone $GIT_REPO $GIT_TEMP
-rm -rf <span style="color:#e6db74">${</span>WWW_HEXO<span style="color:#e6db74">}</span>/*
-cp -rf <span style="color:#e6db74">${</span>GIT_TEMP<span style="color:#e6db74">}</span>/* <span style="color:#e6db74">${</span>WWW_HEXO<span style="color:#e6db74">}</span>
+rm -rf <span style="color:#2aa198">${</span><span style="color:#268bd2">GIT_TEMP</span><span style="color:#2aa198">}</span>
+git clone <span style="color:#268bd2">$GIT_REPO</span> <span style="color:#268bd2">$GIT_TEMP</span>
+rm -rf <span style="color:#2aa198">${</span><span style="color:#268bd2">WWW_HEXO</span><span style="color:#2aa198">}</span>/*
+cp -rf <span style="color:#2aa198">${</span><span style="color:#268bd2">GIT_TEMP</span><span style="color:#2aa198">}</span>/* <span style="color:#2aa198">${</span><span style="color:#268bd2">WWW_HEXO</span><span style="color:#2aa198">}</span>
 </code></pre></div><p>原理很简单，VPS 上的 Git 仓库一旦接收到 <code>push</code>，便会触发 <code>post-receive</code> 脚本，进入 Blog 根目录，执行更新发布任务。</p>
 <p>如果是方案一，<code>post-receive</code> 也是类似的操作，只是多了一步 <code>hexo generate</code> 生成静态文件的操作，因为提交到 Git 仓库的是 Hexo 源文件而不是生成文件。</p>
 <h4 id="local">Local</h4>
 <p>本地环境需要 Node.js 和 git，系统可以是 Linux | Mac | Win 任一，Node.js与Git 和这些操作系统都能友好相处。我的本地环境是 Arch Linux，因此配置起来可谓轻松愉快——</p>
 <p>安装 Node.js、git</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo pacman -S git nodejs
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo pacman -S git nodejs
 </code></pre></div><p>安装 Hexo</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo npm install -g hexo-cli
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo npm install -g hexo-cli
 </code></pre></div><p>创建本地 Git 仓库并提交至远端 Git 仓库的 master 分支</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#75715e"># isudox.github.io &gt;&gt; README.md</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#cb4b16">echo</span> <span style="color:#93a1a1;font-style:italic"># isudox.github.io &gt;&gt; README.md</span>
 git init
 git add README.md
-git commit -m <span style="color:#e6db74">&#34;first commit&#34;</span>
+git commit -m <span style="color:#2aa198">&#34;first commit&#34;</span>
 git remote add origin git@github.com:isudox/isudox.github.io.git
 git push -u origin master
 </code></pre></div><p>新建 Hexo 源文件分支 <code>source</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git checkout -b source
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git checkout -b <span style="color:#cb4b16">source</span>
 </code></pre></div><p>在本地 Git 仓库下创建 Hexo Blog，并安装必要的 npm 包</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ hexo init
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ hexo init
 $ npm install
 $ npm install hexo-deployer-git --save
 </code></pre></div><p>执行完上述命令后，属于你的 Hexo Blog 就已经诞生了，接下来可以修改配置文件 <code>_config.yml</code>，可以在 <code>themes/</code> 路径下添加主题，可以撰写新文章……总之，你拥有了 Hexo 的全部魔力。</p>
@@ -129,7 +128,7 @@ $ npm install hexo-deployer-git --save
 <p>提交 GitHub source 分支时，确人当前分支为 source，然后执行 <code>git push origin source</code>；
 提交 GitHub master 分支和 VPS 私有 Git 库时，执行 <code>hexo deploy</code> 发布即可；</p>
 <p>好了，回到本地的 Hexo 项目根目录下，再敲最后一行命令，让我们看看会发生什么</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ hexo generate --deploy
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ hexo generate --deploy
 </code></pre></div><p>打开 http://{username}.github.io 或者你自己绑定的域名……</p>
 <p>Duang    ^______^</p>
 <hr>
@@ -175,10 +174,6 @@ $ npm install hexo-deployer-git --save
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

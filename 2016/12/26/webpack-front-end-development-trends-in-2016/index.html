@@ -11,7 +11,6 @@
   <meta name="description" content="对于前端开发者而言，2016 又是一个风不平浪不静的一年。今年新冒出的框架工具，如果不是专职前端或全栈，估计现在和我是差不多的状态，一脸懵逼外">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -62,16 +61,16 @@
 <h3 id="hello-world">Hello World</h3>
 <p><img src="https://webpack.github.io/assets/what-is-webpack.png" alt="What is webpack"></p>
 <p><a href="https://webpack.js.org/">Webpack</a> 是一个前端的模块（Module Bundler）打包工具，如上图所示，它可以对各种类型的静态文件做统一的加载和处理。在展开对它的学习之前，先把准备工作做好，Webpack 的安装很简单，全局或本地安装：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># globally install</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># globally install</span>
 yarn global add webpack@2.1.0-beta.20
-<span style="color:#75715e"># locally install</span>
+<span style="color:#93a1a1;font-style:italic"># locally install</span>
 yarn add webpack@2.1.0-beta.20 -D
 </code></pre></div><p>安装完后，就可以在控制台使用 <code>webpack</code> 命令了。在目录下执行 <code>webpack</code>，首先需要配置 <code>webpack.config.js</code> 文件，由该配置文件来控制 <code>webpack</code> 的操作。参考阮一峰老师 GitHub 上的示例如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// webpack.config.js
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./main.js&#39;</span>,
-  <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;bundle.js&#39;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// webpack.config.js
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">module</span>.<span style="color:#268bd2">exports</span> = {
+  <span style="color:#268bd2">entry</span>: <span style="color:#2aa198">&#39;./main.js&#39;</span>,
+  <span style="color:#268bd2">output</span>: {
+    <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;bundle.js&#39;</span>
   }
 };
 </code></pre></div><p>然后执行 <code>webpack</code> 命令就可以按照配置文件的设置，把目录下的 <code>main.js</code> 打包成 <code>bundle.js</code>。</p>
@@ -79,45 +78,45 @@ yarn add webpack@2.1.0-beta.20 -D
 <p>Webpack 有 4 个核心概念必须要了解：<a href="https://webpack.js.org/concepts/entry-points/">Entry</a>、<a href="https://webpack.js.org/concepts/output/">Output</a>、<a href="https://webpack.js.org/concepts/loaders/">Loaders</a> 和 <a href="https://webpack.js.org/concepts/plugins/">Plugins</a>。</p>
 <h4 id="entry">Entry</h4>
 <p>webpack 为 web 应用的依赖关系创建了图表，而 Entry 则是告诉 webpack 这张图表的入口位置并循着依赖关系去打包，webpack 通过对 webpack configuration object 设置 <code>entry</code> 属性来定义 Entry，参考下面的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">webpack</span>.<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">js</span>
-<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./path/to/my/entry/file.js&#39;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"># <span style="color:#268bd2">webpack</span>.<span style="color:#268bd2">config</span>.<span style="color:#268bd2">js</span>
+<span style="color:#268bd2">module</span>.<span style="color:#268bd2">exports</span> = {
+  <span style="color:#268bd2">entry</span>: <span style="color:#2aa198">&#39;./path/to/my/entry/file.js&#39;</span>
 };
 </code></pre></div><p>如果要指定多个 Entry，则需要将 <code>entry</code> 属性从 <code>string</code> 改为 <code>Array&lt;string&gt;</code>，比如 ['./main.js', &lsquo;./index.js&rsquo;]。也可以使用 Object 语法，把 <code>entry</code> 属性设置为一个 key-value 对象，这是更具扩展性的定义 <code>entry</code> 的写法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">config</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">app</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./src/app.js&#39;</span>,
-    <span style="color:#a6e22e">vendors</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./src/vendors.js&#39;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">const</span> <span style="color:#268bd2">config</span> = {
+  <span style="color:#268bd2">entry</span>: {
+    <span style="color:#268bd2">app</span>: <span style="color:#2aa198">&#39;./src/app.js&#39;</span>,
+    <span style="color:#268bd2">vendors</span>: <span style="color:#2aa198">&#39;./src/vendors.js&#39;</span>
   }
 };
-<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">config</span>;
+<span style="color:#268bd2">module</span>.<span style="color:#268bd2">exports</span> = <span style="color:#268bd2">config</span>;
 </code></pre></div><h4 id="output">Output</h4>
 <p>既然由 Bundle 的入口 Entry，相应的必然也会有 Bundle 的出口，这就是 Output。我们需要告知 webpack 对打包后的静态资源如何处置，存放在哪，文件名是什么。webpack 的 <code>output</code> 属性描述了该如何处理打包后的代码。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">webpack</span>.<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">js</span>
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;path&#39;</span>);
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"># <span style="color:#268bd2">webpack</span>.<span style="color:#268bd2">config</span>.<span style="color:#268bd2">js</span>
+<span style="color:#859900">var</span> <span style="color:#268bd2">path</span> = <span style="color:#268bd2">require</span>(<span style="color:#2aa198">&#39;path&#39;</span>);
 
-<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./path/to/my/entry/file.js&#39;</span>,
-  <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
-    <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;my-first-webpack.bundle.js&#39;</span>
+<span style="color:#268bd2">module</span>.<span style="color:#268bd2">exports</span> = {
+  <span style="color:#268bd2">entry</span>: <span style="color:#2aa198">&#39;./path/to/my/entry/file.js&#39;</span>,
+  <span style="color:#268bd2">output</span>: {
+    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">path</span>.<span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
+    <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;my-first-webpack.bundle.js&#39;</span>
   }
 };
 </code></pre></div><p>对于 <code>output.filename</code>，如果 <code>entry</code> 属性配置了多个文件，则需要使用命名替换的方式确保 output filename 不重名。其中，占位符 <code>[name]</code> 采用 chunk 的名称作为替换，<code>[hash]</code> 是采用编译后文件的 hash 值替换，而 <code>[chunkhash]</code> 则是根据 chunk 的 hash 值来替换。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">app</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./src/app.js&#39;</span>,
-    <span style="color:#a6e22e">search</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./src/search.js&#39;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+  <span style="color:#268bd2">entry</span>: {
+    <span style="color:#268bd2">app</span>: <span style="color:#2aa198">&#39;./src/app.js&#39;</span>,
+    <span style="color:#268bd2">search</span>: <span style="color:#2aa198">&#39;./src/search.js&#39;</span>
   },
-  <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;[name].js&#39;</span>,
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;/build&#39;</span>
+  <span style="color:#268bd2">output</span>: {
+    <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;[name].js&#39;</span>,
+    <span style="color:#268bd2">path</span>: <span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span> + <span style="color:#2aa198">&#39;/build&#39;</span>
   }
 }
 </code></pre></div><p>对于 <code>output.path</code> 属性，必须设为绝对路径，占位符 <code>[hash]</code> 会被编译后文件的 hash 值替换：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;/home/proj/public/assets&#34;</span>,
-    <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;/assets/&#34;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#268bd2">output</span>: {
+    <span style="color:#268bd2">path</span>: <span style="color:#2aa198">&#34;/home/proj/public/assets&#34;</span>,
+    <span style="color:#268bd2">publicPath</span>: <span style="color:#2aa198">&#34;/assets/&#34;</span>
 }
 </code></pre></div><h4 id="loaders">Loaders</h4>
 <p>webpack 可以对项目里所有静态资源（包括 <code>.css</code>、<code>.html</code>、<code>scss</code>、<code>jpg</code> 等）所谓模块进行处理，但是 webpack 只能理解 JavaScript，如果要处理其他类型的静态文件，就需要 webpack 的 Loaders，把这些静态文件转换成模块的处理器。在 <code>webpack.config.js</code> 的 Loaders 属性配置中，有两个目标需要确认：</p>
@@ -125,35 +124,35 @@ yarn add webpack@2.1.0-beta.20 -D
 <li>标识什么文件可以被转换成模块（由 <code>test</code> 属性指定）；</li>
 <li>指定转换这些文件的处理器 loader（由 <code>use</code> 属性指定）;</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;path&#39;</span>);
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">path</span> = <span style="color:#268bd2">require</span>(<span style="color:#2aa198">&#39;path&#39;</span>);
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">config</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./path/to/my/entry/file.js&#39;</span>,
-  <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),  <span style="color:#75715e">// bundle 文件的绝对路径
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;/dist/&#34;</span>,  <span style="color:#75715e">// 网站运行时的访问路径
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;my-first-webpack.bundle.js&#39;</span>  <span style="color:#75715e">// bundle 的文件名
-</span><span style="color:#75715e"></span>  },
-  <span style="color:#a6e22e">module</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">rules</span><span style="color:#f92672">:</span> [
-      {<span style="color:#a6e22e">test</span><span style="color:#f92672">:</span> <span style="color:#e6db74">/\.(js|jsx)$/</span>, <span style="color:#a6e22e">use</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;babel-loader&#39;</span>}
+<span style="color:#859900">const</span> <span style="color:#268bd2">config</span> = {
+  <span style="color:#268bd2">entry</span>: <span style="color:#2aa198">&#39;./path/to/my/entry/file.js&#39;</span>,
+  <span style="color:#268bd2">output</span>: {
+    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">path</span>.<span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),  <span style="color:#93a1a1;font-style:italic">// bundle 文件的绝对路径
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">publicPath</span>: <span style="color:#2aa198">&#34;/dist/&#34;</span>,  <span style="color:#93a1a1;font-style:italic">// 网站运行时的访问路径
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;my-first-webpack.bundle.js&#39;</span>  <span style="color:#93a1a1;font-style:italic">// bundle 的文件名
+</span><span style="color:#93a1a1;font-style:italic"></span>  },
+  <span style="color:#268bd2">module</span>: {
+    <span style="color:#268bd2">rules</span>: [
+      {<span style="color:#268bd2">test</span>: <span style="color:#2aa198">/\.(js|jsx)$/</span>, <span style="color:#268bd2">use</span>: <span style="color:#2aa198">&#39;babel-loader&#39;</span>}
     ]
   }
 };
 </code></pre></div><p>上面的配置，通过 <code>rule</code> 属性对单个模块的处理进行设置，因此 webpack 会对项目依赖关系中被 <code>require</code> 或 <code>import</code> 的 <code>.js</code> 和 <code>.jsx</code> 文件，在它们被添加进 bundle 之前，用 <code>babel-loader</code> 处理器进行转换处理（该处理器会把 JSX 和 ES6 的文件转换成 JS 文件）。另外，loaders 的名称都是 <code>xxx-loader</code> 格式，<code>use</code> 属性也可以简写为 <code>xxx</code>。</p>
 <h4 id="plugins">Plugins</h4>
 <p>Loaders 只能在 bundle 之前对静态资源作预处理，而 Plugins 则可以对编译后文件和 chunk 文件进行处理，比如 <code>UglifyJsPlugin</code> 可以对 bundle 后的 JavaScript 代码进行压缩处理。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">webpack</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;webpack&#39;</span>);
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">uglifyJsPlugin</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">webpack</span>.<span style="color:#a6e22e">optimize</span>.<span style="color:#a6e22e">UglifyJsPlugin</span>;
-<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./main.js&#39;</span>,
-  <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;bundle.js&#39;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">webpack</span> = <span style="color:#268bd2">require</span>(<span style="color:#2aa198">&#39;webpack&#39;</span>);
+<span style="color:#859900">var</span> <span style="color:#268bd2">uglifyJsPlugin</span> = <span style="color:#268bd2">webpack</span>.<span style="color:#268bd2">optimize</span>.<span style="color:#268bd2">UglifyJsPlugin</span>;
+<span style="color:#268bd2">module</span>.<span style="color:#268bd2">exports</span> = {
+  <span style="color:#268bd2">entry</span>: <span style="color:#2aa198">&#39;./main.js&#39;</span>,
+  <span style="color:#268bd2">output</span>: {
+    <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;bundle.js&#39;</span>
   },
-  <span style="color:#a6e22e">plugins</span><span style="color:#f92672">:</span> [
-    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">uglifyJsPlugin</span>({
-      <span style="color:#a6e22e">compress</span><span style="color:#f92672">:</span> {
-        <span style="color:#a6e22e">warnings</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>
+  <span style="color:#268bd2">plugins</span>: [
+    <span style="color:#859900">new</span> <span style="color:#268bd2">uglifyJsPlugin</span>({
+      <span style="color:#268bd2">compress</span>: {
+        <span style="color:#268bd2">warnings</span>: <span style="color:#859900;font-weight:bold">false</span>
       }
     })
   ]
@@ -169,203 +168,203 @@ yarn add webpack@2.1.0-beta.20 -D
     index.html
     webpack.config.js
 </code></pre><p>其中，<code>Welcome.js</code> 定义了一个 React Component，代码如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Welcome.js
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// Welcome.js
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">import</span> <span style="color:#268bd2">React</span> <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;react&#39;</span>;
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Welcome</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">Component</span> {
-  <span style="color:#a6e22e">render</span>() {
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h1</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Hello</span>, {<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">name</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/h1&gt;;</span>
+<span style="color:#859900">class</span> <span style="color:#268bd2">Welcome</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">React</span>.<span style="color:#268bd2">Component</span> {
+  <span style="color:#268bd2">render</span>() {
+    <span style="color:#859900">return</span> &lt;<span style="color:#268bd2">h1</span>&gt;<span style="color:#268bd2">Hello</span>, {<span style="color:#859900">this</span>.<span style="color:#268bd2">props</span>.<span style="color:#268bd2">name</span>}&lt;/h1&gt;;
   }
 }
 </code></pre></div><p><code>entry.js</code> 是依赖关系的入口文件，引入依赖的模块，并输出页面元素：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// entry.js
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
-<span style="color:#66d9ef">import</span> <span style="color:#a6e22e">Welcome</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./Welcome&#39;</span>;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// entry.js
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">import</span> <span style="color:#268bd2">React</span> <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;react&#39;</span>;
+<span style="color:#859900">import</span> <span style="color:#268bd2">Welcome</span> <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;./Welcome&#39;</span>;
 
-<span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">render</span>(<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Welcome</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudoz&#34;</span> <span style="color:#f92672">/&gt;</span>, document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;root&#39;</span>));
+<span style="color:#268bd2">React</span>.<span style="color:#268bd2">render</span>(&lt;<span style="color:#268bd2">Welcome</span> <span style="color:#268bd2">name</span>=<span style="color:#2aa198">&#34;sudoz&#34;</span> /&gt;, <span style="color:#cb4b16">document</span>.<span style="color:#268bd2">getElementById</span>(<span style="color:#2aa198">&#39;root&#39;</span>));
 </code></pre></div><p>而 <code>index.html</code> 的页面源码如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span>&gt;
-&lt;<span style="color:#f92672">head</span>&gt;
-  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
-  &lt;<span style="color:#f92672">title</span>&gt;Hello World&lt;/<span style="color:#f92672">title</span>&gt;
-&lt;/<span style="color:#f92672">head</span>&gt;
-&lt;<span style="color:#f92672">body</span>&gt;
-  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;root&#34;</span>&gt;
-    <span style="color:#75715e">&lt;!-- This HTML file is a template. --&gt;</span>
-  &lt;/<span style="color:#f92672">div</span>&gt;
-  &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/dist/bundle.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
-&lt;/<span style="color:#f92672">body</span>&gt;
-&lt;/<span style="color:#f92672">html</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">html</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">head</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">meta</span> <span style="color:#268bd2">charset</span>=<span style="color:#2aa198">&#34;UTF-8&#34;</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">title</span>&gt;Hello World&lt;/<span style="color:#268bd2;font-weight:bold">title</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">head</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">body</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">id</span>=<span style="color:#2aa198">&#34;root&#34;</span>&gt;
+    <span style="color:#93a1a1;font-style:italic">&lt;!-- This HTML file is a template. --&gt;</span>
+  &lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">script</span> <span style="color:#268bd2">src</span>=<span style="color:#2aa198">&#34;/dist/bundle.js&#34;</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">script</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">body</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">html</span>&gt;
 </code></pre></div><p><code>webpack.config.js</code> 需要对 React 的 JSX 文件进行 babel 转换：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// webpack.config.js
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> [
-    <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">root_path</span>, <span style="color:#e6db74">&#39;./src/js/entry&#39;</span>)
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// webpack.config.js
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">module</span>.<span style="color:#268bd2">exports</span> = {
+  <span style="color:#268bd2">entry</span>: [
+    <span style="color:#268bd2">path</span>.<span style="color:#268bd2">resolve</span>(<span style="color:#268bd2">root_path</span>, <span style="color:#2aa198">&#39;./src/js/entry&#39;</span>)
   ],
-  <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">root_path</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
-    <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/dist/&#39;</span>,
-    <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;bundle.js&#39;</span>
+  <span style="color:#268bd2">output</span>: {
+    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">path</span>.<span style="color:#268bd2">resolve</span>(<span style="color:#268bd2">root_path</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
+    <span style="color:#268bd2">publicPath</span>: <span style="color:#2aa198">&#39;/dist/&#39;</span>,
+    <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;bundle.js&#39;</span>
   },
-  <span style="color:#a6e22e">module</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">rules</span><span style="color:#f92672">:</span> [
+  <span style="color:#268bd2">module</span>: {
+    <span style="color:#268bd2">rules</span>: [
       {
-        <span style="color:#a6e22e">test</span><span style="color:#f92672">:</span> <span style="color:#e6db74">/\.js[x]$/</span>,
-        <span style="color:#a6e22e">use</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;babel-loader&#39;</span>],
-        <span style="color:#a6e22e">query</span><span style="color:#f92672">:</span> {
-          <span style="color:#a6e22e">presets</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;es2015&#39;</span>, <span style="color:#e6db74">&#39;react&#39;</span>]
+        <span style="color:#268bd2">test</span>: <span style="color:#2aa198">/\.js[x]$/</span>,
+        <span style="color:#268bd2">use</span>: [<span style="color:#2aa198">&#39;babel-loader&#39;</span>],
+        <span style="color:#268bd2">query</span>: {
+          <span style="color:#268bd2">presets</span>: [<span style="color:#2aa198">&#39;es2015&#39;</span>, <span style="color:#2aa198">&#39;react&#39;</span>]
         },
-        <span style="color:#a6e22e">exclude</span><span style="color:#f92672">:</span> <span style="color:#e6db74">/node_modules/</span>
+        <span style="color:#268bd2">exclude</span>: <span style="color:#2aa198">/node_modules/</span>
       }
   }
 }
 </code></pre></div><h2 id="模块热替换">模块热替换</h2>
 <p>当修改、新增或移除模块时，热替换（Hot Module Replacement, HMR）可以使程序无需重新载入页面就能实现更新。</p>
 <p>要使用 HMR，需要安装一下依赖，另外在安装 React 依赖：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">yarn add -D babel@6.5.2 babel-core@6.13.2 babel-loader@6.2.4 babel-preset-es2015@6.13.2 babel-preset-react@6.11.1 babel-preset-stage-2@6.13.0 css-loader@0.23.1 postcss-loader@0.9.1 react-hot-loader@3.0.0-beta.6 style-loader@0.13.1 webpack@2.1.0-beta.20 webpack-dev-server@2.1.0-beta.0
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">yarn add -D babel@6.5.2 babel-core@6.13.2 babel-loader@6.2.4 babel-preset-es2015@6.13.2 babel-preset-react@6.11.1 babel-preset-stage-2@6.13.0 css-loader@0.23.1 postcss-loader@0.9.1 react-hot-loader@3.0.0-beta.6 style-loader@0.13.1 webpack@2.1.0-beta.20 webpack-dev-server@2.1.0-beta.0
 
 yarn add react@15.3.0 react-dom@15.3.0
 </code></pre></div><p>配置 <code>.babelrc</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
-  <span style="color:#e6db74">&#34;presets&#34;</span><span style="color:#f92672">:</span> [
-    [<span style="color:#e6db74">&#34;es2015&#34;</span>, {<span style="color:#e6db74">&#34;modules&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>}],
-    <span style="color:#75715e">// webpack understands the native import syntax, and uses it for tree shaking
-</span><span style="color:#75715e"></span>
-    <span style="color:#e6db74">&#34;stage-2&#34;</span>,
-    <span style="color:#75715e">// Specifies what level of language features to activate.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Stage 2 is &#34;draft&#34;, 4 is finished, 0 is strawman.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// See https://tc39.github.io/process-document/
-</span><span style="color:#75715e"></span>
-    <span style="color:#e6db74">&#34;react&#34;</span>
-    <span style="color:#75715e">// Transpile React components to JavaScript
-</span><span style="color:#75715e"></span>  ],
-  <span style="color:#e6db74">&#34;plugins&#34;</span><span style="color:#f92672">:</span> [
-    <span style="color:#e6db74">&#34;react-hot-loader/babel&#34;</span>
-    <span style="color:#75715e">// Enables React code to work with HMR.
-</span><span style="color:#75715e"></span>  ]
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+  <span style="color:#2aa198">&#34;presets&#34;</span>: [
+    [<span style="color:#2aa198">&#34;es2015&#34;</span>, {<span style="color:#2aa198">&#34;modules&#34;</span>: <span style="color:#859900;font-weight:bold">false</span>}],
+    <span style="color:#93a1a1;font-style:italic">// webpack understands the native import syntax, and uses it for tree shaking
+</span><span style="color:#93a1a1;font-style:italic"></span>
+    <span style="color:#2aa198">&#34;stage-2&#34;</span>,
+    <span style="color:#93a1a1;font-style:italic">// Specifies what level of language features to activate.
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#93a1a1;font-style:italic">// Stage 2 is &#34;draft&#34;, 4 is finished, 0 is strawman.
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#93a1a1;font-style:italic">// See https://tc39.github.io/process-document/
+</span><span style="color:#93a1a1;font-style:italic"></span>
+    <span style="color:#2aa198">&#34;react&#34;</span>
+    <span style="color:#93a1a1;font-style:italic">// Transpile React components to JavaScript
+</span><span style="color:#93a1a1;font-style:italic"></span>  ],
+  <span style="color:#2aa198">&#34;plugins&#34;</span>: [
+    <span style="color:#2aa198">&#34;react-hot-loader/babel&#34;</span>
+    <span style="color:#93a1a1;font-style:italic">// Enables React code to work with HMR.
+</span><span style="color:#93a1a1;font-style:italic"></span>  ]
 }
 </code></pre></div><p><code>webpack.config.js</code> 的参考配置：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">resolve</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;path&#39;</span>);
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">webpack</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;webpack&#39;</span>);
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">const</span> { <span style="color:#268bd2">resolve</span> } = <span style="color:#268bd2">require</span>(<span style="color:#2aa198">&#39;path&#39;</span>);
+<span style="color:#859900">const</span> <span style="color:#268bd2">webpack</span> = <span style="color:#268bd2">require</span>(<span style="color:#2aa198">&#39;webpack&#39;</span>);
 
-<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">entry</span><span style="color:#f92672">:</span> [
-    <span style="color:#e6db74">&#39;react-hot-loader/patch&#39;</span>,
-    <span style="color:#75715e">// activate HMR for React
-</span><span style="color:#75715e"></span>
-    <span style="color:#e6db74">&#39;webpack-dev-server/client?http://localhost:8080&#39;</span>,
-    <span style="color:#75715e">// bundle the client for webpack-dev-server
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// and connect to the provided endpoint
-</span><span style="color:#75715e"></span>
-    <span style="color:#e6db74">&#39;webpack/hot/only-dev-server&#39;</span>,
-    <span style="color:#75715e">// bundle the client for hot reloading
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// only- means to only hot reload for successful updates
-</span><span style="color:#75715e"></span>
+<span style="color:#268bd2">module</span>.<span style="color:#268bd2">exports</span> = {
+  <span style="color:#268bd2">entry</span>: [
+    <span style="color:#2aa198">&#39;react-hot-loader/patch&#39;</span>,
+    <span style="color:#93a1a1;font-style:italic">// activate HMR for React
+</span><span style="color:#93a1a1;font-style:italic"></span>
+    <span style="color:#2aa198">&#39;webpack-dev-server/client?http://localhost:8080&#39;</span>,
+    <span style="color:#93a1a1;font-style:italic">// bundle the client for webpack-dev-server
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#93a1a1;font-style:italic">// and connect to the provided endpoint
+</span><span style="color:#93a1a1;font-style:italic"></span>
+    <span style="color:#2aa198">&#39;webpack/hot/only-dev-server&#39;</span>,
+    <span style="color:#93a1a1;font-style:italic">// bundle the client for hot reloading
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#93a1a1;font-style:italic">// only- means to only hot reload for successful updates
+</span><span style="color:#93a1a1;font-style:italic"></span>
 
-    <span style="color:#e6db74">&#39;./index.js&#39;</span>
-    <span style="color:#75715e">// the entry point of our app
-</span><span style="color:#75715e"></span>  ],
-  <span style="color:#a6e22e">output</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">filename</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;bundle.js&#39;</span>,
-    <span style="color:#75715e">// the output bundle
-</span><span style="color:#75715e"></span>
-    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
+    <span style="color:#2aa198">&#39;./index.js&#39;</span>
+    <span style="color:#93a1a1;font-style:italic">// the entry point of our app
+</span><span style="color:#93a1a1;font-style:italic"></span>  ],
+  <span style="color:#268bd2">output</span>: {
+    <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;bundle.js&#39;</span>,
+    <span style="color:#93a1a1;font-style:italic">// the output bundle
+</span><span style="color:#93a1a1;font-style:italic"></span>
+    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
 
-    <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/&#39;</span>
-    <span style="color:#75715e">// necessary for HMR to know where to load the hot update chunks
-</span><span style="color:#75715e"></span>  },
+    <span style="color:#268bd2">publicPath</span>: <span style="color:#2aa198">&#39;/&#39;</span>
+    <span style="color:#93a1a1;font-style:italic">// necessary for HMR to know where to load the hot update chunks
+</span><span style="color:#93a1a1;font-style:italic"></span>  },
 
-  <span style="color:#a6e22e">context</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;src&#39;</span>),
+  <span style="color:#268bd2">context</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;src&#39;</span>),
 
-  <span style="color:#a6e22e">devtool</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;inline-source-map&#39;</span>,
+  <span style="color:#268bd2">devtool</span>: <span style="color:#2aa198">&#39;inline-source-map&#39;</span>,
 
-  <span style="color:#a6e22e">devServer</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">hot</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
-    <span style="color:#75715e">// enable HMR on the server
-</span><span style="color:#75715e"></span>
-    <span style="color:#a6e22e">contentBase</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">__</span><span style="color:#a6e22e">dirname</span>, <span style="color:#e6db74">&#39;dist&#39;</span>),
-    <span style="color:#75715e">// match the output path
-</span><span style="color:#75715e"></span>
-    <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/&#39;</span>
-    <span style="color:#75715e">// match the output `publicPath`
-</span><span style="color:#75715e"></span>  },
+  <span style="color:#268bd2">devServer</span>: {
+    <span style="color:#268bd2">hot</span>: <span style="color:#859900;font-weight:bold">true</span>,
+    <span style="color:#93a1a1;font-style:italic">// enable HMR on the server
+</span><span style="color:#93a1a1;font-style:italic"></span>
+    <span style="color:#268bd2">contentBase</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
+    <span style="color:#93a1a1;font-style:italic">// match the output path
+</span><span style="color:#93a1a1;font-style:italic"></span>
+    <span style="color:#268bd2">publicPath</span>: <span style="color:#2aa198">&#39;/&#39;</span>
+    <span style="color:#93a1a1;font-style:italic">// match the output `publicPath`
+</span><span style="color:#93a1a1;font-style:italic"></span>  },
 
-  <span style="color:#a6e22e">module</span><span style="color:#f92672">:</span> {
-    <span style="color:#a6e22e">rules</span><span style="color:#f92672">:</span> [
+  <span style="color:#268bd2">module</span>: {
+    <span style="color:#268bd2">rules</span>: [
       {
-        <span style="color:#a6e22e">test</span><span style="color:#f92672">:</span> <span style="color:#e6db74">/\.js$/</span>,
-        <span style="color:#a6e22e">use</span><span style="color:#f92672">:</span> [
-          <span style="color:#e6db74">&#39;babel-loader&#39;</span>,
+        <span style="color:#268bd2">test</span>: <span style="color:#2aa198">/\.js$/</span>,
+        <span style="color:#268bd2">use</span>: [
+          <span style="color:#2aa198">&#39;babel-loader&#39;</span>,
         ],
-        <span style="color:#a6e22e">exclude</span><span style="color:#f92672">:</span> <span style="color:#e6db74">/node_modules/</span>
+        <span style="color:#268bd2">exclude</span>: <span style="color:#2aa198">/node_modules/</span>
       },
       {
-        <span style="color:#a6e22e">test</span><span style="color:#f92672">:</span> <span style="color:#e6db74">/\.css$/</span>,
-        <span style="color:#a6e22e">use</span><span style="color:#f92672">:</span> [
-          <span style="color:#e6db74">&#39;style-loader&#39;</span>,
-          <span style="color:#e6db74">&#39;css-loader?modules&#39;</span>,
-          <span style="color:#e6db74">&#39;postcss-loader&#39;</span>,
+        <span style="color:#268bd2">test</span>: <span style="color:#2aa198">/\.css$/</span>,
+        <span style="color:#268bd2">use</span>: [
+          <span style="color:#2aa198">&#39;style-loader&#39;</span>,
+          <span style="color:#2aa198">&#39;css-loader?modules&#39;</span>,
+          <span style="color:#2aa198">&#39;postcss-loader&#39;</span>,
         ],
       },
     ],
   },
 
-  <span style="color:#a6e22e">plugins</span><span style="color:#f92672">:</span> [
-    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">webpack</span>.<span style="color:#a6e22e">HotModuleReplacementPlugin</span>(),
-    <span style="color:#75715e">// enable HMR globally
-</span><span style="color:#75715e"></span>
-    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">webpack</span>.<span style="color:#a6e22e">NamedModulesPlugin</span>(),
-    <span style="color:#75715e">// prints more readable module names in the browser console on HMR updates
-</span><span style="color:#75715e"></span>  ],
+  <span style="color:#268bd2">plugins</span>: [
+    <span style="color:#859900">new</span> <span style="color:#268bd2">webpack</span>.<span style="color:#268bd2">HotModuleReplacementPlugin</span>(),
+    <span style="color:#93a1a1;font-style:italic">// enable HMR globally
+</span><span style="color:#93a1a1;font-style:italic"></span>
+    <span style="color:#859900">new</span> <span style="color:#268bd2">webpack</span>.<span style="color:#268bd2">NamedModulesPlugin</span>(),
+    <span style="color:#93a1a1;font-style:italic">// prints more readable module names in the browser console on HMR updates
+</span><span style="color:#93a1a1;font-style:italic"></span>  ],
 };
 </code></pre></div><p>上面的配置是假定入口文件是 <code>./src/index.js</code>，且需要引入 Loader 来处理 CSS 模块。注意 <code>entry</code> 属性中增加了 <code>react-hot-loader</code> 模块，这是开启 React 组件 HMR 的必要操作。<code>NamedModulesPlugin</code> 是非常有用的 Plugin，它能友好的显示什么模块发生了 HMR。</p>
 <p>再来看 webpack 官方文档给出的入口 JS 文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// ./src/index.js
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
-<span style="color:#66d9ef">import</span> <span style="color:#a6e22e">ReactDOM</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react-dom&#39;</span>;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// ./src/index.js
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">import</span> <span style="color:#268bd2">React</span> <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;react&#39;</span>;
+<span style="color:#859900">import</span> <span style="color:#268bd2">ReactDOM</span> <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;react-dom&#39;</span>;
 
-<span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">AppContainer</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react-hot-loader&#39;</span>;
-<span style="color:#75715e">// AppContainer is a necessary wrapper component for HMR
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">import</span> <span style="color:#a6e22e">App</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./components/App&#39;</span>;
+<span style="color:#859900">import</span> { <span style="color:#268bd2">AppContainer</span> } <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;react-hot-loader&#39;</span>;
+<span style="color:#93a1a1;font-style:italic">// AppContainer is a necessary wrapper component for HMR
+</span><span style="color:#93a1a1;font-style:italic"></span>
+<span style="color:#859900">import</span> <span style="color:#268bd2">App</span> <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;./components/App&#39;</span>;
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">render</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">Component</span>) =&gt; {
-  <span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">render</span>(
-    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">AppContainer</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Component</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/AppContainer&gt;,</span>
-    document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;root&#39;</span>)
+<span style="color:#859900">const</span> <span style="color:#268bd2">render</span> = (<span style="color:#268bd2">Component</span>) =&gt; {
+  <span style="color:#268bd2">ReactDOM</span>.<span style="color:#268bd2">render</span>(
+    &lt;<span style="color:#268bd2">AppContainer</span>&gt;
+      &lt;<span style="color:#268bd2">Component</span>/&gt;
+    &lt;/AppContainer&gt;,
+    <span style="color:#cb4b16">document</span>.<span style="color:#268bd2">getElementById</span>(<span style="color:#2aa198">&#39;root&#39;</span>)
   );
 };
 
-<span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">App</span>);
+<span style="color:#268bd2">render</span>(<span style="color:#268bd2">App</span>);
 
-<span style="color:#75715e">// Hot Module Replacement API
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">hot</span>) {
-  <span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">hot</span>.<span style="color:#a6e22e">accept</span>(<span style="color:#e6db74">&#39;./components/App&#39;</span>, () =&gt; {
-    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">NewApp</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./components/App&#39;</span>).<span style="color:#66d9ef">default</span>
-    <span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">NewApp</span>)
+<span style="color:#93a1a1;font-style:italic">// Hot Module Replacement API
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">if</span> (<span style="color:#268bd2">module</span>.<span style="color:#268bd2">hot</span>) {
+  <span style="color:#268bd2">module</span>.<span style="color:#268bd2">hot</span>.<span style="color:#268bd2">accept</span>(<span style="color:#2aa198">&#39;./components/App&#39;</span>, () =&gt; {
+    <span style="color:#859900">const</span> <span style="color:#268bd2">NewApp</span> = <span style="color:#268bd2">require</span>(<span style="color:#2aa198">&#39;./components/App&#39;</span>).<span style="color:#859900">default</span>
+    <span style="color:#268bd2">render</span>(<span style="color:#268bd2">NewApp</span>)
   });
 }
 </code></pre></div><p>App 组件 <code>App.js</code> 源码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// ./src/components/App.js
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">React</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
-<span style="color:#66d9ef">import</span> <span style="color:#a6e22e">styles</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./App.css&#39;</span>;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// ./src/components/App.js
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">import</span> <span style="color:#268bd2">React</span> <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;react&#39;</span>;
+<span style="color:#859900">import</span> <span style="color:#268bd2">styles</span> <span style="color:#268bd2">from</span> <span style="color:#2aa198">&#39;./App.css&#39;</span>;
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">App</span> <span style="color:#f92672">=</span> () =&gt; (
-  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span> <span style="color:#a6e22e">className</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">styles</span>.<span style="color:#a6e22e">app</span>}<span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h2</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Hello</span>, <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/h2&gt;</span>
-  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+<span style="color:#859900">const</span> <span style="color:#268bd2">App</span> = () =&gt; (
+  &lt;<span style="color:#268bd2">div</span> <span style="color:#268bd2">className</span>={<span style="color:#268bd2">styles</span>.<span style="color:#268bd2">app</span>}&gt;
+    &lt;<span style="color:#268bd2">h2</span>&gt;<span style="color:#268bd2">Hello</span>, &lt;/h2&gt;
+  &lt;/div&gt;
 );
 
-<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">App</span>;
+<span style="color:#859900">export</span> <span style="color:#859900">default</span> <span style="color:#268bd2">App</span>;
 </code></pre></div><p><code>App.css</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css"><span style="color:#f92672">//</span> <span style="color:#f92672">./</span><span style="color:#f92672">src</span><span style="color:#f92672">/</span><span style="color:#f92672">components</span><span style="color:#f92672">/</span><span style="color:#f92672">App</span>.<span style="color:#a6e22e">css</span>
-.<span style="color:#a6e22e">app</span> {
-    text-size-adjust: <span style="color:#66d9ef">none</span>;
-    <span style="color:#66d9ef">font-family</span>: helvetica, arial, <span style="color:#66d9ef">sans-serif</span>;
-    <span style="color:#66d9ef">line-height</span>: <span style="color:#ae81ff">200</span><span style="color:#66d9ef">%</span>;
-    <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">6</span><span style="color:#66d9ef">px</span> <span style="color:#ae81ff">20</span><span style="color:#66d9ef">px</span> <span style="color:#ae81ff">30</span><span style="color:#66d9ef">px</span>;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">// ./<span style="color:#268bd2;font-weight:bold">src</span>/<span style="color:#268bd2;font-weight:bold">components</span>/<span style="color:#268bd2;font-weight:bold">App</span>.<span style="color:#cb4b16">css</span>
+.<span style="color:#cb4b16">app</span> {
+    <span style="color:#268bd2">text-size-adjust</span>: <span style="color:#859900;font-weight:bold">none</span>;
+    <span style="color:#859900">font-family</span>: <span style="color:#268bd2">helvetica</span>, <span style="color:#268bd2">arial</span>, <span style="color:#859900;font-weight:bold">sans-serif</span>;
+    <span style="color:#859900">line-height</span>: <span style="color:#2aa198;font-weight:bold">200</span><span style="color:#859900;font-weight:bold">%</span>;
+    <span style="color:#859900">padding</span>: <span style="color:#2aa198;font-weight:bold">6</span><span style="color:#859900;font-weight:bold">px</span> <span style="color:#2aa198;font-weight:bold">20</span><span style="color:#859900;font-weight:bold">px</span> <span style="color:#2aa198;font-weight:bold">30</span><span style="color:#859900;font-weight:bold">px</span>;
 }
 </code></pre></div><p>在项目根目录下执行 <code>webpack-dev-server</code>，打开 <code>http：//127.0.0.1:8080</code> 查看页面控制台。</p>
 <hr>
@@ -413,10 +412,6 @@ yarn add react@15.3.0 react-dom@15.3.0
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

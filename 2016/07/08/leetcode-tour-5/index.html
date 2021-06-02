@@ -11,7 +11,6 @@
   <meta name="description" content="本篇记录 LeetCode 算法部分第 21 至 25 题。 Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists 将两个有序链表合并成一个新的有序链表。 题目不复杂，取两个指针分别往下遍历两个链表的每个节">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -62,55 +61,55 @@
 </blockquote>
 <p>题目不复杂，取两个指针分别往下遍历两个链表的每个节点，逐次指向节点的值，取其较小值，并移动该指针，另一指针不动。继续往下比较，知道其中有一个指针到达末端为止。
 循环解法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// MergeTwoSortedLists.java v1.0
-</span><span style="color:#75715e">// Definition for singly-linked list.
-</span><span style="color:#75715e">// public class ListNode {
-</span><span style="color:#75715e">//     int val;
-</span><span style="color:#75715e">//     ListNode next;
-</span><span style="color:#75715e">//     ListNode(int x) { val = x; }
-</span><span style="color:#75715e">// }
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">mergeTwoLists</span><span style="color:#f92672">(</span>ListNode l1<span style="color:#f92672">,</span> ListNode l2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ListNode res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        ListNode temp <span style="color:#f92672">=</span> res<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>l1 <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> l2 <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>l1<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span> <span style="color:#f92672">&lt;</span> l2<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                temp<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> l1<span style="color:#f92672">;</span>
-                l1 <span style="color:#f92672">=</span> l1<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                temp<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> l2<span style="color:#f92672">;</span>
-                l2 <span style="color:#f92672">=</span> l2<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            temp <span style="color:#f92672">=</span> temp<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>l1 <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> temp<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> l2<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">else</span> temp<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> l1<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeTwoSortedLists.java v1.0
+</span><span style="color:#93a1a1;font-style:italic">// Definition for singly-linked list.
+</span><span style="color:#93a1a1;font-style:italic">// public class ListNode {
+</span><span style="color:#93a1a1;font-style:italic">//     int val;
+</span><span style="color:#93a1a1;font-style:italic">//     ListNode next;
+</span><span style="color:#93a1a1;font-style:italic">//     ListNode(int x) { val = x; }
+</span><span style="color:#93a1a1;font-style:italic">// }
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">mergeTwoLists</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>) {
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">temp</span> = <span style="color:#268bd2">res</span>;
+        <span style="color:#859900">while</span> (<span style="color:#268bd2">l1</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">l2</span> != <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">l1</span>.<span style="color:#268bd2">val</span> &lt; <span style="color:#268bd2">l2</span>.<span style="color:#268bd2">val</span>) {
+                <span style="color:#268bd2">temp</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">l1</span>;
+                <span style="color:#268bd2">l1</span> = <span style="color:#268bd2">l1</span>.<span style="color:#268bd2">next</span>;
+            } <span style="color:#859900">else</span> {
+                <span style="color:#268bd2">temp</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">l2</span>;
+                <span style="color:#268bd2">l2</span> = <span style="color:#268bd2">l2</span>.<span style="color:#268bd2">next</span>;
+            }
+            <span style="color:#268bd2">temp</span> = <span style="color:#268bd2">temp</span>.<span style="color:#268bd2">next</span>;
+        }
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">l1</span> == <span style="color:#859900;font-weight:bold">null</span>) <span style="color:#268bd2">temp</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">l2</span>;
+        <span style="color:#859900">else</span> <span style="color:#268bd2">temp</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">l1</span>;
+        <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span>;
+    }
+}
 </code></pre></div><p>递归解法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// MergeTwoSortedLists.java v1.1
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">mergeTwoLists</span><span style="color:#f92672">(</span>ListNode l1<span style="color:#f92672">,</span> ListNode l2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ListNode res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        pickListNode<span style="color:#f92672">(</span>l1<span style="color:#f92672">,</span> l2<span style="color:#f92672">,</span> res<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeTwoSortedLists.java v1.1
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">mergeTwoLists</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>) {
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        <span style="color:#268bd2">pickListNode</span>(<span style="color:#268bd2">l1</span>, <span style="color:#268bd2">l2</span>, <span style="color:#268bd2">res</span>);
+        <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span>;
+    }
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pickListNode</span><span style="color:#f92672">(</span>ListNode l1<span style="color:#f92672">,</span> ListNode l2<span style="color:#f92672">,</span> ListNode res<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>l1 <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> l2 <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> l1 <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> l2 <span style="color:#f92672">:</span> l1<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>l1<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span> <span style="color:#f92672">&lt;</span> l2<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> l1<span style="color:#f92672">;</span>
-            l1 <span style="color:#f92672">=</span> l1<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            pickListNode<span style="color:#f92672">(</span>l1<span style="color:#f92672">,</span> l2<span style="color:#f92672">,</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> l2<span style="color:#f92672">;</span>
-            l2 <span style="color:#f92672">=</span> l2<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            pickListNode<span style="color:#f92672">(</span>l1<span style="color:#f92672">,</span> l2<span style="color:#f92672">,</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">pickListNode</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">res</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">l1</span> == <span style="color:#859900;font-weight:bold">null</span> || <span style="color:#268bd2">l2</span> == <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">l1</span> == <span style="color:#859900;font-weight:bold">null</span> ? <span style="color:#268bd2">l2</span> : <span style="color:#268bd2">l1</span>;
+        } <span style="color:#859900">else</span> <span style="color:#859900">if</span> (<span style="color:#268bd2">l1</span>.<span style="color:#268bd2">val</span> &lt; <span style="color:#268bd2">l2</span>.<span style="color:#268bd2">val</span>) {
+            <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">l1</span>;
+            <span style="color:#268bd2">l1</span> = <span style="color:#268bd2">l1</span>.<span style="color:#268bd2">next</span>;
+            <span style="color:#268bd2">pickListNode</span>(<span style="color:#268bd2">l1</span>, <span style="color:#268bd2">l2</span>, <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span>);
+        } <span style="color:#859900">else</span> {
+            <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">l2</span>;
+            <span style="color:#268bd2">l2</span> = <span style="color:#268bd2">l2</span>.<span style="color:#268bd2">next</span>;
+            <span style="color:#268bd2">pickListNode</span>(<span style="color:#268bd2">l1</span>, <span style="color:#268bd2">l2</span>, <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span>);
+        }
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -139,27 +138,27 @@
 <p>这题很容易想起之前做过的第 20 题 <a href="/2016/07/04/leetcode-tour-4/#Valid-Parentheses">Valid Parentheses</a>，当时利用了栈的 FILO 特性去检验括号组合的有效性。一个很直接的想法就是枚举全部的组合，然后传给 Valid Parentheses 方法去做有效性检验。但是这种方法平方级的时间复杂度太高，因为要判断所有组合。
 n + 1 对括号的组合，可以发现，其实就是将新增的一对括号和之前的 n 对括号的组合拼起来。因此这里就可以利用递归的思想。
 n 对括号组合，就需要把 n 个 <code>&quot;(&quot;</code> 和 n 个 <code>&quot;)&quot;</code> 插入进字符串中。而且从左往右，<code>&quot;(&quot;</code> 的数量一定不少于 <code>&quot;)&quot;</code> 才能使得组合有效，换句话说，就是只有在待插入的 <code>&quot;)&quot;</code>的数量大于待插入的 <code>&quot;(&quot;</code> 数量时，才需要往字符串中插入 <code>&quot;)&quot;</code>。当待插入的括号数量为零时，结束递归，将所得括号字符串添加进列表里。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// GenerateParentheses.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">generateParenthesis</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">&lt;=</span> 0<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> list<span style="color:#f92672">;</span>
-        recursive<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> n<span style="color:#f92672">,</span> n<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> list<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">recursive</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> result<span style="color:#f92672">,</span> String paren<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> left<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> right<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>left <span style="color:#f92672">==</span> 0 <span style="color:#f92672">&amp;&amp;</span> right <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            result<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>paren<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>left <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            recursive<span style="color:#f92672">(</span>result<span style="color:#f92672">,</span> paren <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;(&#34;</span><span style="color:#f92672">,</span> left <span style="color:#f92672">-</span> 1<span style="color:#f92672">,</span> right<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>right <span style="color:#f92672">&gt;</span> 0 <span style="color:#f92672">&amp;&amp;</span> left <span style="color:#f92672">&lt;</span> right<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            recursive<span style="color:#f92672">(</span>result<span style="color:#f92672">,</span> paren <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;)&#34;</span><span style="color:#f92672">,</span> left<span style="color:#f92672">,</span> right <span style="color:#f92672">-</span> 1<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// GenerateParentheses.java
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">generateParenthesis</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">n</span>) {
+        <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">list</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">n</span> &lt;= <span style="color:#268bd2">0</span>) <span style="color:#859900">return</span> <span style="color:#268bd2">list</span>;
+        <span style="color:#268bd2">recursive</span>(<span style="color:#268bd2">list</span>, <span style="color:#2aa198">&#34;&#34;</span>, <span style="color:#268bd2">n</span>, <span style="color:#268bd2">n</span>);
+        <span style="color:#859900">return</span> <span style="color:#268bd2">list</span>;
+    }
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">recursive</span>(<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">result</span>, <span style="color:#268bd2">String</span> <span style="color:#268bd2">paren</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">left</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">right</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">left</span> == <span style="color:#268bd2">0</span> &amp;&amp; <span style="color:#268bd2">right</span> == <span style="color:#268bd2">0</span>) {
+            <span style="color:#268bd2">result</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">paren</span>);
+            <span style="color:#859900">return</span>;
+        }
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">left</span> &gt; <span style="color:#268bd2">0</span>) {
+            <span style="color:#268bd2">recursive</span>(<span style="color:#268bd2">result</span>, <span style="color:#268bd2">paren</span> + <span style="color:#2aa198">&#34;(&#34;</span>, <span style="color:#268bd2">left</span> - <span style="color:#268bd2">1</span>, <span style="color:#268bd2">right</span>);
+        }
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">right</span> &gt; <span style="color:#268bd2">0</span> &amp;&amp; <span style="color:#268bd2">left</span> &lt; <span style="color:#268bd2">right</span>) {
+            <span style="color:#268bd2">recursive</span>(<span style="color:#268bd2">result</span>, <span style="color:#268bd2">paren</span> + <span style="color:#2aa198">&#34;)&#34;</span>, <span style="color:#268bd2">left</span>, <span style="color:#268bd2">right</span> - <span style="color:#268bd2">1</span>);
+        }
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -191,27 +190,27 @@ n 对括号组合，就需要把 n 个 <code>&quot;(&quot;</code> 和 n 个 <cod
 例如，给定的链表为 <code>1 -&gt;2 -&gt; 3 -&gt; 4</code>，返回结果为 <code>2 -&gt; 1 -&gt; 4 -&gt; 3</code>。</p>
 </blockquote>
 <p>首先需要新建一个 ListNode 保存给定 ListNode 的头指针,这样在交换相邻节点时,该指针位置能保持固定不动。此外还需要另一个 ListNode 作为移动的指针来交换相邻节点，因此还需要创建两个临时的 ListNode，一左一右作交换。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// SwapNodesInPairs.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ListNode</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> val<span style="color:#f92672">;</span>
-        ListNode next<span style="color:#f92672">;</span>
-        ListNode<span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> val <span style="color:#f92672">=</span> x<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">swapPairs</span><span style="color:#f92672">(</span>ListNode head<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ListNode res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        ListNode curNode <span style="color:#f92672">=</span> res<span style="color:#f92672">;</span>
-        res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>curNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> curNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            ListNode l <span style="color:#f92672">=</span> curNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">,</span> r <span style="color:#f92672">=</span> curNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            curNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> r<span style="color:#f92672">;</span>
-            l<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            r<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> l<span style="color:#f92672">;</span>
-            curNode <span style="color:#f92672">=</span> l<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// SwapNodesInPairs.java
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ListNode</span> {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">val</span>;
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">next</span>;
+        <span style="color:#268bd2">ListNode</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">x</span>) { <span style="color:#268bd2">val</span> = <span style="color:#268bd2">x</span>; }
+    }
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">swapPairs</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">head</span>) {
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">curNode</span> = <span style="color:#268bd2">res</span>;
+        <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">head</span>;
+        <span style="color:#859900">while</span> (<span style="color:#268bd2">curNode</span>.<span style="color:#268bd2">next</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">curNode</span>.<span style="color:#268bd2">next</span>.<span style="color:#268bd2">next</span> != <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l</span> = <span style="color:#268bd2">curNode</span>.<span style="color:#268bd2">next</span>, <span style="color:#268bd2">r</span> = <span style="color:#268bd2">curNode</span>.<span style="color:#268bd2">next</span>.<span style="color:#268bd2">next</span>;
+            <span style="color:#268bd2">curNode</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">r</span>;
+            <span style="color:#268bd2">l</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">r</span>.<span style="color:#268bd2">next</span>;
+            <span style="color:#268bd2">r</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">l</span>;
+            <span style="color:#268bd2">curNode</span> = <span style="color:#268bd2">l</span>;
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span>;
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -235,8 +234,8 @@ n 对括号组合，就需要把 n 个 <code>&quot;(&quot;</code> 和 n 个 <cod
 <p>第 25 题 <a href="https://leetcode.com/problems/reverse-nodes-in-k-group/">Reverse Nodes in k-Group</a></p>
 <blockquote>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// MergeReverseNodesInKGroup.java
-</span><span style="color:#75715e"></span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeReverseNodesInKGroup.java
+</span><span style="color:#93a1a1;font-style:italic"></span>
 </code></pre></div></div>
   <footer class="post-footer">
     <ul class="post-tags">
@@ -276,10 +275,6 @@ n 对括号组合，就需要把 n 个 <code>&quot;(&quot;</code> 和 n 个 <cod
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

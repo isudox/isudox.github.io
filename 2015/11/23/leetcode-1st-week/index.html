@@ -11,7 +11,6 @@
   <meta name="description" content="上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -66,38 +65,38 @@ nums[0] + nums[1] = 2 + 7 = 9
 return [0, 1]</p>
 </blockquote>
 <p>这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// TwoSum.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> <span style="color:#a6e22e">twoSum</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> len <span style="color:#f92672">=</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>2<span style="color:#f92672">];</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// TwoSum.java
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">twoSum</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">len</span> = <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span>;
+        <span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#859900;font-weight:bold">int</span>[<span style="color:#268bd2">2</span>];
 
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>len <span style="color:#f92672">&lt;</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">len</span> &lt; <span style="color:#268bd2">2</span>) {
+            <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>;
+        }
 
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> len<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> len<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    res<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
-                    res<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> j <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
-                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">len</span>; <span style="color:#268bd2">i</span>++) {
+            <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">j</span> = <span style="color:#268bd2">i</span> + <span style="color:#268bd2">1</span>; <span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">len</span>; <span style="color:#268bd2">j</span>++) {
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] == <span style="color:#268bd2">target</span>) {
+                    <span style="color:#268bd2">res</span>[<span style="color:#268bd2">0</span>] = <span style="color:#268bd2">i</span> + <span style="color:#268bd2">1</span>;
+                    <span style="color:#268bd2">res</span>[<span style="color:#268bd2">1</span>] = <span style="color:#268bd2">j</span> + <span style="color:#268bd2">1</span>;
+                    <span style="color:#859900">break</span>;
+                }
+            }
+        }
 
-        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># two_sum.py</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">twoSum</span>(self, nums, target):
-        d <span style="color:#f92672">=</span> {}
-        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(nums)):
-            x <span style="color:#f92672">=</span> nums[i]
-            <span style="color:#66d9ef">if</span> target <span style="color:#f92672">-</span> x <span style="color:#f92672">in</span> d:
-                <span style="color:#66d9ef">return</span> d[target <span style="color:#f92672">-</span> x], i
-            d[x] <span style="color:#f92672">=</span> i
+        <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>;
+    }
+}
+</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># two_sum.py</span>
+<span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
+    <span style="color:#859900">def</span> <span style="color:#268bd2">twoSum</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">nums</span>, <span style="color:#268bd2">target</span>):
+        <span style="color:#268bd2">d</span> = {}
+        <span style="color:#859900">for</span> <span style="color:#268bd2">i</span> <span style="color:#859900">in</span> <span style="color:#cb4b16">range</span>(<span style="color:#cb4b16">len</span>(<span style="color:#268bd2">nums</span>)):
+            <span style="color:#268bd2">x</span> = <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>]
+            <span style="color:#859900">if</span> <span style="color:#268bd2">target</span> - <span style="color:#268bd2">x</span> <span style="color:#859900">in</span> <span style="color:#268bd2">d</span>:
+                <span style="color:#859900">return</span> <span style="color:#268bd2">d</span>[<span style="color:#268bd2">target</span> - <span style="color:#268bd2">x</span>], <span style="color:#268bd2">i</span>
+            <span style="color:#268bd2">d</span>[<span style="color:#268bd2">x</span>] = <span style="color:#268bd2">i</span>
 </code></pre></div><p>OJ 结果：</p>
 <table>
 <thead>
@@ -134,112 +133,112 @@ return [0, 1]</p>
 <p>这道题有点拗口，简单解释下题意：用链表表示非负整数，整数的每一位用倒序存储在链表的节点中，例如 342 用链表形式存储则为 2 -&gt; 4 -&gt; 3，给出两个链表表示的正整数，求两数加和的链表形式。</p>
 <p>这道题有坑！刚开始解题时并没有把各种可能的情况考虑到，提交两次都被驳回。下面我把我的解法从最开始被拒绝的草稿到最后被接受的过程完整写下来。先抛开诡异的情况，只考虑最主干的思路，把算法的骨架码出来。
 涉及到链表，其实下意识的就能联想到链式反应，这在算法里对应的就是递归。我的思路是尝试把链表递归还原成整数，然后再把求和的整数转化成链表。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
-</span><span style="color:#75715e"> * Definition for singly-linked list.
-</span><span style="color:#75715e"> * public class ListNode {
-</span><span style="color:#75715e"> *     int val;
-</span><span style="color:#75715e"> *     ListNode next;
-</span><span style="color:#75715e"> *     ListNode(int x) { val = x; }
-</span><span style="color:#75715e"> * }
-</span><span style="color:#75715e"> */</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">addTwoNumbers</span><span style="color:#f92672">(</span>ListNode l1<span style="color:#f92672">,</span> ListNode l2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> listNode2Num<span style="color:#f92672">(</span>l1<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> listNode2Num<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">/**
+</span><span style="color:#93a1a1;font-style:italic"> * Definition for singly-linked list.
+</span><span style="color:#93a1a1;font-style:italic"> * public class ListNode {
+</span><span style="color:#93a1a1;font-style:italic"> *     int val;
+</span><span style="color:#93a1a1;font-style:italic"> *     ListNode next;
+</span><span style="color:#93a1a1;font-style:italic"> *     ListNode(int x) { val = x; }
+</span><span style="color:#93a1a1;font-style:italic"> * }
+</span><span style="color:#93a1a1;font-style:italic"> */</span>
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">addTwoNumbers</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">l1</span>) + <span style="color:#268bd2">listNode2Num</span>;
 
-        <span style="color:#66d9ef">return</span> num2ListNode<span style="color:#f92672">(</span>sum<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">num2ListNode</span>(<span style="color:#268bd2">sum</span>);
+    }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">listNode2Num</span><span style="color:#f92672">(</span>ListNode listNode<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>listNode <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">listNode</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">listNode</span> == <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#859900">return</span> <span style="color:#268bd2">0</span>;
+        }
 
-        <span style="color:#66d9ef">return</span> listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span> <span style="color:#f92672">+</span> listNode2Num<span style="color:#f92672">(</span>listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span> <span style="color:#f92672">*</span> 10<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">val</span> + <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">next</span>) * <span style="color:#268bd2">10</span>;
+    }
 
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">num2ListNode</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ListNode listNode <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>num <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">num2ListNode</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">num</span>) {
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">listNode</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">num</span> == <span style="color:#268bd2">0</span>) {
+            <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">null</span>;
+        }
 
-        listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span> <span style="color:#f92672">=</span> num <span style="color:#f92672">%</span> 10<span style="color:#f92672">;</span>
-        listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> num2ListNode<span style="color:#f92672">(</span>num <span style="color:#f92672">/</span> 10<span style="color:#f92672">);</span>
+        <span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">val</span> = <span style="color:#268bd2">num</span> % <span style="color:#268bd2">10</span>;
+        <span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">num2ListNode</span>(<span style="color:#268bd2">num</span> / <span style="color:#268bd2">10</span>);
 
-        <span style="color:#66d9ef">return</span> listNode<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">listNode</span>;
+    }
+}
 </code></pre></div><p>肉眼 debug 了下似乎没有问题，leetcode 的测试用例也通过了，提交代码被 OJ 否决了，问题出在哪了呢？看下面的用例</p>
 <pre><code># input
 [0], [0]
 </code></pre><p>找到出错的点了，在把数值转换为链表的方法 num2ListNode() 里发生了错误，因为传参是 0 直接返回了 null。那么就打补丁吧，在调用 num2ListNode() 前对参数进行判断，修改代码如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// AddTwoNumbers.java v1.1
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">addTwoNumbers</span><span style="color:#f92672">(</span>ListNode l1<span style="color:#f92672">,</span> ListNode l2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> listNode2Num<span style="color:#f92672">(</span>l1<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> listNode2Num<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sum <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// AddTwoNumbers.java v1.1
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">addTwoNumbers</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">l1</span>) + <span style="color:#268bd2">listNode2Num</span>;
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">sum</span> == <span style="color:#268bd2">0</span>) {
+            <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        }
 
-        <span style="color:#66d9ef">return</span> num2ListNode<span style="color:#f92672">(</span>sum<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">num2ListNode</span>(<span style="color:#268bd2">sum</span>);
+    }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">listNode2Num</span><span style="color:#f92672">(</span>ListNode listNode<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>listNode <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">listNode</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">listNode</span> == <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#859900">return</span> <span style="color:#268bd2">0</span>;
+        }
 
-        <span style="color:#66d9ef">return</span> listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span> <span style="color:#f92672">+</span> listNode2Num<span style="color:#f92672">(</span>listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span> <span style="color:#f92672">*</span> 10<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">val</span> + <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">next</span>) * <span style="color:#268bd2">10</span>;
+    }
 
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">num2ListNode</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ListNode listNode <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>num <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">num2ListNode</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">num</span>) {
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">listNode</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">num</span> == <span style="color:#268bd2">0</span>) {
+            <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">null</span>;
+        }
 
-        listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span> <span style="color:#f92672">=</span> num <span style="color:#f92672">%</span> 10<span style="color:#f92672">;</span>
-        listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> num2ListNode<span style="color:#f92672">(</span>num <span style="color:#f92672">/</span> 10<span style="color:#f92672">);</span>
+        <span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">val</span> = <span style="color:#268bd2">num</span> % <span style="color:#268bd2">10</span>;
+        <span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">num2ListNode</span>(<span style="color:#268bd2">num</span> / <span style="color:#268bd2">10</span>);
 
-        <span style="color:#66d9ef">return</span> listNode<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">listNode</span>;
+    }
+}
 </code></pre></div><p>上面的补丁解决了当数值为 0 时的异常情况，再次提交，然后……再次悲剧地被 OJ 婉拒了。OJ 给出了如下的报错测试用例</p>
 <pre><code>[1], [9,9,9,9,9,9,9,9,9,9,9,9,9]
 </code></pre><p>看到这个用例其实就知道代码疏漏点在什么地方，就是没有考虑到对大数的处理。当链表表示的大整数数值超过 int 型的范围时，在链表转换整数的过程中就已经发生错误了。好在 Java 处理大整数比 C/C++ 方便了很多，不需要先转换成 String 类，Java 的 Math 包里内置了 <a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html">BigInteger</a> 类，只要内存够大，就可以表示任意大整数。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// AddTwoNumbers.java v1.2
-</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> java.math.BigInteger<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">addTwoNumbers</span><span style="color:#f92672">(</span>ListNode l1<span style="color:#f92672">,</span> ListNode l2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        BigInteger sum <span style="color:#f92672">=</span> listNode2Num<span style="color:#f92672">(</span>l1<span style="color:#f92672">).</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>listNode2Num<span style="color:#f92672">(</span>l2<span style="color:#f92672">));</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>BigInteger<span style="color:#f92672">.</span><span style="color:#a6e22e">ZERO</span><span style="color:#f92672">.</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">(</span>sum<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// AddTwoNumbers.java v1.2
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">java.math.BigInteger</span>;
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">addTwoNumbers</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>) {
+        <span style="color:#268bd2">BigInteger</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">l1</span>).<span style="color:#268bd2">add</span>(<span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">l2</span>));
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">BigInteger</span>.<span style="color:#268bd2">ZERO</span>.<span style="color:#268bd2">compareTo</span>(<span style="color:#268bd2">sum</span>) == <span style="color:#268bd2">0</span>) {
+            <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        }
 
-        <span style="color:#66d9ef">return</span> num2ListNode<span style="color:#f92672">(</span>sum<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">num2ListNode</span>(<span style="color:#268bd2">sum</span>);
+    }
 
-    <span style="color:#66d9ef">public</span> BigInteger <span style="color:#a6e22e">listNode2Num</span><span style="color:#f92672">(</span>ListNode listNode<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>listNode <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> BigInteger<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">BigInteger</span> <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">listNode</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">listNode</span> == <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#859900">return</span> <span style="color:#268bd2">BigInteger</span>.<span style="color:#268bd2">valueOf</span>(<span style="color:#268bd2">0</span>);
+        }
 
-        <span style="color:#66d9ef">return</span> BigInteger<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span><span style="color:#f92672">).</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>listNode2Num<span style="color:#f92672">(</span>listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span>
-                                                    <span style="color:#f92672">.</span><span style="color:#a6e22e">multiply</span><span style="color:#f92672">(</span>BigInteger<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>10<span style="color:#f92672">)));</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">BigInteger</span>.<span style="color:#268bd2">valueOf</span>(<span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">val</span>).<span style="color:#268bd2">add</span>(<span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">next</span>)
+                                                    .<span style="color:#268bd2">multiply</span>(<span style="color:#268bd2">BigInteger</span>.<span style="color:#268bd2">valueOf</span>(<span style="color:#268bd2">10</span>)));
+    }
 
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">num2ListNode</span><span style="color:#f92672">(</span>BigInteger num<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ListNode listNode <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>BigInteger<span style="color:#f92672">.</span><span style="color:#a6e22e">ZERO</span><span style="color:#f92672">.</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">(</span>num<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">num2ListNode</span>(<span style="color:#268bd2">BigInteger</span> <span style="color:#268bd2">num</span>) {
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">listNode</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">BigInteger</span>.<span style="color:#268bd2">ZERO</span>.<span style="color:#268bd2">compareTo</span>(<span style="color:#268bd2">num</span>) == <span style="color:#268bd2">0</span>) {
+            <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">null</span>;
+        }
 
-        listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span> <span style="color:#f92672">=</span> num<span style="color:#f92672">.</span><span style="color:#a6e22e">mod</span><span style="color:#f92672">(</span>BigInteger<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>10<span style="color:#f92672">)).</span><span style="color:#a6e22e">intValue</span><span style="color:#f92672">();</span>
-        listNode<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> num2ListNode<span style="color:#f92672">(</span>num<span style="color:#f92672">.</span><span style="color:#a6e22e">divide</span><span style="color:#f92672">(</span>BigInteger<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>10<span style="color:#f92672">)));</span>
+        <span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">val</span> = <span style="color:#268bd2">num</span>.<span style="color:#268bd2">mod</span>(<span style="color:#268bd2">BigInteger</span>.<span style="color:#268bd2">valueOf</span>(<span style="color:#268bd2">10</span>)).<span style="color:#268bd2">intValue</span>();
+        <span style="color:#268bd2">listNode</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">num2ListNode</span>(<span style="color:#268bd2">num</span>.<span style="color:#268bd2">divide</span>(<span style="color:#268bd2">BigInteger</span>.<span style="color:#268bd2">valueOf</span>(<span style="color:#268bd2">10</span>)));
 
-        <span style="color:#66d9ef">return</span> listNode<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">listNode</span>;
+    }
+}
 </code></pre></div><p>BigInteger 类的方法需要参考 JDK 文档，这里不赘述了。代码提交，OJ 通过，一个赛艇！</p>
 <table>
 <thead>
@@ -276,32 +275,32 @@ e.g.
 <li>从第一个字符开始遍历，在遍历过程中，记录当前字符出现的次数，如果字符是第一次出现，则把当前记录的子串长度加一；如果字符已经出现过，说明该字串已经出现重复字符，则终止遍历，并从上一次遍历的起始位置的下一字符，重新上述步骤；</li>
 </ul>
 <p>解法如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// LongestSubstringWithoutRepeatingCharacters.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">lengthOfLongestSubstring</span><span style="color:#f92672">(</span>String s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> maxLen <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> sLen <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sLen <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LongestSubstringWithoutRepeatingCharacters.java
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">lengthOfLongestSubstring</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">maxLen</span> = <span style="color:#268bd2">0</span>;
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sLen</span> = <span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span>();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">sLen</span> == <span style="color:#268bd2">0</span>) {
+            <span style="color:#859900">return</span> <span style="color:#268bd2">0</span>;
+        }
         
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> sLen<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">int</span> curLen <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-            Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Integer<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> sLen<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-                String key <span style="color:#f92672">=</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>j<span style="color:#f92672">));</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>map<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> 1<span style="color:#f92672">);</span>
-                    curLen <span style="color:#f92672">+=</span> 1<span style="color:#f92672">;</span>
-                    maxLen <span style="color:#f92672">=</span> curLen <span style="color:#f92672">&gt;</span> maxLen <span style="color:#f92672">?</span> curLen <span style="color:#f92672">:</span> maxLen<span style="color:#f92672">;</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> maxLen<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">sLen</span>; <span style="color:#268bd2">i</span>++) {
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">curLen</span> = <span style="color:#268bd2">0</span>;
+            <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">map</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">HashMap</span>&lt;&gt;();
+            <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">j</span> = <span style="color:#268bd2">i</span>; <span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">sLen</span>; <span style="color:#268bd2">j</span>++) {
+                <span style="color:#268bd2">String</span> <span style="color:#268bd2">key</span> = <span style="color:#268bd2">String</span>.<span style="color:#268bd2">valueOf</span>(<span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">j</span>));
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">map</span>.<span style="color:#268bd2">get</span>(<span style="color:#268bd2">key</span>) == <span style="color:#859900;font-weight:bold">null</span>) {
+                    <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#268bd2">key</span>, <span style="color:#268bd2">1</span>);
+                    <span style="color:#268bd2">curLen</span> += <span style="color:#268bd2">1</span>;
+                    <span style="color:#268bd2">maxLen</span> = <span style="color:#268bd2">curLen</span> &gt; <span style="color:#268bd2">maxLen</span> ? <span style="color:#268bd2">curLen</span> : <span style="color:#268bd2">maxLen</span>;
+                } <span style="color:#859900">else</span> {
+                    <span style="color:#859900">break</span>;
+                }
+            }
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">maxLen</span>;
+    }
+}
 </code></pre></div><p>OJ 测试结果：</p>
 <table>
 <thead>
@@ -331,37 +330,37 @@ nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
 </blockquote>
 <p>这题是 Hard 难度，但题目本身并不复杂，主要是对时间复杂度有要求，因此需要细细思考下。</p>
 <p>要找两个有序数组的中位数，最直接的想法就是将两个数组合并排序，中位数自然而然就找到了。依次遍历两个有序数组，直到将其合并为一个有序数组，从而找到中位数。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// MedianOfTwoSortedArrays.java v1.0
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">findMedianSortedArrays</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums1<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> m <span style="color:#f92672">=</span> nums1<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">,</span> n <span style="color:#f92672">=</span> nums2<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>m <span style="color:#f92672">==</span> 0 <span style="color:#f92672">&amp;&amp;</span> n <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> len <span style="color:#f92672">=</span> m <span style="color:#f92672">+</span> n<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> ints <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>len<span style="color:#f92672">];</span>
-        <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">,</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> index <span style="color:#f92672">&lt;</span> len<span style="color:#f92672">;</span> index<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> m <span style="color:#f92672">&amp;&amp;</span> j <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>nums1<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">&lt;</span> nums2<span style="color:#f92672">[</span>j<span style="color:#f92672">])</span> <span style="color:#f92672">{</span>
-                    ints<span style="color:#f92672">[</span>index<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> nums1<span style="color:#f92672">[</span>i<span style="color:#f92672">++];</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                    ints<span style="color:#f92672">[</span>index<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> nums2<span style="color:#f92672">[</span>j<span style="color:#f92672">++];</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> m<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    ints<span style="color:#f92672">[</span>index<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> nums1<span style="color:#f92672">[</span>i<span style="color:#f92672">++];</span>
-                <span style="color:#f92672">}</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    ints<span style="color:#f92672">[</span>index<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> nums2<span style="color:#f92672">[</span>j<span style="color:#f92672">++];</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>len <span style="color:#f92672">%</span> 2 <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>ints<span style="color:#f92672">[</span>len <span style="color:#f92672">/</span> 2 <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> ints<span style="color:#f92672">[</span>len <span style="color:#f92672">/</span> 2<span style="color:#f92672">])</span> <span style="color:#f92672">/</span> 2<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> ints<span style="color:#f92672">[</span>len <span style="color:#f92672">/</span> 2<span style="color:#f92672">];</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MedianOfTwoSortedArrays.java v1.0
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">double</span> <span style="color:#268bd2">findMedianSortedArrays</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums1</span>, <span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums2</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">m</span> = <span style="color:#268bd2">nums1</span>.<span style="color:#268bd2">length</span>, <span style="color:#268bd2">n</span> = <span style="color:#268bd2">nums2</span>.<span style="color:#268bd2">length</span>;
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">m</span> == <span style="color:#268bd2">0</span> &amp;&amp; <span style="color:#268bd2">n</span> == <span style="color:#268bd2">0</span>) <span style="color:#859900">return</span> <span style="color:#268bd2">0</span>;
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">len</span> = <span style="color:#268bd2">m</span> + <span style="color:#268bd2">n</span>;
+        <span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">ints</span> = <span style="color:#859900">new</span> <span style="color:#859900;font-weight:bold">int</span>[<span style="color:#268bd2">len</span>];
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>, <span style="color:#268bd2">j</span> = <span style="color:#268bd2">0</span>;
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">index</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">index</span> &lt; <span style="color:#268bd2">len</span>; <span style="color:#268bd2">index</span>++) {
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">m</span> &amp;&amp; <span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">n</span>) {
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">nums1</span>[<span style="color:#268bd2">i</span>] &lt; <span style="color:#268bd2">nums2</span>[<span style="color:#268bd2">j</span>]) {
+                    <span style="color:#268bd2">ints</span>[<span style="color:#268bd2">index</span>] = <span style="color:#268bd2">nums1</span>[<span style="color:#268bd2">i</span>++];
+                } <span style="color:#859900">else</span> {
+                    <span style="color:#268bd2">ints</span>[<span style="color:#268bd2">index</span>] = <span style="color:#268bd2">nums2</span>[<span style="color:#268bd2">j</span>++];
+                }
+            } <span style="color:#859900">else</span> {
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">m</span>) {
+                    <span style="color:#268bd2">ints</span>[<span style="color:#268bd2">index</span>] = <span style="color:#268bd2">nums1</span>[<span style="color:#268bd2">i</span>++];
+                }
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">n</span>) {
+                    <span style="color:#268bd2">ints</span>[<span style="color:#268bd2">index</span>] = <span style="color:#268bd2">nums2</span>[<span style="color:#268bd2">j</span>++];
+                }
+            }
+        }
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">len</span> % <span style="color:#268bd2">2</span> == <span style="color:#268bd2">0</span>) {
+            <span style="color:#859900">return</span> (<span style="color:#268bd2">ints</span>[<span style="color:#268bd2">len</span> / <span style="color:#268bd2">2</span> - <span style="color:#268bd2">1</span>] + <span style="color:#268bd2">ints</span>[<span style="color:#268bd2">len</span> / <span style="color:#268bd2">2</span>]) / <span style="color:#268bd2">2</span>.<span style="color:#268bd2">0</span>;
+        } <span style="color:#859900">else</span> {
+            <span style="color:#859900">return</span> <span style="color:#268bd2">ints</span>[<span style="color:#268bd2">len</span> / <span style="color:#268bd2">2</span>];
+        }
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -387,44 +386,44 @@ nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
 <p>给出一个字符串 S，从 S 中找出其最长的回文子串。可以假定 S 的最大长度为 1000，并且存在唯一的最长回文子串。</p>
 </blockquote>
 <p>回文字符串就是正序和反序相同，也就是说回文以中心点对称，如 &ldquo;abcba&rdquo;。所以可以考虑从中心点向两侧扩展枚举，如果两侧相等，则记录下当前回文长度，并即时更新最大回文长度；否则，则移动中心点，重复枚举操作。这个思路有一个需要注意的地方，就是回文长度的奇偶，这两种枚举的处理有所不同。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// LongestPalindromicSubstring.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">longestPalindrome</span><span style="color:#f92672">(</span>String s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> len <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>len <span style="color:#f92672">&lt;=</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> s<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">int</span> maxLen <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        String palindrome <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LongestPalindromicSubstring.java
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">longestPalindrome</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">len</span> = <span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span>();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">len</span> &lt;= <span style="color:#268bd2">1</span>) {
+            <span style="color:#859900">return</span> <span style="color:#268bd2">s</span>;
+        }
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">maxLen</span> = <span style="color:#268bd2">0</span>;
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">palindrome</span> = <span style="color:#2aa198">&#34;&#34;</span>;
 
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> len <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#75715e">// odd
-</span><span style="color:#75715e"></span>            String oddStr <span style="color:#f92672">=</span> check<span style="color:#f92672">(</span>s<span style="color:#f92672">,</span> i<span style="color:#f92672">,</span> i<span style="color:#f92672">,</span> len<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">int</span> oddLen <span style="color:#f92672">=</span> oddStr<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">();</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>oddLen <span style="color:#f92672">&gt;</span> maxLen<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                maxLen <span style="color:#f92672">=</span> oddLen<span style="color:#f92672">;</span>
-                palindrome <span style="color:#f92672">=</span> oddStr<span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            <span style="color:#75715e">// even
-</span><span style="color:#75715e"></span>            String evenStr <span style="color:#f92672">=</span> check<span style="color:#f92672">(</span>s<span style="color:#f92672">,</span> i<span style="color:#f92672">,</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> len<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">int</span> evenLen <span style="color:#f92672">=</span> evenStr<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">();</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>evenLen <span style="color:#f92672">&gt;</span> maxLen<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                maxLen <span style="color:#f92672">=</span> evenLen<span style="color:#f92672">;</span>
-                palindrome <span style="color:#f92672">=</span> evenStr<span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">len</span> - <span style="color:#268bd2">1</span>; <span style="color:#268bd2">i</span>++) {
+            <span style="color:#93a1a1;font-style:italic">// odd
+</span><span style="color:#93a1a1;font-style:italic"></span>            <span style="color:#268bd2">String</span> <span style="color:#268bd2">oddStr</span> = <span style="color:#268bd2">check</span>(<span style="color:#268bd2">s</span>, <span style="color:#268bd2">i</span>, <span style="color:#268bd2">i</span>, <span style="color:#268bd2">len</span>);
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">oddLen</span> = <span style="color:#268bd2">oddStr</span>.<span style="color:#268bd2">length</span>();
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">oddLen</span> &gt; <span style="color:#268bd2">maxLen</span>) {
+                <span style="color:#268bd2">maxLen</span> = <span style="color:#268bd2">oddLen</span>;
+                <span style="color:#268bd2">palindrome</span> = <span style="color:#268bd2">oddStr</span>;
+            }
+            <span style="color:#93a1a1;font-style:italic">// even
+</span><span style="color:#93a1a1;font-style:italic"></span>            <span style="color:#268bd2">String</span> <span style="color:#268bd2">evenStr</span> = <span style="color:#268bd2">check</span>(<span style="color:#268bd2">s</span>, <span style="color:#268bd2">i</span>, <span style="color:#268bd2">i</span> + <span style="color:#268bd2">1</span>, <span style="color:#268bd2">len</span>);
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">evenLen</span> = <span style="color:#268bd2">evenStr</span>.<span style="color:#268bd2">length</span>();
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">evenLen</span> &gt; <span style="color:#268bd2">maxLen</span>) {
+                <span style="color:#268bd2">maxLen</span> = <span style="color:#268bd2">evenLen</span>;
+                <span style="color:#268bd2">palindrome</span> = <span style="color:#268bd2">evenStr</span>;
+            }
+        }
 
-        <span style="color:#66d9ef">return</span> palindrome<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">palindrome</span>;
+    }
 
-    <span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">check</span><span style="color:#f92672">(</span>String s<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> start<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> end<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> len<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>start <span style="color:#f92672">&gt;=</span> 0  <span style="color:#f92672">&amp;&amp;</span>  end <span style="color:#f92672">&lt;=</span> len <span style="color:#f92672">-</span> 1 <span style="color:#f92672">&amp;&amp;</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>start<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>end<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            start<span style="color:#f92672">--;</span>
-            end<span style="color:#f92672">++;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>start <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> end<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#859900">private</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">check</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">start</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">end</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">len</span>) {
+        <span style="color:#859900">while</span> (<span style="color:#268bd2">start</span> &gt;= <span style="color:#268bd2">0</span>  &amp;&amp;  <span style="color:#268bd2">end</span> &lt;= <span style="color:#268bd2">len</span> - <span style="color:#268bd2">1</span> &amp;&amp; <span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">start</span>) == <span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">end</span>)) {
+            <span style="color:#268bd2">start</span>--;
+            <span style="color:#268bd2">end</span>++;
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">s</span>.<span style="color:#268bd2">substring</span>(<span style="color:#268bd2">start</span> + <span style="color:#268bd2">1</span>, <span style="color:#268bd2">end</span>);
+    }
+}
 </code></pre></div><p>OJ 测试结果：</p>
 <table>
 <thead>
@@ -484,10 +483,6 @@ nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

@@ -11,7 +11,6 @@
   <meta name="description" content="目前使用最广泛的 JavaScript 的包管理工具应该是 npm，可以说是非常时髦的工具。但是在前端圈子，三岁就得叫爷爷，拳怕少壮，不久前 Facebook 和 Google 等联手推出了新的包">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -58,14 +57,14 @@
 <h2 id="基础操作">基础操作</h2>
 <p>如果使用过 npm 的话，能发现二者在使用上非常接近，从 npm 迁移到 Yarn 近乎零成本。</p>
 <p>初始化新项目：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm init</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># same as npm init</span>
 yarn init
 </code></pre></div><p>执行该命令时，会询问项目名称，入口文件，作者等信息，确认后自动创建包管理文件 <code>package.json</code>，以后每次对包的增删更新都会同步到 <code>package.json</code> 中。</p>
 <p>安装依赖包：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm install [package]</span>
-yarn add <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>
-yarn add <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>@<span style="color:#f92672">[</span>version<span style="color:#f92672">]</span>
-yarn add <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>@<span style="color:#f92672">[</span>tag<span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># same as npm install [package]</span>
+yarn add [package]
+yarn add [package]@[version]
+yarn add [package]@[tag]
 </code></pre></div><p>另外，该命令可以通过标识参数来指定依赖类型：</p>
 <ul>
 <li><code>yarn add --dev</code> 会把依赖包添加进 <code>devDependencies</code> 字段；</li>
@@ -73,15 +72,15 @@ yarn add <span style="color:#f92672">[</span>package<span style="color:#f92672">
 <li><code>yarn add --optional</code> 会把依赖包添加进 <code>optionalDependencies</code> 字段；</li>
 </ul>
 <p>更新依赖包：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm upgrade [package]</span>
-yarn upgrade <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>
-yarn upgrade <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>@<span style="color:#f92672">[</span>version<span style="color:#f92672">]</span>
-yarn upgrade <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>@<span style="color:#f92672">[</span>tag<span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># same as npm upgrade [package]</span>
+yarn upgrade [package]
+yarn upgrade [package]@[version]
+yarn upgrade [package]@[tag]
 </code></pre></div><p>卸载依赖包：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm uninstall [package]</span>
-yarn remove <span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># same as npm uninstall [package]</span>
+yarn remove [package]
 </code></pre></div><p>根据 <code>package.json</code> 安装所有依赖包：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># same as npm install</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># same as npm install</span>
 yarn install
 </code></pre></div><p>该命令也支持通过标识参数来实现额外的功能：</p>
 <ul>
@@ -195,19 +194,19 @@ yarn install
 <h3 id="功能区分管理">功能区分管理</h3>
 <p>有的依赖包是为了编译构建工程，而有的包视为了运行，因此不同功能的包在 <code>package.json</code> 中被分离到不同的依赖集合中：<code>dependencies</code>、<code>devDependencies</code>、<code>optionalDependencies</code> 和 <code>peerDependencies</code>。</p>
 <p>参考 Yarn 文档里的示例：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;my-project&#34;</span>,
-  <span style="color:#f92672">&#34;dependencies&#34;</span>: {
-    <span style="color:#f92672">&#34;package-a&#34;</span>: <span style="color:#e6db74">&#34;^1.0.0&#34;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#268bd2;font-weight:bold">&#34;name&#34;</span>: <span style="color:#2aa198">&#34;my-project&#34;</span>,
+  <span style="color:#268bd2;font-weight:bold">&#34;dependencies&#34;</span>: {
+    <span style="color:#268bd2;font-weight:bold">&#34;package-a&#34;</span>: <span style="color:#2aa198">&#34;^1.0.0&#34;</span>
   },
-  <span style="color:#f92672">&#34;devDependencies&#34;</span>: {
-    <span style="color:#f92672">&#34;package-b&#34;</span>: <span style="color:#e6db74">&#34;^1.2.1&#34;</span>
+  <span style="color:#268bd2;font-weight:bold">&#34;devDependencies&#34;</span>: {
+    <span style="color:#268bd2;font-weight:bold">&#34;package-b&#34;</span>: <span style="color:#2aa198">&#34;^1.2.1&#34;</span>
   },
-  <span style="color:#f92672">&#34;peerDependencies&#34;</span>: {
-    <span style="color:#f92672">&#34;package-c&#34;</span>: <span style="color:#e6db74">&#34;^2.5.4&#34;</span>
+  <span style="color:#268bd2;font-weight:bold">&#34;peerDependencies&#34;</span>: {
+    <span style="color:#268bd2;font-weight:bold">&#34;package-c&#34;</span>: <span style="color:#2aa198">&#34;^2.5.4&#34;</span>
   },
-  <span style="color:#f92672">&#34;optionalDependencies&#34;</span>: {
-    <span style="color:#f92672">&#34;package-d&#34;</span>: <span style="color:#e6db74">&#34;^3.1.0&#34;</span>
+  <span style="color:#268bd2;font-weight:bold">&#34;optionalDependencies&#34;</span>: {
+    <span style="color:#268bd2;font-weight:bold">&#34;package-d&#34;</span>: <span style="color:#2aa198">&#34;^3.1.0&#34;</span>
   }
 }
 </code></pre></div><p>用的最多的应该是 <code>dependencies</code> 和 <code>devDependencies</code>，下面按照官方文档具体说明：</p>
@@ -271,10 +270,6 @@ yarn install
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

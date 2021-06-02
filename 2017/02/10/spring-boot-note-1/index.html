@@ -11,7 +11,6 @@
   <meta name="description" content="Spring Boot 是 Pivotal 团队开发的开源 Java Web 框架，相比同门师兄 Spring，Spring Boot 把开发者从繁重的配置中解放出来，遵循“约定大于配置”(convent">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -69,15 +68,15 @@
 但是空项目什么效果都看不到，所以接下来就往里面填充内容，实现一个简单的 Web 应用。</p>
 <h2 id="集成基础-web-组件">集成基础 Web 组件</h2>
 <p>上面的项目采用 gradle 作为项目构建工具，所以依赖组件是配置在 <code>build.gradle</code> 文件中。gradle 和 maven 用法相似，选用 gradle 的好处很多，简洁是很重要的一点，参考下面的示例：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies&gt;</span>
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;/dependencies&gt;</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-gradle" data-lang="gradle">dependencies <span style="color:#f92672">{</span>
-    compile<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;org.springframework.boot:spring-boot-starter-web&#39;</span><span style="color:#f92672">)</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;dependencies&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;dependency&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#268bd2;font-weight:bold">&lt;/groupId&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#268bd2;font-weight:bold">&lt;/artifactId&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;/dependency&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;/dependencies&gt;</span>
+</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-gradle" data-lang="gradle"><span style="color:#268bd2">dependencies</span> {
+    <span style="color:#268bd2">compile</span>(<span style="color:#2aa198">&#39;org.springframework.boot:spring-boot-starter-web&#39;</span>)
+}
 </code></pre></div><p>向 <code>build.gradle</code> 中添加 SpringMVC</p>
 <hr>
 <p>参考资料：</p>
@@ -124,10 +123,6 @@
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

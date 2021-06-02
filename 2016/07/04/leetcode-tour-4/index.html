@@ -11,7 +11,6 @@
   <meta name="description" content="本篇记录 LeetCode 算法部分第 16-20 题。 3Sum Closest 第 16 题 3Sum Closest 给定一个包含 n 个整型数的数组 S，找出 S 中的三个数，使得三者求和的结果和目标值最接近。返回求和结果，假">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -62,33 +61,33 @@
 举例：数组 S = { -1 2 1 -4 }，目标值 target = 1。最接近目标值的求和结果为 (-1 + 2 + 1 = 2)</p>
 </blockquote>
 <p>这题是第 15 题的延伸。沿用前一题的思路，先对数组进行排序，取 a(i) + a(i+k) + a(n) 求和，如果结果和目标值一致，则直接将求和结果返回；如果结果大于目标值，则表明需要减小下标 n 的值，逐次减小，每次比较当前求和结果与目标值的差值和前一次求和比较的差值，取绝对值较小的保留，同时保留当前的求和结果；如果结果小于目标值，则需要增大下标 (i+k)。Java 代码如下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ThreeSumClosest.java v1.0
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">threeSumClosest</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> diff <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
-        Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 2<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> k <span style="color:#f92672">=</span> count <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">int</span> curSum <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">];</span>
-                <span style="color:#66d9ef">int</span> curDiff <span style="color:#f92672">=</span> curSum <span style="color:#f92672">-</span> target<span style="color:#f92672">;</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>curDiff <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> curSum<span style="color:#f92672">;</span>
-                diff <span style="color:#f92672">=</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">abs</span><span style="color:#f92672">(</span>diff<span style="color:#f92672">)</span> <span style="color:#f92672">&lt;</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">abs</span><span style="color:#f92672">(</span>curDiff<span style="color:#f92672">)</span> <span style="color:#f92672">?</span> diff <span style="color:#f92672">:</span> curDiff<span style="color:#f92672">;</span>
-                sum <span style="color:#f92672">=</span> target <span style="color:#f92672">+</span> diff<span style="color:#f92672">;</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>curDiff <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    k<span style="color:#f92672">--;</span>
-                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>k <span style="color:#f92672">+</span> 1<span style="color:#f92672">])</span> k<span style="color:#f92672">--;</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                    j<span style="color:#f92672">++;</span>
-                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>j <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> j<span style="color:#f92672">++;</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> sum<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ThreeSumClosest.java v1.0
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">threeSumClosest</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">MAX_VALUE</span>;
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">diff</span> = <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">MAX_VALUE</span>;
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">count</span> = <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span>;
+        <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">sort</span>(<span style="color:#268bd2">nums</span>);
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">count</span> - <span style="color:#268bd2">2</span>; <span style="color:#268bd2">i</span>++) {
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">j</span> = <span style="color:#268bd2">i</span> + <span style="color:#268bd2">1</span>, <span style="color:#268bd2">k</span> = <span style="color:#268bd2">count</span> - <span style="color:#268bd2">1</span>;
+            <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span>) {
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">curSum</span> = <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>];
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">curDiff</span> = <span style="color:#268bd2">curSum</span> - <span style="color:#268bd2">target</span>;
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">curDiff</span> == <span style="color:#268bd2">0</span>) <span style="color:#859900">return</span> <span style="color:#268bd2">curSum</span>;
+                <span style="color:#268bd2">diff</span> = <span style="color:#268bd2">Math</span>.<span style="color:#268bd2">abs</span>(<span style="color:#268bd2">diff</span>) &lt; <span style="color:#268bd2">Math</span>.<span style="color:#268bd2">abs</span>(<span style="color:#268bd2">curDiff</span>) ? <span style="color:#268bd2">diff</span> : <span style="color:#268bd2">curDiff</span>;
+                <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">target</span> + <span style="color:#268bd2">diff</span>;
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">curDiff</span> &gt; <span style="color:#268bd2">0</span>) {
+                    <span style="color:#268bd2">k</span>--;
+                    <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span> + <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">k</span>--;
+                } <span style="color:#859900">else</span> {
+                    <span style="color:#268bd2">j</span>++;
+                    <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span> - <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">j</span>++;
+                }
+            }
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">sum</span>;
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -107,37 +106,37 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ThreeSumClosest.java v1.1
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">threeSumClosest</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> diff <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
-        Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 2<span style="color:#f92672">;)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> k <span style="color:#f92672">=</span> count <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">int</span> curSum <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">];</span>
-                <span style="color:#66d9ef">int</span> curDiff <span style="color:#f92672">=</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">abs</span><span style="color:#f92672">(</span>curSum <span style="color:#f92672">-</span> target<span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>curDiff <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> curSum<span style="color:#f92672">;</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>curDiff <span style="color:#f92672">&lt;</span> diff<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    diff <span style="color:#f92672">=</span> curDiff<span style="color:#f92672">;</span>
-                    sum <span style="color:#f92672">=</span> curSum<span style="color:#f92672">;</span>
-                <span style="color:#f92672">}</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>curSum <span style="color:#f92672">&gt;</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    k<span style="color:#f92672">--;</span>
-                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>k <span style="color:#f92672">+</span> 1<span style="color:#f92672">])</span> k<span style="color:#f92672">--;</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                    j<span style="color:#f92672">++;</span>
-                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>j <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> j<span style="color:#f92672">++;</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-            i<span style="color:#f92672">++;</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 2 <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> i<span style="color:#f92672">++;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> sum<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ThreeSumClosest.java v1.1
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">threeSumClosest</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">MAX_VALUE</span>;
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">diff</span> = <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">MAX_VALUE</span>;
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">count</span> = <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span>;
+        <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">sort</span>(<span style="color:#268bd2">nums</span>);
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">count</span> - <span style="color:#268bd2">2</span>;) {
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">j</span> = <span style="color:#268bd2">i</span> + <span style="color:#268bd2">1</span>, <span style="color:#268bd2">k</span> = <span style="color:#268bd2">count</span> - <span style="color:#268bd2">1</span>;
+            <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span>) {
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">curSum</span> = <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>];
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">curDiff</span> = <span style="color:#268bd2">Math</span>.<span style="color:#268bd2">abs</span>(<span style="color:#268bd2">curSum</span> - <span style="color:#268bd2">target</span>);
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">curDiff</span> == <span style="color:#268bd2">0</span>) <span style="color:#859900">return</span> <span style="color:#268bd2">curSum</span>;
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">curDiff</span> &lt; <span style="color:#268bd2">diff</span>) {
+                    <span style="color:#268bd2">diff</span> = <span style="color:#268bd2">curDiff</span>;
+                    <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">curSum</span>;
+                }
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">curSum</span> &gt; <span style="color:#268bd2">target</span>) {
+                    <span style="color:#268bd2">k</span>--;
+                    <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span> + <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">k</span>--;
+                } <span style="color:#859900">else</span> {
+                    <span style="color:#268bd2">j</span>++;
+                    <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span> - <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">j</span>++;
+                }
+            }
+            <span style="color:#268bd2">i</span>++;
+            <span style="color:#859900">while</span> (<span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">count</span> - <span style="color:#268bd2">2</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span> - <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">i</span>++;
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">sum</span>;
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -157,37 +156,37 @@
 </tbody>
 </table>
 <p>Python 代码</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 3sum_closest.py</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">threeSumClosest</span>(self, nums, target):
-        <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">        :type nums: List[int]
-</span><span style="color:#e6db74">        :type target: int
-</span><span style="color:#e6db74">        :rtype: int
-</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
-        res, diff <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>maxsize, sys<span style="color:#f92672">.</span>maxsize
-        count <span style="color:#f92672">=</span> len(nums)
-        nums<span style="color:#f92672">.</span>sort()
-        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(count <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>):
-            <span style="color:#66d9ef">if</span> i <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">and</span> nums[i] <span style="color:#f92672">==</span> nums[i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]:
-                <span style="color:#66d9ef">continue</span>
-            j, k <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, count <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
-            <span style="color:#66d9ef">while</span> j <span style="color:#f92672">&lt;</span> k:
-                cur_sum <span style="color:#f92672">=</span> nums[i] <span style="color:#f92672">+</span> nums[j] <span style="color:#f92672">+</span> nums[k]
-                cur_diff <span style="color:#f92672">=</span> cur_sum <span style="color:#f92672">-</span> target
-                <span style="color:#66d9ef">if</span> cur_diff <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-                    <span style="color:#66d9ef">return</span> cur_sum
-                diff <span style="color:#f92672">=</span> diff <span style="color:#66d9ef">if</span> abs(diff) <span style="color:#f92672">&lt;</span> abs(cur_diff) <span style="color:#66d9ef">else</span> cur_diff
-                res <span style="color:#f92672">=</span> target <span style="color:#f92672">+</span> diff
-                <span style="color:#66d9ef">if</span> cur_diff <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
-                    k <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
-                    <span style="color:#66d9ef">while</span> j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">and</span> nums[k] <span style="color:#f92672">==</span> nums[k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]:
-                        k <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
-                <span style="color:#66d9ef">else</span>:
-                    j <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-                    <span style="color:#66d9ef">while</span> j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">and</span> nums[j] <span style="color:#f92672">==</span> nums[j <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]:
-                        j <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-        <span style="color:#66d9ef">return</span> res
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># 3sum_closest.py</span>
+<span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
+    <span style="color:#859900">def</span> <span style="color:#268bd2">threeSumClosest</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">nums</span>, <span style="color:#268bd2">target</span>):
+        <span style="color:#2aa198">&#34;&#34;&#34;
+</span><span style="color:#2aa198">        :type nums: List[int]
+</span><span style="color:#2aa198">        :type target: int
+</span><span style="color:#2aa198">        :rtype: int
+</span><span style="color:#2aa198">        &#34;&#34;&#34;</span>
+        <span style="color:#268bd2">res</span>, <span style="color:#268bd2">diff</span> = <span style="color:#268bd2">sys</span>.<span style="color:#268bd2">maxsize</span>, <span style="color:#268bd2">sys</span>.<span style="color:#268bd2">maxsize</span>
+        <span style="color:#268bd2">count</span> = <span style="color:#cb4b16">len</span>(<span style="color:#268bd2">nums</span>)
+        <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">sort</span>()
+        <span style="color:#859900">for</span> <span style="color:#268bd2">i</span> <span style="color:#859900">in</span> <span style="color:#cb4b16">range</span>(<span style="color:#268bd2">count</span> - <span style="color:#2aa198;font-weight:bold">2</span>):
+            <span style="color:#859900">if</span> <span style="color:#268bd2">i</span> &gt; <span style="color:#2aa198;font-weight:bold">0</span> <span style="color:#859900">and</span> <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">count</span> -<span style="color:#2aa198;font-weight:bold">2</span> <span style="color:#859900">and</span> <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span> - <span style="color:#2aa198;font-weight:bold">1</span>]:
+                <span style="color:#859900">continue</span>
+            <span style="color:#268bd2">j</span>, <span style="color:#268bd2">k</span> = <span style="color:#268bd2">i</span> + <span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">count</span> - <span style="color:#2aa198;font-weight:bold">1</span>
+            <span style="color:#859900">while</span> <span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span>:
+                <span style="color:#268bd2">cur_sum</span> = <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>]
+                <span style="color:#268bd2">cur_diff</span> = <span style="color:#268bd2">cur_sum</span> - <span style="color:#268bd2">target</span>
+                <span style="color:#859900">if</span> <span style="color:#268bd2">cur_diff</span> == <span style="color:#2aa198;font-weight:bold">0</span>:
+                    <span style="color:#859900">return</span> <span style="color:#268bd2">cur_sum</span>
+                <span style="color:#268bd2">diff</span> = <span style="color:#268bd2">diff</span> <span style="color:#859900">if</span> <span style="color:#cb4b16">abs</span>(<span style="color:#268bd2">diff</span>) &lt; <span style="color:#cb4b16">abs</span>(<span style="color:#268bd2">cur_diff</span>) <span style="color:#859900">else</span> <span style="color:#268bd2">cur_diff</span>
+                <span style="color:#268bd2">res</span> = <span style="color:#268bd2">target</span> + <span style="color:#268bd2">diff</span>
+                <span style="color:#859900">if</span> <span style="color:#268bd2">cur_diff</span> &gt; <span style="color:#2aa198;font-weight:bold">0</span>:
+                    <span style="color:#268bd2">k</span> -= <span style="color:#2aa198;font-weight:bold">1</span>
+                    <span style="color:#859900">while</span> <span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> <span style="color:#859900">and</span> <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span> + <span style="color:#2aa198;font-weight:bold">1</span>]:
+                        <span style="color:#268bd2">k</span> -= <span style="color:#2aa198;font-weight:bold">1</span>
+                <span style="color:#859900">else</span>:
+                    <span style="color:#268bd2">j</span> += <span style="color:#2aa198;font-weight:bold">1</span>
+                    <span style="color:#859900">while</span> <span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> <span style="color:#859900">and</span> <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span> - <span style="color:#2aa198;font-weight:bold">1</span>]:
+                        <span style="color:#268bd2">j</span> += <span style="color:#2aa198;font-weight:bold">1</span>
+        <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>
 </code></pre></div><table>
 <thead>
 <tr>
@@ -215,25 +214,25 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png" alt=""></p>
 </blockquote>
 <p>抽象的看这道题，其实就是排列组合。键盘上 &ldquo;23&rdquo; 按钮可能的输出结果就是 &ldquo;abc&rdquo; 和 &ldquo;def&rdquo; 两个字符串中字符的所有组合情况。从每个数字所代表的字符串中选取一个，并和下一个数字所代表的字符串中字符组合，逐个拼接，很显然，可以通过递归处理，递归深度为数字键的个数。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// LetterCombinationsOfaPhoneNumber.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> String<span style="color:#f92672">[]</span> keymap <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;abc&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;def&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;ghi&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;jkl&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;mno&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;pqrs&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;tuv&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;wxyz&#34;</span><span style="color:#f92672">};</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LetterCombinationsOfaPhoneNumber.java
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#268bd2">String</span>[] <span style="color:#268bd2">keymap</span> = {<span style="color:#2aa198">&#34;abc&#34;</span>, <span style="color:#2aa198">&#34;def&#34;</span>, <span style="color:#2aa198">&#34;ghi&#34;</span>, <span style="color:#2aa198">&#34;jkl&#34;</span>, <span style="color:#2aa198">&#34;mno&#34;</span>, <span style="color:#2aa198">&#34;pqrs&#34;</span>, <span style="color:#2aa198">&#34;tuv&#34;</span>, <span style="color:#2aa198">&#34;wxyz&#34;</span>};
 
-    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">letterCombinations</span><span style="color:#f92672">(</span>String digits<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>digits <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> digits<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">combineLetters</span><span style="color:#f92672">(</span>digits<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> digits<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">(),</span> 0<span style="color:#f92672">,</span> res<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">letterCombinations</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">digits</span>) {
+        <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">digits</span> == <span style="color:#859900;font-weight:bold">null</span> || <span style="color:#268bd2">digits</span>.<span style="color:#268bd2">length</span>() == <span style="color:#268bd2">0</span>) <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>;
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">combineLetters</span>(<span style="color:#268bd2">digits</span>, <span style="color:#2aa198">&#34;&#34;</span>, <span style="color:#268bd2">digits</span>.<span style="color:#268bd2">length</span>(), <span style="color:#268bd2">0</span>, <span style="color:#268bd2">res</span>);
+        <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>;
+    }
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combineLetters</span><span style="color:#f92672">(</span>String digits<span style="color:#f92672">,</span> String str<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> len<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> pos<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String key <span style="color:#f92672">=</span> keymap<span style="color:#f92672">[</span>digits<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>pos<span style="color:#f92672">)</span> <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;2&#39;</span><span style="color:#f92672">];</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> key<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>pos <span style="color:#f92672">==</span> len <span style="color:#f92672">-</span> 1<span style="color:#f92672">)</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>str <span style="color:#f92672">+</span> key<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
-            <span style="color:#66d9ef">else</span> combineLetters<span style="color:#f92672">(</span>digits<span style="color:#f92672">,</span> str <span style="color:#f92672">+</span> key<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">),</span> len<span style="color:#f92672">,</span> pos <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> list<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">combineLetters</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">digits</span>, <span style="color:#268bd2">String</span> <span style="color:#268bd2">str</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">len</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">pos</span>, <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">list</span>) {
+        <span style="color:#268bd2">String</span> <span style="color:#268bd2">key</span> = <span style="color:#268bd2">keymap</span>[<span style="color:#268bd2">digits</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">pos</span>) - <span style="color:#2aa198">&#39;2&#39;</span>];
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">key</span>.<span style="color:#268bd2">length</span>(); <span style="color:#268bd2">i</span>++) {
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">pos</span> == <span style="color:#268bd2">len</span> - <span style="color:#268bd2">1</span>) <span style="color:#268bd2">list</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">str</span> + <span style="color:#268bd2">key</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">i</span>));
+            <span style="color:#859900">else</span> <span style="color:#268bd2">combineLetters</span>(<span style="color:#268bd2">digits</span>, <span style="color:#268bd2">str</span> + <span style="color:#268bd2">key</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">i</span>), <span style="color:#268bd2">len</span>, <span style="color:#268bd2">pos</span> + <span style="color:#268bd2">1</span>, <span style="color:#268bd2">list</span>);
+        }
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -260,57 +259,57 @@
 如 S = [ 1, 0, -1, 0, -2, 2 ] target = 0，则结果为 [ [-1,  0, 0, 1], [-2, -1, 1, 2], [-2,  0, 0, 2] ]</p>
 </blockquote>
 <p>LeetCode 第 15 题 <a href="/2016/06/15/leetcode-tour-3/#3Sum">3Sum</a> 已经给出了数组中取 3 个数求和为零，本题为 4 个数求和为目标值。可以直接借用 3Sum 的算法，先选取数组中一个数，把剩下的数组元素和所需要的差值传递给 3Sum 方法，如果 3Sum 返回了有效结果，则把当前选取的数分别插入 3Sum 的结果中。代码如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// FourSum.java v1.0
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">fourSum</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>nums <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;</span> 4<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
-        Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 3<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&gt;</span> 0 <span style="color:#f92672">&amp;&amp;</span> i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 3 <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> i<span style="color:#f92672">++;</span>
-            <span style="color:#66d9ef">int</span> diff <span style="color:#f92672">=</span> target <span style="color:#f92672">-</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">];</span>
-            List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> lists <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">threeSum</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">copyOfRange</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">,</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> count<span style="color:#f92672">),</span> diff<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>lists<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">:</span> lists<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]);</span>
-                res<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>list<span style="color:#f92672">);</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#75715e">// 3Sum
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">threeSum</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> lists <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>nums <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;</span> 3<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> lists<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">,</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> count <span style="color:#f92672">-</span> 1<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">];</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sum <span style="color:#f92672">==</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-                    list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]);</span>
-                    list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>j<span style="color:#f92672">++]);</span>
-                    list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>k<span style="color:#f92672">--]);</span>
-                    lists<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>list<span style="color:#f92672">);</span>
-                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>j <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> j<span style="color:#f92672">++;</span>
-                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>k <span style="color:#f92672">+</span> 1<span style="color:#f92672">])</span> k<span style="color:#f92672">--;</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sum <span style="color:#f92672">&lt;</span> target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    j<span style="color:#f92672">++;</span>
-                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>j <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> j<span style="color:#f92672">++;</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                    k<span style="color:#f92672">--;</span>
-                    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> k <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>k <span style="color:#f92672">+</span> 1<span style="color:#f92672">])</span> k<span style="color:#f92672">--;</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-            i<span style="color:#f92672">++;</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> count <span style="color:#f92672">-</span> 2 <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> i<span style="color:#f92672">++;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> lists<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// FourSum.java v1.0
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">fourSum</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
+        <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">nums</span> == <span style="color:#859900;font-weight:bold">null</span> || <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span> &lt; <span style="color:#268bd2">4</span>) <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>;
+        <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">sort</span>(<span style="color:#268bd2">nums</span>);
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">count</span> = <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span>;
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">count</span> - <span style="color:#268bd2">3</span>; <span style="color:#268bd2">i</span>++) {
+            <span style="color:#859900">while</span> (<span style="color:#268bd2">i</span> &gt; <span style="color:#268bd2">0</span> &amp;&amp; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">count</span> - <span style="color:#268bd2">3</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span> - <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">i</span>++;
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">diff</span> = <span style="color:#268bd2">target</span> - <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>];
+            <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">lists</span> = <span style="color:#859900">this</span>.<span style="color:#268bd2">threeSum</span>(<span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">copyOfRange</span>(<span style="color:#268bd2">nums</span>, <span style="color:#268bd2">i</span> + <span style="color:#268bd2">1</span>, <span style="color:#268bd2">count</span>), <span style="color:#268bd2">diff</span>);
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">lists</span>.<span style="color:#268bd2">isEmpty</span>()) <span style="color:#859900">continue</span>;
+            <span style="color:#859900">for</span> (<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">list</span> : <span style="color:#268bd2">lists</span>) {
+                <span style="color:#268bd2">list</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>]);
+                <span style="color:#268bd2">res</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">list</span>);
+            }
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>;
+    }
+    <span style="color:#93a1a1;font-style:italic">// 3Sum
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">private</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">threeSum</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
+        <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">lists</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">nums</span> == <span style="color:#859900;font-weight:bold">null</span> || <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span> &lt; <span style="color:#268bd2">3</span>) <span style="color:#859900">return</span> <span style="color:#268bd2">lists</span>;
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">count</span> = <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span>, <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>;
+        <span style="color:#859900">while</span> (<span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">count</span> - <span style="color:#268bd2">2</span>) {
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">j</span> = <span style="color:#268bd2">i</span> + <span style="color:#268bd2">1</span>;
+            <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">k</span> = <span style="color:#268bd2">count</span> - <span style="color:#268bd2">1</span>;
+            <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span>) {
+                <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] + <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>];
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">sum</span> == <span style="color:#268bd2">target</span>) {
+                    <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">list</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
+                    <span style="color:#268bd2">list</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>]);
+                    <span style="color:#268bd2">list</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>++]);
+                    <span style="color:#268bd2">list</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>--]);
+                    <span style="color:#268bd2">lists</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">list</span>);
+                    <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span> - <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">j</span>++;
+                    <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span> + <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">k</span>--;
+                } <span style="color:#859900">else</span> <span style="color:#859900">if</span> (<span style="color:#268bd2">sum</span> &lt; <span style="color:#268bd2">target</span>) {
+                    <span style="color:#268bd2">j</span>++;
+                    <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">j</span> - <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">j</span>++;
+                } <span style="color:#859900">else</span> {
+                    <span style="color:#268bd2">k</span>--;
+                    <span style="color:#859900">while</span> (<span style="color:#268bd2">j</span> &lt; <span style="color:#268bd2">k</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">k</span> + <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">k</span>--;
+                }
+            }
+            <span style="color:#268bd2">i</span>++;
+            <span style="color:#859900">while</span> (<span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">count</span> - <span style="color:#268bd2">2</span> &amp;&amp; <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span>] == <span style="color:#268bd2">nums</span>[<span style="color:#268bd2">i</span> - <span style="color:#268bd2">1</span>]) <span style="color:#268bd2">i</span>++;
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">lists</span>;
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -337,29 +336,29 @@
 假定 n 是有效的。</p>
 </blockquote>
 <p>普通链表是单向，假如是正向的移除第 n 个节点，很好做，但是反向的移除就需要动下脑筋。最直接的办法就是先遍历链表求其长度，减去 n 就是正向的节点位置，然后再做依次顺序遍历，找到要移除的节点。这种方法需要两次遍历。还有一种略微机智的方法，只需要做一次遍历，先让早起步的头指针移动 n 次，再让另一个慢起步的头指针开始移动，这样等早起步头指针到达最后一个节点的时候，后一个指针正好到达要移除的节点。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// RemoveNthNodeFromEndOfList.java
-</span><span style="color:#75715e"></span><span style="color:#75715e">/**
-</span><span style="color:#75715e"> * Definition for singly-linked list.
-</span><span style="color:#75715e"> * public class ListNode {
-</span><span style="color:#75715e"> *     int val;
-</span><span style="color:#75715e"> *     ListNode next;
-</span><span style="color:#75715e"> *     ListNode(int x) { val = x; }
-</span><span style="color:#75715e"> * }
-</span><span style="color:#75715e"> */</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">removeNthFromEnd</span><span style="color:#f92672">(</span>ListNode head<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ListNode res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
-        res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
-        ListNode node1 <span style="color:#f92672">=</span> res<span style="color:#f92672">,</span> node2 <span style="color:#f92672">=</span> res<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> node1 <span style="color:#f92672">=</span> node1<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>node1<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            node1 <span style="color:#f92672">=</span> node1<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            node2 <span style="color:#f92672">=</span> node2<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        node2<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> node2<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// RemoveNthNodeFromEndOfList.java
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#93a1a1;font-style:italic">/**
+</span><span style="color:#93a1a1;font-style:italic"> * Definition for singly-linked list.
+</span><span style="color:#93a1a1;font-style:italic"> * public class ListNode {
+</span><span style="color:#93a1a1;font-style:italic"> *     int val;
+</span><span style="color:#93a1a1;font-style:italic"> *     ListNode next;
+</span><span style="color:#93a1a1;font-style:italic"> *     ListNode(int x) { val = x; }
+</span><span style="color:#93a1a1;font-style:italic"> * }
+</span><span style="color:#93a1a1;font-style:italic"> */</span>
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">removeNthFromEnd</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">head</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">n</span>) {
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
+        <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">head</span>;
+        <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">node1</span> = <span style="color:#268bd2">res</span>, <span style="color:#268bd2">node2</span> = <span style="color:#268bd2">res</span>;
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">n</span>; <span style="color:#268bd2">i</span>++) <span style="color:#268bd2">node1</span> = <span style="color:#268bd2">node1</span>.<span style="color:#268bd2">next</span>;
+        <span style="color:#859900">while</span> (<span style="color:#268bd2">node1</span>.<span style="color:#268bd2">next</span> != <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#268bd2">node1</span> = <span style="color:#268bd2">node1</span>.<span style="color:#268bd2">next</span>;
+            <span style="color:#268bd2">node2</span> = <span style="color:#268bd2">node2</span>.<span style="color:#268bd2">next</span>;
+        }
+        <span style="color:#268bd2">node2</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">node2</span>.<span style="color:#268bd2">next</span>.<span style="color:#268bd2">next</span>;
+        <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>.<span style="color:#268bd2">next</span>;
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -385,25 +384,25 @@
 有效的字符串必须是闭合的，如 <code>&quot;()&quot;</code> <code>{[()]}</code> 和 <code>&quot;()[]{}&quot;</code> 是有效的，而 <code>&quot;(]&quot;</code> 和 <code>&quot;([)]&quot;</code> 是无效的。</p>
 </blockquote>
 <p>从有效字符串的形式 <code>&quot;()&quot;</code> <code>{[()]}</code> 和 <code>&quot;()[]{}&quot;</code> 中可以看出，这很像是四则运算的中缀表达式。而四则运算的中缀表达式可以通过栈这种数据结构来存储。因为左半括号必定再其对应右半括号的前面，所以遍历到当前字符为左半括号时，将其入栈。遍历到右半括号时，将栈顶字符出栈，比较是否匹配。直到栈元素为空。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ValidParentheses.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isValid</span><span style="color:#f92672">(</span>String s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">char</span><span style="color:#f92672">[]</span> stack <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">[</span>s<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()];</span>
-        <span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;(&#39;</span> <span style="color:#f92672">||</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;[&#39;</span> <span style="color:#f92672">||</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;{&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                stack<span style="color:#f92672">[</span>index<span style="color:#f92672">++]</span> <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;)&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>index <span style="color:#f92672">==</span> 0 <span style="color:#f92672">||</span> stack<span style="color:#f92672">[--</span>index<span style="color:#f92672">]</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;(&#39;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>s<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;]&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>index <span style="color:#f92672">==</span> 0 <span style="color:#f92672">||</span> stack<span style="color:#f92672">[--</span>index<span style="color:#f92672">]</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;[&#39;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>index <span style="color:#f92672">==</span> 0 <span style="color:#f92672">||</span> stack<span style="color:#f92672">[--</span>index<span style="color:#f92672">]</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;{&#39;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> index <span style="color:#f92672">==</span> 0<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ValidParentheses.java
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isValid</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>) {
+        <span style="color:#859900;font-weight:bold">char</span>[] <span style="color:#268bd2">stack</span> = <span style="color:#859900">new</span> <span style="color:#859900;font-weight:bold">char</span>[<span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span>()];
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">index</span> = <span style="color:#268bd2">0</span>;
+        <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">0</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span>(); <span style="color:#268bd2">i</span>++) {
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">i</span>) == <span style="color:#2aa198">&#39;(&#39;</span> || <span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">i</span>) == <span style="color:#2aa198">&#39;[&#39;</span> || <span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">i</span>) == <span style="color:#2aa198">&#39;{&#39;</span>) {
+                <span style="color:#268bd2">stack</span>[<span style="color:#268bd2">index</span>++] = <span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">i</span>);
+            } <span style="color:#859900">else</span> <span style="color:#859900">if</span> (<span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">i</span>) == <span style="color:#2aa198">&#39;)&#39;</span>) {
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">index</span> == <span style="color:#268bd2">0</span> || <span style="color:#268bd2">stack</span>[--<span style="color:#268bd2">index</span>] != <span style="color:#2aa198">&#39;(&#39;</span>) <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">false</span>;
+            } <span style="color:#859900">else</span> <span style="color:#859900">if</span> (<span style="color:#268bd2">s</span>.<span style="color:#268bd2">charAt</span>(<span style="color:#268bd2">i</span>) == <span style="color:#2aa198">&#39;]&#39;</span>) {
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">index</span> == <span style="color:#268bd2">0</span> || <span style="color:#268bd2">stack</span>[--<span style="color:#268bd2">index</span>] != <span style="color:#2aa198">&#39;[&#39;</span>) <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">false</span>;
+            } <span style="color:#859900">else</span> {
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">index</span> == <span style="color:#268bd2">0</span> || <span style="color:#268bd2">stack</span>[--<span style="color:#268bd2">index</span>] != <span style="color:#2aa198">&#39;{&#39;</span>) <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">false</span>;
+            }
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">index</span> == <span style="color:#268bd2">0</span>;
+    }
+}
 </code></pre></div><table>
 <thead>
 <tr>
@@ -462,10 +461,6 @@
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

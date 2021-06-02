@@ -11,7 +11,6 @@
   <meta name="description" content="加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -66,199 +65,199 @@
 <img src="https://o70e8d1kb.qnssl.com/Chain_of_responsibility__-2x.png" alt=""></p>
 <p>客户端的请求从责任链的根节点开始，依次往下执行，如果当前节点能胜任处理工作，则完成任务，否则将请求往下传递，直到到达能处理该请求的节点。下面编写一段简单的 Java 示例代码：</p>
 <p>先来一段又臭又长的代码，举个栗子</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BullshitCode</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> cmd <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
-        <span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>cmd<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">case</span> 1<span style="color:#f92672">:</span>
-                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my name is sudoz&#34;</span><span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">case</span> 2<span style="color:#f92672">:</span>
-                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;this is my site&#34;</span><span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">case</span> 3<span style="color:#f92672">:</span>
-                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;any advice is welcome&#34;</span><span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">case</span> 4<span style="color:#f92672">:</span>
-                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;reach me via e-mail at me@isudox.com&#34;</span><span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
-                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span> 
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">BullshitCode</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+        <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">cmd</span> = <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">parseInt</span>(<span style="color:#268bd2">args</span>[<span style="color:#268bd2">0</span>]);
+        <span style="color:#859900">switch</span> (<span style="color:#268bd2">cmd</span>) {
+            <span style="color:#859900">case</span> <span style="color:#268bd2">1</span>:
+                <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;my name is sudoz&#34;</span>);
+                <span style="color:#859900">break</span>;
+            <span style="color:#859900">case</span> <span style="color:#268bd2">2</span>:
+                <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;this is my site&#34;</span>);
+                <span style="color:#859900">break</span>;
+            <span style="color:#859900">case</span> <span style="color:#268bd2">3</span>:
+                <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;any advice is welcome&#34;</span>);
+                <span style="color:#859900">break</span>;
+            <span style="color:#859900">case</span> <span style="color:#268bd2">4</span>:
+                <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;reach me via e-mail at me@isudox.com&#34;</span>);
+                <span style="color:#859900">break</span>;
+            <span style="color:#859900">default</span>:
+                <span style="color:#859900">break</span>;
+        }
+    }
+} 
 </code></pre></div><p>上面的代码没有什么实际意义，只是一种很具有代表性的写法，通过一长串的 <code>if-else</code> 逻辑去处理业务，导致所有可能的处理缓解都堆积杂糅在一块，设想一下如果新增了业务需求，是不是再往里面插一个 <code>if-else</code> 了事？总是用这种方式去写代码会让程序越来越臃肿，难以维护和扩展，尤其是当你接手别人的代码发现以百行计的 <code>if-else</code> 语句块时，你一定会一脸懵逼看不下去，沃泽法克什么鬼？！
 <img src="https://o70e8d1kb.qnssl.com/confused-face.png" alt=""></p>
 <p>升职加薪对码农而言，就像是马儿眼前的草，给不给草啊，难道又要马儿跑又要马儿不吃草，互联网公司好像还真这么想……说多了就是两行泪，上头的 Boss 和 HR 们层层把关，不是想加就能加。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 管理层抽象类
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Manager</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">protected</span> Manager successor<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 管理层抽象类
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">abstract</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Manager</span> {
+    <span style="color:#859900">protected</span> <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">successor</span>;
 
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Manager</span><span style="color:#f92672">(</span>Manager successor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">successor</span> <span style="color:#f92672">=</span> success<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">Manager</span>(<span style="color:#268bd2">Manager</span> <span style="color:#268bd2">successor</span>) {
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">successor</span> = <span style="color:#268bd2">success</span>;
+    }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setSuccessor</span><span style="color:#f92672">(</span>Manager successor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">successor</span> <span style="color:#f92672">=</span> successor<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">setSuccessor</span>(<span style="color:#268bd2">Manager</span> <span style="color:#268bd2">successor</span>) {
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">successor</span> = <span style="color:#268bd2">successor</span>;
+    }
     
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleRequest</span><span style="color:#f92672">(</span>PromotionRequest request<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 抠门的管理人员
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LittleBoss</span> <span style="color:#66d9ef">extends</span> Manager <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleRequest</span><span style="color:#f92672">(</span>PromotionRequest request<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>request<span style="color:#f92672">.</span><span style="color:#a6e22e">getRise</span> <span style="color:#f92672">&lt;=</span> 1000<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Give u the money&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            successor<span style="color:#f92672">.</span><span style="color:#a6e22e">handleRequest</span><span style="color:#f92672">(</span>request<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900">abstract</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">PromotionRequest</span> <span style="color:#268bd2">request</span>);
+}
+</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 抠门的管理人员
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">LittleBoss</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">Manager</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">PromotionRequest</span> <span style="color:#268bd2">request</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">request</span>.<span style="color:#268bd2">getRise</span> &lt;= <span style="color:#268bd2">1000</span>) {
+            <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;Give u the money&#34;</span>);
+        } <span style="color:#859900">else</span> {
+            <span style="color:#268bd2">successor</span>.<span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">request</span>);
+        }
+    }
+}
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MiddleBoss</span> <span style="color:#66d9ef">extends</span> Manager <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleRequest</span><span style="color:#f92672">(</span>PromotionRequest request<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>request<span style="color:#f92672">.</span><span style="color:#a6e22e">getRise</span> <span style="color:#f92672">&lt;=</span> 2000<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Give u the money&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            successor<span style="color:#f92672">.</span><span style="color:#a6e22e">handleRequest</span><span style="color:#f92672">(</span>request<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">MiddleBoss</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">Manager</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">PromotionRequest</span> <span style="color:#268bd2">request</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">request</span>.<span style="color:#268bd2">getRise</span> &lt;= <span style="color:#268bd2">2000</span>) {
+            <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;Give u the money&#34;</span>);
+        } <span style="color:#859900">else</span> {
+            <span style="color:#268bd2">successor</span>.<span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">request</span>);
+        }
+    }
+}
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BigBoss</span> <span style="color:#66d9ef">extends</span> Manager <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleRequest</span><span style="color:#f92672">(</span>PromotionRequest request<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>request<span style="color:#f92672">.</span><span style="color:#a6e22e">getRise</span> <span style="color:#f92672">&lt;=</span> 3000<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Give u the money&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Get the fxxk off!&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">BigBoss</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">Manager</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">PromotionRequest</span> <span style="color:#268bd2">request</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">request</span>.<span style="color:#268bd2">getRise</span> &lt;= <span style="color:#268bd2">3000</span>) {
+            <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;Give u the money&#34;</span>);
+        } <span style="color:#859900">else</span> {
+            <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;Get the fxxk off!&#34;</span>);
+        }
+    }
+}
 </code></pre></div><p>见过小中大领导后，我要提加薪申请了，看招！</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    PromotionRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PromotionRequest<span style="color:#f92672">(</span>5000<span style="color:#f92672">);</span>
-    Manager LittleManager zhangsan <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LittleManager<span style="color:#f92672">();</span>
-    Manager MiddleManager lisi <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LittleManager<span style="color:#f92672">();</span>
-    Manager BigManager wangwu <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LittleManager<span style="color:#f92672">();</span>
-    zhangsan<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuccessor</span><span style="color:#f92672">(</span>lisi<span style="color:#f92672">);</span>
-    lisi<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuccessor</span><span style="color:#f92672">(</span>wangwu<span style="color:#f92672">);</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+    <span style="color:#268bd2">PromotionRequest</span> <span style="color:#268bd2">request</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">PromotionRequest</span>(<span style="color:#268bd2">5000</span>);
+    <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">LittleManager</span> <span style="color:#268bd2">zhangsan</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">LittleManager</span>();
+    <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">MiddleManager</span> <span style="color:#268bd2">lisi</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">LittleManager</span>();
+    <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">BigManager</span> <span style="color:#268bd2">wangwu</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">LittleManager</span>();
+    <span style="color:#268bd2">zhangsan</span>.<span style="color:#268bd2">setSuccessor</span>(<span style="color:#268bd2">lisi</span>);
+    <span style="color:#268bd2">lisi</span>.<span style="color:#268bd2">setSuccessor</span>(<span style="color:#268bd2">wangwu</span>);
 
-    zhangsan<span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>request<span style="color:#f92672">);</span>   <span style="color:#75715e">// heard &#34;Get the fxxk off!&#34;
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+    <span style="color:#268bd2">zhangsan</span>.<span style="color:#268bd2">handle</span>(<span style="color:#268bd2">request</span>);   <span style="color:#93a1a1;font-style:italic">// heard &#34;Get the fxxk off!&#34;
+</span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><p>提交给部门领导张三了，我要加薪 5000，被驳回了，叫我滚蛋……生无可恋。</p>
 <p>上面就是很简单的责任链模式的示例，只是表达下原始的责任链模式的实际过程，并不完善。真正的生产开发中运用责任链模式可以根据场景适当变型，接下来我就把我重构京东陪伴计划优惠券模块的过程简单记一笔。</p>
 <h3 id="实际运用">实际运用</h3>
 <p>前面提到了京东陪伴计划对优惠券部分的业务的处理，比如客户端的优惠券展示，不同用户看到的可领优惠券是不同的，另外，后台配置的优惠券也是差异化的。因此优惠券的展示可能涉及到的维度有：业务类型，用户 ID，宝贝档案信息，券卡类型，用户等级，展示期，有效期，风控级别等，而且要有可扩展性，保不定哪天就要增加新维度。同样，优惠券的发放领取也涉及到类似的条件筛查。那重构前的代码是怎么处理的呢，其实就跟上一小节给出的那段又臭又长的代码一个样，就是不断的通过 <code>if-else</code> 去判断条件，如果符合了就予以展示或发放，不符合就舍去，这就是过程编程不好的地方，代码冗余，可重用性差，难以扩展。</p>
 <p>不难发现，上面的优惠券场景是适用于责任链模式的，因为优惠券展示/发放所涉及到的各个筛查条件都可以作为责任链上的节点，只是在这里，不能做原教旨主义者，需要对教科书上的责任链模式略作改动，在配置用于优惠券展示/发放的责任链后，优惠券信息经过责任链的处理时，当前的责任节点必须对请求进行处理，而不是原始的责任链模式中提到的只有一个节点作为处理者。换个说法，每张可能的优惠券从责任链的起始节点开始被筛查，如果结果是真则往下一节点继续筛查，否则中断筛查，抛弃该潜在优惠券。</p>
 <p>责任链节点对象，内有优惠券筛查处理器接口方法</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CheckChainNode</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">    * 通用检查处理器
-</span><span style="color:#75715e">    */</span>
-    BizResult <span style="color:#a6e22e">checkHandler</span><span style="color:#f92672">(</span>BizParameter param<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">CheckChainNode</span> {
+    <span style="color:#93a1a1;font-style:italic">/**
+</span><span style="color:#93a1a1;font-style:italic">    * 通用检查处理器
+</span><span style="color:#93a1a1;font-style:italic">    */</span>
+    <span style="color:#268bd2">BizResult</span> <span style="color:#268bd2">checkHandler</span>(<span style="color:#268bd2">BizParameter</span> <span style="color:#268bd2">param</span>);
+}
 </code></pre></div><p>责任链对象</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CheckChain</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>CheckChain<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>CheckChainNode<span style="color:#f92672">&gt;</span> checkList<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">CheckChain</span> {
+    <span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#268bd2">Logger</span> <span style="color:#268bd2">logger</span> = <span style="color:#268bd2">LoggerFactory</span>.<span style="color:#268bd2">getLogger</span>(<span style="color:#268bd2">CheckChain</span>.<span style="color:#268bd2">class</span>);
+    <span style="color:#859900">private</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">CheckChainNode</span>&gt; <span style="color:#268bd2">checkList</span>;
 
-    <span style="color:#66d9ef">public</span> BizResult <span style="color:#a6e22e">checkIt</span><span style="color:#f92672">(</span>BizParameter params<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        BizResult result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BizResult<span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>checkList<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            <span style="color:#75715e">// 如果检查链为空
-</span><span style="color:#75715e"></span>            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;检查链为空&#34;</span><span style="color:#f92672">);</span>
-            result<span style="color:#f92672">.</span><span style="color:#a6e22e">setShowMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;检查链为空&#34;</span><span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>CheckChainNode checkNode <span style="color:#f92672">:</span> checkList<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                BizResult curResult <span style="color:#f92672">=</span> checkNode<span style="color:#f92672">.</span><span style="color:#a6e22e">checkHandler</span><span style="color:#f92672">(</span>params<span style="color:#f92672">);</span>
-                result <span style="color:#f92672">=</span> curResult <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> result <span style="color:#f92672">:</span> curResult<span style="color:#f92672">;</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">isSuccess</span><span style="color:#f92672">())</span> <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;执行检查链时发生异常: {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
-            result<span style="color:#f92672">.</span><span style="color:#a6e22e">setResultCode</span><span style="color:#f92672">(-</span>1<span style="color:#f92672">);</span>
-            result<span style="color:#f92672">.</span><span style="color:#a6e22e">setShowMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;执行检查链时发生异常&#34;</span><span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">isSuccess</span><span style="color:#f92672">())</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">setBizParameter</span><span style="color:#f92672">(</span>params<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">BizResult</span> <span style="color:#268bd2">checkIt</span>(<span style="color:#268bd2">BizParameter</span> <span style="color:#268bd2">params</span>) {
+        <span style="color:#268bd2">BizResult</span> <span style="color:#268bd2">result</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">BizResult</span>();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">CollectionUtils</span>.<span style="color:#268bd2">isEmpty</span>(<span style="color:#268bd2">checkList</span>)) {
+            <span style="color:#93a1a1;font-style:italic">// 如果检查链为空
+</span><span style="color:#93a1a1;font-style:italic"></span>            <span style="color:#268bd2">logger</span>.<span style="color:#268bd2">error</span>(<span style="color:#2aa198">&#34;检查链为空&#34;</span>);
+            <span style="color:#268bd2">result</span>.<span style="color:#268bd2">setShowMessage</span>(<span style="color:#2aa198">&#34;检查链为空&#34;</span>);
+            <span style="color:#859900">return</span> <span style="color:#268bd2">result</span>;
+        }
+        <span style="color:#859900">try</span> {
+            <span style="color:#859900">for</span> (<span style="color:#268bd2">CheckChainNode</span> <span style="color:#268bd2">checkNode</span> : <span style="color:#268bd2">checkList</span>) {
+                <span style="color:#268bd2">BizResult</span> <span style="color:#268bd2">curResult</span> = <span style="color:#268bd2">checkNode</span>.<span style="color:#268bd2">checkHandler</span>(<span style="color:#268bd2">params</span>);
+                <span style="color:#268bd2">result</span> = <span style="color:#268bd2">curResult</span> == <span style="color:#859900;font-weight:bold">null</span> ? <span style="color:#268bd2">result</span> : <span style="color:#268bd2">curResult</span>;
+                <span style="color:#859900">if</span> (!<span style="color:#268bd2">result</span>.<span style="color:#268bd2">isSuccess</span>()) <span style="color:#859900">break</span>;
+            }
+        } <span style="color:#859900">catch</span> (<span style="color:#268bd2">Exception</span> <span style="color:#268bd2">e</span>) {
+            <span style="color:#268bd2">e</span>.<span style="color:#268bd2">printStackTrace</span>();
+            <span style="color:#268bd2">logger</span>.<span style="color:#268bd2">error</span>(<span style="color:#2aa198">&#34;执行检查链时发生异常: {}&#34;</span>, <span style="color:#268bd2">e</span>);
+            <span style="color:#268bd2">result</span>.<span style="color:#268bd2">setResultCode</span>(-<span style="color:#268bd2">1</span>);
+            <span style="color:#268bd2">result</span>.<span style="color:#268bd2">setShowMessage</span>(<span style="color:#2aa198">&#34;执行检查链时发生异常&#34;</span>);
+            <span style="color:#859900">return</span> <span style="color:#268bd2">result</span>;
+        }
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">result</span>.<span style="color:#268bd2">isSuccess</span>()) <span style="color:#268bd2">result</span>.<span style="color:#268bd2">setBizParameter</span>(<span style="color:#268bd2">params</span>);
+        <span style="color:#859900">return</span> <span style="color:#268bd2">result</span>;
+    }
 
-    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>CheckChainNode<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getCheckList</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> checkList<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">CheckChainNode</span>&gt; <span style="color:#268bd2">getCheckList</span>() {
+        <span style="color:#859900">return</span> <span style="color:#268bd2">checkList</span>;
+    }
 
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">    * Spring 配置注入
-</span><span style="color:#75715e">    */</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCheckList</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>CheckChainNode<span style="color:#f92672">&gt;</span> checkList<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">checkList</span> <span style="color:#f92672">=</span> checkList<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#93a1a1;font-style:italic">/**
+</span><span style="color:#93a1a1;font-style:italic">    * Spring 配置注入
+</span><span style="color:#93a1a1;font-style:italic">    */</span>
+    <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">setCheckList</span>(<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">CheckChainNode</span>&gt; <span style="color:#268bd2">checkList</span>) {
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">checkList</span> = <span style="color:#268bd2">checkList</span>;
+    }
+}
 </code></pre></div><p>责任链节点的多种实现，分别对应不同的筛查条件</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;timeCheckHandlerNode&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeCheckHandlerNode</span> <span style="color:#66d9ef">implements</span> CheckChainNode <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> BizResult <span style="color:#a6e22e">checkHandler</span><span style="color:#f92672">(</span>BizParameter param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        BizResult result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BizResult<span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>param <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>param<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-            String pin <span style="color:#f92672">=</span> param<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span>CouponConst<span style="color:#f92672">.</span><span style="color:#a6e22e">PIN</span><span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> age <span style="color:#f92672">=</span> param<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span>CouponConst<span style="color:#f92672">.</span><span style="color:#a6e22e">AGE</span><span style="color:#f92672">);</span>
-            CouponBatch couponBatch <span style="color:#f92672">=</span> param<span style="color:#f92672">.</span><span style="color:#a6e22e">getObject</span><span style="color:#f92672">(</span>CouponConst<span style="color:#f92672">.</span><span style="color:#a6e22e">COUPON</span><span style="color:#f92672">,</span> CouponBatch<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-            result<span style="color:#f92672">.</span><span style="color:#a6e22e">setSuccess</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">doCheck</span><span style="color:#f92672">(</span>couponBatch<span style="color:#f92672">,</span> age<span style="color:#f92672">));</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Service</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;timeCheckHandlerNode&#34;</span>)
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">TimeCheckHandlerNode</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">CheckChainNode</span> {
+    <span style="color:#268bd2">@Override</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">BizResult</span> <span style="color:#268bd2">checkHandler</span>(<span style="color:#268bd2">BizParameter</span> <span style="color:#268bd2">param</span>) {
+        <span style="color:#268bd2">BizResult</span> <span style="color:#268bd2">result</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">BizResult</span>();
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">param</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; !<span style="color:#268bd2">param</span>.<span style="color:#268bd2">isEmpty</span>()) {
+            <span style="color:#268bd2">String</span> <span style="color:#268bd2">pin</span> = <span style="color:#268bd2">param</span>.<span style="color:#268bd2">getString</span>(<span style="color:#268bd2">CouponConst</span>.<span style="color:#268bd2">PIN</span>);
+            <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">age</span> = <span style="color:#268bd2">param</span>.<span style="color:#268bd2">getInt</span>(<span style="color:#268bd2">CouponConst</span>.<span style="color:#268bd2">AGE</span>);
+            <span style="color:#268bd2">CouponBatch</span> <span style="color:#268bd2">couponBatch</span> = <span style="color:#268bd2">param</span>.<span style="color:#268bd2">getObject</span>(<span style="color:#268bd2">CouponConst</span>.<span style="color:#268bd2">COUPON</span>, <span style="color:#268bd2">CouponBatch</span>.<span style="color:#268bd2">class</span>);
+            <span style="color:#268bd2">result</span>.<span style="color:#268bd2">setSuccess</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">doCheck</span>(<span style="color:#268bd2">couponBatch</span>, <span style="color:#268bd2">age</span>));
+        }
+        <span style="color:#859900">return</span> <span style="color:#268bd2">result</span>;
+    }
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">doCheck</span><span style="color:#f92672">(</span>CouponBatch couponBatch<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> age<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> Date today <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">return</span> couponBatch<span style="color:#f92672">.</span><span style="color:#a6e22e">getValidityStartTime</span><span style="color:#f92672">().</span><span style="color:#a6e22e">before</span><span style="color:#f92672">(</span>today<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span>
-                couponBatch<span style="color:#f92672">.</span><span style="color:#a6e22e">getValidityEndTime</span><span style="color:#f92672">().</span><span style="color:#a6e22e">after</span><span style="color:#f92672">(</span>today<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span>
-                couponBatch<span style="color:#f92672">.</span><span style="color:#a6e22e">getEndTime</span><span style="color:#f92672">().</span><span style="color:#a6e22e">after</span><span style="color:#f92672">(</span>today<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span>
-                couponBatch<span style="color:#f92672">.</span><span style="color:#a6e22e">getMinPreferAge</span><span style="color:#f92672">()</span> <span style="color:#f92672">&lt;=</span> age <span style="color:#f92672">&amp;&amp;</span>
-                couponBatch<span style="color:#f92672">.</span><span style="color:#a6e22e">getMaxPreferAge</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;=</span> age<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">doCheck</span>(<span style="color:#268bd2">CouponBatch</span> <span style="color:#268bd2">couponBatch</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">age</span>) {
+        <span style="color:#859900">final</span> <span style="color:#268bd2">Date</span> <span style="color:#268bd2">today</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Date</span>();
+        <span style="color:#859900">return</span> <span style="color:#268bd2">couponBatch</span>.<span style="color:#268bd2">getValidityStartTime</span>().<span style="color:#268bd2">before</span>(<span style="color:#268bd2">today</span>) &amp;&amp;
+                <span style="color:#268bd2">couponBatch</span>.<span style="color:#268bd2">getValidityEndTime</span>().<span style="color:#268bd2">after</span>(<span style="color:#268bd2">today</span>) &amp;&amp;
+                <span style="color:#268bd2">couponBatch</span>.<span style="color:#268bd2">getEndTime</span>().<span style="color:#268bd2">after</span>(<span style="color:#268bd2">today</span>) &amp;&amp;
+                <span style="color:#268bd2">couponBatch</span>.<span style="color:#268bd2">getMinPreferAge</span>() &lt;= <span style="color:#268bd2">age</span> &amp;&amp;
+                <span style="color:#268bd2">couponBatch</span>.<span style="color:#268bd2">getMaxPreferAge</span>() &gt;= <span style="color:#268bd2">age</span>;
+    }
+}
 
-<span style="color:#75715e">// 其余筛查节点略过
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Service</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;riskCheckHandlerNode&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RiskCheckHandlerNode</span> <span style="color:#66d9ef">implements</span> CheckChainNode <span style="color:#f92672">{}</span>
+<span style="color:#93a1a1;font-style:italic">// 其余筛查节点略过
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@Service</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;riskCheckHandlerNode&#34;</span>)
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">RiskCheckHandlerNode</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">CheckChainNode</span> {}
 
-<span style="color:#a6e22e">@Service</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;stockCheckHandlerNode&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StockCheckHandlerNode</span> <span style="color:#66d9ef">implements</span> CheckChainNode <span style="color:#f92672">{}</span>
+<span style="color:#268bd2">@Service</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;stockCheckHandlerNode&#34;</span>)
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">StockCheckHandlerNode</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">CheckChainNode</span> {}
 </code></pre></div><p>Spring 配置优惠券筛查的责任链，注入检查链对象</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
-       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&#34;</span>
-       <span style="color:#a6e22e">default-autowire=</span><span style="color:#e6db74">&#34;byName&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#93a1a1;font-style:italic">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;beans</span> <span style="color:#268bd2">xmlns=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/beans&#34;</span>
+       <span style="color:#268bd2">xmlns:xsi=</span><span style="color:#2aa198">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+       <span style="color:#268bd2">xsi:schemaLocation=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&#34;</span>
+       <span style="color:#268bd2">default-autowire=</span><span style="color:#2aa198">&#34;byName&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
 
-  <span style="color:#75715e">&lt;!-- 优惠券展示链 --&gt;</span>
-  <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;displayCouponCheckChain&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;com.isudox.service.coupon.CheckChain&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;checkList&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;list&gt;</span>
-        <span style="color:#f92672">&lt;ref</span> <span style="color:#a6e22e">bean=</span><span style="color:#e6db74">&#34;timeCheckHandlerNode&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;ref</span> <span style="color:#a6e22e">bean=</span><span style="color:#e6db74">&#34;riskCheckHandlerNode&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;ref</span> <span style="color:#a6e22e">bean=</span><span style="color:#e6db74">&#34;receivedCheckHandlerNode&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;ref</span> <span style="color:#a6e22e">bean=</span><span style="color:#e6db74">&#34;stockCheckHandlerNode&#34;</span><span style="color:#f92672">/&gt;</span>
-      <span style="color:#f92672">&lt;/list&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-  <span style="color:#f92672">&lt;/bean&gt;</span>
-  <span style="color:#75715e">&lt;!-- 优惠券发放链 --&gt;</span>
-  <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;sendCouponCheckChain&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;com.isudox.service.coupon.CheckChain&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;checkList&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;list&gt;</span>
-        <span style="color:#f92672">&lt;ref</span> <span style="color:#a6e22e">bean=</span><span style="color:#e6db74">&#34;receivedCheckHandlerNode&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;ref</span> <span style="color:#a6e22e">bean=</span><span style="color:#e6db74">&#34;stockCheckHandlerNode&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;ref</span> <span style="color:#a6e22e">bean=</span><span style="color:#e6db74">&#34;timeCheckHandlerNode&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;ref</span> <span style="color:#a6e22e">bean=</span><span style="color:#e6db74">&#34;riskCheckHandlerNode&#34;</span><span style="color:#f92672">/&gt;</span>
-      <span style="color:#f92672">&lt;/list&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-  <span style="color:#f92672">&lt;/bean&gt;</span>
-<span style="color:#f92672">&lt;/beans&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- 优惠券展示链 --&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;displayCouponCheckChain&#34;</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;com.isudox.service.coupon.CheckChain&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;checkList&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+      <span style="color:#268bd2;font-weight:bold">&lt;list&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;ref</span> <span style="color:#268bd2">bean=</span><span style="color:#2aa198">&#34;timeCheckHandlerNode&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;ref</span> <span style="color:#268bd2">bean=</span><span style="color:#2aa198">&#34;riskCheckHandlerNode&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;ref</span> <span style="color:#268bd2">bean=</span><span style="color:#2aa198">&#34;receivedCheckHandlerNode&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;ref</span> <span style="color:#268bd2">bean=</span><span style="color:#2aa198">&#34;stockCheckHandlerNode&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+      <span style="color:#268bd2;font-weight:bold">&lt;/list&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;/property&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- 优惠券发放链 --&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;sendCouponCheckChain&#34;</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;com.isudox.service.coupon.CheckChain&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;checkList&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+      <span style="color:#268bd2;font-weight:bold">&lt;list&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;ref</span> <span style="color:#268bd2">bean=</span><span style="color:#2aa198">&#34;receivedCheckHandlerNode&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;ref</span> <span style="color:#268bd2">bean=</span><span style="color:#2aa198">&#34;stockCheckHandlerNode&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;ref</span> <span style="color:#268bd2">bean=</span><span style="color:#2aa198">&#34;timeCheckHandlerNode&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+        <span style="color:#268bd2;font-weight:bold">&lt;ref</span> <span style="color:#268bd2">bean=</span><span style="color:#2aa198">&#34;riskCheckHandlerNode&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+      <span style="color:#268bd2;font-weight:bold">&lt;/list&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;/property&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;/beans&gt;</span>
 </code></pre></div><p>这样就可以对优惠券部分的业务灵活配置，如果需要新增逻辑，不用更改已有的代码，再实现一个 CheckChainNode 接口就可以了。另外，如果想更改筛查链，也只需要对 Spring 的配置进行修改，重启实例就能生效，无需再次编译发布。简直轻松愉快！</p>
 </div>
   <footer class="post-footer">
@@ -299,10 +298,6 @@
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

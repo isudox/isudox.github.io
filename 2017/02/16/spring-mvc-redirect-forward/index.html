@@ -11,7 +11,6 @@
   <meta name="description" content="最近参与的一个微信公众号相关项目的开发中，业务包含大量的页面跳转逻辑，以及拦截器的数据获取校验。其间也遇到一些困惑，在探究 Spring MVC 中 redirect 和 forward 的源码">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -60,62 +59,62 @@
 <p>Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 <code>ModelAndView</code> 对象，又或者是 <code>RedirectView</code> 对象，下面逐一说明。</p>
 <h3 id="string-重定向">String 重定向</h3>
 <p>是 return 映射到另一个 Controller 方法的字符串。如果有请求参数，就拼接在 RequestMapping 映射的字符串后面。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 返回字符串映射的方式
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> HttpServletResponse resp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    doSomething<span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:/bye&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">// return &#34;redirect:/bye?username=sudoz&#34;;
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回字符串映射的方式
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;hello&#34;</span>)
+<span style="color:#859900">public</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>) {
+    <span style="color:#268bd2">doSomething</span>();
+    <span style="color:#859900">return</span> <span style="color:#2aa198">&#34;redirect:/bye&#34;</span>;
+    <span style="color:#93a1a1;font-style:italic">// return &#34;redirect:/bye?username=sudoz&#34;;
+</span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><h3 id="modelandview-重定向">ModelAndView 重定向</h3>
 <p>另一种方法是通过返回 <code>ModelAndView</code> 对象来实现跳转。类似的，如果有请求参数，也可以通过类似 GET 参数拼接的方式：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 返回 ModelAndView 对象
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> ModelAndView <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> HttpServletResponse resp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    doSomething<span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ModelAndView<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redirect:/bye&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#75715e">// return new ModelAndView(&#34;redirect:/bye?username=sudoz&#34;);
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回 ModelAndView 对象
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;hello&#34;</span>)
+<span style="color:#859900">public</span> <span style="color:#268bd2">ModelAndView</span> <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>) {
+    <span style="color:#268bd2">doSomething</span>();
+    <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">ModelAndView</span>(<span style="color:#2aa198">&#34;redirect:/bye&#34;</span>);
+    <span style="color:#93a1a1;font-style:italic">// return new ModelAndView(&#34;redirect:/bye?username=sudoz&#34;);
+</span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><h3 id="redirectview-重定向">RedirectView 重定向</h3>
 <p>还有一种方法是通过返回 <code>RedirectView</code> 对象实现跳转，该方法和上面的不同之处在于，<code>RedirectView</code> 对象不需要设置 redirect 前缀：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 返回 RedirectView 对象
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> RedirectView <span style="color:#a6e22e">hello</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    doSomething<span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RedirectView<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/bye&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#75715e">// return new RedirectView(&#34;bye?username=sudoz&#34;);
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回 RedirectView 对象
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;hello&#34;</span>)
+<span style="color:#859900">public</span> <span style="color:#268bd2">RedirectView</span> <span style="color:#268bd2">hello</span>() {
+    <span style="color:#268bd2">doSomething</span>();
+    <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">RedirectView</span>(<span style="color:#2aa198">&#34;/bye&#34;</span>);
+    <span style="color:#93a1a1;font-style:italic">// return new RedirectView(&#34;bye?username=sudoz&#34;);
+</span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><h2 id="带参跳转">带参跳转</h2>
 <p>在做方法跳转时，如果要把参数带给下一个方法，像上面代码里通过拼接 URL 参数的方法有时候并不实用。因为参数不一定都是是字符串，而且浏览器对 URL 的长度是有限制的。<code>RedirectAttributes</code> 对象可以用来保存请求重定向时的参数。利用 <code>RedirectAttributes</code> 改写上面的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> RedirectView <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span>RedirectAttributes attrs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    attrs<span style="color:#f92672">.</span><span style="color:#a6e22e">addAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">);</span>    
-    attrs<span style="color:#f92672">.</span><span style="color:#a6e22e">addFlashAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;sudoz&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RedirectView<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;/&#34;</span>)
+<span style="color:#859900">public</span> <span style="color:#268bd2">RedirectView</span> <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">RedirectAttributes</span> <span style="color:#268bd2">attrs</span>) {
+    <span style="color:#268bd2">attrs</span>.<span style="color:#268bd2">addAttribute</span>(<span style="color:#2aa198">&#34;message&#34;</span>, <span style="color:#2aa198">&#34;hello&#34;</span>);    
+    <span style="color:#268bd2">attrs</span>.<span style="color:#268bd2">addFlashAttribute</span>(<span style="color:#2aa198">&#34;username&#34;</span>, <span style="color:#2aa198">&#34;sudoz&#34;</span>);
+    <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">RedirectView</span>(<span style="color:#2aa198">&#34;hello&#34;</span>);
+}
 
-<span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
-    Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@ModelAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">)</span> String username<span style="color:#f92672">,</span>
-                              <span style="color:#a6e22e">@ModelAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">)</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> Maps<span style="color:#f92672">.</span><span style="color:#a6e22e">newHashMap</span><span style="color:#f92672">();</span>
-    map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span> username<span style="color:#f92672">);</span>
-    map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">,</span> message<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">return</span> map<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;hello&#34;</span>)
+    <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">@ModelAttribute</span>(<span style="color:#2aa198">&#34;username&#34;</span>) <span style="color:#268bd2">String</span> <span style="color:#268bd2">username</span>,
+                              <span style="color:#268bd2">@ModelAttribute</span>(<span style="color:#2aa198">&#34;message&#34;</span>) <span style="color:#268bd2">String</span> <span style="color:#268bd2">message</span>) {
+    <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">map</span> = <span style="color:#268bd2">Maps</span>.<span style="color:#268bd2">newHashMap</span>();
+    <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;username&#34;</span>, <span style="color:#268bd2">username</span>);
+    <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;message&#34;</span>, <span style="color:#268bd2">message</span>);
+    <span style="color:#859900">return</span> <span style="color:#268bd2">map</span>;
+}
 </code></pre></div><p>上面的代码中，调用 <code>addAttribute()</code> 和 <code>addFlashAttribute()</code> 方法往 <code>RedirectAttributes</code> 对象中插入了两个值，如果看源码，就能知道，<code>RedirectAttributes</code> 接口的实现类 <code>RedirectAttributesModelMap</code> 继承了 <code>ModelMap</code>，本质上就是 <code>HashMap</code> 的子类，因此可以用来存储 Key-Value 对。这两个方法都很常用，使用上也必然存在不同：</p>
 <ul>
 <li><code>addAttribute()</code> 方法会把 Key-Value 作为请求参数添加的 URL 的后面；</li>
 <li><code>addFlashAttribute()</code> 方法会把 Key-Value 暂存在 session 中，在跳转到目标方法后，即完成任务，会从 session 中删掉；</li>
 </ul>
 <p>用 <code>curl</code> 命令来测试：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -i http://localhost:8080/
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -i http://localhost:8080/
 
-HTTP/1.1 <span style="color:#ae81ff">302</span> 
-Set-Cookie: JSESSIONID<span style="color:#f92672">=</span>D1CC5E15FA8EF9474C4CED7D4F660E66;path<span style="color:#f92672">=</span>/;HttpOnly
-Location: http://localhost:8080/hello;jsessionid<span style="color:#f92672">=</span>D1CC5E15FA8EF9474C4CED7D4F660E66?username<span style="color:#f92672">=</span>sudoz
+HTTP/1.1 <span style="color:#2aa198;font-weight:bold">302</span> 
+Set-Cookie: <span style="color:#268bd2">JSESSIONID</span>=D1CC5E15FA8EF9474C4CED7D4F660E66;<span style="color:#268bd2">path</span>=/;HttpOnly
+Location: http://localhost:8080/hello;<span style="color:#268bd2">jsessionid</span>=D1CC5E15FA8EF9474C4CED7D4F660E66?username=sudoz
 Content-Language: en-US
-Content-Length: <span style="color:#ae81ff">0</span>
-Date: Thu, <span style="color:#ae81ff">16</span> Feb <span style="color:#ae81ff">2017</span> 12:33:46 GMT
+Content-Length: <span style="color:#2aa198;font-weight:bold">0</span>
+Date: Thu, <span style="color:#2aa198;font-weight:bold">16</span> Feb <span style="color:#2aa198;font-weight:bold">2017</span> 12:33:46 GMT
 </code></pre></div><p>可以看到，通过 <code>addAttribute()</code> 添加的键值对变成了 URL 后面的参数，<code>addFlashAttribute()</code> 方法添加的键值对则没有出现在 URL 上，而是存储在了 session 中。跳转的目标方法通过 <code>@ModelAttribute(&quot;key&quot;)</code> 注解指定接收的参数。</p>
 <h2 id="redirect-和-forward-的区别">redirect 和 forward 的区别</h2>
 <p>上面列出的 3 种方法，其实都是 Spring MVC 在处理请求时的重定向，即 redirect 跳转。另一种分发请求的方式是转发，即 forward。（我不确定这么翻译是否正确，所以下面就直接用 redirect 和 forward 来表述），二者的区别从 HTTP 的规范中就明确了：</p>
@@ -125,72 +124,72 @@ Date: Thu, <span style="color:#ae81ff">16</span> Feb <span style="color:#ae81ff"
 </ul>
 <h2 id="spring-boot-测试">Spring Boot 测试</h2>
 <p>为了更清晰的比较各种方法，我把 Spring Boot 的测试代码贴出来。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Controller</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HomeController</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sudoz&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">private</span> String username<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Controller</span>
+<span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HomeController</span> {
+    <span style="color:#268bd2">@Value</span>(<span style="color:#2aa198">&#34;sudoz&#34;</span>)
+    <span style="color:#859900">private</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">username</span>;
 
-    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">)</span>
-    String <span style="color:#a6e22e">index</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;redirect:hello?username=jim&amp;message=how are you&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#268bd2">@GetMapping</span>(<span style="color:#2aa198">&#34;/&#34;</span>)
+    <span style="color:#268bd2">String</span> <span style="color:#268bd2">index</span>() {
+        <span style="color:#859900">return</span> <span style="color:#2aa198">&#34;redirect:hello?username=jim&amp;message=how are you&#34;</span>;
+    }
 
-    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redirectView&#34;</span><span style="color:#f92672">)</span>
-    RedirectView <span style="color:#a6e22e">redirectView</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RedirectView<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#268bd2">@GetMapping</span>(<span style="color:#2aa198">&#34;redirectView&#34;</span>)
+    <span style="color:#268bd2">RedirectView</span> <span style="color:#268bd2">redirectView</span>() {
+        <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">RedirectView</span>(<span style="color:#2aa198">&#34;hello&#34;</span>);
+    }
 
-    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;forward&#34;</span><span style="color:#f92672">)</span>
-    ModelAndView <span style="color:#a6e22e">forward</span><span style="color:#f92672">(</span>RedirectAttributes attrs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        attrs<span style="color:#f92672">.</span><span style="color:#a6e22e">addFlashAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span> username<span style="color:#f92672">);</span>
-        attrs<span style="color:#f92672">.</span><span style="color:#a6e22e">addAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ModelAndView<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;forward:hello&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#268bd2">@GetMapping</span>(<span style="color:#2aa198">&#34;forward&#34;</span>)
+    <span style="color:#268bd2">ModelAndView</span> <span style="color:#268bd2">forward</span>(<span style="color:#268bd2">RedirectAttributes</span> <span style="color:#268bd2">attrs</span>) {
+        <span style="color:#268bd2">attrs</span>.<span style="color:#268bd2">addFlashAttribute</span>(<span style="color:#2aa198">&#34;username&#34;</span>, <span style="color:#268bd2">username</span>);
+        <span style="color:#268bd2">attrs</span>.<span style="color:#268bd2">addAttribute</span>(<span style="color:#2aa198">&#34;message&#34;</span>, <span style="color:#2aa198">&#34;hello&#34;</span>);
+        <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">ModelAndView</span>(<span style="color:#2aa198">&#34;forward:hello&#34;</span>);
+    }
 
-    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redirect&#34;</span><span style="color:#f92672">)</span>
-    ModelAndView <span style="color:#a6e22e">redirect</span><span style="color:#f92672">(</span>RedirectAttributes attrs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        attrs<span style="color:#f92672">.</span><span style="color:#a6e22e">addFlashAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span> username<span style="color:#f92672">);</span>
-        attrs<span style="color:#f92672">.</span><span style="color:#a6e22e">addAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ModelAndView<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redirect:hello&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#268bd2">@GetMapping</span>(<span style="color:#2aa198">&#34;redirect&#34;</span>)
+    <span style="color:#268bd2">ModelAndView</span> <span style="color:#268bd2">redirect</span>(<span style="color:#268bd2">RedirectAttributes</span> <span style="color:#268bd2">attrs</span>) {
+        <span style="color:#268bd2">attrs</span>.<span style="color:#268bd2">addFlashAttribute</span>(<span style="color:#2aa198">&#34;username&#34;</span>, <span style="color:#268bd2">username</span>);
+        <span style="color:#268bd2">attrs</span>.<span style="color:#268bd2">addAttribute</span>(<span style="color:#2aa198">&#34;message&#34;</span>, <span style="color:#2aa198">&#34;hello&#34;</span>);
+        <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">ModelAndView</span>(<span style="color:#2aa198">&#34;redirect:hello&#34;</span>);
+    }
 
-    <span style="color:#a6e22e">@GetMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#a6e22e">@ResponseBody</span>
-    Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span>Model model<span style="color:#f92672">,</span> <span style="color:#a6e22e">@ModelAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">)</span> String username<span style="color:#f92672">,</span>
-                              <span style="color:#a6e22e">@ModelAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">)</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> Maps<span style="color:#f92672">.</span><span style="color:#a6e22e">newHashMap</span><span style="color:#f92672">();</span>
-        map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span> username<span style="color:#f92672">);</span>
-        map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">,</span> message<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> map<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#268bd2">@GetMapping</span>(<span style="color:#2aa198">&#34;hello&#34;</span>)
+    <span style="color:#268bd2">@ResponseBody</span>
+    <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">Model</span> <span style="color:#268bd2">model</span>, <span style="color:#268bd2">@ModelAttribute</span>(<span style="color:#2aa198">&#34;username&#34;</span>) <span style="color:#268bd2">String</span> <span style="color:#268bd2">username</span>,
+                              <span style="color:#268bd2">@ModelAttribute</span>(<span style="color:#2aa198">&#34;message&#34;</span>) <span style="color:#268bd2">String</span> <span style="color:#268bd2">message</span>) {
+        <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">map</span> = <span style="color:#268bd2">Maps</span>.<span style="color:#268bd2">newHashMap</span>();
+        <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;username&#34;</span>, <span style="color:#268bd2">username</span>);
+        <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;message&#34;</span>, <span style="color:#268bd2">message</span>);
+        <span style="color:#859900">return</span> <span style="color:#268bd2">map</span>;
+    }
+}
 </code></pre></div><h2 id="分析源码">分析源码</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UrlBasedViewResolver</span> <span style="color:#66d9ef">extends</span> AbstractCachingViewResolver <span style="color:#66d9ef">implements</span> Ordered <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String REDIRECT_URL_PREFIX <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;redirect:&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FORWARD_URL_PREFIX <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;forward:&#34;</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">UrlBasedViewResolver</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractCachingViewResolver</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Ordered</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">REDIRECT_URL_PREFIX</span> = <span style="color:#2aa198">&#34;redirect:&#34;</span>;
+    <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">FORWARD_URL_PREFIX</span> = <span style="color:#2aa198">&#34;forward:&#34;</span>;
 
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> View <span style="color:#a6e22e">createView</span><span style="color:#f92672">(</span>String viewName<span style="color:#f92672">,</span> Locale locale<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// If this resolver is not supposed to handle the given view,
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// return null to pass on to the next resolver in the chain.
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>canHandle<span style="color:#f92672">(</span>viewName<span style="color:#f92672">,</span> locale<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#75715e">// Check for special &#34;redirect:&#34; prefix.
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>viewName<span style="color:#f92672">.</span><span style="color:#a6e22e">startsWith</span><span style="color:#f92672">(</span>REDIRECT_URL_PREFIX<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            String redirectUrl <span style="color:#f92672">=</span> viewName<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>REDIRECT_URL_PREFIX<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">());</span>
-            RedirectView view <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RedirectView<span style="color:#f92672">(</span>redirectUrl<span style="color:#f92672">,</span> isRedirectContextRelative<span style="color:#f92672">(),</span> isRedirectHttp10Compatible<span style="color:#f92672">());</span>
-            <span style="color:#66d9ef">return</span> applyLifecycleMethods<span style="color:#f92672">(</span>viewName<span style="color:#f92672">,</span> view<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#75715e">// Check for special &#34;forward:&#34; prefix.
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>viewName<span style="color:#f92672">.</span><span style="color:#a6e22e">startsWith</span><span style="color:#f92672">(</span>FORWARD_URL_PREFIX<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            String forwardUrl <span style="color:#f92672">=</span> viewName<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>FORWARD_URL_PREFIX<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">());</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> InternalResourceView<span style="color:#f92672">(</span>forwardUrl<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#75715e">// Else fall back to superclass implementation: calling loadView.
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">createView</span><span style="color:#f92672">(</span>viewName<span style="color:#f92672">,</span> locale<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#268bd2">@Override</span>
+    <span style="color:#859900">protected</span> <span style="color:#268bd2">View</span> <span style="color:#268bd2">createView</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">viewName</span>, <span style="color:#268bd2">Locale</span> <span style="color:#268bd2">locale</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
+        <span style="color:#93a1a1;font-style:italic">// If this resolver is not supposed to handle the given view,
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#93a1a1;font-style:italic">// return null to pass on to the next resolver in the chain.
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#859900">if</span> (!<span style="color:#268bd2">canHandle</span>(<span style="color:#268bd2">viewName</span>, <span style="color:#268bd2">locale</span>)) {
+            <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">null</span>;
+        }
+        <span style="color:#93a1a1;font-style:italic">// Check for special &#34;redirect:&#34; prefix.
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#859900">if</span> (<span style="color:#268bd2">viewName</span>.<span style="color:#268bd2">startsWith</span>(<span style="color:#268bd2">REDIRECT_URL_PREFIX</span>)) {
+            <span style="color:#268bd2">String</span> <span style="color:#268bd2">redirectUrl</span> = <span style="color:#268bd2">viewName</span>.<span style="color:#268bd2">substring</span>(<span style="color:#268bd2">REDIRECT_URL_PREFIX</span>.<span style="color:#268bd2">length</span>());
+            <span style="color:#268bd2">RedirectView</span> <span style="color:#268bd2">view</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">RedirectView</span>(<span style="color:#268bd2">redirectUrl</span>, <span style="color:#268bd2">isRedirectContextRelative</span>(), <span style="color:#268bd2">isRedirectHttp10Compatible</span>());
+            <span style="color:#859900">return</span> <span style="color:#268bd2">applyLifecycleMethods</span>(<span style="color:#268bd2">viewName</span>, <span style="color:#268bd2">view</span>);
+        }
+        <span style="color:#93a1a1;font-style:italic">// Check for special &#34;forward:&#34; prefix.
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#859900">if</span> (<span style="color:#268bd2">viewName</span>.<span style="color:#268bd2">startsWith</span>(<span style="color:#268bd2">FORWARD_URL_PREFIX</span>)) {
+            <span style="color:#268bd2">String</span> <span style="color:#268bd2">forwardUrl</span> = <span style="color:#268bd2">viewName</span>.<span style="color:#268bd2">substring</span>(<span style="color:#268bd2">FORWARD_URL_PREFIX</span>.<span style="color:#268bd2">length</span>());
+            <span style="color:#859900">return</span> <span style="color:#859900">new</span> <span style="color:#268bd2">InternalResourceView</span>(<span style="color:#268bd2">forwardUrl</span>);
+        }
+        <span style="color:#93a1a1;font-style:italic">// Else fall back to superclass implementation: calling loadView.
+</span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#859900">return</span> <span style="color:#859900">super</span>.<span style="color:#268bd2">createView</span>(<span style="color:#268bd2">viewName</span>, <span style="color:#268bd2">locale</span>);
+    }
+}
 </code></pre></div><hr>
 <p>参考资料</p>
 <ul>
@@ -236,10 +235,6 @@ Date: Thu, <span style="color:#ae81ff">16</span> Feb <span style="color:#ae81ff"
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

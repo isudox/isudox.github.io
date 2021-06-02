@@ -11,7 +11,6 @@
   <meta name="description" content="iPhone 6S 都发布，仍然用着刚上大学那会买的笔记本，cry&hellip; 最近这块被我拆拆装装的本越发像犯了老年痴呆一样，对于一个不折腾不痛快星人而">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -60,26 +59,26 @@
 <!-- more -->
 <h3 id="准备工作">准备工作</h3>
 <p>Arch 的镜像很小，仅不到 700M，由于光驱已经退役，因此就用了 U 盘做启动。在 Linux 下用 <code>dd</code> 命令就可以将镜像文件烧写进 U 盘：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ dd bs<span style="color:#f92672">=</span>4M <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/path_archlinux.iso of<span style="color:#f92672">=</span>/dev/sdx <span style="color:#f92672">&amp;&amp;</span> sync
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ dd <span style="color:#268bd2">bs</span>=4M <span style="color:#859900">if</span>=/path_archlinux.iso <span style="color:#268bd2">of</span>=/dev/sdx &amp;&amp; sync
 </code></pre></div><p>其中 <code>sdx</code> 为 <code>/dev</code> 下挂载的 U 盘文件符。片刻功夫，烧写完毕，准备工作就绪！</p>
 <h3 id="躁起来吧骚年">躁起来吧，骚年</h3>
 <p>重启选择 U 盘启动，U 盘里的镜像文件释放展开，屏幕上显现启动列表，选择第一个 x86-64 进入 Arch 配置安装。前方没有任何图形，黑白两色的屏幕像极了窗外的夜。</p>
 <h4 id="联网">联网</h4>
 <p>相比 Debian、CentOS 这些动辄 3,4G 的安装镜像，Arch 有着诱人的小而美，也意味这很多包都需要联网下载。所以安装过程中，必须要联网。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ wifi-mune
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ wifi-mune
 </code></pre></div><p>输入 Wifi 密码，ping 测试。</p>
 <h4 id="磁盘">磁盘</h4>
 <p>执行 <code>lsblk</code> 查看当前磁盘挂载情况，本地磁盘的话都是 <code>sdx</code>。我准备删掉 Win7 + Ubuntu 的双系统全新安装 Arch，对磁盘来一次彻底的革命。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ parted /dev/sda
-<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mklabel msdos
-<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart primary ext4 1M 300M
-<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> set <span style="color:#ae81ff">1</span> boot on
-<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart primary ext4 300M 50G
-<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart primary linux-swap 50G 54G
-<span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart primary ext4 54G 100%
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ parted /dev/sda
+(parted) mklabel msdos
+(parted) mkpart primary ext4 1M 300M
+(parted) <span style="color:#cb4b16">set</span> <span style="color:#2aa198;font-weight:bold">1</span> boot on
+(parted) mkpart primary ext4 300M 50G
+(parted) mkpart primary linux-swap 50G 54G
+(parted) mkpart primary ext4 54G 100%
 </code></pre></div><p>上面的操作是对本地磁盘进行分区，分别为 <code>/boot</code> 分区、<code>/</code> 分区、<code>swap</code> 交换分区和 <code>/home</code> 分区。分区完成后，exit 退出 parted 状态返回安装界面。</p>
 <p>再次执行 <code>lsblk</code> 查看磁盘情况，可以看到 <code>sda</code> 生成了 <code>sda1</code>～<code>sda4</code> 4 个分区，接下来就是对这些分区进行格式化和挂载。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkfs.ext4 /dev/sda1
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkfs.ext4 /dev/sda1
 $ mkfs.ext4 /dev/sda2
 $ mkswap    /dev/sda3
 $ mkfs.ext4 /dev/sda4
@@ -95,9 +94,9 @@ $ swapon /dev/sda3
 <h4 id="安装进行时">安装进行时</h4>
 <p>修改安装源，中科大的镜像站很靠谱，修改 <code>/etc/pacman.d/mirrorlist</code>，找到中科大镜像站地址，粘贴到第一行即为最高下载优先级。</p>
 <p>下面就是安装进行时：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ pacstrap -i /mnt base base-devel
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ pacstrap -i /mnt base base-devel
 </code></pre></div><p>几分钟的胡思乱想之后，Arch 成功安装到挂载空间中。<code>arch-chroot</code> 进入挂载空间中的 Arch，进行必要的初始配置：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ genfstab -U /mnt &gt; /mnt/etc/fstab
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ genfstab -U /mnt &gt; /mnt/etc/fstab
 $ arch-chroot /mnt /bin/bash
 $ vi /etc/locale.gen
 ...
@@ -105,11 +104,11 @@ en_US.UTF-8 UTF-8
 zh_CN.UTF-8 UTF-8
 
 $ locale-gen
-$ echo LANG<span style="color:#f92672">=</span>en_US.UTF-8 &gt; /etc/locale.conf
+$ <span style="color:#cb4b16">echo</span> <span style="color:#268bd2">LANG</span>=en_US.UTF-8 &gt; /etc/locale.conf
 $ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 $ hwclock --systohc --utc
 </code></pre></div><p>安装 grub 引导并生成配置文件</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ pacman -S grub os-prober
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ pacman -S grub os-prober
 $ grub-install --recheck /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 </code></pre></div><p>给自己的第一台 Arch 起个响亮的名字吧，<code>echo Wittgenstein &gt; /etc/hostname</code>。exit 退出 chroot 环境，<code>mount -R /mnt</code> 结束挂载，<code>reboot</code> 进入 Arch 的世界。</p>
@@ -160,10 +159,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

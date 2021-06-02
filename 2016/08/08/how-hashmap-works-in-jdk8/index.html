@@ -11,7 +11,6 @@
   <meta name="description" content="Java 容器类中，HashMap 是一个绕不开的重点，无论是实际开发还是求职面试。由于对 JDK 6 下 HashMap 的讨论已经很多了，而且 JDK 8 对 HashMap 做了比较大的改进，本文">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -60,58 +59,58 @@
 </blockquote>
 <h3 id="引入">引入</h3>
 <p>为了便于切入话题，先写一段最简单的 HashMap 样例代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashMapTest</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
-        map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;China&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Beijing&#34;</span><span style="color:#f92672">);</span>
-        map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Japan&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Tokyo&#34;</span><span style="color:#f92672">);</span>
-        map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Korea&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Seoul&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String country <span style="color:#f92672">:</span> map<span style="color:#f92672">.</span><span style="color:#a6e22e">keySet</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>  <span style="color:#75715e">// set a break point
-</span><span style="color:#75715e"></span>            String capital <span style="color:#f92672">=</span> map<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>country<span style="color:#f92672">);</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>country <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;--&#34;</span> <span style="color:#f92672">+</span> capital<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HashMapTest</span> {
+    <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+        <span style="color:#268bd2">HashMap</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">map</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">HashMap</span>&lt;&gt;();
+        <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;China&#34;</span>, <span style="color:#2aa198">&#34;Beijing&#34;</span>);
+        <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;Japan&#34;</span>, <span style="color:#2aa198">&#34;Tokyo&#34;</span>);
+        <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;Korea&#34;</span>, <span style="color:#2aa198">&#34;Seoul&#34;</span>);
+        <span style="color:#859900">for</span> (<span style="color:#268bd2">String</span> <span style="color:#268bd2">country</span> : <span style="color:#268bd2">map</span>.<span style="color:#268bd2">keySet</span>()) {  <span style="color:#93a1a1;font-style:italic">// set a break point
+</span><span style="color:#93a1a1;font-style:italic"></span>            <span style="color:#268bd2">String</span> <span style="color:#268bd2">capital</span> = <span style="color:#268bd2">map</span>.<span style="color:#268bd2">get</span>(<span style="color:#268bd2">country</span>);
+            <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">country</span> + <span style="color:#2aa198">&#34;--&#34;</span> + <span style="color:#268bd2">capital</span>);
+        }
+    }
+}
 </code></pre></div><p>在 <code>for</code> 循环处进入断点，查看变量，IntelliJ IDEA 中显示如下：
 <img src="https://o70e8d1kb.qnssl.com/hashmap-breakpoint.png" alt=""></p>
 <p>变量 <code>map</code> 包含 <code>table</code> 属性和 <code>entrySet</code> 属性。其中，<code>table</code> 属性是一个长度为 16 的 <code>Map.Entry</code> 数组；<code>entrySet</code> 属性是一个元素类型为 <code>Map.Entry</code> 的 <code>Set</code> 对象。打开 JDK 8 的 <code>java.util.HashMap</code> 源码，对其属性一探究竟。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashMap</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">extends</span> AbstractMap<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span>
-    <span style="color:#66d9ef">implements</span> Map<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;,</span> Cloneable<span style="color:#f92672">,</span> Serializable <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HashMap</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractMap</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;
+    <span style="color:#859900">implements</span> <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;, <span style="color:#268bd2">Cloneable</span>, <span style="color:#268bd2">Serializable</span> {
 
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DEFAULT_INITIAL_CAPACITY <span style="color:#f92672">=</span> 1 <span style="color:#f92672">&lt;&lt;</span> 4<span style="color:#f92672">;</span> <span style="color:#75715e">// aka 16
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MAXIMUM_CAPACITY <span style="color:#f92672">=</span> 1 <span style="color:#f92672">&lt;&lt;</span> 30<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">float</span> DEFAULT_LOAD_FACTOR <span style="color:#f92672">=</span> 0<span style="color:#f92672">.</span><span style="color:#a6e22e">75f</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> TREEIFY_THRESHOLD <span style="color:#f92672">=</span> 8<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> UNTREEIFY_THRESHOLD <span style="color:#f92672">=</span> 6<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MIN_TREEIFY_CAPACITY <span style="color:#f92672">=</span> 64<span style="color:#f92672">;</span>
+    <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">DEFAULT_INITIAL_CAPACITY</span> = <span style="color:#268bd2">1</span> &lt;&lt; <span style="color:#268bd2">4</span>; <span style="color:#93a1a1;font-style:italic">// aka 16
+</span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">MAXIMUM_CAPACITY</span> = <span style="color:#268bd2">1</span> &lt;&lt; <span style="color:#268bd2">30</span>;
+    <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">DEFAULT_LOAD_FACTOR</span> = <span style="color:#268bd2">0</span>.<span style="color:#268bd2">75f</span>;
+    <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">TREEIFY_THRESHOLD</span> = <span style="color:#268bd2">8</span>;
+    <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">UNTREEIFY_THRESHOLD</span> = <span style="color:#268bd2">6</span>;
+    <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">MIN_TREEIFY_CAPACITY</span> = <span style="color:#268bd2">64</span>;
 
-    <span style="color:#75715e">/* ---------------- Fields -------------- */</span>
+    <span style="color:#93a1a1;font-style:italic">/* ---------------- Fields -------------- */</span>
 
-    <span style="color:#66d9ef">transient</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;[]</span> table<span style="color:#f92672">;</span>
+    <span style="color:#859900">transient</span> <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;[] <span style="color:#268bd2">table</span>;
 
-    <span style="color:#66d9ef">transient</span> Set<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;&gt;</span> entrySet<span style="color:#f92672">;</span>
+    <span style="color:#859900">transient</span> <span style="color:#268bd2">Set</span>&lt;<span style="color:#268bd2">Map</span>.<span style="color:#268bd2">Entry</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;&gt; <span style="color:#268bd2">entrySet</span>;
 
-    <span style="color:#66d9ef">transient</span> <span style="color:#66d9ef">int</span> size<span style="color:#f92672">;</span>
+    <span style="color:#859900">transient</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">size</span>;
 
-    <span style="color:#66d9ef">transient</span> <span style="color:#66d9ef">int</span> modCount<span style="color:#f92672">;</span>
+    <span style="color:#859900">transient</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">modCount</span>;
 
-    <span style="color:#66d9ef">int</span> threshold<span style="color:#f92672">;</span>
+    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">threshold</span>;
 
-    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">float</span> loadFactor<span style="color:#f92672">;</span>
+    <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">float</span> <span style="color:#268bd2">loadFactor</span>;
 
-    <span style="color:#75715e">/* ---------------- Public operations -------------- */</span>
+    <span style="color:#93a1a1;font-style:italic">/* ---------------- Public operations -------------- */</span>
 
-    <span style="color:#66d9ef">public</span> Set<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">keySet</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        Set<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">&gt;</span> ks<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>ks <span style="color:#f92672">=</span> keySet<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> <span style="color:#f92672">(</span>keySet <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> KeySet<span style="color:#f92672">())</span> <span style="color:#f92672">:</span> ks<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">Set</span>&lt;<span style="color:#268bd2">K</span>&gt; <span style="color:#268bd2">keySet</span>() {
+        <span style="color:#268bd2">Set</span>&lt;<span style="color:#268bd2">K</span>&gt; <span style="color:#268bd2">ks</span>;
+        <span style="color:#859900">return</span> (<span style="color:#268bd2">ks</span> = <span style="color:#268bd2">keySet</span>) == <span style="color:#859900;font-weight:bold">null</span> ? (<span style="color:#268bd2">keySet</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">KeySet</span>()) : <span style="color:#268bd2">ks</span>;
+    }
 
-    <span style="color:#66d9ef">public</span> Collection<span style="color:#f92672">&lt;</span>V<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">values</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        Collection<span style="color:#f92672">&lt;</span>V<span style="color:#f92672">&gt;</span> vs<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>vs <span style="color:#f92672">=</span> values<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> <span style="color:#f92672">(</span>values <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Values<span style="color:#f92672">())</span> <span style="color:#f92672">:</span> vs<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#268bd2">Collection</span>&lt;<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">values</span>() {
+        <span style="color:#268bd2">Collection</span>&lt;<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">vs</span>;
+        <span style="color:#859900">return</span> (<span style="color:#268bd2">vs</span> = <span style="color:#268bd2">values</span>) == <span style="color:#859900;font-weight:bold">null</span> ? (<span style="color:#268bd2">values</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Values</span>()) : <span style="color:#268bd2">vs</span>;
+    }
 
-<span style="color:#f92672">}</span>
+}
 </code></pre></div><p>从截取的源码里，可以理解上面断点执行的 <code>map</code> 各属性具体的含义：</p>
 <ul>
 <li><code>table</code>： 即 hash bucket 数组，存储 Node 单向链表。</li>
@@ -126,100 +125,100 @@
 <p>这样还是不够明白，下面接着说 HashMap 里的数据结构。</p>
 <h3 id="hashmap-中的数据结构">HashMap 中的数据结构</h3>
 <p>首先来看 <code>table</code> 属性所存储的 Node 链表：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// HashMap.Node
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Node</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">implements</span> Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> hash<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">final</span> K key<span style="color:#f92672">;</span>
-    V value<span style="color:#f92672">;</span>
-    Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> next<span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// HashMap.Node
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">static</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#859900">implements</span> <span style="color:#268bd2">Map</span>.<span style="color:#268bd2">Entry</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; {
+    <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">hash</span>;
+    <span style="color:#859900">final</span> <span style="color:#268bd2">K</span> <span style="color:#268bd2">key</span>;
+    <span style="color:#268bd2">V</span> <span style="color:#268bd2">value</span>;
+    <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">next</span>;
 
-    Node<span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> hash<span style="color:#f92672">,</span> K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">,</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> next<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hash</span> <span style="color:#f92672">=</span> hash<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">key</span> <span style="color:#f92672">=</span> key<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> next<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#268bd2">Node</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">hash</span>, <span style="color:#268bd2">K</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">V</span> <span style="color:#268bd2">value</span>, <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">next</span>) {
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">hash</span> = <span style="color:#268bd2">hash</span>;
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">key</span> = <span style="color:#268bd2">key</span>;
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">value</span> = <span style="color:#268bd2">value</span>;
+        <span style="color:#859900">this</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">next</span>;
+    }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> K <span style="color:#a6e22e">getKey</span><span style="color:#f92672">()</span>        <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> key<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> V <span style="color:#a6e22e">getValue</span><span style="color:#f92672">()</span>      <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> value<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> key <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;=&#34;</span> <span style="color:#f92672">+</span> value<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#268bd2">K</span> <span style="color:#268bd2">getKey</span>()        { <span style="color:#859900">return</span> <span style="color:#268bd2">key</span>; }
+    <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">getValue</span>()      { <span style="color:#859900">return</span> <span style="color:#268bd2">value</span>; }
+    <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">toString</span>() { <span style="color:#859900">return</span> <span style="color:#268bd2">key</span> + <span style="color:#2aa198">&#34;=&#34;</span> + <span style="color:#268bd2">value</span>; }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">hashCode</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span> <span style="color:#f92672">^</span> Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">(</span>value<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">hashCode</span>() {
+        <span style="color:#859900">return</span> <span style="color:#268bd2">Objects</span>.<span style="color:#268bd2">hashCode</span>(<span style="color:#268bd2">key</span>) ^ <span style="color:#268bd2">Objects</span>.<span style="color:#268bd2">hashCode</span>(<span style="color:#268bd2">value</span>);
+    }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> V <span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span>V newValue<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        V oldValue <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
-        value <span style="color:#f92672">=</span> newValue<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">return</span> oldValue<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">setValue</span>(<span style="color:#268bd2">V</span> <span style="color:#268bd2">newValue</span>) {
+        <span style="color:#268bd2">V</span> <span style="color:#268bd2">oldValue</span> = <span style="color:#268bd2">value</span>;
+        <span style="color:#268bd2">value</span> = <span style="color:#268bd2">newValue</span>;
+        <span style="color:#859900">return</span> <span style="color:#268bd2">oldValue</span>;
+    }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>o <span style="color:#f92672">==</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">)</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>o <span style="color:#66d9ef">instanceof</span> Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;?,?&gt;</span> e <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;?,?&gt;)</span>o<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">())</span> <span style="color:#f92672">&amp;&amp;</span>
-                Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">()))</span>
-                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+    <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">equals</span>(<span style="color:#268bd2">Object</span> <span style="color:#268bd2">o</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">o</span> == <span style="color:#859900">this</span>)
+            <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">true</span>;
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">o</span> <span style="color:#859900">instanceof</span> <span style="color:#268bd2">Map</span>.<span style="color:#268bd2">Entry</span>) {
+            <span style="color:#268bd2">Map</span>.<span style="color:#268bd2">Entry</span>&lt;?,?&gt; <span style="color:#268bd2">e</span> = (<span style="color:#268bd2">Map</span>.<span style="color:#268bd2">Entry</span>&lt;?,?&gt;)<span style="color:#268bd2">o</span>;
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">Objects</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">key</span>, <span style="color:#268bd2">e</span>.<span style="color:#268bd2">getKey</span>()) &amp;&amp;
+                <span style="color:#268bd2">Objects</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">value</span>, <span style="color:#268bd2">e</span>.<span style="color:#268bd2">getValue</span>()))
+                <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">true</span>;
+        }
+        <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">false</span>;
+    }
+}
 </code></pre></div><p><code>Node</code> 包含的域有 <code>hash</code>，<code>key</code>，<code>value</code> 和 <code>next</code>，其中 <code>next</code> 指向下一 <code>Node</code> 节点。<code>hashCode()</code> 方法通过求 <code>key</code> 和 <code>value</code> 的哈希值的异或计算 <code>hash</code>;</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Hash_table_5_0_1_1_1_1_1_LL.svg" alt=""></p>
 <h3 id="put--get">put() / get()</h3>
 <p>HashMap 最主要的操作就是 <code>put()</code> 和 <code>get()</code>，先来看 <code>put()</code> 方法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> V <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> putVal<span style="color:#f92672">(</span>hash<span style="color:#f92672">(</span>key<span style="color:#f92672">),</span> key<span style="color:#f92672">,</span> value<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">put</span>(<span style="color:#268bd2">K</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">V</span> <span style="color:#268bd2">value</span>) {
+    <span style="color:#859900">return</span> <span style="color:#268bd2">putVal</span>(<span style="color:#268bd2">hash</span>(<span style="color:#268bd2">key</span>), <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span>, <span style="color:#859900;font-weight:bold">false</span>, <span style="color:#859900;font-weight:bold">true</span>);
+}
 
-<span style="color:#66d9ef">final</span> V <span style="color:#a6e22e">putVal</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> hash<span style="color:#f92672">,</span> K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> onlyIfAbsent<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> evict<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;[]</span> tab<span style="color:#f92672">;</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> p<span style="color:#f92672">;</span> <span style="color:#66d9ef">int</span> n<span style="color:#f92672">,</span> i<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>tab <span style="color:#f92672">=</span> table<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">=</span> tab<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span>
-        n <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>tab <span style="color:#f92672">=</span> resize<span style="color:#f92672">()).</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>p <span style="color:#f92672">=</span> tab<span style="color:#f92672">[</span>i <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">-</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;</span> hash<span style="color:#f92672">])</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
-        tab<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> newNode<span style="color:#f92672">(</span>hash<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> value<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-        Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> e<span style="color:#f92672">;</span> K k<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>p<span style="color:#f92672">.</span><span style="color:#a6e22e">hash</span> <span style="color:#f92672">==</span> hash <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">((</span>k <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> key <span style="color:#f92672">||</span>
-            <span style="color:#f92672">(</span>key <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> key<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>k<span style="color:#f92672">))))</span>
-            e <span style="color:#f92672">=</span> p<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>p <span style="color:#66d9ef">instanceof</span> TreeNode<span style="color:#f92672">)</span>
-            e <span style="color:#f92672">=</span> <span style="color:#f92672">((</span>TreeNode<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;)</span>p<span style="color:#f92672">).</span><span style="color:#a6e22e">putTreeVal</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> tab<span style="color:#f92672">,</span> hash<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> binCount <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> <span style="color:#f92672">;</span> <span style="color:#f92672">++</span>binCount<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>e <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    p<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> newNode<span style="color:#f92672">(</span>hash<span style="color:#f92672">,</span> key<span style="color:#f92672">,</span> value<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
-                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>binCount <span style="color:#f92672">&gt;=</span> TREEIFY_THRESHOLD <span style="color:#f92672">-</span> 1<span style="color:#f92672">)</span> <span style="color:#75715e">// -1 for 1st
-</span><span style="color:#75715e"></span>                        treeifyBin<span style="color:#f92672">(</span>tab<span style="color:#f92672">,</span> hash<span style="color:#f92672">);</span>
-                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-                <span style="color:#f92672">}</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">hash</span> <span style="color:#f92672">==</span> hash <span style="color:#f92672">&amp;&amp;</span>
-                    <span style="color:#f92672">((</span>k <span style="color:#f92672">=</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> key <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> key<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>k<span style="color:#f92672">))))</span>
-                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-                p <span style="color:#f92672">=</span> e<span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>e <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#75715e">// existing mapping for key
-</span><span style="color:#75715e"></span>            V oldValue <span style="color:#f92672">=</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>onlyIfAbsent <span style="color:#f92672">||</span> oldValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
-                e<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
-            afterNodeAccess<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">return</span> oldValue<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#f92672">++</span>modCount<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(++</span>size <span style="color:#f92672">&gt;</span> threshold<span style="color:#f92672">)</span>
-        resize<span style="color:#f92672">();</span>
-    afterNodeInsertion<span style="color:#f92672">(</span>evict<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<span style="color:#859900">final</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">putVal</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">hash</span>, <span style="color:#268bd2">K</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">V</span> <span style="color:#268bd2">value</span>, <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">onlyIfAbsent</span>, <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">evict</span>) {
+    <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;[] <span style="color:#268bd2">tab</span>; <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">p</span>; <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">n</span>, <span style="color:#268bd2">i</span>;
+    <span style="color:#859900">if</span> ((<span style="color:#268bd2">tab</span> = <span style="color:#268bd2">table</span>) == <span style="color:#859900;font-weight:bold">null</span> || (<span style="color:#268bd2">n</span> = <span style="color:#268bd2">tab</span>.<span style="color:#268bd2">length</span>) == <span style="color:#268bd2">0</span>)
+        <span style="color:#268bd2">n</span> = (<span style="color:#268bd2">tab</span> = <span style="color:#268bd2">resize</span>()).<span style="color:#268bd2">length</span>;
+    <span style="color:#859900">if</span> ((<span style="color:#268bd2">p</span> = <span style="color:#268bd2">tab</span>[<span style="color:#268bd2">i</span> = (<span style="color:#268bd2">n</span> - <span style="color:#268bd2">1</span>) &amp; <span style="color:#268bd2">hash</span>]) == <span style="color:#859900;font-weight:bold">null</span>)
+        <span style="color:#268bd2">tab</span>[<span style="color:#268bd2">i</span>] = <span style="color:#268bd2">newNode</span>(<span style="color:#268bd2">hash</span>, <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span>, <span style="color:#859900;font-weight:bold">null</span>);
+    <span style="color:#859900">else</span> {
+        <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">e</span>; <span style="color:#268bd2">K</span> <span style="color:#268bd2">k</span>;
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">p</span>.<span style="color:#268bd2">hash</span> == <span style="color:#268bd2">hash</span> &amp;&amp; ((<span style="color:#268bd2">k</span> = <span style="color:#268bd2">p</span>.<span style="color:#268bd2">key</span>) == <span style="color:#268bd2">key</span> ||
+            (<span style="color:#268bd2">key</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">key</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">k</span>))))
+            <span style="color:#268bd2">e</span> = <span style="color:#268bd2">p</span>;
+        <span style="color:#859900">else</span> <span style="color:#859900">if</span> (<span style="color:#268bd2">p</span> <span style="color:#859900">instanceof</span> <span style="color:#268bd2">TreeNode</span>)
+            <span style="color:#268bd2">e</span> = ((<span style="color:#268bd2">TreeNode</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;)<span style="color:#268bd2">p</span>).<span style="color:#268bd2">putTreeVal</span>(<span style="color:#859900">this</span>, <span style="color:#268bd2">tab</span>, <span style="color:#268bd2">hash</span>, <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span>);
+        <span style="color:#859900">else</span> {
+            <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">binCount</span> = <span style="color:#268bd2">0</span>; ; ++<span style="color:#268bd2">binCount</span>) {
+                <span style="color:#859900">if</span> ((<span style="color:#268bd2">e</span> = <span style="color:#268bd2">p</span>.<span style="color:#268bd2">next</span>) == <span style="color:#859900;font-weight:bold">null</span>) {
+                    <span style="color:#268bd2">p</span>.<span style="color:#268bd2">next</span> = <span style="color:#268bd2">newNode</span>(<span style="color:#268bd2">hash</span>, <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span>, <span style="color:#859900;font-weight:bold">null</span>);
+                    <span style="color:#859900">if</span> (<span style="color:#268bd2">binCount</span> &gt;= <span style="color:#268bd2">TREEIFY_THRESHOLD</span> - <span style="color:#268bd2">1</span>) <span style="color:#93a1a1;font-style:italic">// -1 for 1st
+</span><span style="color:#93a1a1;font-style:italic"></span>                        <span style="color:#268bd2">treeifyBin</span>(<span style="color:#268bd2">tab</span>, <span style="color:#268bd2">hash</span>);
+                    <span style="color:#859900">break</span>;
+                }
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">e</span>.<span style="color:#268bd2">hash</span> == <span style="color:#268bd2">hash</span> &amp;&amp;
+                    ((<span style="color:#268bd2">k</span> = <span style="color:#268bd2">e</span>.<span style="color:#268bd2">key</span>) == <span style="color:#268bd2">key</span> || (<span style="color:#268bd2">key</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">key</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">k</span>))))
+                    <span style="color:#859900">break</span>;
+                <span style="color:#268bd2">p</span> = <span style="color:#268bd2">e</span>;
+            }
+        }
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">e</span> != <span style="color:#859900;font-weight:bold">null</span>) { <span style="color:#93a1a1;font-style:italic">// existing mapping for key
+</span><span style="color:#93a1a1;font-style:italic"></span>            <span style="color:#268bd2">V</span> <span style="color:#268bd2">oldValue</span> = <span style="color:#268bd2">e</span>.<span style="color:#268bd2">value</span>;
+            <span style="color:#859900">if</span> (!<span style="color:#268bd2">onlyIfAbsent</span> || <span style="color:#268bd2">oldValue</span> == <span style="color:#859900;font-weight:bold">null</span>)
+                <span style="color:#268bd2">e</span>.<span style="color:#268bd2">value</span> = <span style="color:#268bd2">value</span>;
+            <span style="color:#268bd2">afterNodeAccess</span>(<span style="color:#268bd2">e</span>);
+            <span style="color:#859900">return</span> <span style="color:#268bd2">oldValue</span>;
+        }
+    }
+    ++<span style="color:#268bd2">modCount</span>;
+    <span style="color:#859900">if</span> (++<span style="color:#268bd2">size</span> &gt; <span style="color:#268bd2">threshold</span>)
+        <span style="color:#268bd2">resize</span>();
+    <span style="color:#268bd2">afterNodeInsertion</span>(<span style="color:#268bd2">evict</span>);
+    <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">null</span>;
+}
 
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">hash</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">int</span> h<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> 0 <span style="color:#f92672">:</span> <span style="color:#f92672">(</span>h <span style="color:#f92672">=</span> key<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">())</span> <span style="color:#f92672">^</span> <span style="color:#f92672">(</span>h <span style="color:#f92672">&gt;&gt;&gt;</span> 16<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
+<span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">hash</span>(<span style="color:#268bd2">Object</span> <span style="color:#268bd2">key</span>) {
+    <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">h</span>;
+    <span style="color:#859900">return</span> (<span style="color:#268bd2">key</span> == <span style="color:#859900;font-weight:bold">null</span>) ? <span style="color:#268bd2">0</span> : (<span style="color:#268bd2">h</span> = <span style="color:#268bd2">key</span>.<span style="color:#268bd2">hashCode</span>()) ^ (<span style="color:#268bd2">h</span> &gt;&gt;&gt; <span style="color:#268bd2">16</span>);
+}
 </code></pre></div><p>拆解上面的 <code>putVal()</code> 方法，该方法有 5 个入参，主要的入参是 key 的哈希值，key 和 value，onlyIfAbsent 标识是否改变已存在的 value（默认 false，改变已存在的 value），evict 标识 hash bucket 数组是否为 creation mode（默认 true，非 creation mode）。<code>putVal()</code> 用了几个 <code>if-else</code> 对插入 key-value 时可能出现的情况做了不同的处理：</p>
 <ul>
 <li>通过 key 的哈希值计算 hash bucket 数组的 index 位置，如果该 index 位置的 Node 对象为空，则新建 Node 并写入 bucket 数组的 index 位置；</li>
@@ -233,30 +232,30 @@
 <li>如果节点已存在，就将节点的 value 替换为入参 value，并返回原 value 值。</li>
 </ul>
 <p>再看 <code>get()</code> 方法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> V <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> e<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>e <span style="color:#f92672">=</span> getNode<span style="color:#f92672">(</span>hash<span style="color:#f92672">(</span>key<span style="color:#f92672">),</span> key<span style="color:#f92672">))</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">:</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">get</span>(<span style="color:#268bd2">Object</span> <span style="color:#268bd2">key</span>) {
+    <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">e</span>;
+    <span style="color:#859900">return</span> (<span style="color:#268bd2">e</span> = <span style="color:#268bd2">getNode</span>(<span style="color:#268bd2">hash</span>(<span style="color:#268bd2">key</span>), <span style="color:#268bd2">key</span>)) == <span style="color:#859900;font-weight:bold">null</span> ? <span style="color:#859900;font-weight:bold">null</span> : <span style="color:#268bd2">e</span>.<span style="color:#268bd2">value</span>;
+}
 
-<span style="color:#66d9ef">final</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getNode</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> hash<span style="color:#f92672">,</span> Object key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;[]</span> tab<span style="color:#f92672">;</span> Node<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;</span> first<span style="color:#f92672">,</span> e<span style="color:#f92672">;</span> <span style="color:#66d9ef">int</span> n<span style="color:#f92672">;</span> K k<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>tab <span style="color:#f92672">=</span> table<span style="color:#f92672">)</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">=</span> tab<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> 0 <span style="color:#f92672">&amp;&amp;</span>
-        <span style="color:#f92672">(</span>first <span style="color:#f92672">=</span> tab<span style="color:#f92672">[(</span>n <span style="color:#f92672">-</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;</span> hash<span style="color:#f92672">])</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>first<span style="color:#f92672">.</span><span style="color:#a6e22e">hash</span> <span style="color:#f92672">==</span> hash <span style="color:#f92672">&amp;&amp;</span> <span style="color:#75715e">// always check first node
-</span><span style="color:#75715e"></span>            <span style="color:#f92672">((</span>k <span style="color:#f92672">=</span> first<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> key <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> key<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>k<span style="color:#f92672">))))</span>
-            <span style="color:#66d9ef">return</span> first<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>e <span style="color:#f92672">=</span> first<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>first <span style="color:#66d9ef">instanceof</span> TreeNode<span style="color:#f92672">)</span>
-                <span style="color:#66d9ef">return</span> <span style="color:#f92672">((</span>TreeNode<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;)</span>first<span style="color:#f92672">).</span><span style="color:#a6e22e">getTreeNode</span><span style="color:#f92672">(</span>hash<span style="color:#f92672">,</span> key<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">do</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">hash</span> <span style="color:#f92672">==</span> hash <span style="color:#f92672">&amp;&amp;</span>
-                    <span style="color:#f92672">((</span>k <span style="color:#f92672">=</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> key <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> key<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>k<span style="color:#f92672">))))</span>
-                    <span style="color:#66d9ef">return</span> e<span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">while</span> <span style="color:#f92672">((</span>e <span style="color:#f92672">=</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">)</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<span style="color:#859900">final</span> <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">getNode</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">hash</span>, <span style="color:#268bd2">Object</span> <span style="color:#268bd2">key</span>) {
+    <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;[] <span style="color:#268bd2">tab</span>; <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">first</span>, <span style="color:#268bd2">e</span>; <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">n</span>; <span style="color:#268bd2">K</span> <span style="color:#268bd2">k</span>;
+    <span style="color:#859900">if</span> ((<span style="color:#268bd2">tab</span> = <span style="color:#268bd2">table</span>) != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; (<span style="color:#268bd2">n</span> = <span style="color:#268bd2">tab</span>.<span style="color:#268bd2">length</span>) &gt; <span style="color:#268bd2">0</span> &amp;&amp;
+        (<span style="color:#268bd2">first</span> = <span style="color:#268bd2">tab</span>[(<span style="color:#268bd2">n</span> - <span style="color:#268bd2">1</span>) &amp; <span style="color:#268bd2">hash</span>]) != <span style="color:#859900;font-weight:bold">null</span>) {
+        <span style="color:#859900">if</span> (<span style="color:#268bd2">first</span>.<span style="color:#268bd2">hash</span> == <span style="color:#268bd2">hash</span> &amp;&amp; <span style="color:#93a1a1;font-style:italic">// always check first node
+</span><span style="color:#93a1a1;font-style:italic"></span>            ((<span style="color:#268bd2">k</span> = <span style="color:#268bd2">first</span>.<span style="color:#268bd2">key</span>) == <span style="color:#268bd2">key</span> || (<span style="color:#268bd2">key</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">key</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">k</span>))))
+            <span style="color:#859900">return</span> <span style="color:#268bd2">first</span>;
+        <span style="color:#859900">if</span> ((<span style="color:#268bd2">e</span> = <span style="color:#268bd2">first</span>.<span style="color:#268bd2">next</span>) != <span style="color:#859900;font-weight:bold">null</span>) {
+            <span style="color:#859900">if</span> (<span style="color:#268bd2">first</span> <span style="color:#859900">instanceof</span> <span style="color:#268bd2">TreeNode</span>)
+                <span style="color:#859900">return</span> ((<span style="color:#268bd2">TreeNode</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;)<span style="color:#268bd2">first</span>).<span style="color:#268bd2">getTreeNode</span>(<span style="color:#268bd2">hash</span>, <span style="color:#268bd2">key</span>);
+            <span style="color:#859900">do</span> {
+                <span style="color:#859900">if</span> (<span style="color:#268bd2">e</span>.<span style="color:#268bd2">hash</span> == <span style="color:#268bd2">hash</span> &amp;&amp;
+                    ((<span style="color:#268bd2">k</span> = <span style="color:#268bd2">e</span>.<span style="color:#268bd2">key</span>) == <span style="color:#268bd2">key</span> || (<span style="color:#268bd2">key</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#268bd2">key</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">k</span>))))
+                    <span style="color:#859900">return</span> <span style="color:#268bd2">e</span>;
+            } <span style="color:#859900">while</span> ((<span style="color:#268bd2">e</span> = <span style="color:#268bd2">e</span>.<span style="color:#268bd2">next</span>) != <span style="color:#859900;font-weight:bold">null</span>);
+        }
+    }
+    <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">null</span>;
+}
 </code></pre></div><p><code>get()</code> 方法简明易懂，通过 key 的哈希值来定位 bucket 数组的 index，找到 Node 节点，从而找到所匹配的 value 值。</p>
 <ul>
 <li>从 index 上的 Node 链表的头节点开始，如果头节点的 hash 和 key 域都匹配，则命中，直接返回 value；</li>
@@ -311,10 +310,6 @@
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

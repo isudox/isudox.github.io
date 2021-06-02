@@ -11,7 +11,6 @@
   <meta name="description" content="Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。 首先理">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -106,44 +105,44 @@
 </ul>
 <p>对于跨域资源的嵌入，实际开发中用的非常频繁，从外部引入 js、css、img 这些静态文件，都是被浏览器接受的。</p>
 <p>下面对浏览器的同源策略做个测试，探探究竟。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// cross-origin request
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://search.jd.com/Search?keyword=python&amp;enc=utf-8&amp;wq=python&#34;</span>;
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">request</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
-<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#a6e22e">url</span>);
-<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">send</span>(<span style="color:#66d9ef">null</span>);
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// cross-origin request
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">var</span> <span style="color:#268bd2">url</span> = <span style="color:#2aa198">&#34;http://search.jd.com/Search?keyword=python&amp;enc=utf-8&amp;wq=python&#34;</span>;
+<span style="color:#859900">var</span> <span style="color:#268bd2">request</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">XMLHttpRequest</span>();
+<span style="color:#268bd2">request</span>.<span style="color:#268bd2">open</span>(<span style="color:#2aa198">&#34;GET&#34;</span>, <span style="color:#268bd2">url</span>);
+<span style="color:#268bd2">request</span>.<span style="color:#268bd2">send</span>(<span style="color:#859900;font-weight:bold">null</span>);
 </code></pre></div><p>浏览器控制台会出现错误信息（信息中的 Origin 为 null 是因为我是用浏览器直接打开 html，而不是通过 http server 访问 html）：</p>
 <blockquote>
 <p>XMLHttpRequest cannot load <a href="http://search.jd.com/Search?keyword=python&amp;enc=utf-8&amp;wq=python">http://search.jd.com/Search?keyword=python&amp;enc=utf-8&amp;wq=python</a>. No &lsquo;Access-Control-Allow-Origin&rsquo; header is present on the requested resource. Origin &lsquo;null&rsquo; is therefore not allowed access.</p>
 </blockquote>
 <p>该请求来源的 Origin 不在可允许范围内，这种情况就是跨域请求被拒。下面是一个简单的本地 http server：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// local http server writtern by Node.js
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">8080</span>; 
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// local http server writtern by Node.js
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">var</span> <span style="color:#268bd2">http</span> = <span style="color:#268bd2">require</span>(<span style="color:#2aa198">&#39;http&#39;</span>);
+<span style="color:#859900">var</span> <span style="color:#268bd2">port</span> = <span style="color:#2aa198;font-weight:bold">8080</span>; 
 
-<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">handleRequest</span>(<span style="color:#a6e22e">request</span>, <span style="color:#a6e22e">response</span>){
-    <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">end</span>(<span style="color:#e6db74">&#39;Hello&#39;</span>);
-    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;request url: &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">url</span>);
+<span style="color:#859900">function</span> <span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">request</span>, <span style="color:#268bd2">response</span>){
+    <span style="color:#268bd2">response</span>.<span style="color:#268bd2">end</span>(<span style="color:#2aa198">&#39;Hello&#39;</span>);
+    <span style="color:#268bd2">console</span>.<span style="color:#268bd2">log</span>(<span style="color:#2aa198">&#39;request url: &#39;</span> + <span style="color:#268bd2">request</span>.<span style="color:#268bd2">url</span>);
 }
 
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">createServer</span>(<span style="color:#a6e22e">handleRequest</span>);
-<span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#a6e22e">PORT</span>, <span style="color:#66d9ef">function</span>(){
-    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Server listening on: http://localhost:%s&#34;</span>, <span style="color:#a6e22e">port</span>);
+<span style="color:#859900">var</span> <span style="color:#268bd2">server</span> = <span style="color:#268bd2">http</span>.<span style="color:#268bd2">createServer</span>(<span style="color:#268bd2">handleRequest</span>);
+<span style="color:#268bd2">server</span>.<span style="color:#268bd2">listen</span>(<span style="color:#268bd2">PORT</span>, <span style="color:#859900">function</span>(){
+    <span style="color:#268bd2">console</span>.<span style="color:#268bd2">log</span>(<span style="color:#2aa198">&#34;Server listening on: http://localhost:%s&#34;</span>, <span style="color:#268bd2">port</span>);
 });
 </code></pre></div><p><code>node simple-server.js</code> 运行，把请求的 URL 改成 http://localhost:8080，可以看到命令行终端输出日志，这就表明，请求实际上是从浏览器发出了，服务器也接收到了请求，但是浏览器在读取跨域返回的数据时被拒绝了。这就印证了 MDN 文档上说明的，浏览器不允许跨域读操作。</p>
 <h3 id="jsonp">JSONP</h3>
 <p>JSONP 并不在 HTML 的标准里，而是开发者为了实现跨域请求而创造的一个 trick。在 HTML 中，可以通过 &ldquo;src&rdquo;、&ldquo;img&rdquo; 标签引入非同源的静态资源，这就给 JSONP 的实现提供了可能。</p>
 <p>JSONP 的实现很简单，需要客户端和服务端配合。客户端在 HTML 中动态生成 <code>script</code> 标签，在 &ldquo;src&rdquo; 中引入请求的 URL + 回调函数，这样请求服务器返回的数据会交由回调函数处理，这样就实现了跨域读请求；服务端在接收到客户端请求后，首先取得客户端要回调的函数名，再生成 JavaScript 代码段返回给浏览器，浏览器在获取到返回结果后直接调用回调函数完成任务。</p>
 <p>手写一段简陋的 JS 代码演示下 JSONP 的整个流程：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">handleCallback</span>(<span style="color:#a6e22e">result</span>) {
-    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">message</span>);
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">function</span> <span style="color:#268bd2">handleCallback</span>(<span style="color:#268bd2">result</span>) {
+    <span style="color:#268bd2">console</span>.<span style="color:#268bd2">log</span>(<span style="color:#268bd2">result</span>.<span style="color:#268bd2">message</span>);
 }
 
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">jsonp</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;script&#39;</span>);
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ele</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;demo&#39;</span>);
-<span style="color:#a6e22e">jsonp</span>.<span style="color:#a6e22e">type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;text/javascript&#39;</span>;
-<span style="color:#a6e22e">jsonp</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://localhost:8080?callback=handleCallback&#39;</span>;
-<span style="color:#a6e22e">ele</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">jsonp</span>);
-<span style="color:#a6e22e">ele</span>.<span style="color:#a6e22e">removeChild</span>(<span style="color:#a6e22e">jsonp</span>);
+<span style="color:#859900">var</span> <span style="color:#268bd2">jsonp</span> = <span style="color:#cb4b16">document</span>.<span style="color:#268bd2">createElement</span>(<span style="color:#2aa198">&#39;script&#39;</span>);
+<span style="color:#859900">var</span> <span style="color:#268bd2">ele</span> = <span style="color:#cb4b16">document</span>.<span style="color:#268bd2">getElementById</span>(<span style="color:#2aa198">&#39;demo&#39;</span>);
+<span style="color:#268bd2">jsonp</span>.<span style="color:#268bd2">type</span> = <span style="color:#2aa198">&#39;text/javascript&#39;</span>;
+<span style="color:#268bd2">jsonp</span>.<span style="color:#268bd2">src</span> = <span style="color:#2aa198">&#39;http://localhost:8080?callback=handleCallback&#39;</span>;
+<span style="color:#268bd2">ele</span>.<span style="color:#268bd2">appendChild</span>(<span style="color:#268bd2">jsonp</span>);
+<span style="color:#268bd2">ele</span>.<span style="color:#268bd2">removeChild</span>(<span style="color:#268bd2">jsonp</span>);
 </code></pre></div><p>JSONP 只支持 GET 请求，而且需要服务器端来配合，如果服务器端返回一段恶意代码，客户端也会毅然决然的执行……JSONP 是一个伟大的创造，但还不够好。</p>
 <h3 id="cors">CORS</h3>
 <p>CORS 是W3C 推荐的一种新的官方方案，能是服务器支持 XMLHttpRequest 的跨域请求。CORS 实现起来非常方便，只需要增加一些 HTTP 头，让服务器能声明允许的访问来源。</p>
@@ -154,9 +153,9 @@
 </ul>
 <p>浏览器（支持 CORS）对简单的跨域请求，会在请求头里加上 <code>Origin</code> 字段，向服务器说明请求源信息，包括协议、域名和端口，由服务器判断请求源是否在允许的域中。</p>
 <p>编写一个简单请求，跨域获取信息：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://ipinfo.io/54.169.237.109/json?token=iplocation.net&#34;</span>;
-<span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajax</span>({
-    <span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">url</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">url</span> = <span style="color:#2aa198">&#34;https://ipinfo.io/54.169.237.109/json?token=iplocation.net&#34;</span>;
+<span style="color:#268bd2">$</span>.<span style="color:#268bd2">ajax</span>({
+    <span style="color:#268bd2">url</span>: <span style="color:#268bd2">url</span>
 });
 </code></pre></div><p>查看请求头信息：</p>
 <pre><code>Accept:*/*
@@ -185,12 +184,12 @@ X-Content-Type-Options:nosniff
 </ul>
 <p>非简单请求会先向服务器发送一个 <code>OPTIONS</code> 的“预请求”（preflight），来确认该跨域请求是否能被服务端允许，如果允许，则继续发送费简单请求，否则，XMLHttpRequest 的 onerror 回调函数会捕获到错误信息。</p>
 <p>编写一个非简单请求：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://aruner.net/resources/access-control-with-post-preflight/&#39;</span>;
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
-<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#39;POST&#39;</span>, <span style="color:#a6e22e">url</span>, <span style="color:#66d9ef">true</span>);
-<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">setRequestHeader</span>(<span style="color:#e6db74">&#39;X-PINGOTHER&#39;</span>, <span style="color:#e6db74">&#39;pingpong&#39;</span>);
-<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">setRequestHeader</span>(<span style="color:#e6db74">&#39;Content-Type&#39;</span>, <span style="color:#e6db74">&#39;application/xml&#39;</span>);
-<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">send</span>(); 
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">url</span> = <span style="color:#2aa198">&#39;http://aruner.net/resources/access-control-with-post-preflight/&#39;</span>;
+<span style="color:#859900">var</span> <span style="color:#268bd2">xhr</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">XMLHttpRequest</span>();
+<span style="color:#268bd2">xhr</span>.<span style="color:#268bd2">open</span>(<span style="color:#2aa198">&#39;POST&#39;</span>, <span style="color:#268bd2">url</span>, <span style="color:#859900;font-weight:bold">true</span>);
+<span style="color:#268bd2">xhr</span>.<span style="color:#268bd2">setRequestHeader</span>(<span style="color:#2aa198">&#39;X-PINGOTHER&#39;</span>, <span style="color:#2aa198">&#39;pingpong&#39;</span>);
+<span style="color:#268bd2">xhr</span>.<span style="color:#268bd2">setRequestHeader</span>(<span style="color:#2aa198">&#39;Content-Type&#39;</span>, <span style="color:#2aa198">&#39;application/xml&#39;</span>);
+<span style="color:#268bd2">xhr</span>.<span style="color:#268bd2">send</span>(); 
 </code></pre></div><p>预请求的请求头：</p>
 <pre><code>OPTIONS /resources/post-here/ HTTP/1.1
 Host: bar.com
@@ -223,8 +222,8 @@ Content-Type: text/plain
 </ul>
 <p>如果拒绝该跨域请求，错误信息也会被 <code>onerror</code> 回调捕获。</p>
 <p>XMLHttpRequest 请求可以发送凭证请求（HTTP Cookies 和验证信息），通常不会跨域发送凭证信息，但也有一些情况需要打通不同的登录态，可以把 XMLHttpRequest 的 <code>withCredentials</code> 设置为 <code>true</code>，这样浏览器就能跨域发送凭证信息。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">xhr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">XMLHttpRequest</span>();
-<span style="color:#a6e22e">xhr</span>.<span style="color:#a6e22e">withCredentials</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">xhr</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">XMLHttpRequest</span>();
+<span style="color:#268bd2">xhr</span>.<span style="color:#268bd2">withCredentials</span> = <span style="color:#859900;font-weight:bold">true</span>;
 </code></pre></div><p>服务端返回的响应头中的 <code>Access-Control-Allow-Credentials</code> 字段存在且为 <code>true</code> 时，浏览器才会将响应结果传递给客户端程序。另外，<code>Access-Control-Allow-Origin</code> 必须指定请求源的域名，否则响应失败。</p>
 <pre><code>HTTP/1.1 200 OK
 Access-Control-Allow-Origin: http://foo.com
@@ -278,10 +277,6 @@ Content-Type: text/plain
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

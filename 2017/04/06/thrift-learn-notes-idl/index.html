@@ -11,7 +11,6 @@
   <meta name="description" content="上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -80,13 +79,13 @@
     5: i32 grade;
 }
 </code></pre><p>对应的，Thrift 编译后生成下面的 Student 类：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> id<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> age<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String sex<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> grade<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Student</span> {
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">id</span>;
+    <span style="color:#859900">private</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">name</span>;
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">age</span>;
+    <span style="color:#859900">private</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">sex</span>;
+    <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">grade</span>;
+}
 </code></pre></div><h2 id="容器">容器</h2>
 <p>Thrift 容器是强类型的，可以映射成大多数编程语言的容器。Thrift 包含 3 种容器——</p>
 <ul>
@@ -231,10 +230,6 @@ service MyService extends test.FacebookService{
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>

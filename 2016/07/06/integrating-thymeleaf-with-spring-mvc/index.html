@@ -11,7 +11,6 @@
   <meta name="description" content="在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分">
   <meta name="author" content="isudox">
   
-  <link href="https://isudox.com/an-old-hope.min.css" rel="stylesheet">
   <link href="https://isudox.com/style.css" rel="stylesheet">
   <link href="https://isudox.com/custom.css" rel="stylesheet">
   
@@ -59,9 +58,9 @@
 <h2 id="模板标准方言">模板标准方言</h2>
 <h3 id="引入">引入</h3>
 <p>Thymeleaf 的模板标准语言中绝大多数 processors 都是 attribute processors，这就意味着浏览器可以正常地表现 XHTML/HTML5 模板文件，即使是在模板引擎没有加载的情况下，因为浏览器会忽略额外的 attribute。这就是 Thymeleaf 比前辈 JSP 厉害的地方之一。来看下面的 input 标签，JSP 里会加入浏览器无法直接识别的代码:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">form:inputText</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;userName&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${user.name}&#34;</span> /&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">form:inputText</span> <span style="color:#268bd2">name</span>=<span style="color:#2aa198">&#34;userName&#34;</span> <span style="color:#268bd2">value</span>=<span style="color:#2aa198">&#34;${user.name}&#34;</span> /&gt;
 </code></pre></div><p>而 Thymeleaf 模板标准语言会这样写：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;userName&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;James Carrot&#34;</span> <span style="color:#a6e22e">th:value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${user.name}&#34;</span> /&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">input</span> <span style="color:#268bd2">type</span>=<span style="color:#2aa198">&#34;text&#34;</span> <span style="color:#268bd2">name</span>=<span style="color:#2aa198">&#34;userName&#34;</span> <span style="color:#268bd2">value</span>=<span style="color:#2aa198">&#34;James Carrot&#34;</span> <span style="color:#268bd2">th:value</span>=<span style="color:#2aa198">&#34;${user.name}&#34;</span> /&gt;
 </code></pre></div><p>浏览器能直接识别上述 Thymeleaf 的 input 标签，而且还能在加载模板引擎后，由后端返回的数据渲染 value 值。也就是这一特性，可以让前后端工程师在同一个模板文件上协作开发，避免了从静态页面到模板页面的转换，前后端并行开发，这就是未来的趋势，也被称作 Natural Templating，页面即模板，模板即页面。</p>
 <h3 id="标准表达式语法">标准表达式语法</h3>
 <h4 id="基本表达式">基本表达式</h4>
@@ -120,125 +119,125 @@
 <pre><code>'User is of type ' + (${user.isAdmin()} ? 'Administrator' : (${user.type} ?: 'Unknown'))
 </code></pre><h4 id="变量">变量</h4>
 <p>变量表达式 <code>${...}</code> 会把模板 context 内保存的变量解释出来。例如下面的表达式中</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">p</span>&gt;Today is: &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${today}&#34;</span>&gt;13 August 2016&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;Today is: &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;${today}&#34;</span>&gt;13 August 2016&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
 </code></pre></div><p>实际上是执行了这样的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getVariables</span><span style="color:#f92672">().</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;today&#34;</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">ctx</span>.<span style="color:#268bd2">getVariables</span>().<span style="color:#268bd2">get</span>(<span style="color:#2aa198">&#34;today&#34;</span>);
 </code></pre></div><p>复合结构的变量：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">th:utext</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{home.welcome(${session.user.name})}&#34;</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">p</span> <span style="color:#268bd2">th:utext</span>=<span style="color:#2aa198">&#34;#{home.welcome(${session.user.name})}&#34;</span>&gt;
   Welcome to our grocery store, Sebastian Pepper!
-&lt;/<span style="color:#f92672">p</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
 </code></pre></div><p>变量执行的代码是</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">((</span>User<span style="color:#f92672">)</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getVariables</span><span style="color:#f92672">().</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;session&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;user&#34;</span><span style="color:#f92672">)).</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">((<span style="color:#268bd2">User</span>) <span style="color:#268bd2">ctx</span>.<span style="color:#268bd2">getVariables</span>().<span style="color:#268bd2">get</span>(<span style="color:#2aa198">&#34;session&#34;</span>).<span style="color:#268bd2">get</span>(<span style="color:#2aa198">&#34;user&#34;</span>)).<span style="color:#268bd2">getName</span>();
 </code></pre></div><p><code>getter</code> 方法只是其中一个功能，变量表达式就像 Python 一样极富表现力：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 通过 `.` 符访问变量属性值
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">father</span>.<span style="color:#a6e22e">name</span>}
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 通过 `.` 符访问变量属性值
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">$</span>{<span style="color:#268bd2">person</span>.<span style="color:#268bd2">father</span>.<span style="color:#268bd2">name</span>}
 
-<span style="color:#75715e">// 通过 `[]` 符访问变量属性值
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">person</span>[<span style="color:#e6db74">&#39;father&#39;</span>][<span style="color:#e6db74">&#39;name&#39;</span>]}
+<span style="color:#93a1a1;font-style:italic">// 通过 `[]` 符访问变量属性值
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">$</span>{<span style="color:#268bd2">person</span>[<span style="color:#2aa198">&#39;father&#39;</span>][<span style="color:#2aa198">&#39;name&#39;</span>]}
 
-<span style="color:#75715e">// 如果对象是一个字典，则 `.` 和 `[]` 都能执行 `get(...)` 方法
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">countriesByCode</span>.<span style="color:#a6e22e">ES</span>}
-<span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">personsByName</span>[<span style="color:#e6db74">&#39;Stephen Zucchini&#39;</span>].<span style="color:#a6e22e">age</span>}
+<span style="color:#93a1a1;font-style:italic">// 如果对象是一个字典，则 `.` 和 `[]` 都能执行 `get(...)` 方法
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">$</span>{<span style="color:#268bd2">countriesByCode</span>.<span style="color:#268bd2">ES</span>}
+<span style="color:#268bd2">$</span>{<span style="color:#268bd2">personsByName</span>[<span style="color:#2aa198">&#39;Stephen Zucchini&#39;</span>].<span style="color:#268bd2">age</span>}
 
-<span style="color:#75715e">// 访问数组元素
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">personsArray</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">name</span>}
+<span style="color:#93a1a1;font-style:italic">// 访问数组元素
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">$</span>{<span style="color:#268bd2">personsArray</span>[<span style="color:#2aa198;font-weight:bold">0</span>].<span style="color:#268bd2">name</span>}
 
-<span style="color:#75715e">// 访问方法
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">createCompleteName</span>()}
-<span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">createCompleteNameWithSeparator</span>(<span style="color:#e6db74">&#39;-&#39;</span>)}
+<span style="color:#93a1a1;font-style:italic">// 访问方法
+</span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">$</span>{<span style="color:#268bd2">person</span>.<span style="color:#268bd2">createCompleteName</span>()}
+<span style="color:#268bd2">$</span>{<span style="color:#268bd2">person</span>.<span style="color:#268bd2">createCompleteNameWithSeparator</span>(<span style="color:#2aa198">&#39;-&#39;</span>)}
 </code></pre></div><p>另外，<code>*{...}</code> 也是取变量的表达式，两者的区别是：<code>*{...}</code> 会从选定的对象中匹配，而 <code>${...}</code> 是从整个 context 中去匹配。当未指定对象的前提下，二者的作用是一样的。参考下面的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:object</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${session.user}&#34;</span>&gt;
-  &lt;<span style="color:#f92672">p</span>&gt;Name: &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;*{firstName}&#34;</span>&gt;Sebastian&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-  &lt;<span style="color:#f92672">p</span>&gt;Surname: &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;*{lastName}&#34;</span>&gt;Pepper&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-  &lt;<span style="color:#f92672">p</span>&gt;Nationality: &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;*{nationality}&#34;</span>&gt;Saturn&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-&lt;/<span style="color:#f92672">div</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:object</span>=<span style="color:#2aa198">&#34;${session.user}&#34;</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;Name: &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;*{firstName}&#34;</span>&gt;Sebastian&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;Surname: &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;*{lastName}&#34;</span>&gt;Pepper&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;Nationality: &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;*{nationality}&#34;</span>&gt;Saturn&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
 </code></pre></div><p>就等同于</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span>&gt;
-  &lt;<span style="color:#f92672">p</span>&gt;Name: &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${session.user.firstName}&#34;</span>&gt;Sebastian&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-  &lt;<span style="color:#f92672">p</span>&gt;Surname: &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${session.user.lastName}&#34;</span>&gt;Pepper&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-  &lt;<span style="color:#f92672">p</span>&gt;Nationality: &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${session.user.nationality}&#34;</span>&gt;Saturn&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-&lt;/<span style="color:#f92672">div</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">div</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;Name: &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;${session.user.firstName}&#34;</span>&gt;Sebastian&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;Surname: &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;${session.user.lastName}&#34;</span>&gt;Pepper&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;Nationality: &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;${session.user.nationality}&#34;</span>&gt;Saturn&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
 </code></pre></div><h4 id="url">URL</h4>
 <p>URL 是变量之外的另一个要点，由 <code>@{...}</code> 表达式解释，通过标签 <code>th:href</code> 或 <code>th:src</code> 指定。参见下面的示例代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- 绝对路径 --&gt;</span>
-&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;details.html&#34;</span> <span style="color:#a6e22e">th:href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{http://localhost:8080/gtvg/order/details(orderId=${o.id})}&#34;</span>&gt;view&lt;/<span style="color:#f92672">a</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#93a1a1;font-style:italic">&lt;!-- 绝对路径 --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">a</span> <span style="color:#268bd2">href</span>=<span style="color:#2aa198">&#34;details.html&#34;</span> <span style="color:#268bd2">th:href</span>=<span style="color:#2aa198">&#34;@{http://localhost:8080/gtvg/order/details(orderId=${o.id})}&#34;</span>&gt;view&lt;/<span style="color:#268bd2;font-weight:bold">a</span>&gt;
 
-<span style="color:#75715e">&lt;!-- 相对路径 --&gt;</span>
-&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;details.html&#34;</span> <span style="color:#a6e22e">th:href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{/order/details(orderId=${o.id})}&#34;</span>&gt;view&lt;/<span style="color:#f92672">a</span>&gt;
+<span style="color:#93a1a1;font-style:italic">&lt;!-- 相对路径 --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">a</span> <span style="color:#268bd2">href</span>=<span style="color:#2aa198">&#34;details.html&#34;</span> <span style="color:#268bd2">th:href</span>=<span style="color:#2aa198">&#34;@{/order/details(orderId=${o.id})}&#34;</span>&gt;view&lt;/<span style="color:#268bd2;font-weight:bold">a</span>&gt;
 
-&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;details.html&#34;</span> <span style="color:#a6e22e">th:href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{/order/{orderId}/details(orderId=${o.id})}&#34;</span>&gt;view&lt;/<span style="color:#f92672">a</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">a</span> <span style="color:#268bd2">href</span>=<span style="color:#2aa198">&#34;details.html&#34;</span> <span style="color:#268bd2">th:href</span>=<span style="color:#2aa198">&#34;@{/order/{orderId}/details(orderId=${o.id})}&#34;</span>&gt;view&lt;/<span style="color:#268bd2;font-weight:bold">a</span>&gt;
 </code></pre></div><p>上述表达式中，orderId=${o.id} 是作为 URL 的参数，多个参数也是类似如此。</p>
 <h4 id="字面值">字面值</h4>
 <p>字面值很简单，就是做字面内容的替换，包括文本、数字、布尔值、空值 null。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- 文本 --&gt;</span>
-&lt;<span style="color:#f92672">p</span>&gt;Now you are looking at a &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#39;working web application&#39;&#34;</span>&gt;template file&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-<span style="color:#75715e">&lt;!-- 数字 --&gt;</span>
-&lt;<span style="color:#f92672">p</span>&gt;The year is &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2016&#34;</span>&gt;1984&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-&lt;<span style="color:#f92672">p</span>&gt;In two years, it will be &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2013 + 3&#34;</span>&gt;1494&lt;/<span style="color:#f92672">span</span>&gt;.&lt;/<span style="color:#f92672">p</span>&gt;
-<span style="color:#75715e">&lt;!-- 布尔 --&gt;</span>
-&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${user.isAdmin()} == false&#34;</span>&gt;
-<span style="color:#75715e">&lt;!-- null --&gt;</span>
-&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${variable.something} == null&#34;</span>&gt; ...
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#93a1a1;font-style:italic">&lt;!-- 文本 --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;Now you are looking at a &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;&#39;working web application&#39;&#34;</span>&gt;template file&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+<span style="color:#93a1a1;font-style:italic">&lt;!-- 数字 --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;The year is &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;2016&#34;</span>&gt;1984&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">p</span>&gt;In two years, it will be &lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;2013 + 3&#34;</span>&gt;1494&lt;/<span style="color:#268bd2;font-weight:bold">span</span>&gt;.&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+<span style="color:#93a1a1;font-style:italic">&lt;!-- 布尔 --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:if</span>=<span style="color:#2aa198">&#34;${user.isAdmin()} == false&#34;</span>&gt;
+<span style="color:#93a1a1;font-style:italic">&lt;!-- null --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:if</span>=<span style="color:#2aa198">&#34;${variable.something} == null&#34;</span>&gt; ...
 </code></pre></div><h4 id="字符串替换">字符串替换</h4>
 <p>有时候需要动态的改变文本的某一段内容，这就需要用到拼接和替换：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#39;The name of the user is &#39; + ${user.name}&#34;</span>&gt;
-&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#39;Welcome to our application, &#39; + ${user.name} + &#39;!&#39;&#34;</span>&gt;
-<span style="color:#75715e">&lt;!-- || 符号内的字符做拼接处理，效果同上 --&gt;</span>
-&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;|Welcome to our application, ${user.name}!|&#34;</span>&gt;
-&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${onevar} + &#39; &#39; + |${twovar}, ${threevar}|&#34;</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;&#39;The name of the user is &#39; + ${user.name}&#34;</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;&#39;Welcome to our application, &#39; + ${user.name} + &#39;!&#39;&#34;</span>&gt;
+<span style="color:#93a1a1;font-style:italic">&lt;!-- || 符号内的字符做拼接处理，效果同上 --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;|Welcome to our application, ${user.name}!|&#34;</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">span</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;${onevar} + &#39; &#39; + |${twovar}, ${threevar}|&#34;</span>&gt;
 </code></pre></div><h4 id="运算--比较操作符">运算 / 比较操作符</h4>
 <p>基础的运算符包括加减乘除取余，比较操作符中由于存在 <code>&gt;</code> 和 <code>&lt;</code>，所以需要转义处理：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:with</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;isEven=(${prodStat.count} % 2 == 0)&#34;</span>&gt;
-&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${prodStat.count} &amp;gt; 1&#34;</span>&gt;
-&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#39;Execution mode is &#39; + ( (${execMode} == &#39;dev&#39;)? &#39;Development&#39; : &#39;Production&#39;)&#34;</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:with</span>=<span style="color:#2aa198">&#34;isEven=(${prodStat.count} % 2 == 0)&#34;</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:if</span>=<span style="color:#2aa198">&#34;${prodStat.count} &amp;gt; 1&#34;</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;&#39;Execution mode is &#39; + ( (${execMode} == &#39;dev&#39;)? &#39;Development&#39; : &#39;Production&#39;)&#34;</span>&gt;
 </code></pre></div><h3 id="属性标签">属性标签</h3>
 <p>前面提到了一些不属于 HTML 规范的属性标签，这都是 Thymeleaf 自定义的，通过这些属性标签来设置 HTML 标签的属性。</p>
 <h4 id="设置任意属性">设置任意属性</h4>
 <p>Thymeleaf 的 <code>th:attr</code> 属性标签可以对 HTML 中任意属性值进行设置。例如 <code>th:attr=&quot;action=abc&quot;</code> 是对 <code>action</code> 属性的设置；<code>th:attr=&quot;value=xyz</code> 是对 <code>value</code> 属性的设置。示例代码如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;subscribe.html&#34;</span> <span style="color:#a6e22e">th:attr</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;action=@{/subscribe}&#34;</span>&gt;
-  &lt;<span style="color:#f92672">fieldset</span>&gt;
-    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;email&#34;</span> /&gt;
-    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Subscribe me!&#34;</span> <span style="color:#a6e22e">th:attr</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;value=#{subscribe.submit}&#34;</span>/&gt;
-  &lt;/<span style="color:#f92672">fieldset</span>&gt;
-&lt;/<span style="color:#f92672">form</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">form</span> <span style="color:#268bd2">action</span>=<span style="color:#2aa198">&#34;subscribe.html&#34;</span> <span style="color:#268bd2">th:attr</span>=<span style="color:#2aa198">&#34;action=@{/subscribe}&#34;</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">fieldset</span>&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">input</span> <span style="color:#268bd2">type</span>=<span style="color:#2aa198">&#34;text&#34;</span> <span style="color:#268bd2">name</span>=<span style="color:#2aa198">&#34;email&#34;</span> /&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">input</span> <span style="color:#268bd2">type</span>=<span style="color:#2aa198">&#34;submit&#34;</span> <span style="color:#268bd2">value</span>=<span style="color:#2aa198">&#34;Subscribe me!&#34;</span> <span style="color:#268bd2">th:attr</span>=<span style="color:#2aa198">&#34;value=#{subscribe.submit}&#34;</span>/&gt;
+  &lt;/<span style="color:#268bd2;font-weight:bold">fieldset</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">form</span>&gt;
 </code></pre></div><h4 id="设置指定属性">设置指定属性</h4>
 <p>除了上面的通用型属性标签外，Thymeleaf 还自定义了其他的特定属性标签。如 <code>th:attr</code> 标签指定 <code>attr</code> 属性；<code>th:value</code> 指定 <code>value</code> 标签。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Subscribe me!&#34;</span> <span style="color:#a6e22e">th:value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{subscribe.submit}&#34;</span>/&gt;
-&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;subscribe.html&#34;</span> <span style="color:#a6e22e">th:action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{/subscribe}&#34;</span>&gt;
-&lt;<span style="color:#f92672">li</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;product/list.html&#34;</span> <span style="color:#a6e22e">th:href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{/product/list}&#34;</span>&gt;Product List&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">input</span> <span style="color:#268bd2">type</span>=<span style="color:#2aa198">&#34;submit&#34;</span> <span style="color:#268bd2">value</span>=<span style="color:#2aa198">&#34;Subscribe me!&#34;</span> <span style="color:#268bd2">th:value</span>=<span style="color:#2aa198">&#34;#{subscribe.submit}&#34;</span>/&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">form</span> <span style="color:#268bd2">action</span>=<span style="color:#2aa198">&#34;subscribe.html&#34;</span> <span style="color:#268bd2">th:action</span>=<span style="color:#2aa198">&#34;@{/subscribe}&#34;</span>&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">li</span>&gt;&lt;<span style="color:#268bd2;font-weight:bold">a</span> <span style="color:#268bd2">href</span>=<span style="color:#2aa198">&#34;product/list.html&#34;</span> <span style="color:#268bd2">th:href</span>=<span style="color:#2aa198">&#34;@{/product/list}&#34;</span>&gt;Product List&lt;/<span style="color:#268bd2;font-weight:bold">a</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">li</span>&gt;
 </code></pre></div><p>还有许多其他的 <code>th:*</code> 自定义标签，都是和 HTML 标签一一对应，这里不逐个例举了。</p>
 <h4 id="同时设置多个属性">同时设置多个属性</h4>
 <p>如果需要 Thymeleaf 动态设置多个属性，可以像上面一样依次指定，也可以同时指定，不同属性通过 <code>-</code>  连接：<code>th:alt-title</code> 同时设置 <code>alt</code> 和 <code>title</code> 属性； <code>th:lang-xmllang</code> 同时设置 <code>lang</code> 和 <code>xml:lang</code> 属性。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- 依次指定 --&gt;</span>
-&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../../images/gtvglogo.png&#34;</span>
-     <span style="color:#a6e22e">th:attr</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;src=@{/images/gtvglogo.png},title=#{logo},alt=#{logo}&#34;</span> /&gt;
-&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../../images/gtvglogo.png&#34;</span> 
-     <span style="color:#a6e22e">th:src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{/images/gtvglogo.png}&#34;</span> <span style="color:#a6e22e">th:title</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{logo}&#34;</span> <span style="color:#a6e22e">th:alt</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{logo}&#34;</span> /&gt;
-<span style="color:#75715e">&lt;!-- 同时指定 --&gt;</span>
-&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../../images/gtvglogo.png&#34;</span> 
-     <span style="color:#a6e22e">th:src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{/images/gtvglogo.png}&#34;</span> <span style="color:#a6e22e">th:alt-title</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{logo}&#34;</span> /&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#93a1a1;font-style:italic">&lt;!-- 依次指定 --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">img</span> <span style="color:#268bd2">src</span>=<span style="color:#2aa198">&#34;../../images/gtvglogo.png&#34;</span>
+     <span style="color:#268bd2">th:attr</span>=<span style="color:#2aa198">&#34;src=@{/images/gtvglogo.png},title=#{logo},alt=#{logo}&#34;</span> /&gt;
+&lt;<span style="color:#268bd2;font-weight:bold">img</span> <span style="color:#268bd2">src</span>=<span style="color:#2aa198">&#34;../../images/gtvglogo.png&#34;</span> 
+     <span style="color:#268bd2">th:src</span>=<span style="color:#2aa198">&#34;@{/images/gtvglogo.png}&#34;</span> <span style="color:#268bd2">th:title</span>=<span style="color:#2aa198">&#34;#{logo}&#34;</span> <span style="color:#268bd2">th:alt</span>=<span style="color:#2aa198">&#34;#{logo}&#34;</span> /&gt;
+<span style="color:#93a1a1;font-style:italic">&lt;!-- 同时指定 --&gt;</span>
+&lt;<span style="color:#268bd2;font-weight:bold">img</span> <span style="color:#268bd2">src</span>=<span style="color:#2aa198">&#34;../../images/gtvglogo.png&#34;</span> 
+     <span style="color:#268bd2">th:src</span>=<span style="color:#2aa198">&#34;@{/images/gtvglogo.png}&#34;</span> <span style="color:#268bd2">th:alt-title</span>=<span style="color:#2aa198">&#34;#{logo}&#34;</span> /&gt;
 </code></pre></div><h4 id="前置和后置">前置和后置</h4>
 <p>有些情况下,可能需要改变属性的一部分值,比如 DOM 节点样式属性中的某个样式，这就需要在已有属性的基础上前置或后置新的属性。对此，Thymeleaf 提供了 <code>th:attrappend</code> 和 <code>th:attrprepend</code> 属性标签。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;button&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Do it!&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btn&#34;</span> <span style="color:#a6e22e">th:attrappend</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;class=${&#39; &#39; + cssStyle}&#34;</span> /&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">input</span> <span style="color:#268bd2">type</span>=<span style="color:#2aa198">&#34;button&#34;</span> <span style="color:#268bd2">value</span>=<span style="color:#2aa198">&#34;Do it!&#34;</span> <span style="color:#268bd2">class</span>=<span style="color:#2aa198">&#34;btn&#34;</span> <span style="color:#268bd2">th:attrappend</span>=<span style="color:#2aa198">&#34;class=${&#39; &#39; + cssStyle}&#34;</span> /&gt;
 </code></pre></div><h4 id="迭代">迭代</h4>
 <p>前端页面里经常会用到表格，像 Bootstrap 中就专门有 DataTable 来处理表格的渲染。Thymeleaf 的 <code>th:each</code> 属性标签实现了对表格 DOM 下各个 <code>&lt;tr&gt;</code> 元素的迭代渲染，类似 Python 中的 <code>for in</code> 用法。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">table</span>&gt;
-  &lt;<span style="color:#f92672">tr</span>&gt;
-    &lt;<span style="color:#f92672">th</span>&gt;NAME&lt;/<span style="color:#f92672">th</span>&gt;
-    &lt;<span style="color:#f92672">th</span>&gt;PRICE&lt;/<span style="color:#f92672">th</span>&gt;
-    &lt;<span style="color:#f92672">th</span>&gt;IN STOCK&lt;/<span style="color:#f92672">th</span>&gt;
-  &lt;/<span style="color:#f92672">tr</span>&gt;
-  &lt;<span style="color:#f92672">tr</span> <span style="color:#a6e22e">th:each</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;prod : ${prods}&#34;</span>&gt;
-    &lt;<span style="color:#f92672">td</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${prod.name}&#34;</span>&gt;Onions&lt;/<span style="color:#f92672">td</span>&gt;
-    &lt;<span style="color:#f92672">td</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${prod.price}&#34;</span>&gt;2.41&lt;/<span style="color:#f92672">td</span>&gt;
-    &lt;<span style="color:#f92672">td</span> <span style="color:#a6e22e">th:text</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${prod.inStock}? #{true} : #{false}&#34;</span>&gt;yes&lt;/<span style="color:#f92672">td</span>&gt;
-  &lt;/<span style="color:#f92672">tr</span>&gt;
-&lt;/<span style="color:#f92672">table</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">table</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">tr</span>&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">th</span>&gt;NAME&lt;/<span style="color:#268bd2;font-weight:bold">th</span>&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">th</span>&gt;PRICE&lt;/<span style="color:#268bd2;font-weight:bold">th</span>&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">th</span>&gt;IN STOCK&lt;/<span style="color:#268bd2;font-weight:bold">th</span>&gt;
+  &lt;/<span style="color:#268bd2;font-weight:bold">tr</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">tr</span> <span style="color:#268bd2">th:each</span>=<span style="color:#2aa198">&#34;prod : ${prods}&#34;</span>&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">td</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;${prod.name}&#34;</span>&gt;Onions&lt;/<span style="color:#268bd2;font-weight:bold">td</span>&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">td</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;${prod.price}&#34;</span>&gt;2.41&lt;/<span style="color:#268bd2;font-weight:bold">td</span>&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">td</span> <span style="color:#268bd2">th:text</span>=<span style="color:#2aa198">&#34;${prod.inStock}? #{true} : #{false}&#34;</span>&gt;yes&lt;/<span style="color:#268bd2;font-weight:bold">td</span>&gt;
+  &lt;/<span style="color:#268bd2;font-weight:bold">tr</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">table</span>&gt;
 </code></pre></div><h4 id="条件">条件</h4>
 <p>Thymeleaf 的条件表达式包括 <code>if</code>，<code>unless</code> 和 <code>switch</code>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;comments.html&#34;</span>
-   <span style="color:#a6e22e">th:href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{/product/comments(prodId=${prod.id})}&#34;</span> 
-   <span style="color:#a6e22e">th:if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${not #lists.isEmpty(prod.comments)}&#34;</span>&gt;view&lt;/<span style="color:#f92672">a</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">a</span> <span style="color:#268bd2">href</span>=<span style="color:#2aa198">&#34;comments.html&#34;</span>
+   <span style="color:#268bd2">th:href</span>=<span style="color:#2aa198">&#34;@{/product/comments(prodId=${prod.id})}&#34;</span> 
+   <span style="color:#268bd2">th:if</span>=<span style="color:#2aa198">&#34;${not #lists.isEmpty(prod.comments)}&#34;</span>&gt;view&lt;/<span style="color:#268bd2;font-weight:bold">a</span>&gt;
 </code></pre></div><p>上面代码中，如果条件标签 <code>th:if</code> 的结果为真，则显示 <code>a</code> 标签的内容，否则不显示。
 <code>th:if</code> 判 true 的情况有：</p>
 <ul>
@@ -249,130 +248,130 @@
 <li>布尔值、数字、字符、字符串之外的变量形式</li>
 </ul>
 <p><code>th:unless</code> 的用法正好和 <code>th:if</code> 相反，要实现和上面代码一样的作用，<code>th:unless</code> 会这样写：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;comments.html&#34;</span>
-   <span style="color:#a6e22e">th:href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;@{/comments(prodId=${prod.id})}&#34;</span> 
-   <span style="color:#a6e22e">th:unless</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${#lists.isEmpty(prod.comments)}&#34;</span>&gt;view&lt;/<span style="color:#f92672">a</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">a</span> <span style="color:#268bd2">href</span>=<span style="color:#2aa198">&#34;comments.html&#34;</span>
+   <span style="color:#268bd2">th:href</span>=<span style="color:#2aa198">&#34;@{/comments(prodId=${prod.id})}&#34;</span> 
+   <span style="color:#268bd2">th:unless</span>=<span style="color:#2aa198">&#34;${#lists.isEmpty(prod.comments)}&#34;</span>&gt;view&lt;/<span style="color:#268bd2;font-weight:bold">a</span>&gt;
 </code></pre></div><p><code>th:switch</code> 和多数编程语言的 switch-case 用法是很类似的，其中 default 情况的表达式是 <code>th:case=&quot;*&quot;</code>：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:switch</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;${user.role}&#34;</span>&gt;
-  &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">th:case</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#39;admin&#39;&#34;</span>&gt;User is an administrator&lt;/<span style="color:#f92672">p</span>&gt;
-  &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">th:case</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{roles.manager}&#34;</span>&gt;User is a manager&lt;/<span style="color:#f92672">p</span>&gt;
-  &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">th:case</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;*&#34;</span>&gt;User is some other thing&lt;/<span style="color:#f92672">p</span>&gt;
-&lt;/<span style="color:#f92672">div</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:switch</span>=<span style="color:#2aa198">&#34;${user.role}&#34;</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span> <span style="color:#268bd2">th:case</span>=<span style="color:#2aa198">&#34;&#39;admin&#39;&#34;</span>&gt;User is an administrator&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span> <span style="color:#268bd2">th:case</span>=<span style="color:#2aa198">&#34;#{roles.manager}&#34;</span>&gt;User is a manager&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">p</span> <span style="color:#268bd2">th:case</span>=<span style="color:#2aa198">&#34;*&#34;</span>&gt;User is some other thing&lt;/<span style="color:#268bd2;font-weight:bold">p</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
 </code></pre></div><h3 id="块和引用">块和引用</h3>
 <p>如果用过 Python 的优秀模板 Jinja2 的话，一定会对 Jinja2 的 <code>block</code> 印象深刻，因为这实现了模板的分块和复用，避免了大段代码的重复。Thymeleaf 同样也实现了这种优秀的特性，由标签 <code>th:fragment</code> 进行分块，<code>th:include</code> 进行引用。
 下面是页面 footer.html 的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span>&gt;
-  &lt;<span style="color:#f92672">body</span>&gt;
-    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:fragment</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;copy&#34;</span>&gt;
-      &amp;copy; 2016 The Good Thymes Virtual Grocery
-    &lt;/<span style="color:#f92672">div</span>&gt;
-  &lt;/<span style="color:#f92672">body</span>&gt;
-&lt;/<span style="color:#f92672">html</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">html</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">body</span>&gt;
+    &lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:fragment</span>=<span style="color:#2aa198">&#34;copy&#34;</span>&gt;
+      <span style="color:#268bd2">&amp;copy;</span> 2016 The Good Thymes Virtual Grocery
+    &lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
+  &lt;/<span style="color:#268bd2;font-weight:bold">body</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">html</span>&gt;
 </code></pre></div><p>在另外一个页面中同样需要 footer 中的版权信息，所以把名为 copy 的块引入进来：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">body</span>&gt;
-  <span style="color:#75715e">&lt;!-- ... --&gt;</span>
-  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:include</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;footer :: copy&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
-&lt;/<span style="color:#f92672">body</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">body</span>&gt;
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- ... --&gt;</span>
+  &lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:include</span>=<span style="color:#2aa198">&#34;footer :: copy&#34;</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">body</span>&gt;
 </code></pre></div><p><code>th:include=&quot;templatename::domselector&quot;</code> 指定了引入模板块所在文件名称和模板块的名称。</p>
 <p>引用模板块不仅仅只是支持 Thymeleaf 自定义的 <code>th:fragment</code>，还支持 HTML 原生的 DOM 节点选择。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:include</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;footer :: #copy&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:include</span>=<span style="color:#2aa198">&#34;footer :: #copy&#34;</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
 </code></pre></div><p>如上引入的就是 footer.html 中 id=copy 的 DOM。</p>
 <p>另一个和 <code>th:include</code> 标签类似的是 <code>th:replace</code>，两者都能引入模板块，但区别是 <code>th:include</code> 是把模板块内的内容引入到 <code>th:include</code> 所在的 DOM 节点；<code>th:replace</code> 是把模板块整个引入到 <code>th:replace</code> 签所在 DOM 节点：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">body</span>&gt;
-  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:include</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;footer :: copy&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
-  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">th:replace</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;footer :: copy&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
-&lt;/<span style="color:#f92672">body</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">body</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:include</span>=<span style="color:#2aa198">&#34;footer :: copy&#34;</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">div</span> <span style="color:#268bd2">th:replace</span>=<span style="color:#2aa198">&#34;footer :: copy&#34;</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">body</span>&gt;
 </code></pre></div><p>最终渲染的结果如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">body</span>&gt;
-  &lt;<span style="color:#f92672">div</span>&gt;
-    &amp;copy; 2011 The Good Thymes Virtual Grocery
-  &lt;/<span style="color:#f92672">div</span>&gt;
-  &lt;<span style="color:#f92672">footer</span>&gt;
-    &amp;copy; 2011 The Good Thymes Virtual Grocery
-  &lt;/<span style="color:#f92672">footer</span>&gt;
-&lt;/<span style="color:#f92672">body</span>&gt;
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">body</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">div</span>&gt;
+    <span style="color:#268bd2">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery
+  &lt;/<span style="color:#268bd2;font-weight:bold">div</span>&gt;
+  &lt;<span style="color:#268bd2;font-weight:bold">footer</span>&gt;
+    <span style="color:#268bd2">&amp;copy;</span> 2011 The Good Thymes Virtual Grocery
+  &lt;/<span style="color:#268bd2;font-weight:bold">footer</span>&gt;
+&lt;/<span style="color:#268bd2;font-weight:bold">body</span>&gt;
 </code></pre></div><h2 id="集成-thymeleaf">集成 Thymeleaf</h2>
 <p>大致梳理了下 Thymeleaf 的基础用法，接下来就把它集成到 Spring MVC 中。Thymeleaf 分别提供了 <a href="https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring3">thymeleaf-spring3</a> 和 <a href="https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring4">thymeleaf-spring4</a> 来支持 Spring 3.x 和 Spring 4.x，下面以最新的 4.x 版本为例。</p>
 <h3 id="设置模板引擎">设置模板引擎</h3>
 <p>首先需要把 Thymeleaf 配置为 Spring MVC 的模板引擎：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;templateResolver&#34;</span>
-       <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.thymeleaf.templateresolver.ServletContextTemplateResolver&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;prefix&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;/WEB-INF/templates/&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;suffix&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;.html&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;templateMode&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;HTML5&#34;</span> <span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;templateResolver&#34;</span>
+       <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;org.thymeleaf.templateresolver.ServletContextTemplateResolver&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;prefix&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;/WEB-INF/templates/&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;suffix&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;.html&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;templateMode&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;HTML5&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
     
-<span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;templateEngine&#34;</span>
-      <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.thymeleaf.spring4.SpringTemplateEngine&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;templateResolver&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;templateResolver&#34;</span> <span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;templateEngine&#34;</span>
+      <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;org.thymeleaf.spring4.SpringTemplateEngine&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;templateResolver&#34;</span> <span style="color:#268bd2">ref=</span><span style="color:#2aa198">&#34;templateResolver&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
 </code></pre></div><p>配置内容很清晰，上述 xml 设置了模板文件所在路径，后缀名，因此 <code>@Controller</code> 下的方法只需要返回模板的名称，模板引擎就能通过路径和后缀名，拼接找到对应模板进行渲染。</p>
 <h3 id="view-和-view-resolver">View 和 View Resolver</h3>
 <p>Thymeleaf 实现了 <code>org.thymeleaf.spring4.view.ThymeleafView</code> 和 <code>org.thymeleaf.spring4.view.ThymeleafViewResolver</code> 来替换 Spring 内置的视图解析。这两个类负责在 Thymeleaf 模板中处理 <code>@Controller</code> 方法执行的结果。配置 ViewResolver 如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.thymeleaf.spring4.view.ThymeleafViewResolver&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;templateEngine&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;templateEngine&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;order&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;viewNames&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;*.html,*.xhtml&#34;</span> <span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;org.thymeleaf.spring4.view.ThymeleafViewResolver&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;templateEngine&#34;</span> <span style="color:#268bd2">ref=</span><span style="color:#2aa198">&#34;templateEngine&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;order&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;1&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;viewNames&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;*.html,*.xhtml&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
 </code></pre></div><p>其中，属性 <code>templateEngine</code> 引用了之前配置的模板引擎，<code>order</code> 属性设置了 ViewResolver 的处理优先级，这是可选的参数，在配置多视图解析器时会需要用到。这里对 <code>prefix</code> 和 <code>suffix</code> 属性进行设置，因为已经在 Template Resolver 中设置了。
 如果需要定义一个 View 的 bean，并预置静态变量，也很简单：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;main&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.thymeleaf.spring4.view.ThymeleafView&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;staticVariables&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;map&gt;</span>
-      <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;footer&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;Some company: &amp;lt;b&amp;gt;ACME&amp;lt;/b&amp;gt;&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/map&gt;</span>
-  <span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;main&#34;</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;org.thymeleaf.spring4.view.ThymeleafView&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;staticVariables&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;map&gt;</span>
+      <span style="color:#268bd2;font-weight:bold">&lt;entry</span> <span style="color:#268bd2">key=</span><span style="color:#2aa198">&#34;footer&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;Some company: &amp;lt;b&amp;gt;ACME&amp;lt;/b&amp;gt;&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;/map&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;/property&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
 </code></pre></div><h3 id="spring-mvc-配置">Spring MVC 配置</h3>
 <p>Spring MVC 的配置中除了指定 Template Engine 和 View Resolver 外，还需要指定标准的 Spring MVC artifacts，如静态文件的处理，注解的扫描：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
-       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> 
-       <span style="color:#a6e22e">xmlns:mvc=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/mvc&#34;</span>
-       <span style="color:#a6e22e">xmlns:context=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/context&#34;</span>
-       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/mvc
-</span><span style="color:#e6db74">                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-</span><span style="color:#e6db74">                           http://www.springframework.org/schema/beans
-</span><span style="color:#e6db74">                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-</span><span style="color:#e6db74">                           http://www.springframework.org/schema/context
-</span><span style="color:#e6db74">                           http://www.springframework.org/schema/context/spring-context-3.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#93a1a1;font-style:italic">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;beans</span> <span style="color:#268bd2">xmlns=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/beans&#34;</span>
+       <span style="color:#268bd2">xmlns:xsi=</span><span style="color:#2aa198">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> 
+       <span style="color:#268bd2">xmlns:mvc=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/mvc&#34;</span>
+       <span style="color:#268bd2">xmlns:context=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/context&#34;</span>
+       <span style="color:#268bd2">xsi:schemaLocation=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/mvc
+</span><span style="color:#2aa198">                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+</span><span style="color:#2aa198">                           http://www.springframework.org/schema/beans
+</span><span style="color:#2aa198">                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+</span><span style="color:#2aa198">                           http://www.springframework.org/schema/context
+</span><span style="color:#2aa198">                           http://www.springframework.org/schema/context/spring-context-3.0.xsd&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
     
-  <span style="color:#75715e">&lt;!-- **************************************************************** --&gt;</span>
-  <span style="color:#75715e">&lt;!--  RESOURCE FOLDERS CONFIGURATION                                  --&gt;</span>
-  <span style="color:#75715e">&lt;!--  Dispatcher configuration for serving static resources           --&gt;</span>
-  <span style="color:#75715e">&lt;!-- **************************************************************** --&gt;</span>
-  <span style="color:#f92672">&lt;mvc:resources</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;/images/&#34;</span> <span style="color:#a6e22e">mapping=</span><span style="color:#e6db74">&#34;/images/**&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;mvc:resources</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;/css/&#34;</span> <span style="color:#a6e22e">mapping=</span><span style="color:#e6db74">&#34;/css/**&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;mvc:resources</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;/js/&#34;</span> <span style="color:#a6e22e">mappijs=</span><span style="color:#e6db74">&#34;/js/**&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- **************************************************************** --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!--  RESOURCE FOLDERS CONFIGURATION                                  --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!--  Dispatcher configuration for serving static resources           --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- **************************************************************** --&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;mvc:resources</span> <span style="color:#268bd2">location=</span><span style="color:#2aa198">&#34;/images/&#34;</span> <span style="color:#268bd2">mapping=</span><span style="color:#2aa198">&#34;/images/**&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;mvc:resources</span> <span style="color:#268bd2">location=</span><span style="color:#2aa198">&#34;/css/&#34;</span> <span style="color:#268bd2">mapping=</span><span style="color:#2aa198">&#34;/css/**&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;mvc:resources</span> <span style="color:#268bd2">location=</span><span style="color:#2aa198">&#34;/js/&#34;</span> <span style="color:#268bd2">mappijs=</span><span style="color:#2aa198">&#34;/js/**&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
 
-  <span style="color:#75715e">&lt;!-- **************************************************************** --&gt;</span>
-  <span style="color:#75715e">&lt;!--  SPRING ANNOTATION PROCESSING                                    --&gt;</span>
-  <span style="color:#75715e">&lt;!-- **************************************************************** --&gt;</span>
-  <span style="color:#f92672">&lt;mvc:annotation-driven</span> <span style="color:#a6e22e">conversion-service=</span><span style="color:#e6db74">&#34;conversionService&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;context:component-scan</span> <span style="color:#a6e22e">base-package=</span><span style="color:#e6db74">&#34;thymeleafexamples.stsm&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- **************************************************************** --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!--  SPRING ANNOTATION PROCESSING                                    --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- **************************************************************** --&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;mvc:annotation-driven</span> <span style="color:#268bd2">conversion-service=</span><span style="color:#2aa198">&#34;conversionService&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;context:component-scan</span> <span style="color:#268bd2">base-package=</span><span style="color:#2aa198">&#34;thymeleafexamples.stsm&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
 
-  <span style="color:#75715e">&lt;!-- **************************************************************** --&gt;</span>
-  <span style="color:#75715e">&lt;!--  THYMELEAF-SPECIFIC ARTIFACTS                                    --&gt;</span>
-  <span style="color:#75715e">&lt;!--  TemplateResolver &lt;- TemplateEngine &lt;- ViewResolver              --&gt;</span>
-  <span style="color:#75715e">&lt;!-- **************************************************************** --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- **************************************************************** --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!--  THYMELEAF-SPECIFIC ARTIFACTS                                    --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!--  TemplateResolver &lt;- TemplateEngine &lt;- ViewResolver              --&gt;</span>
+  <span style="color:#93a1a1;font-style:italic">&lt;!-- **************************************************************** --&gt;</span>
 
-  <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;templateResolver&#34;</span>
-        <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.thymeleaf.templateresolver.ServletContextTemplateResolver&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;prefix&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;/WEB-INF/templates/&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;suffix&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;.html&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;templateMode&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;HTML5&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;/bean&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;templateResolver&#34;</span>
+        <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;org.thymeleaf.templateresolver.ServletContextTemplateResolver&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;prefix&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;/WEB-INF/templates/&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;suffix&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;.html&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;templateMode&#34;</span> <span style="color:#268bd2">value=</span><span style="color:#2aa198">&#34;HTML5&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
     
-  <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;templateEngine&#34;</span>
-        <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.thymeleaf.spring4.SpringTemplateEngine&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;templateResolver&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;templateResolver&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;/bean&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;templateEngine&#34;</span>
+        <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;org.thymeleaf.spring4.SpringTemplateEngine&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;templateResolver&#34;</span> <span style="color:#268bd2">ref=</span><span style="color:#2aa198">&#34;templateResolver&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
    
-  <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.thymeleaf.spring4.view.ThymeleafViewResolver&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;templateEngine&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;templateEngine&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;/bean&gt;</span>    
+  <span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;org.thymeleaf.spring4.view.ThymeleafViewResolver&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+    <span style="color:#268bd2;font-weight:bold">&lt;property</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;templateEngine&#34;</span> <span style="color:#268bd2">ref=</span><span style="color:#2aa198">&#34;templateEngine&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
+  <span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>    
 
-<span style="color:#f92672">&lt;/beans&gt;</span>
+<span style="color:#268bd2;font-weight:bold">&lt;/beans&gt;</span>
 </code></pre></div></div>
   <footer class="post-footer">
     <ul class="post-tags">
@@ -412,10 +411,6 @@
   <span>&middot;</span>
   <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
 </footer>
-<script src="https://isudox.com/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 </body>
 
 </html>
