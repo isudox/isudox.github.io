@@ -3,7 +3,6 @@ title: JavaScript ES6 和 Python 中的 Generator
 date: 2018-04-22 23:20:03
 tags:
   - Python
-  - JavaScript
 categories:
   - Coding
 ---

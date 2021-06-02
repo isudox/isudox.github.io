@@ -1,5 +1,5 @@
 ---
-title: "Time, Clocks, and the Ordering of Events in a Distributed System 论文"
+title: "译 Time, Clocks, and the Ordering of Events in a Distributed System"
 date: 2021-04-19T14:28:46+08:00
 tags: 
   - 分布式系统

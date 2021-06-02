@@ -1,9 +1,7 @@
 ---
 title: 责任链模式的实际运用
 tags:
-  - Java
-  - DesignPatterns
-  - Refactoring
+  - 设计模式
 categories:
   - Coding
 date: 2016-06-06 18:23:51

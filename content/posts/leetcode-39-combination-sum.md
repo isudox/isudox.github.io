@@ -2,8 +2,7 @@
 title: LeetCode-39 Combination Sum
 date: 2019-03-29 21:54:41
 tags:
-  - Algorithm
-  - LeetCode
+  - 算法
 categories:
   - Coding
 ---

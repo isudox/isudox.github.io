@@ -2,7 +2,6 @@
 title: JetBrains IDE Vim 模式的方案
 tags:
   - Vim
-  - JetBrains
 categories:
   - Coding
 date: 2016-07-26 16:47:03

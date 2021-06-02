@@ -1,8 +1,7 @@
 ---
 title: Docker 部署 GitLab
 tags:
-  - Docker
-  - Git
+  - Dev
 categories:
   - DevOps
 date: 2016-08-01 17:15:08

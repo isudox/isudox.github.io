@@ -13,6 +13,9 @@ permalinks:
 paginate: 10
 hasCJKLanguage: true
 defaultContentLanguage: "zh"
+taxonomies:
+  category: categories
+  tag: tags
 menu:
   main:
   - identifier: archive

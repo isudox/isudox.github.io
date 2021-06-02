@@ -2,9 +2,9 @@
 title: "数据结构和算法在存储中的经典应用"
 date: 2020-09-26T14:25:46+08:00
 tags:
-  - Algorithm
-  - Database
-  - Data Structure
+  - 算法
+  - 数据库
+  - 数据结构
 ---
 
 > Algorithms + Data Structures = Programs —— Niklaus Wirth

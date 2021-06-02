@@ -1,8 +1,7 @@
 ---
 title: LeetCode 21-25
 tags:
-  - Algorithm
-  - LeetCode
+  - 算法
 categories:
   - Coding
 date: 2016-07-08 21:25:43

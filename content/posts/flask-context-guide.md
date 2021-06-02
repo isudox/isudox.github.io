@@ -2,7 +2,6 @@
 title: 读 Flask 源码：Context
 date: 2016-10-02 20:11:40
 tags:
-  - Flask
   - Python
 categories:
   - Coding

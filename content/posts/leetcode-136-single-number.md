@@ -2,8 +2,7 @@
 title: LeetCode-136 Single Number
 date: 2019-03-26 20:20:20
 tags:
-  - Algorithm
-  - LeetCode
+  - 算法
 categories:
   - Coding
 ---

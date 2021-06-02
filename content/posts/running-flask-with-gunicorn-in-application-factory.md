@@ -2,7 +2,6 @@
 title: Gunicorn 驱动工厂模式 Flask 应用
 date: 2016-08-29 13:45:50
 tags:
-  - Flask
   - Python
 categories:
   - DevOps

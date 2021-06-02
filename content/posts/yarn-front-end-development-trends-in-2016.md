@@ -2,7 +2,7 @@
 title: 2016 前端补习 Yarn 篇
 date: 2016-12-27 22:39:09
 tags:
-  - Frontend
+  - 前端
 categories:
   - Coding
 ---

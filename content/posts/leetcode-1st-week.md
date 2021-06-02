@@ -2,8 +2,7 @@
 title: LeetCode 1-5
 date: 2015-11-23 20:50:27
 tags:
-  - Algorithm
-  - LeetCode
+  - 算法
 categories:
   - Coding
 ---

@@ -2,7 +2,6 @@
 title: 读 Flask 源码：源码结构
 date: 2017-02-14 19:47:11
 tags:
-  - Flask
   - Python
 categories:
   - Coding

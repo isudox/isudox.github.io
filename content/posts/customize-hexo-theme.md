@@ -2,8 +2,7 @@
 title: Hexo 主题美化
 date: 2016-07-14 16:01:06
 tags:
-  - Frontend
-  - Hexo
+  - 前端
 categories:
   - Coding
 ---

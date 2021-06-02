@@ -2,8 +2,7 @@
 title: LeetCode 6-10
 date: 2016-05-17 21:14:04
 tags:
-  - Algorithm
-  - LeetCode
+  - 算法
 categories:
   - Coding
 ---

@@ -2,8 +2,7 @@
 title: CORS 跨域调试记录
 date: 2016-11-12 00:31:58
 tags:
-  - HTTP
-  - SpringMVC
+  - Dev
 categories:
   - Coding
 ---

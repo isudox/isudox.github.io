@@ -2,7 +2,7 @@
 title: Travis CI 持续部署静态站方案
 date: 2017-01-24 22:07:42
 tags:
-  - CI
+  - Dev
 categories:
   - Coding
 ---

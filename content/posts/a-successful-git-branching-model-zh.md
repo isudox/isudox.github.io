@@ -2,7 +2,7 @@
 title: '[译] 一个行之有效的 Git 分支模型'
 date: 2017-02-18 14:51:10
 tags:
-  - Git
+  - Dev
 categories:
   - Translation
 ---

@@ -3,7 +3,6 @@ title: Java String 的内存模型
 date: 2016-06-22 13:00:53
 tags:
   - Java
-  - Memory
 categories:
   - Coding
 ---

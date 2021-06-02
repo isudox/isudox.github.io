@@ -1,8 +1,7 @@
 ---
 title: LeetCode 26-30
 tags:
-  - Algorithm
-  - LeetCode
+  - 算法
 categories:
   - Coding
 date: 2016-10-17 17:09:15

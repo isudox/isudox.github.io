@@ -1,8 +1,7 @@
 ---
 title: 跨域请求之 JSONP 和 CORS
 tags:
-  - Frontend
-  - JavaScript
+  - 前端
 categories:
   - Coding
 date: 2016-09-24 23:55:52

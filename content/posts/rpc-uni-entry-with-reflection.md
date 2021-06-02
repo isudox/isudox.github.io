@@ -3,7 +3,6 @@ title: 通过反射统一 RPC 调用入口
 date: 2017-02-06 15:18:55
 tags:
   - Java
-  - RPC
 categories:
   - Coding
 ---
