@@ -6,25 +6,7 @@
     <description>Recent content in Git on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 18 Feb 2017 14:51:10 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>[译] 一个行之有效的 Git 分支模型</title>
-      <link>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</link>
-      <pubDate>Sat, 18 Feb 2017 14:51:10 +0000</pubDate>
-      
-      <guid>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</guid>
-      <description>原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中</description>
-    </item>
-    
-    <item>
-      <title>Docker 部署 GitLab</title>
-      <link>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</link>
-      <pubDate>Mon, 01 Aug 2016 17:15:08 +0000</pubDate>
-      
-      <guid>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</guid>
-      <description>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。 GitLab 的外部依赖很多，有 Nginx、Rails</description>
-    </item>
-    
+    <lastBuildDate>Thu, 10 Mar 2016 18:01:32 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Git 一般实践</title>
       <link>https://isudox.com/2016/03/10/git-general-practice/</link>

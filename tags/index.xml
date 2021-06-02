@@ -17,65 +17,38 @@
     </item>
     
     <item>
-      <title>Algorithm</title>
-      <link>https://isudox.com/tags/algorithm/</link>
+      <title>数据库</title>
+      <link>https://isudox.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
       <pubDate>Sat, 26 Sep 2020 14:25:46 +0800</pubDate>
       
-      <guid>https://isudox.com/tags/algorithm/</guid>
+      <guid>https://isudox.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Data Structure</title>
-      <link>https://isudox.com/tags/data-structure/</link>
+      <title>数据结构</title>
+      <link>https://isudox.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
       <pubDate>Sat, 26 Sep 2020 14:25:46 +0800</pubDate>
       
-      <guid>https://isudox.com/tags/data-structure/</guid>
+      <guid>https://isudox.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Database</title>
-      <link>https://isudox.com/tags/database/</link>
+      <title>算法</title>
+      <link>https://isudox.com/tags/%E7%AE%97%E6%B3%95/</link>
       <pubDate>Sat, 26 Sep 2020 14:25:46 +0800</pubDate>
       
-      <guid>https://isudox.com/tags/database/</guid>
+      <guid>https://isudox.com/tags/%E7%AE%97%E6%B3%95/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>MySQL</title>
-      <link>https://isudox.com/tags/mysql/</link>
-      <pubDate>Fri, 28 Feb 2020 13:41:33 +0800</pubDate>
-      
-      <guid>https://isudox.com/tags/mysql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Networks</title>
-      <link>https://isudox.com/tags/networks/</link>
+      <title>网络</title>
+      <link>https://isudox.com/tags/%E7%BD%91%E7%BB%9C/</link>
       <pubDate>Fri, 13 Dec 2019 10:14:44 +0800</pubDate>
       
-      <guid>https://isudox.com/tags/networks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>LeetCode</title>
-      <link>https://isudox.com/tags/leetcode/</link>
-      <pubDate>Fri, 29 Mar 2019 21:54:41 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/leetcode/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>JavaScript</title>
-      <link>https://isudox.com/tags/javascript/</link>
-      <pubDate>Sun, 22 Apr 2018 23:20:03 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/javascript/</guid>
+      <guid>https://isudox.com/tags/%E7%BD%91%E7%BB%9C/</guid>
       <description></description>
     </item>
     
@@ -134,38 +107,11 @@
     </item>
     
     <item>
-      <title>Git</title>
-      <link>https://isudox.com/tags/git/</link>
+      <title>Dev</title>
+      <link>https://isudox.com/tags/dev/</link>
       <pubDate>Sat, 18 Feb 2017 14:51:10 +0000</pubDate>
       
-      <guid>https://isudox.com/tags/git/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Flask</title>
-      <link>https://isudox.com/tags/flask/</link>
-      <pubDate>Tue, 14 Feb 2017 19:47:11 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/flask/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CI</title>
-      <link>https://isudox.com/tags/ci/</link>
-      <pubDate>Tue, 24 Jan 2017 22:07:42 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/ci/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Docker</title>
-      <link>https://isudox.com/tags/docker/</link>
-      <pubDate>Mon, 16 Jan 2017 13:30:31 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/docker/</guid>
+      <guid>https://isudox.com/tags/dev/</guid>
       <description></description>
     </item>
     
@@ -179,47 +125,29 @@
     </item>
     
     <item>
+      <title>前端</title>
+      <link>https://isudox.com/tags/%E5%89%8D%E7%AB%AF/</link>
+      <pubDate>Tue, 27 Dec 2016 22:39:09 +0000</pubDate>
+      
+      <guid>https://isudox.com/tags/%E5%89%8D%E7%AB%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Frontend</title>
       <link>https://isudox.com/tags/frontend/</link>
-      <pubDate>Tue, 27 Dec 2016 22:39:09 +0000</pubDate>
+      <pubDate>Mon, 26 Dec 2016 10:40:41 +0000</pubDate>
       
       <guid>https://isudox.com/tags/frontend/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Webpack</title>
-      <link>https://isudox.com/tags/webpack/</link>
-      <pubDate>Mon, 26 Dec 2016 10:40:41 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/webpack/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>HTTP</title>
       <link>https://isudox.com/tags/http/</link>
-      <pubDate>Sat, 12 Nov 2016 00:31:58 +0000</pubDate>
+      <pubDate>Thu, 28 Jul 2016 17:07:42 +0000</pubDate>
       
       <guid>https://isudox.com/tags/http/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>SpringMVC</title>
-      <link>https://isudox.com/tags/springmvc/</link>
-      <pubDate>Sat, 12 Nov 2016 00:31:58 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/springmvc/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Unittest</title>
-      <link>https://isudox.com/tags/unittest/</link>
-      <pubDate>Mon, 10 Oct 2016 22:12:35 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/unittest/</guid>
       <description></description>
     </item>
     
@@ -233,15 +161,6 @@
     </item>
     
     <item>
-      <title>JetBrains</title>
-      <link>https://isudox.com/tags/jetbrains/</link>
-      <pubDate>Tue, 26 Jul 2016 16:47:03 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/jetbrains/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>PostgreSQL</title>
       <link>https://isudox.com/tags/postgresql/</link>
       <pubDate>Fri, 22 Jul 2016 10:49:49 +0000</pubDate>
@@ -251,65 +170,11 @@
     </item>
     
     <item>
-      <title>Hexo</title>
-      <link>https://isudox.com/tags/hexo/</link>
-      <pubDate>Thu, 14 Jul 2016 16:01:06 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/hexo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Thymeleaf</title>
-      <link>https://isudox.com/tags/thymeleaf/</link>
-      <pubDate>Wed, 06 Jul 2016 15:25:45 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/thymeleaf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Memory</title>
-      <link>https://isudox.com/tags/memory/</link>
-      <pubDate>Wed, 22 Jun 2016 13:00:53 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/memory/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>DesignPatterns</title>
-      <link>https://isudox.com/tags/designpatterns/</link>
+      <title>设计模式</title>
+      <link>https://isudox.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Mon, 06 Jun 2016 18:23:51 +0000</pubDate>
       
-      <guid>https://isudox.com/tags/designpatterns/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Refactoring</title>
-      <link>https://isudox.com/tags/refactoring/</link>
-      <pubDate>Mon, 06 Jun 2016 18:23:51 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/refactoring/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Django</title>
-      <link>https://isudox.com/tags/django/</link>
-      <pubDate>Wed, 01 Jun 2016 17:24:27 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/django/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>uWSGI</title>
-      <link>https://isudox.com/tags/uwsgi/</link>
-      <pubDate>Wed, 01 Jun 2016 17:24:27 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/uwsgi/</guid>
+      <guid>https://isudox.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
       <description></description>
     </item>
     
@@ -323,20 +188,11 @@
     </item>
     
     <item>
-      <title>Canvas</title>
-      <link>https://isudox.com/tags/canvas/</link>
-      <pubDate>Mon, 18 Apr 2016 19:55:14 +0000</pubDate>
+      <title>Git</title>
+      <link>https://isudox.com/tags/git/</link>
+      <pubDate>Thu, 10 Mar 2016 18:01:32 +0000</pubDate>
       
-      <guid>https://isudox.com/tags/canvas/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>HTML5</title>
-      <link>https://isudox.com/tags/html5/</link>
-      <pubDate>Mon, 18 Apr 2016 19:55:14 +0000</pubDate>
-      
-      <guid>https://isudox.com/tags/html5/</guid>
+      <guid>https://isudox.com/tags/git/</guid>
       <description></description>
     </item>
     
@@ -350,6 +206,15 @@
     </item>
     
     <item>
+      <title>JavaScript</title>
+      <link>https://isudox.com/tags/javascript/</link>
+      <pubDate>Sun, 25 Oct 2015 19:37:47 +0000</pubDate>
+      
+      <guid>https://isudox.com/tags/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Linux</title>
       <link>https://isudox.com/tags/linux/</link>
       <pubDate>Sat, 26 Sep 2015 18:02:05 +0000</pubDate>
@@ -359,11 +224,11 @@
     </item>
     
     <item>
-      <title>VPS</title>
-      <link>https://isudox.com/tags/vps/</link>
+      <title>Hexo</title>
+      <link>https://isudox.com/tags/hexo/</link>
       <pubDate>Thu, 03 Sep 2015 00:19:38 +0000</pubDate>
       
-      <guid>https://isudox.com/tags/vps/</guid>
+      <guid>https://isudox.com/tags/hexo/</guid>
       <description></description>
     </item>
     

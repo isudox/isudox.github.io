@@ -8,7 +8,7 @@
     <language>zh</language>
     <lastBuildDate>Mon, 19 Apr 2021 14:28:46 +0800</lastBuildDate><atom:link href="https://isudox.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Time, Clocks, and the Ordering of Events in a Distributed System 论文</title>
+      <title>译 Time, Clocks, and the Ordering of Events in a Distributed System</title>
       <link>https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</link>
       <pubDate>Mon, 19 Apr 2021 14:28:46 +0800</pubDate>
       
@@ -58,13 +58,7 @@
       <pubDate>Fri, 29 Mar 2019 21:54:41 +0000</pubDate>
       
       <guid>https://isudox.com/2019/03/29/leetcode-39-combination-sum/</guid>
-      <description>39. Combination Sum
-Medium
- Problem Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
-The same repeated number may be chosen from candidates unlimited number of times.
-Note:
- All numbers (including target) will be positive integers. The solution set must not contain duplicate combinations.  Example 1:
-Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] Example 2:</description>
+      <description>39. Combination Sum Medium Problem Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target. The same repeated number may be chosen from candidates unlimited number of times. Note: All numbers (including target) will be positive integers. The solution set must not contain duplicate combinations. Example 1: Input: candidates = [2,3,6,7], target =</description>
     </item>
     
     <item>
@@ -73,14 +67,7 @@ Input: candidates = [2,3,6,7], target = 7, A solution set is: [ [7], [2,2,3] ] E
       <pubDate>Tue, 26 Mar 2019 20:20:20 +0000</pubDate>
       
       <guid>https://isudox.com/2019/03/26/leetcode-136-single-number/</guid>
-      <description>136. Single Number
-Easy
- Given a non-empty array of integers, every element appears twice except for one. Find that single one.
-Note:
- Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
- Example 1:
-Input: [2,2,1] Output: 1 Example 2:
-Input: [4,1,2,1,2] Output: 4 Solution Actually it&amp;rsquo;s quite simple to solve, but we should make clear that it requires O(N) complexity and no extra memory usage.</description>
+      <description>136. Single Number Easy Given a non-empty array of integers, every element appears twice except for one. Find that single one. Note: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory? Example 1: Input: [2,2,1] Output: 1 Example 2: Input: [4,1,2,1,2] Output: 4 Solution Actually it&amp;rsquo;s quite simple to solve, but we should make clear that it requires O(N) complexity and no extra</description>
     </item>
     
     <item>

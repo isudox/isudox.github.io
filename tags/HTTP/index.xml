@@ -6,16 +6,7 @@
     <description>Recent content in HTTP on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 12 Nov 2016 00:31:58 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/http/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>CORS 跨域调试记录</title>
-      <link>https://isudox.com/2016/11/12/cors-in-action/</link>
-      <pubDate>Sat, 12 Nov 2016 00:31:58 +0000</pubDate>
-      
-      <guid>https://isudox.com/2016/11/12/cors-in-action/</guid>
-      <description>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运</description>
-    </item>
-    
+    <lastBuildDate>Thu, 28 Jul 2016 17:07:42 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/http/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>为子域名安装 SSL 证书</title>
       <link>https://isudox.com/2016/07/28/secure-subdomain-with-ssl-certificate/</link>

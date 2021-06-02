@@ -17,15 +17,6 @@
     </item>
     
     <item>
-      <title>Django 部署的非最佳实践</title>
-      <link>https://isudox.com/2016/06/01/non-best-practice-of-django-deployment/</link>
-      <pubDate>Wed, 01 Jun 2016 17:24:27 +0000</pubDate>
-      
-      <guid>https://isudox.com/2016/06/01/non-best-practice-of-django-deployment/</guid>
-      <description>上周末接到急差，要重新部署之前开发的 Django 项目。磕磕绊绊遇到很多预想不到的问题，也发现自己对 Django 应用的部署依旧很生疏，遂记一篇水文。 一些题外话 Django 工</description>
-    </item>
-    
-    <item>
       <title>Nginx 启用 HTTP/2</title>
       <link>https://isudox.com/2016/03/18/enable-http-2-on-nginx/</link>
       <pubDate>Fri, 18 Mar 2016 16:53:47 +0000</pubDate>

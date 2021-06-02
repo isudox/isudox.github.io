@@ -6,25 +6,7 @@
     <description>Recent content in JavaScript on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 22 Apr 2018 23:20:03 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>JavaScript ES6 和 Python 中的 Generator</title>
-      <link>https://isudox.com/2018/04/22/generators-in-python-es6/</link>
-      <pubDate>Sun, 22 Apr 2018 23:20:03 +0000</pubDate>
-      
-      <guid>https://isudox.com/2018/04/22/generators-in-python-es6/</guid>
-      <description>这几天折腾的一个 RSS 聚合爬虫，前端部分涉及到 redux-saga，对 ES6 里引入的 Generator 运用很花哨，看起来会云里雾里，其实和 Python 的 generator、y</description>
-    </item>
-    
-    <item>
-      <title>跨域请求之 JSONP 和 CORS</title>
-      <link>https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/</link>
-      <pubDate>Sat, 24 Sep 2016 23:55:52 +0000</pubDate>
-      
-      <guid>https://isudox.com/2016/09/24/cross-site-jsonp-and-cors/</guid>
-      <description>Web 开发中，跨域请求是个经常碰到的问题，因为涉及到网站安全，所以浏览器是拒绝跨域请求的。通常解决跨域会采用 JSONP(JSON with Padding) 和 CORS(Cross-Origin Resource Sharing)。 首先理</description>
-    </item>
-    
+    <lastBuildDate>Sun, 25 Oct 2015 19:37:47 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>小记 JavaScript 全局变量的一些思考</title>
       <link>https://isudox.com/2015/10/25/js-global-variables/</link>

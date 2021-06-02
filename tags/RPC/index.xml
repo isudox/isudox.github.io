@@ -25,14 +25,5 @@
       <description>上月底来到了 M 记，氛围和风格都和 J 记有很大不同，很舒服。开发工作还在按照 Mentor 定制的计划学习适应中，部分技术栈之前没接触过，比如 RPC，M 记用的</description>
     </item>
     
-    <item>
-      <title>通过反射统一 RPC 调用入口</title>
-      <link>https://isudox.com/2017/02/06/rpc-uni-entry-with-reflection/</link>
-      <pubDate>Mon, 06 Feb 2017 15:18:55 +0000</pubDate>
-      
-      <guid>https://isudox.com/2017/02/06/rpc-uni-entry-with-reflection/</guid>
-      <description>最近项目开发中，有这样一个场景，依赖外部很多服务，每个服务从功能上彼此独立，因此各个外部服务的调用也是相对独立的。因此当时为每个调用都写了一</description>
-    </item>
-    
   </channel>
 </rss>

@@ -16,5 +16,14 @@
       <description>Algorithms + Data Structures = Programs —— Niklaus Wirth 先搬出写了 Pascal、又拿了图灵奖的大师的名言，这里不讨论该断言的合理性，只作为本文的引子。在数据库领域，究其原理，绕</description>
     </item>
     
+    <item>
+      <title>MySQL Binlog 解析组件 open-replicator 原理介绍</title>
+      <link>https://isudox.com/2020/02/28/dive-into-open-replicator/</link>
+      <pubDate>Fri, 28 Feb 2020 13:41:33 +0800</pubDate>
+      
+      <guid>https://isudox.com/2020/02/28/dive-into-open-replicator/</guid>
+      <description>open-replicator 是一款高性能的 MySQL binlog 解析组件，通过 open-replicator 可以对 binlog 进行实时的解析、过滤、广播。业界常用的数据同步中间件 databus 就是基于 open-replicator 抓取 MySQL 的 binlog。 在探索 open-replicator 原</description>
+    </item>
+    
   </channel>
 </rss>

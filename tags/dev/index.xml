@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dev on I sudo X</title>
+    <link>https://isudox.com/tags/dev/</link>
+    <description>Recent content in Dev on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 18 Feb 2017 14:51:10 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[译] 一个行之有效的 Git 分支模型</title>
+      <link>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</link>
+      <pubDate>Sat, 18 Feb 2017 14:51:10 +0000</pubDate>
+      
+      <guid>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</guid>
+      <description>原文 A successful Git branching model 是 gitflow 的作者 nvie 于 2010 年撰写的，最近才看到此文，恨晚。网上和微信公众号推送的 Git 最佳实践多多少少应该从这篇文章中获得过经验值。虽然文中</description>
+    </item>
+    
+    <item>
+      <title>Travis CI 持续部署静态站方案</title>
+      <link>https://isudox.com/2017/01/24/deploy-site-with-travis-ci/</link>
+      <pubDate>Tue, 24 Jan 2017 22:07:42 +0000</pubDate>
+      
+      <guid>https://isudox.com/2017/01/24/deploy-site-with-travis-ci/</guid>
+      <description>这两天在想 GitHub Page 部署的最佳实践。本站之前的部署方案，是通过在 VPS 上创建 Git 仓库后，再把生成的静态文件同时 Push 到 GitHub Page 和 VPS 的 Git 仓库。其中，VPS 上的 Git 仓</description>
+    </item>
+    
+    <item>
+      <title>Docker 容器化应用</title>
+      <link>https://isudox.com/2017/01/16/dockerize-applications/</link>
+      <pubDate>Mon, 16 Jan 2017 13:30:31 +0000</pubDate>
+      
+      <guid>https://isudox.com/2017/01/16/dockerize-applications/</guid>
+      <description>最近看了一篇博文，大受启发，也想着手尝试把自己 VPS 上的应用容器化，一方面尝试下新的开发方式，另一方面也便于应用迁移。 Dockerfile Docker 通过 dockerfile 配置来把应用构建</description>
+    </item>
+    
+    <item>
+      <title>CORS 跨域调试记录</title>
+      <link>https://isudox.com/2016/11/12/cors-in-action/</link>
+      <pubDate>Sat, 12 Nov 2016 00:31:58 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/11/12/cors-in-action/</guid>
+      <description>之前写了篇关于 JSONP 和 CORS 解决跨域请求的博客，在最近和深圳凹凸团队前后端联调时实打实的实战了一把 CORS。还是应了纸上得来终觉浅的老话，因为实际运</description>
+    </item>
+    
+    <item>
+      <title>Docker 部署 GitLab</title>
+      <link>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</link>
+      <pubDate>Mon, 01 Aug 2016 17:15:08 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</guid>
+      <description>前几天给自己的域名添加了子域名 git，用来访问自己搭建的 GitLab。顺便实践了一把 Docker 的应用部署。 GitLab 的外部依赖很多，有 Nginx、Rails</description>
+    </item>
+    
+    <item>
+      <title>[译] IntelliJ IDEA 快捷键操作</title>
+      <link>https://isudox.com/2016/05/17/intellij-idea-keymap-zh/</link>
+      <pubDate>Tue, 17 May 2016 16:02:15 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/05/17/intellij-idea-keymap-zh/</guid>
+      <description>捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时</description>
+    </item>
+    
+  </channel>
+</rss>

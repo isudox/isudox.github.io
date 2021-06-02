@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络 on I sudo X</title>
+    <link>https://isudox.com/tags/%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 网络 on I sudo X</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 13 Dec 2019 10:14:44 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>动手搭建一个梯子</title>
+      <link>https://isudox.com/2019/12/13/proxy-is-a-ladder/</link>
+      <pubDate>Fri, 13 Dec 2019 10:14:44 +0800</pubDate>
+      
+      <guid>https://isudox.com/2019/12/13/proxy-is-a-ladder/</guid>
+      <description>由于众所周知的原因，大陆的互联网在一定程度上受限的。这归功于北京某高校校长主导的防火墙项目，我们时不时会看到类似下面这种地图—— 出现防火墙后</description>
+    </item>
+    
+  </channel>
+</rss>

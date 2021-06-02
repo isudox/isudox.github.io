@@ -89,15 +89,6 @@
     </item>
     
     <item>
-      <title>Spring MVC 集成 Thymeleaf</title>
-      <link>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</link>
-      <pubDate>Wed, 06 Jul 2016 15:25:45 +0000</pubDate>
-      
-      <guid>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</guid>
-      <description>在狗厂，我所接触的项目里，Spring 的视图解析器采用最广泛的就是 Velocity。最近也一直在想前后端分离的事，略显古老的 Velocity 并不是前后端分</description>
-    </item>
-    
-    <item>
       <title>Java String 的内存模型</title>
       <link>https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/</link>
       <pubDate>Wed, 22 Jun 2016 13:00:53 +0000</pubDate>
@@ -107,30 +98,12 @@
     </item>
     
     <item>
-      <title>责任链模式的实际运用</title>
-      <link>https://isudox.com/2016/06/06/using-chain-of-responsibility-pattern/</link>
-      <pubDate>Mon, 06 Jun 2016 18:23:51 +0000</pubDate>
-      
-      <guid>https://isudox.com/2016/06/06/using-chain-of-responsibility-pattern/</guid>
-      <description>加入 JD 已有大半年了，想了想差不多一直是在写业务代码。老实讲，有时候自己感觉有点累，对不断更改和新增的业务需求总是沿用低效堆代码的方式去解决，</description>
-    </item>
-    
-    <item>
       <title>Spring 加载含中文 properties 文件的思考</title>
       <link>https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/</link>
       <pubDate>Mon, 23 May 2016 15:17:18 +0000</pubDate>
       
       <guid>https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/</guid>
       <description>在公司项目的中间件代码里看到有些配置文件里有很多 &amp;quot;\uXXXX&amp;quot; 标记的 unicode 字符，其实就是配置里的中文字符。我一时不得其解，开发平台是 Linux，项目文件都是</description>
-    </item>
-    
-    <item>
-      <title>[译] IntelliJ IDEA 快捷键操作</title>
-      <link>https://isudox.com/2016/05/17/intellij-idea-keymap-zh/</link>
-      <pubDate>Tue, 17 May 2016 16:02:15 +0000</pubDate>
-      
-      <guid>https://isudox.com/2016/05/17/intellij-idea-keymap-zh/</guid>
-      <description>捷克公司 JetBrains 推出的一系列 IDE 用着都很顺手，尤其是针对 Java 开发的 IDEA。不多说，欲善其事，先利其器。IDEA 有着相当完善的键盘操作，为了避免时不时</description>
     </item>
     
     <item>

@@ -80,6 +80,15 @@
     </item>
     
     <item>
+      <title>[译] 使用 Django 认证系统</title>
+      <link>https://isudox.com/2016/03/22/using-the-django-authentication-system-zh/</link>
+      <pubDate>Tue, 22 Mar 2016 22:31:20 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/03/22/using-the-django-authentication-system-zh/</guid>
+      <description>译自 Django Documentation，版本 1.9。原文遵循 BSD 协议，已向 Django Project 确认翻译自由。 本文介绍了 Django 认证系统在默认配置下的使用。默认配置已经发展</description>
+    </item>
+    
+    <item>
       <title>阿里大鱼短信 SDK 迁移到 Python 3.x</title>
       <link>https://isudox.com/2016/02/02/migrate-alidayu-to-py3-from-py2/</link>
       <pubDate>Tue, 02 Feb 2016 11:05:24 +0000</pubDate>

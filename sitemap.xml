@@ -11,10 +11,10 @@
     <loc>https://isudox.com/tags/</loc>
     <lastmod>2021-04-19T14:28:46+08:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</loc>
+    <loc>https://isudox.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/</loc>
     <lastmod>2021-04-19T14:28:46+08:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/</loc>
+    <loc>https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</loc>
     <lastmod>2021-04-19T14:28:46+08:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2021/03/10/metaspace-threshold-fullgc-analyze/</loc>
@@ -23,16 +23,16 @@
     <loc>https://isudox.com/9afbd5fc213d64e04bf72d3de9853395/</loc>
     <lastmod>2020-10-28T23:06:06+08:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/algorithm/</loc>
+    <loc>https://isudox.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2020-09-26T14:25:46+08:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/data-structure/</loc>
-    <lastmod>2020-09-26T14:25:46+08:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/database/</loc>
+    <loc>https://isudox.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
     <lastmod>2020-09-26T14:25:46+08:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2020/09/26/data-structures-and-algorithms-in-database/</loc>
+    <lastmod>2020-09-26T14:25:46+08:00</lastmod>
+  </url><url>
+    <loc>https://isudox.com/tags/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2020-09-26T14:25:46+08:00</lastmod>
   </url><url>
     <loc>https://isudox.com/q0p5hxs8hq0wnfrmjq/</loc>
@@ -41,16 +41,13 @@
     <loc>https://isudox.com/about/</loc>
     <lastmod>2020-06-29T19:31:18+08:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/mysql/</loc>
-    <lastmod>2020-02-28T13:41:33+08:00</lastmod>
-  </url><url>
     <loc>https://isudox.com/2020/02/28/dive-into-open-replicator/</loc>
     <lastmod>2020-02-28T13:41:33+08:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/networks/</loc>
+    <loc>https://isudox.com/2019/12/13/proxy-is-a-ladder/</loc>
     <lastmod>2019-12-13T10:14:44+08:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/2019/12/13/proxy-is-a-ladder/</loc>
+    <loc>https://isudox.com/tags/%E7%BD%91%E7%BB%9C/</loc>
     <lastmod>2019-12-13T10:14:44+08:00</lastmod>
   </url><url>
     <loc>https://isudox.com/categories/</loc>
@@ -59,17 +56,11 @@
     <loc>https://isudox.com/categories/coding/</loc>
     <lastmod>2019-03-29T21:54:41+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/leetcode/</loc>
-    <lastmod>2019-03-29T21:54:41+00:00</lastmod>
-  </url><url>
     <loc>https://isudox.com/2019/03/29/leetcode-39-combination-sum/</loc>
     <lastmod>2019-03-29T21:54:41+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2019/03/26/leetcode-136-single-number/</loc>
     <lastmod>2019-03-26T20:20:20+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/javascript/</loc>
-    <lastmod>2018-04-22T23:20:03+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2018/04/22/generators-in-python-es6/</loc>
     <lastmod>2018-04-22T23:20:03+00:00</lastmod>
@@ -110,7 +101,7 @@
     <loc>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</loc>
     <lastmod>2017-02-18T14:51:10+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/git/</loc>
+    <loc>https://isudox.com/tags/dev/</loc>
     <lastmod>2017-02-18T14:51:10+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/categories/translation/</loc>
@@ -118,9 +109,6 @@
   </url><url>
     <loc>https://isudox.com/2017/02/16/spring-mvc-redirect-forward/</loc>
     <lastmod>2017-02-16T11:35:09+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/flask/</loc>
-    <lastmod>2017-02-14T19:47:11+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2017/02/14/explore-flask-source-code-structure/</loc>
     <lastmod>2017-02-14T19:47:11+00:00</lastmod>
@@ -131,14 +119,8 @@
     <loc>https://isudox.com/2017/02/06/rpc-uni-entry-with-reflection/</loc>
     <lastmod>2017-02-06T15:18:55+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/ci/</loc>
-    <lastmod>2017-01-24T22:07:42+00:00</lastmod>
-  </url><url>
     <loc>https://isudox.com/2017/01/24/deploy-site-with-travis-ci/</loc>
     <lastmod>2017-01-24T22:07:42+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/docker/</loc>
-    <lastmod>2017-01-16T13:30:31+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2017/01/16/dockerize-applications/</loc>
     <lastmod>2017-01-16T13:30:31+00:00</lastmod>
@@ -155,22 +137,16 @@
     <loc>https://isudox.com/2016/12/27/yarn-front-end-development-trends-in-2016/</loc>
     <lastmod>2016-12-27T22:39:09+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/frontend/</loc>
+    <loc>https://isudox.com/tags/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2016-12-27T22:39:09+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/</loc>
     <lastmod>2016-12-26T10:40:41+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/webpack/</loc>
+    <loc>https://isudox.com/tags/frontend/</loc>
     <lastmod>2016-12-26T10:40:41+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/11/12/cors-in-action/</loc>
-    <lastmod>2016-11-12T00:31:58+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/http/</loc>
-    <lastmod>2016-11-12T00:31:58+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/springmvc/</loc>
     <lastmod>2016-11-12T00:31:58+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/10/26/python-generator-guide/</loc>
@@ -183,9 +159,6 @@
     <lastmod>2016-10-11T11:40:04+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/10/10/unit-test-with-junit-mockito/</loc>
-    <lastmod>2016-10-10T22:12:35+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/unittest/</loc>
     <lastmod>2016-10-10T22:12:35+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/10/02/flask-context-guide/</loc>
@@ -218,14 +191,14 @@
     <loc>https://isudox.com/2016/08/01/running-gitlab-in-docker-container/</loc>
     <lastmod>2016-08-01T17:15:08+00:00</lastmod>
   </url><url>
+    <loc>https://isudox.com/tags/http/</loc>
+    <lastmod>2016-07-28T17:07:42+00:00</lastmod>
+  </url><url>
     <loc>https://isudox.com/tags/nginx/</loc>
     <lastmod>2016-07-28T17:07:42+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/07/28/secure-subdomain-with-ssl-certificate/</loc>
     <lastmod>2016-07-28T17:07:42+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/jetbrains/</loc>
-    <lastmod>2016-07-26T16:47:03+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/07/26/scheme-of-ideavim-keymap/</loc>
     <lastmod>2016-07-26T16:47:03+00:00</lastmod>
@@ -239,9 +212,6 @@
     <loc>https://isudox.com/2016/07/22/guide-for-postgresql-beginners/</loc>
     <lastmod>2016-07-22T10:49:49+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/hexo/</loc>
-    <lastmod>2016-07-14T16:01:06+00:00</lastmod>
-  </url><url>
     <loc>https://isudox.com/2016/07/14/customize-hexo-theme/</loc>
     <lastmod>2016-07-14T16:01:06+00:00</lastmod>
   </url><url>
@@ -251,37 +221,22 @@
     <loc>https://isudox.com/2016/07/06/integrating-thymeleaf-with-spring-mvc/</loc>
     <lastmod>2016-07-06T15:25:45+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/thymeleaf/</loc>
-    <lastmod>2016-07-06T15:25:45+00:00</lastmod>
-  </url><url>
     <loc>https://isudox.com/2016/07/04/leetcode-tour-4/</loc>
     <lastmod>2016-07-04T15:06:59+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/06/22/memory-model-of-string-in-java-language/</loc>
     <lastmod>2016-06-22T13:00:53+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/memory/</loc>
-    <lastmod>2016-06-22T13:00:53+00:00</lastmod>
-  </url><url>
     <loc>https://isudox.com/2016/06/15/leetcode-tour-3/</loc>
     <lastmod>2016-06-15T20:18:15+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/designpatterns/</loc>
-    <lastmod>2016-06-06T18:23:51+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/refactoring/</loc>
+    <loc>https://isudox.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
     <lastmod>2016-06-06T18:23:51+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/06/06/using-chain-of-responsibility-pattern/</loc>
     <lastmod>2016-06-06T18:23:51+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/django/</loc>
-    <lastmod>2016-06-01T17:24:27+00:00</lastmod>
-  </url><url>
     <loc>https://isudox.com/2016/06/01/non-best-practice-of-django-deployment/</loc>
-    <lastmod>2016-06-01T17:24:27+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/uwsgi/</loc>
     <lastmod>2016-06-01T17:24:27+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/05/23/some-thoughts-on-loading-utf8-properties-file-in-spring/</loc>
@@ -308,12 +263,6 @@
     <loc>https://isudox.com/2016/05/09/install-aur-packages-by-proxy/</loc>
     <lastmod>2016-05-09T23:27:07+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/canvas/</loc>
-    <lastmod>2016-04-18T19:55:14+00:00</lastmod>
-  </url><url>
-    <loc>https://isudox.com/tags/html5/</loc>
-    <lastmod>2016-04-18T19:55:14+00:00</lastmod>
-  </url><url>
     <loc>https://isudox.com/2016/04/18/imitate-wechat-moment-on-mobile-device/</loc>
     <lastmod>2016-04-18T19:55:14+00:00</lastmod>
   </url><url>
@@ -325,6 +274,9 @@
   </url><url>
     <loc>https://isudox.com/categories/web/</loc>
     <lastmod>2016-03-18T16:53:47+00:00</lastmod>
+  </url><url>
+    <loc>https://isudox.com/tags/git/</loc>
+    <lastmod>2016-03-10T18:01:32+00:00</lastmod>
   </url><url>
     <loc>https://isudox.com/2016/03/10/git-general-practice/</loc>
     <lastmod>2016-03-10T18:01:32+00:00</lastmod>
@@ -347,6 +299,9 @@
     <loc>https://isudox.com/2015/10/29/my-hhkb-pro2-type-s/</loc>
     <lastmod>2015-10-29T22:37:14+00:00</lastmod>
   </url><url>
+    <loc>https://isudox.com/tags/javascript/</loc>
+    <lastmod>2015-10-25T19:37:47+00:00</lastmod>
+  </url><url>
     <loc>https://isudox.com/2015/10/25/js-global-variables/</loc>
     <lastmod>2015-10-25T19:37:47+00:00</lastmod>
   </url><url>
@@ -356,10 +311,10 @@
     <loc>https://isudox.com/2015/09/26/begin-arch-linux/</loc>
     <lastmod>2015-09-26T18:02:05+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/2015/09/03/hexo-your-blog/</loc>
+    <loc>https://isudox.com/tags/hexo/</loc>
     <lastmod>2015-09-03T00:19:38+00:00</lastmod>
   </url><url>
-    <loc>https://isudox.com/tags/vps/</loc>
+    <loc>https://isudox.com/2015/09/03/hexo-your-blog/</loc>
     <lastmod>2015-09-03T00:19:38+00:00</lastmod>
   </url>
 </urlset>

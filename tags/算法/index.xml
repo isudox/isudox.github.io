@@ -16,5 +16,77 @@
       <description>Algorithms + Data Structures = Programs —— Niklaus Wirth 先搬出写了 Pascal、又拿了图灵奖的大师的名言，这里不讨论该断言的合理性，只作为本文的引子。在数据库领域，究其原理，绕</description>
     </item>
     
+    <item>
+      <title>LeetCode-39 Combination Sum</title>
+      <link>https://isudox.com/2019/03/29/leetcode-39-combination-sum/</link>
+      <pubDate>Fri, 29 Mar 2019 21:54:41 +0000</pubDate>
+      
+      <guid>https://isudox.com/2019/03/29/leetcode-39-combination-sum/</guid>
+      <description>39. Combination Sum Medium Problem Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target. The same repeated number may be chosen from candidates unlimited number of times. Note: All numbers (including target) will be positive integers. The solution set must not contain duplicate combinations. Example 1: Input: candidates = [2,3,6,7], target =</description>
+    </item>
+    
+    <item>
+      <title>LeetCode-136 Single Number</title>
+      <link>https://isudox.com/2019/03/26/leetcode-136-single-number/</link>
+      <pubDate>Tue, 26 Mar 2019 20:20:20 +0000</pubDate>
+      
+      <guid>https://isudox.com/2019/03/26/leetcode-136-single-number/</guid>
+      <description>136. Single Number Easy Given a non-empty array of integers, every element appears twice except for one. Find that single one. Note: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory? Example 1: Input: [2,2,1] Output: 1 Example 2: Input: [4,1,2,1,2] Output: 4 Solution Actually it&amp;rsquo;s quite simple to solve, but we should make clear that it requires O(N) complexity and no extra</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 26-30</title>
+      <link>https://isudox.com/2016/10/17/leetcode-26-30/</link>
+      <pubDate>Mon, 17 Oct 2016 17:09:15 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/10/17/leetcode-26-30/</guid>
+      <description>三个月没上 LeetCode了，最近工作不顺心，好想被虐个痛快，接着写 LeetCode 第 26 至 30 题。 Remove Duplicates from Sorted Array 第 26 题 Remove Duplicates from Sorted Array 给定一个有序数组，去掉其中重复的</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 21-25</title>
+      <link>https://isudox.com/2016/07/08/leetcode-tour-5/</link>
+      <pubDate>Fri, 08 Jul 2016 21:25:43 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/07/08/leetcode-tour-5/</guid>
+      <description>本篇记录 LeetCode 算法部分第 21 至 25 题。 Merge Two Sorted Lists 第 21 题 Merge Two Sorted Lists 将两个有序链表合并成一个新的有序链表。 题目不复杂，取两个指针分别往下遍历两个链表的每个节</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 16-20</title>
+      <link>https://isudox.com/2016/07/04/leetcode-tour-4/</link>
+      <pubDate>Mon, 04 Jul 2016 15:06:59 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/07/04/leetcode-tour-4/</guid>
+      <description>本篇记录 LeetCode 算法部分第 16-20 题。 3Sum Closest 第 16 题 3Sum Closest 给定一个包含 n 个整型数的数组 S，找出 S 中的三个数，使得三者求和的结果和目标值最接近。返回求和结果，假</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 11-15</title>
+      <link>https://isudox.com/2016/06/15/leetcode-tour-3/</link>
+      <pubDate>Wed, 15 Jun 2016 20:18:15 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/06/15/leetcode-tour-3/</guid>
+      <description>继上篇 LeetCode 探险第二弹，第三弹记录第 11 到 15 题。 Container With Most Water 第 11 题 Container With Most Water 给出 n 个非负整数 a1, a2, &amp;hellip;, an，每个数指向一个坐标点 (i, ai)。该 n 个坐标点画出了</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 6-10</title>
+      <link>https://isudox.com/2016/05/17/leetcode-tour-2/</link>
+      <pubDate>Tue, 17 May 2016 21:14:04 +0000</pubDate>
+      
+      <guid>https://isudox.com/2016/05/17/leetcode-tour-2/</guid>
+      <description>接着上篇 LeetCode 探险第一弹，本篇记录第 6 到 10 题。 ZigZag Conversion 第 6 题 ZigZag Conversion 字符串 &amp;quot;PAYPALISHIRING&amp;quot; 是由如下排列的字符串通过 ZigZag 形式读取所得。 P A H N A P L S I I G Y I R &amp;gt; 如果按</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 1-5</title>
+      <link>https://isudox.com/2015/11/23/leetcode-1st-week/</link>
+      <pubDate>Mon, 23 Nov 2015 20:50:27 +0000</pubDate>
+      
+      <guid>https://isudox.com/2015/11/23/leetcode-1st-week/</guid>
+      <description>上学时零零碎碎上 LeetCode 观光过，现在工作了忙成狗了反倒想被 LeetCode 好好虐一遍……这篇小记 15 年就写了标题，现在还回来填坑。 LeetCode 探险记会按题目的顺序写，为避免</description>
+    </item>
+    
   </channel>
 </rss>
