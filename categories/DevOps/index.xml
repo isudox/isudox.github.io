@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DevOps on I sudo X</title>
-    <link>https://isudox.com/categories/devops/</link>
+    <link>https://isudox.com/categories/DevOps/</link>
     <description>Recent content in DevOps on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 29 Aug 2016 13:45:50 +0000</lastBuildDate><atom:link href="https://isudox.com/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 29 Aug 2016 13:45:50 +0000</lastBuildDate><atom:link href="https://isudox.com/categories/DevOps/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Gunicorn 驱动工厂模式 Flask 应用</title>
       <link>https://isudox.com/2016/08/29/running-flask-with-gunicorn-in-application-factory/</link>

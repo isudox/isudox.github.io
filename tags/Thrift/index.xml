@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Thrift on I sudo X</title>
-    <link>https://isudox.com/tags/thrift/</link>
+    <link>https://isudox.com/tags/Thrift/</link>
     <description>Recent content in Thrift on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 10 Apr 2017 11:46:23 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/thrift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Apr 2017 11:46:23 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/Thrift/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Thrift 学习笔记：RPC Server 和 Client</title>
       <link>https://isudox.com/2017/04/10/thrift-notes-server-client/</link>

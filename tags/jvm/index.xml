@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JVM on I sudo X</title>
-    <link>https://isudox.com/tags/jvm/</link>
+    <link>https://isudox.com/tags/JVM/</link>
     <description>Recent content in JVM on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 10 Mar 2021 23:19:09 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/jvm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 Mar 2021 23:19:09 +0800</lastBuildDate><atom:link href="https://isudox.com/tags/JVM/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Metaspace 堆积引起 Full GC 的排查</title>
       <link>https://isudox.com/2021/03/10/metaspace-threshold-fullgc-analyze/</link>

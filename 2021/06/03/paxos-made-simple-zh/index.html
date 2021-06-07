@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <title>Paxos Made Simple 中译</title>
+  <title>Paxos Made Simple 翻译</title>
   
   <meta name="description" content="摘要：用大白话来解释 Paxos 算法是非常简单的。 1 引入｜Introduction 由于一开始对分布式系统容错的 Paxos 算法的描述，对许多读者而言都过于极客，">
   <meta name="author" content="isudox">
@@ -49,7 +49,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <h1 class="post-title">Paxos Made Simple 中译</h1>
+    <h1 class="post-title">Paxos Made Simple 翻译</h1>
     <div class="post-meta">2021/06/03</div>
   </header>
   <div class="post-content"><p><strong>摘要</strong>：用大白话来解释 Paxos 算法是非常简单的。</p>
@@ -58,7 +58,6 @@
 <p>由于一开始对分布式系统容错的 Paxos 算法的描述，对许多读者而言都过于极客，因此被认为是非常晦涩难懂<sup>[5]</sup>。实际上，它是最简单、直观的分布式算法。其本质是一种共识算法——论文<sup>[5]</sup>中的 <em>synod</em> 算法。在下一节中会展示该共识算法几乎严格地实现了我们所要求的特性。在最后一节，会阐释完整的 Paxos 算法，通过将共识直接应用在状态机上，来构建分布式系统。这种方法应该是广为人知的，因为它大概算是分布式系统理论中被引用最多的论文主旨。</p>
 <h1 id="2-共识算法the-consensus-algorithm">2 共识算法｜The Consensus Algorithm</h1>
 <h2 id="21-问题the-problem">2.1 问题｜The Problem</h2>
-<p>Assume a collection of processes that can propose values. A consensus algorithm ensures that a single one among the proposed values is chosen. If no value is proposed, then no value should be chosen. If a value has been chosen, then processes should be able to learn the chosen value. The safety requirements for consensus are:</p>
 <p>假设有一组能发起提案的进程。共识算法要保证在多个提案中只有一个被选中。如果没有提案，则不会选择提案。如果一个提案被选中，则所有进程都应该知晓该选中的决议。该共识算法的可靠性，有以下要求：</p>
 <ul>
 <li>只有被发起的提案，才有机会被选中通过；</li>
@@ -70,13 +69,20 @@
 <p>假设这些代理人可以通过发送消息进行交流。我们使用常见的非「拜占庭」异步模型：</p>
 <ul>
 <li>代理人的处理速度随机，可能会停机导致失败，可能会重启。因为所有代理人都可能会在某个提案被选中后发生故障然后重启，所以某些信息必须要被出现故障和重启的代理人记录下来；</li>
-<li>通信的消息长度任意，可以重复，可以丢失，但</li>
-<li>Messages can take arbitrarily long to be delivered, can be duplicated, and can be lost, but they are not corrupted.</li>
+<li>通信的消息长度任意，可以重复，可以丢失，但消息内容不会被篡改；</li>
 </ul>
-<p>假设这些代理之间可以通过互相发送消息来通信。我们使用的非“拜占庭”异步模型是这样的3：
-每个代理都会以任意速度执行，可能会因为停止而导致出错，可能会重启。由于所有代理都可能在某个值被选定后出错然后重启，因此有些信息需要被这些出错或重启的进程记录下来；
-消息长度不限，可以在进程间传递或复制，也有可能丢失，但是消息内容不会被修改。</p>
-<h2 id="22-选择-value">2.2 选择 value</h2>
+<h2 id="22-选中提案choosing-a-value">2.2 选中提案｜Choosing a Value</h2>
+<p>最简单的选中提案的方式就是，只有一个 Acceptor：Proposer 向 Acceptor 发起提议，Acceptor 选择最先收到的提议。虽然实现简单，但这个方式会在 Acceptor 故障时无法继续运转。</p>
+<p>所以需要尝试其他方式来选择提案。我们使用多个 Acceptor，Proposer 向一组 Acceptor 发送提案，Acceptor 可能会采纳该提案。只有当足够多的 Acceptor 都采纳，该提案才能通过。那么什么才叫「足够多」？为了确保只有一个提案被通过，我们使「足够多」的 Acceptor 是由大多数 Acceptor 组成。因为任意两个包含大多数 Acceptor 的子集，必然存在包含至少一个 Acceptor 的交集，当 Acceptor 最多只能采纳一个提案时，该方式是可行的。（在很多论文中都对「大多数」做了概括，很显然是发轫于论文<sup>3</sup>）</p>
+<p>在不考虑故障和消息丢失的情况下，我们期望即使只有一个 Proposer 发起一个提案，系统也能通过提案。这需要满足以下条件：</p>
+<ol>
+<li>
+<p><strong>P1</strong>. An acceptor must accept the ﬁrst proposal that it receives.</p>
+</li>
+<li>
+<p>P2. If a proposal with value v is chosen, then every higher-numbered proposal that is chosen has value v.</p>
+</li>
+</ol>
 <h2 id="23-获知已选-value">2.3 获知已选 value</h2>
 <h2 id="24-推进">2.4 推进</h2>
 <h2 id="25-实现">2.5 实现</h2>

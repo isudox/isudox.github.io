@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Frontend on I sudo X</title>
-    <link>https://isudox.com/tags/frontend/</link>
+    <link>https://isudox.com/tags/Frontend/</link>
     <description>Recent content in Frontend on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 26 Dec 2016 10:40:41 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/frontend/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Dec 2016 10:40:41 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/Frontend/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>2016 前端补习 Webpack 篇</title>
       <link>https://isudox.com/2016/12/26/webpack-front-end-development-trends-in-2016/</link>

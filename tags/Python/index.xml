@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on I sudo X</title>
-    <link>https://isudox.com/tags/python/</link>
+    <link>https://isudox.com/tags/Python/</link>
     <description>Recent content in Python on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 22 Apr 2018 23:20:03 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Apr 2018 23:20:03 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/Python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>JavaScript ES6 和 Python 中的 Generator</title>
       <link>https://isudox.com/2018/04/22/generators-in-python-es6/</link>

@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dev on I sudo X</title>
-    <link>https://isudox.com/tags/dev/</link>
+    <link>https://isudox.com/tags/Dev/</link>
     <description>Recent content in Dev on I sudo X</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 18 Feb 2017 14:51:10 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/dev/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Feb 2017 14:51:10 +0000</lastBuildDate><atom:link href="https://isudox.com/tags/Dev/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[译] 一个行之有效的 Git 分支模型</title>
       <link>https://isudox.com/2017/02/18/a-successful-git-branching-model-zh/</link>
