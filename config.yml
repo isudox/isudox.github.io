@@ -17,6 +17,7 @@ defaultContentLanguage: "zh"
 taxonomies:
   category: categories
   tag: tags
+disablePathToLower: true
 menu:
   main:
   - identifier: archive
