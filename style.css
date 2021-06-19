@@ -463,7 +463,7 @@ img {
   font-size: 0.9em;
   overflow-x: auto !important;
   overflow-y: auto !important;
-  /* max-block-size: 500px; */
+  max-block-size: 500px;
   /* line-height: 1.5; */
 }
 .post-content blockquote {
