@@ -10,18 +10,20 @@ show_title: false
 
 专注于后端开发，并对算法和分布式系统充满好奇的一名普通程序员。
 
-职业履历：
+#### 工作履历：
 
 | 时间 | 公司 | 工作 |
 |:------|:------|:--------|
-| 2017/03 - 至今 | **美团点评** | 高级开发工程师 |
-| 2015/07 - 2017/03 | **京东商城** | 开发工程师 |
+| 2017/03 - 至今 | 美团点评 | 高级开发工程师 |
+| 2015/07 - 2017/03 | 京东商城 | 开发工程师 |
 
-联系方式：
+#### 联系我
 
-- 邮箱: <me@isudox.com>
-- GitHub: [isudox](https://github.com/isudox/)
+- <me@isudox.com>
+- [GitHub](https://github.com/isudox/)
 
 ## 关于本站
 
 本站是由 [Hugo](https://github.com/gohugoio/hugo) 搭建的静态博客，主题样式采用 [hugo-theme-nova](https://github.com/isudox/hugo-theme-nova/)。源码托管于 Google Cloud。
+
+如果我的博客能给你带来一些帮助，那会是我非常开心的事 ^____^。

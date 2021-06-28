@@ -1,5 +1,5 @@
 ---
-title: 简历（未完成更新）
+title: 简历
 date: 2020-07-23T01:10:06+08:00
 show_comments: false
 show_date: false
