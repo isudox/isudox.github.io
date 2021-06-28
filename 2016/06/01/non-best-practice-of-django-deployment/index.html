@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.84.1" />
   
   
 </head>
@@ -163,7 +163,7 @@ pip install -r requirements.txt
 </code></pre><p>在 base.py 中保留通用的配置，其余的文件保存不同环境的差异化配置。比如 local.py</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">mysite.conf.base</span> <span style="color:#dc322f;font-weight:bold">import</span> *
 
-<span style="color:#268bd2">DEBUG</span> = <span style="color:#268bd2">True</span>
+<span style="color:#268bd2">DEBUG</span> = <span style="color:#859900;font-weight:bold">True</span>
 <span style="color:#268bd2">INSTALLED_APPS</span> += (
     <span style="color:#2aa198">&#39;some_apps&#39;</span>, <span style="color:#93a1a1;font-style:italic"># and other apps for local development</span>
 )
@@ -177,7 +177,7 @@ pip install -r requirements.txt
 </code></pre></div><p>而 product.py 则可能为</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">mysite.conf.base</span> <span style="color:#dc322f;font-weight:bold">import</span> *
 
-<span style="color:#268bd2">DEBUG</span> = <span style="color:#268bd2">False</span>
+<span style="color:#268bd2">DEBUG</span> = <span style="color:#859900;font-weight:bold">False</span>
 <span style="color:#268bd2">DATABASES</span> = {
     <span style="color:#2aa198">&#39;default&#39;</span>: {
         <span style="color:#2aa198">&#39;ENGINE&#39;</span>: <span style="color:#2aa198">&#39;django.db.backends.mysql&#39;</span>,

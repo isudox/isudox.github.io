@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.84.1" />
   
   
 </head>
@@ -57,15 +57,15 @@
 <h3 id="管窥装饰器">管窥装饰器</h3>
 <p>下面是一个很简单的 Python 方法：</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
-    <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;call me&#39;</span>)
+    <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;call me&#39;</span>)
 
 <span style="color:#268bd2">call</span>()
 </code></pre></div><p>很简单，这会得到 &ldquo;call me&rdquo; 的文本输出。现在增加一个时间标记，告知是什么时间呼叫的我，可以这么改：</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
-    <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;call me&#39;</span>)
-    <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;at &#39;</span>, <span style="color:#268bd2">time</span>.<span style="color:#268bd2">strftime</span>(<span style="color:#2aa198">&#39;%Y-%m-</span><span style="color:#2aa198">%d</span><span style="color:#2aa198"> %H:%M:%S&#39;</span>, <span style="color:#268bd2">time</span>.<span style="color:#268bd2">localtime</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>()))))
+    <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;call me&#39;</span>)
+    <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;at &#39;</span>, <span style="color:#268bd2">time</span>.<span style="color:#268bd2">strftime</span>(<span style="color:#2aa198">&#39;%Y-%m-</span><span style="color:#2aa198">%d</span><span style="color:#2aa198"> %H:%M:%S&#39;</span>, <span style="color:#268bd2">time</span>.<span style="color:#268bd2">localtime</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>()))))
           
 <span style="color:#268bd2">call</span>()
 </code></pre></div><p>这么做有一个麻烦的地方，就是在 <code>call()</code> 方法内部做了改动。在很多场景下，我们不希望去改变方法本身的行为，因为这个方法可能在很多地方都被调用了，如果在方法内部做了修改，那么对每个调用都会产生影响，但我们只希望在某些调用时才去改变它的行为。比较常见的实用场景如用户登录拦截。</p>
@@ -74,12 +74,12 @@
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
-    <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;call me &#39;</span>)
+    <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;call me &#39;</span>)
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">mark_time</span>(<span style="color:#268bd2">func</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">wrapper</span>(*<span style="color:#268bd2">args</span>, **<span style="color:#268bd2">kwargs</span>):
         <span style="color:#268bd2">func</span>()
-        <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;at&#39;</span>,
+        <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;at&#39;</span>,
               <span style="color:#268bd2">time</span>.<span style="color:#268bd2">strftime</span>(<span style="color:#2aa198">&#39;%Y-%m-</span><span style="color:#2aa198">%d</span><span style="color:#2aa198"> %H:%M:%S&#39;</span>, <span style="color:#268bd2">time</span>.<span style="color:#268bd2">localtime</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>())))
 
     <span style="color:#859900">return</span> <span style="color:#268bd2">wrapper</span>
@@ -93,14 +93,14 @@
 <span style="color:#859900">def</span> <span style="color:#268bd2">mark_time</span>(<span style="color:#268bd2">func</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">wrapper</span>(*<span style="color:#268bd2">args</span>, **<span style="color:#268bd2">kwargs</span>):
         <span style="color:#268bd2">func</span>()
-        <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;at&#39;</span>,
+        <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;at&#39;</span>,
               <span style="color:#268bd2">time</span>.<span style="color:#268bd2">strftime</span>(<span style="color:#2aa198">&#39;%Y-%m-</span><span style="color:#2aa198">%d</span><span style="color:#2aa198"> %H:%M:%S&#39;</span>, <span style="color:#268bd2">time</span>.<span style="color:#268bd2">localtime</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>())))
 
     <span style="color:#859900">return</span> <span style="color:#268bd2">wrapper</span>
 
 <span style="color:#268bd2">@mark_time</span>
 <span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
-    <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;call me &#39;</span>)
+    <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;call me &#39;</span>)
 
 <span style="color:#268bd2">call</span>()
 </code></pre></div><p>可以看出，<code>@mark_time</code> 的作用等同于 <code>call = mark_time(call)</code>，得到一个可调用的函数名。</p>
@@ -134,11 +134,11 @@
 
 <span style="color:#268bd2">my_drink</span> = <span style="color:#268bd2">get_drink</span>()
 
-<span style="color:#859900">print</span>(<span style="color:#268bd2">my_drink</span>)  <span style="color:#93a1a1;font-style:italic"># &lt;function get_drink.&lt;locals&gt;.serve_tea at 0x7f313f307f28&gt;</span>
+<span style="color:#cb4b16">print</span>(<span style="color:#268bd2">my_drink</span>)  <span style="color:#93a1a1;font-style:italic"># &lt;function get_drink.&lt;locals&gt;.serve_tea at 0x7f313f307f28&gt;</span>
 
-<span style="color:#859900">print</span>(<span style="color:#268bd2">my_drink</span>())  <span style="color:#93a1a1;font-style:italic"># Green tea</span>
+<span style="color:#cb4b16">print</span>(<span style="color:#268bd2">my_drink</span>())  <span style="color:#93a1a1;font-style:italic"># Green tea</span>
 
-<span style="color:#859900">print</span>(<span style="color:#268bd2">get_drink</span>(<span style="color:#2aa198">&#39;coffee&#39;</span>)())  <span style="color:#93a1a1;font-style:italic"># Coffee latte</span>
+<span style="color:#cb4b16">print</span>(<span style="color:#268bd2">get_drink</span>(<span style="color:#2aa198">&#39;coffee&#39;</span>)())  <span style="color:#93a1a1;font-style:italic"># Coffee latte</span>
 </code></pre></div><p>这样之前写的装饰器函数返回的 <code>wrapper</code> 就不难明白了。装饰器的本质就是实现了在被装饰的方法执行之前/之后，执行装饰的动作。</p>
 <h3 id="带参装饰器">带参装饰器</h3>
 <p>假设有这么个需求，在前面的 <code>call()</code> 方法之前加上主语，实现 &ldquo;{who} calls me at {time}&quot;，可以考虑给装饰器函数本身传递一个入参 {who}。
@@ -154,16 +154,16 @@
 <span style="color:#859900">def</span> <span style="color:#268bd2">mark_time</span>(<span style="color:#268bd2">who</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">wrapper_1</span>(<span style="color:#268bd2">func</span>):
         <span style="color:#859900">def</span> <span style="color:#268bd2">wrapper_2</span>(*<span style="color:#268bd2">args</span>, **<span style="color:#268bd2">kwargs</span>):
-            <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;</span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">who</span>)
+            <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;</span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">who</span>)
             <span style="color:#268bd2">func</span>()
-            <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;at&#39;</span>,
+            <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;at&#39;</span>,
                   <span style="color:#268bd2">time</span>.<span style="color:#268bd2">strftime</span>(<span style="color:#2aa198">&#39;%Y-%m-</span><span style="color:#2aa198">%d</span><span style="color:#2aa198"> %H:%M:%S&#39;</span>, <span style="color:#268bd2">time</span>.<span style="color:#268bd2">localtime</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>())))
         <span style="color:#859900">return</span> <span style="color:#268bd2">wrapper_2</span>
     <span style="color:#859900">return</span> <span style="color:#268bd2">wrapper_1</span>
 
 <span style="color:#268bd2">@mark_time</span>(<span style="color:#2aa198">&#39;sudoz&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
-    <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;call me &#39;</span>)
+    <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;call me &#39;</span>)
 
 <span style="color:#268bd2">call</span>()
 </code></pre></div><h3 id="内置装饰器">内置装饰器</h3>
@@ -181,17 +181,17 @@
 
     <span style="color:#268bd2">@staticmethod</span>
     <span style="color:#859900">def</span> <span style="color:#268bd2">test_static_method</span>():
-        <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;nothing to do.&#39;</span>)
+        <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;nothing to do.&#39;</span>)
 
     <span style="color:#268bd2">@classmethod</span>
     <span style="color:#859900">def</span> <span style="color:#268bd2">test_class_method</span>(<span style="color:#268bd2">cls</span>):
-        <span style="color:#859900">print</span>(<span style="color:#268bd2">cls</span>.<span style="color:#268bd2">__name__</span>)
+        <span style="color:#cb4b16">print</span>(<span style="color:#268bd2">cls</span>.<span style="color:#268bd2">__name__</span>)
 
     <span style="color:#268bd2">@property</span>
     <span style="color:#859900">def</span> <span style="color:#268bd2">name</span>(<span style="color:#268bd2">self</span>):
         <span style="color:#859900">return</span> <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_name</span>
 
-    <span style="color:#268bd2">@name.setter</span>
+    <span style="color:#268bd2">@name</span>.<span style="color:#268bd2">setter</span>
     <span style="color:#859900">def</span> <span style="color:#268bd2">name</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">name</span>):
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_name</span> = <span style="color:#268bd2">name</span>
 
@@ -204,14 +204,14 @@
 <span style="color:#268bd2">Demo</span>.<span style="color:#268bd2">test_static_method</span>()  <span style="color:#93a1a1;font-style:italic"># nothing to do</span>
 <span style="color:#268bd2">demo</span>.<span style="color:#268bd2">test_static_method</span>()  <span style="color:#93a1a1;font-style:italic"># nothing to do</span>
 <span style="color:#268bd2">demo</span>.<span style="color:#268bd2">test_class_method</span>()   <span style="color:#93a1a1;font-style:italic"># Demo</span>
-<span style="color:#859900">print</span>(<span style="color:#268bd2">demo</span>.<span style="color:#268bd2">name</span>)           <span style="color:#93a1a1;font-style:italic"># sudoz beijing</span>
+<span style="color:#cb4b16">print</span>(<span style="color:#268bd2">demo</span>.<span style="color:#268bd2">name</span>)           <span style="color:#93a1a1;font-style:italic"># sudoz beijing</span>
 <span style="color:#268bd2">demo</span>.<span style="color:#268bd2">name</span> = <span style="color:#2aa198">&#39;anonymous&#39;</span>
-<span style="color:#859900">print</span>(<span style="color:#268bd2">demo</span>.<span style="color:#268bd2">name</span>)           <span style="color:#93a1a1;font-style:italic"># anonymous</span>
+<span style="color:#cb4b16">print</span>(<span style="color:#268bd2">demo</span>.<span style="color:#268bd2">name</span>)           <span style="color:#93a1a1;font-style:italic"># anonymous</span>
 <span style="color:#859900">try</span>:
     <span style="color:#268bd2">demo</span>.<span style="color:#268bd2">city</span> = <span style="color:#2aa198">&#39;hangzhou&#39;</span>
-    <span style="color:#859900">print</span>(<span style="color:#268bd2">demo</span>.<span style="color:#268bd2">city</span>)
+    <span style="color:#cb4b16">print</span>(<span style="color:#268bd2">demo</span>.<span style="color:#268bd2">city</span>)
 <span style="color:#859900">except</span> <span style="color:#268bd2">Exception</span> <span style="color:#859900">as</span> <span style="color:#268bd2">e</span>:
-    <span style="color:#859900">print</span>(<span style="color:#268bd2">e</span>)              <span style="color:#93a1a1;font-style:italic"># can&#39;t set attribute</span>
+    <span style="color:#cb4b16">print</span>(<span style="color:#268bd2">e</span>)              <span style="color:#93a1a1;font-style:italic"># can&#39;t set attribute</span>
 </code></pre></div><p>注意上面的代码，如果被 <code>@property</code> 装饰的属性没有设置 <code>setter</code> 方法，那么该属性就是类的只读属性，不能被修改，因此上面试图修改 city 属性，抛出异常。</p>
 <h3 id="functools-进阶">functools 进阶</h3>
 <p>装饰器在执行时，有一个隐蔽的小动作可能会被忽略：它把被装饰的函数的 <code>__name__</code> 属性给置换成回调函数的属性了。测试下上面代码里被装饰后的 <code>call</code> 的 <code>__name__</code> 属性，不再是 &ldquo;call&rdquo; 而是 &ldquo;wrapper_2&rdquo;。Python 2.5 版本新增的 <code>functools.wraps()</code> 解决了这个问题，它会把被装饰方法的名称，模块复制到装饰器内。而<code>functools.wraps()</code> 本身也是一个装饰器。</p>
@@ -219,9 +219,9 @@
 
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">foobar</span>(<span style="color:#268bd2">func</span>):
-    <span style="color:#268bd2">@functools.wraps</span>(<span style="color:#268bd2">func</span>)
+    <span style="color:#268bd2">@functools</span>.<span style="color:#268bd2">wraps</span>(<span style="color:#268bd2">func</span>)
     <span style="color:#859900">def</span> <span style="color:#268bd2">wrapper</span>(*<span style="color:#268bd2">args</span>, **<span style="color:#268bd2">kwargs</span>):
-        <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;foo&#39;</span>)
+        <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;foo&#39;</span>)
         <span style="color:#859900">return</span> <span style="color:#268bd2">func</span>(<span style="color:#268bd2">args</span>)
 
     <span style="color:#859900">return</span> <span style="color:#268bd2">wrapper</span>
@@ -229,10 +229,10 @@
 
 <span style="color:#268bd2">@foobar</span>
 <span style="color:#859900">def</span> <span style="color:#268bd2">say_hello</span>(*<span style="color:#268bd2">args</span>, **<span style="color:#268bd2">kwargs</span>):
-    <span style="color:#859900">print</span>(<span style="color:#2aa198">&#39;Hello </span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">args</span>[<span style="color:#2aa198;font-weight:bold">0</span>])
+    <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;Hello </span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">args</span>[<span style="color:#2aa198;font-weight:bold">0</span>])
 
 
-<span style="color:#859900">print</span>(<span style="color:#268bd2">say_hello</span>.<span style="color:#268bd2">__name__</span>)  <span style="color:#93a1a1;font-style:italic"># Output: bar</span>
+<span style="color:#cb4b16">print</span>(<span style="color:#268bd2">say_hello</span>.<span style="color:#268bd2">__name__</span>)  <span style="color:#93a1a1;font-style:italic"># Output: bar</span>
 
 <span style="color:#268bd2">say_hello</span>(<span style="color:#2aa198">&#39;sudoz&#39;</span>)  <span style="color:#93a1a1;font-style:italic"># Output: Hello sudoz</span>
 </code></pre></div></div>

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.84.1" />
   
   
 </head>
@@ -300,7 +300,7 @@ server -&gt; client:   X&#39;05&#39;   X&#39;00&#39;   X&#39;00&#39;   X&#39;01&
 <span style="color:#859900">def</span> <span style="color:#268bd2">handle_tcp</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">sock</span>, <span style="color:#268bd2">remote</span>):
     <span style="color:#859900">try</span>:
         <span style="color:#268bd2">fds</span> = [<span style="color:#268bd2">sock</span>, <span style="color:#268bd2">remote</span>]
-        <span style="color:#859900">while</span> <span style="color:#268bd2">True</span>:
+        <span style="color:#859900">while</span> <span style="color:#859900;font-weight:bold">True</span>:
             <span style="color:#93a1a1;font-style:italic"># select 多路复用</span>
             <span style="color:#268bd2">r_fd</span>, <span style="color:#268bd2">w_fd</span>, <span style="color:#268bd2">e_fd</span> = <span style="color:#268bd2">select</span>.<span style="color:#268bd2">select</span>(<span style="color:#268bd2">fds</span>, [], [])
             <span style="color:#859900">if</span> <span style="color:#268bd2">sock</span> <span style="color:#859900">in</span> <span style="color:#268bd2">r_fd</span>:

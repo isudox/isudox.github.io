@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.84.1" />
   
   
 </head>
@@ -128,16 +128,16 @@
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span> = <span style="color:#268bd2">Local</span>()
 
     <span style="color:#859900">def</span> <span style="color:#268bd2">push</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">obj</span>):
-        <span style="color:#268bd2">rv</span> = <span style="color:#cb4b16">getattr</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span>, <span style="color:#2aa198">&#39;stack&#39;</span>, <span style="color:#268bd2">None</span>)
-        <span style="color:#859900">if</span> <span style="color:#268bd2">rv</span> <span style="color:#859900">is</span> <span style="color:#268bd2">None</span>:
+        <span style="color:#268bd2">rv</span> = <span style="color:#cb4b16">getattr</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span>, <span style="color:#2aa198">&#39;stack&#39;</span>, <span style="color:#859900;font-weight:bold">None</span>)
+        <span style="color:#859900">if</span> <span style="color:#268bd2">rv</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
             <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span>.<span style="color:#268bd2">stack</span> = <span style="color:#268bd2">rv</span> = []
         <span style="color:#268bd2">rv</span>.<span style="color:#268bd2">append</span>(<span style="color:#268bd2">obj</span>)
         <span style="color:#859900">return</span> <span style="color:#268bd2">rv</span>
 
     <span style="color:#859900">def</span> <span style="color:#268bd2">pop</span>(<span style="color:#268bd2">self</span>):
-        <span style="color:#268bd2">stack</span> = <span style="color:#cb4b16">getattr</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span>, <span style="color:#2aa198">&#39;stack&#39;</span>, <span style="color:#268bd2">None</span>)
-        <span style="color:#859900">if</span> <span style="color:#268bd2">stack</span> <span style="color:#859900">is</span> <span style="color:#268bd2">None</span>:
-            <span style="color:#859900">return</span> <span style="color:#268bd2">None</span>
+        <span style="color:#268bd2">stack</span> = <span style="color:#cb4b16">getattr</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span>, <span style="color:#2aa198">&#39;stack&#39;</span>, <span style="color:#859900;font-weight:bold">None</span>)
+        <span style="color:#859900">if</span> <span style="color:#268bd2">stack</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
+            <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">None</span>
         <span style="color:#859900">elif</span> <span style="color:#cb4b16">len</span>(<span style="color:#268bd2">stack</span>) == <span style="color:#2aa198;font-weight:bold">1</span>:
             <span style="color:#268bd2">release_local</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span>)
             <span style="color:#859900">return</span> <span style="color:#268bd2">stack</span>[-<span style="color:#2aa198;font-weight:bold">1</span>]
@@ -149,7 +149,7 @@
         <span style="color:#859900">try</span>:
             <span style="color:#859900">return</span> <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span>.<span style="color:#268bd2">stack</span>[-<span style="color:#2aa198;font-weight:bold">1</span>]
         <span style="color:#859900">except</span> (<span style="color:#268bd2">AttributeError</span>, <span style="color:#268bd2">IndexError</span>):
-            <span style="color:#859900">return</span> <span style="color:#268bd2">None</span>
+            <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">None</span>
 </code></pre></div><p>LocalStack 的使用非常简单，简单的示例如下:</p>
 <pre><code>&gt;&gt;&gt; ls = LocalStack()
 &gt;&gt;&gt; ls.push(42)
@@ -167,7 +167,7 @@
 <span style="color:#859900">class</span> <span style="color:#cb4b16">LocalProxy</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#268bd2">__slots__</span> = (<span style="color:#2aa198">&#39;__local&#39;</span>, <span style="color:#2aa198">&#39;__dict__&#39;</span>, <span style="color:#2aa198">&#39;__name__&#39;</span>)
 
-    <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">local</span>, <span style="color:#268bd2">name</span>=<span style="color:#268bd2">None</span>):
+    <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">local</span>, <span style="color:#268bd2">name</span>=<span style="color:#859900;font-weight:bold">None</span>):
         <span style="color:#cb4b16">object</span>.<span style="color:#268bd2">__setattr__</span>(<span style="color:#268bd2">self</span>, <span style="color:#2aa198">&#39;_LocalProxy__local&#39;</span>, <span style="color:#268bd2">local</span>)
         <span style="color:#cb4b16">object</span>.<span style="color:#268bd2">__setattr__</span>(<span style="color:#268bd2">self</span>, <span style="color:#2aa198">&#39;__name__&#39;</span>, <span style="color:#268bd2">name</span>)
 
@@ -187,7 +187,7 @@
 <p>Flask 对 <code>request</code> 的定义如下：</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">_lookup_req_object</span>(<span style="color:#268bd2">name</span>):
     <span style="color:#268bd2">top</span> = <span style="color:#268bd2">_request_ctx_stack</span>.<span style="color:#268bd2">top</span>
-    <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#268bd2">None</span>:
+    <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
         <span style="color:#859900">raise</span> <span style="color:#268bd2">RuntimeError</span>(<span style="color:#268bd2">_request_ctx_err_msg</span>)
     <span style="color:#859900">return</span> <span style="color:#cb4b16">getattr</span>(<span style="color:#268bd2">top</span>, <span style="color:#268bd2">name</span>)
 <span style="color:#268bd2">request</span> = <span style="color:#268bd2">LocalProxy</span>(<span style="color:#268bd2">partial</span>(<span style="color:#268bd2">_lookup_req_object</span>, <span style="color:#2aa198">&#39;request&#39;</span>))
@@ -196,23 +196,23 @@
 参考源码：</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.RequestContext</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">RequestContext</span>(<span style="color:#cb4b16">object</span>):
-    <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">app</span>, <span style="color:#268bd2">environ</span>, <span style="color:#268bd2">request</span>=<span style="color:#268bd2">None</span>):
+    <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">app</span>, <span style="color:#268bd2">environ</span>, <span style="color:#268bd2">request</span>=<span style="color:#859900;font-weight:bold">None</span>):
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">app</span> = <span style="color:#268bd2">app</span>
-        <span style="color:#859900">if</span> <span style="color:#268bd2">request</span> <span style="color:#859900">is</span> <span style="color:#268bd2">None</span>:
+        <span style="color:#859900">if</span> <span style="color:#268bd2">request</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
             <span style="color:#268bd2">request</span> = <span style="color:#268bd2">app</span>.<span style="color:#268bd2">request_class</span>(<span style="color:#268bd2">environ</span>)
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">request</span> = <span style="color:#268bd2">request</span>
-        <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> = <span style="color:#268bd2">None</span>
+        <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> = <span style="color:#859900;font-weight:bold">None</span>
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_implicit_app_ctx_stack</span> = []
 
     <span style="color:#859900">def</span> <span style="color:#268bd2">push</span>(<span style="color:#268bd2">self</span>):
         <span style="color:#2aa198">&#34;&#34;&#34;部分省略&#34;&#34;&#34;</span>
         <span style="color:#268bd2">app_ctx</span> = <span style="color:#268bd2">_app_ctx_stack</span>.<span style="color:#268bd2">top</span>
-        <span style="color:#859900">if</span> <span style="color:#268bd2">app_ctx</span> <span style="color:#859900">is</span> <span style="color:#268bd2">None</span> <span style="color:#859900">or</span> <span style="color:#268bd2">app_ctx</span>.<span style="color:#268bd2">app</span> != <span style="color:#268bd2">self</span>.<span style="color:#268bd2">app</span>:
+        <span style="color:#859900">if</span> <span style="color:#268bd2">app_ctx</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span> <span style="color:#859900">or</span> <span style="color:#268bd2">app_ctx</span>.<span style="color:#268bd2">app</span> != <span style="color:#268bd2">self</span>.<span style="color:#268bd2">app</span>:
             <span style="color:#268bd2">app_ctx</span> = <span style="color:#268bd2">self</span>.<span style="color:#268bd2">app</span>.<span style="color:#268bd2">app_context</span>()
             <span style="color:#268bd2">app_ctx</span>.<span style="color:#268bd2">push</span>()
             <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_implicit_app_ctx_stack</span>.<span style="color:#268bd2">append</span>(<span style="color:#268bd2">app_ctx</span>)
         <span style="color:#859900">else</span>:
-            <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_implicit_app_ctx_stack</span>.<span style="color:#268bd2">append</span>(<span style="color:#268bd2">None</span>)
+            <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_implicit_app_ctx_stack</span>.<span style="color:#268bd2">append</span>(<span style="color:#859900;font-weight:bold">None</span>)
         
         <span style="color:#268bd2">_request_ctx_stack</span>.<span style="color:#268bd2">push</span>(<span style="color:#268bd2">self</span>)
     
@@ -223,12 +223,12 @@
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.RequestContext</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">RequestContext</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#2aa198">&#34;&#34;&#34;部分省略&#34;&#34;&#34;</span>
-    <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">app</span>, <span style="color:#268bd2">environ</span>, <span style="color:#268bd2">request</span>=<span style="color:#268bd2">None</span>):
-        <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> = <span style="color:#268bd2">None</span>
+    <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">app</span>, <span style="color:#268bd2">environ</span>, <span style="color:#268bd2">request</span>=<span style="color:#859900;font-weight:bold">None</span>):
+        <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> = <span style="color:#859900;font-weight:bold">None</span>
 
     <span style="color:#859900">def</span> <span style="color:#268bd2">push</span>(<span style="color:#268bd2">self</span>):
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> = <span style="color:#268bd2">self</span>.<span style="color:#268bd2">app</span>.<span style="color:#268bd2">open_session</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">request</span>)
-        <span style="color:#859900">if</span> <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> <span style="color:#859900">is</span> <span style="color:#268bd2">None</span>:
+        <span style="color:#859900">if</span> <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
             <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> = <span style="color:#268bd2">self</span>.<span style="color:#268bd2">app</span>.<span style="color:#268bd2">make_null_session</span>()
 </code></pre></div><p><code>app.open_session()</code> 方法会通过 Flask app 从 <code>SecureCookieSessionInterface</code> 实例中打开或创建 session。</p>
 <p>正因为 <code>request</code> 和 <code>session</code> 都是 RequestContext 的属性，所以是由如下方式从 Flask app 中获取：</p>
@@ -240,7 +240,7 @@
 <p>继续看 <code>flask.local</code> 中对 <code>current_app</code> 的定义：</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">_find_app</span>():
     <span style="color:#268bd2">top</span> = <span style="color:#268bd2">_app_ctx_stack</span>.<span style="color:#268bd2">top</span>
-    <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#268bd2">None</span>:
+    <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
         <span style="color:#859900">raise</span> <span style="color:#268bd2">RuntimeError</span>(<span style="color:#268bd2">_app_ctx_err_msg</span>)
     <span style="color:#859900">return</span> <span style="color:#268bd2">top</span>.<span style="color:#268bd2">app</span>
 
@@ -249,18 +249,18 @@
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">flask</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Flask</span>, <span style="color:#268bd2">current_app</span>
 
 <span style="color:#268bd2">app</span> = <span style="color:#268bd2">Flask</span>(<span style="color:#268bd2">__name__</span>)
-<span style="color:#859900">print</span>(<span style="color:#268bd2">current_app</span>.<span style="color:#268bd2">name</span>)
+<span style="color:#cb4b16">print</span>(<span style="color:#268bd2">current_app</span>.<span style="color:#268bd2">name</span>)
 </code></pre></div><p>运行后会抛出 &ldquo;RuntimeError: Working outside of application context.&rdquo; 的异常，这是因为在创建 Flask App 时，<code>AppContext</code> 还没有压入到 <code>_app_ctx_stack</code> 栈内，栈顶没有元素，所以需要先做入栈操作：</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">app_ctx</span> = <span style="color:#268bd2">app</span>.<span style="color:#268bd2">app_context</span>()  <span style="color:#93a1a1;font-style:italic"># 手动创建 AppContext</span>
 <span style="color:#268bd2">app_ctx</span>.<span style="color:#268bd2">push</span>()  <span style="color:#93a1a1;font-style:italic"># 把 AppContext 入栈到 _app_ctx_stack</span>
-<span style="color:#859900">print</span>(<span style="color:#268bd2">current_app</span>.<span style="color:#268bd2">name</span>)
+<span style="color:#cb4b16">print</span>(<span style="color:#268bd2">current_app</span>.<span style="color:#268bd2">name</span>)
 <span style="color:#268bd2">app_ctx</span>.<span style="color:#268bd2">pop</span>()  <span style="color:#93a1a1;font-style:italic"># 从 _app_ctx_stack 出栈</span>
 </code></pre></div><p>但实际开发中，我们并没有人为的去对 <code>_app_ctx_stack</code> 进行入栈出栈操作，那么栈内元素是什么时候入栈的呢？其实之前在分析 RequestContext 时已经涉及到了，因为当请求到达 Flask 应用时，会自动将 Request Context 推入到 <code>_request_ctx_stack</code>，因为 Request Context 必须是和 Application Context 关联，即必须在后者的生命周期内，因此如果 <code>_app_ctx_stack</code> 为空，会隐式的把 AppContext 入栈。</p>
 <p>再看 <code>g</code> 的定义：</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.globals</span>
 <span style="color:#859900">def</span> <span style="color:#268bd2">_lookup_app_object</span>(<span style="color:#268bd2">name</span>):
     <span style="color:#268bd2">top</span> = <span style="color:#268bd2">_app_ctx_stack</span>.<span style="color:#268bd2">top</span>
-    <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#268bd2">None</span>:
+    <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
         <span style="color:#859900">raise</span> <span style="color:#268bd2">RuntimeError</span>(<span style="color:#268bd2">_app_ctx_err_msg</span>)
     <span style="color:#859900">return</span> <span style="color:#cb4b16">getattr</span>(<span style="color:#268bd2">top</span>, <span style="color:#268bd2">name</span>)
 <span style="color:#268bd2">g</span> = <span style="color:#268bd2">LocalProxy</span>(<span style="color:#268bd2">partial</span>(<span style="color:#268bd2">_lookup_app_object</span>, <span style="color:#2aa198">&#39;g&#39;</span>))

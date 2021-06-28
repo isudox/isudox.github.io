@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.84.1" />
   
   
 </head>
@@ -78,7 +78,7 @@ Here is the sample code:</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>:
     <span style="color:#859900">def</span> <span style="color:#268bd2">single_number</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">nums</span>: <span style="color:#268bd2">List</span>[<span style="color:#cb4b16">int</span>]) -&gt; <span style="color:#cb4b16">int</span>:
         <span style="color:#93a1a1;font-style:italic"># xor each sibling num</span>
-        <span style="color:#859900">return</span> <span style="color:#cb4b16">reduce</span>(<span style="color:#859900">lambda</span> <span style="color:#268bd2">a</span>, <span style="color:#268bd2">b</span>: <span style="color:#268bd2">a</span> ^ <span style="color:#268bd2">b</span>, <span style="color:#268bd2">nums</span>)
+        <span style="color:#859900">return</span> <span style="color:#268bd2">reduce</span>(<span style="color:#859900">lambda</span> <span style="color:#268bd2">a</span>, <span style="color:#268bd2">b</span>: <span style="color:#268bd2">a</span> ^ <span style="color:#268bd2">b</span>, <span style="color:#268bd2">nums</span>)
 </code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">SingleNumber</span> {
 
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">singleNumber</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>) {

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.84.1" />
   
   
 </head>
@@ -104,15 +104,15 @@ Django 同时提供可能会用于用户修改自己密码的 <a href="https://d
 要验证给定的用户名和密码，使用 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.authenticate">authenticate()</a> 方法。它的入参形式为 keyword ，默认的设置为 <code>username</code> 和 <code>password</code>，如果验证通过，会返回一个 <code>User</code> 对象，如果验证失败，则返回 None 。例子如下：</p>
 <div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">authenticate</span>
 <span style="color:#268bd2">user</span> = <span style="color:#268bd2">authenticate</span>(<span style="color:#268bd2">username</span>=<span style="color:#2aa198">&#39;john&#39;</span>, <span style="color:#268bd2">password</span>=<span style="color:#2aa198">&#39;secret&#39;</span>)
-<span style="color:#859900">if</span> <span style="color:#268bd2">user</span> <span style="color:#859900">is</span> <span style="color:#859900">not</span> <span style="color:#268bd2">None</span>:
+<span style="color:#859900">if</span> <span style="color:#268bd2">user</span> <span style="color:#859900">is</span> <span style="color:#859900">not</span> <span style="color:#859900;font-weight:bold">None</span>:
     <span style="color:#93a1a1;font-style:italic"># the password verified for the user</span>
     <span style="color:#859900">if</span> <span style="color:#268bd2">user</span>.<span style="color:#268bd2">is_active</span>:
-        <span style="color:#859900">print</span>(<span style="color:#2aa198">&#34;User is valid, active and authenticated&#34;</span>)
+        <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#34;User is valid, active and authenticated&#34;</span>)
     <span style="color:#859900">else</span>:
-        <span style="color:#859900">print</span>(<span style="color:#2aa198">&#34;The password is valid, but the account has been disabled!&#34;</span>)
+        <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#34;The password is valid, but the account has been disabled!&#34;</span>)
 <span style="color:#859900">else</span>:
     <span style="color:#93a1a1;font-style:italic"># the authentication system was unable to verify the username and password</span>
-    <span style="color:#859900">print</span>(<span style="color:#2aa198">&#34;The username and password were incorrect.&#34;</span>)
+    <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#34;The username and password were incorrect.&#34;</span>)
 </code></pre></div><blockquote>
 <p>注
 这是一个低层次的验证方法；举例来说，它在 <a href="https://docs.djangoproject.com/en/1.9/ref/middleware/#django.contrib.auth.middleware.RemoteUserMiddleware">RemoteUserMiddleware</a> 中使用。除非要编写自定义的认证系统，否则可能并不需要使用它。如果需要一个限制登录用户操作的方法，参考 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.decorators.login_required">login_required()</a>。</p>
@@ -209,7 +209,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
     <span style="color:#268bd2">username</span> = <span style="color:#268bd2">request</span>.<span style="color:#268bd2">POST</span>[<span style="color:#2aa198">&#39;username&#39;</span>]
     <span style="color:#268bd2">password</span> = <span style="color:#268bd2">request</span>.<span style="color:#268bd2">POST</span>[<span style="color:#2aa198">&#39;password&#39;</span>]
     <span style="color:#268bd2">user</span> = <span style="color:#268bd2">authenticate</span>(<span style="color:#268bd2">username</span>=<span style="color:#268bd2">username</span>, <span style="color:#268bd2">password</span>=<span style="color:#268bd2">password</span>)
-    <span style="color:#859900">if</span> <span style="color:#268bd2">user</span> <span style="color:#859900">is</span> <span style="color:#859900">not</span> <span style="color:#268bd2">None</span>:
+    <span style="color:#859900">if</span> <span style="color:#268bd2">user</span> <span style="color:#859900">is</span> <span style="color:#859900">not</span> <span style="color:#859900;font-weight:bold">None</span>:
         <span style="color:#859900">if</span> <span style="color:#268bd2">user</span>.<span style="color:#268bd2">is_active</span>:
             <span style="color:#268bd2">login</span>(<span style="color:#268bd2">request</span>, <span style="color:#268bd2">user</span>)
             <span style="color:#93a1a1;font-style:italic"># Redirect to a success page.</span>

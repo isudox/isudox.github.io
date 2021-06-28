@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.84.1" />
   
   
 </head>
@@ -152,7 +152,7 @@
         <span style="color:#268bd2">a</span> = <span style="color:#268bd2">b</span> - <span style="color:#268bd2">a</span>
 
 <span style="color:#859900">for</span> <span style="color:#268bd2">value</span> <span style="color:#859900">in</span> <span style="color:#268bd2">gen_fib</span>(<span style="color:#2aa198;font-weight:bold">100</span>):
-    <span style="color:#859900">print</span>(<span style="color:#268bd2">value</span>)
+    <span style="color:#cb4b16">print</span>(<span style="color:#268bd2">value</span>)
 </code></pre></div><p>Python 版本只是增加了 <code>yield</code> 关键字，并没有在函数声明的地方设计 <code>*</code> 来表征 <code>generator</code>。
 之前的博客<a href="/2016/10/26/python-generator-guide/">理解 Python 生成器</a> 写的很浅，这里试着从 Magic Method 着手更深入的写写。</p>
 <p>Python 内置了一些由双下划线包裹、被称为 Magic Method 的特殊方法，像常用的 <code>__init__</code>，<code>__new__</code>，<code>__str__</code>。这些 Magic Method 设计的初衷是为了描述对象的内在行为，而无需外部显性调用。比如我们声明一个对象，并编写它的 <code>__init__</code> 方法：</p>

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.84.1" />
   
   
 </head>
@@ -62,7 +62,7 @@
 <span style="color:#268bd2">app</span> = <span style="color:#268bd2">Flask</span>(<span style="color:#268bd2">__name__</span>)
 
 
-<span style="color:#268bd2">@app.route</span>(<span style="color:#2aa198">&#39;/&#39;</span>)
+<span style="color:#268bd2">@app</span>.<span style="color:#268bd2">route</span>(<span style="color:#2aa198">&#39;/&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">hello_world</span>():
     <span style="color:#859900">return</span> <span style="color:#2aa198">&#34;Hello World!&#34;</span>
 
@@ -71,7 +71,7 @@
     <span style="color:#268bd2">app</span>.<span style="color:#268bd2">run</span>(<span style="color:#268bd2">host</span>=<span style="color:#2aa198">&#39;0.0.0.0&#39;</span>, <span style="color:#268bd2">port</span>=<span style="color:#2aa198;font-weight:bold">5000</span>)
 </code></pre></div><p>然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。</p>
 <p>当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">gunicorn</span> -<span style="color:#268bd2">w</span> <span style="color:#2aa198;font-weight:bold">4</span> -<span style="color:#268bd2">b</span> <span style="color:#2aa198;font-weight:bold">127.0</span>.<span style="color:#2aa198;font-weight:bold">0.1</span>:<span style="color:#2aa198;font-weight:bold">5000</span> <span style="color:#268bd2">hello</span>:<span style="color:#268bd2">app</span>
+<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">gunicorn</span> -<span style="color:#268bd2">w</span> <span style="color:#2aa198;font-weight:bold">4</span> -<span style="color:#268bd2">b</span> <span style="color:#2aa198;font-weight:bold">127.0.0.1</span>:<span style="color:#2aa198;font-weight:bold">5000</span> <span style="color:#268bd2">hello</span>:<span style="color:#268bd2">app</span>
 </code></pre></div><p>Gunicorn 的常用运行参数说明：</p>
 <ul>
 <li>-w  WORKERS, &ndash;workers: worker 进程的数量，通常每个 CPU 内核运行 2-4 个 worker 进程。</li>
@@ -111,8 +111,8 @@
                         <span style="color:#268bd2">static_folder</span>=<span style="color:#2aa198">&#39;static&#39;</span>)
 
 
-<span style="color:#268bd2">@simple_page.route</span>(<span style="color:#2aa198">&#39;/&#39;</span>, <span style="color:#268bd2">defaults</span>={<span style="color:#2aa198">&#39;page&#39;</span>: <span style="color:#2aa198">&#39;index&#39;</span>})
-<span style="color:#268bd2">@simple_page.route</span>(<span style="color:#2aa198">&#39;/&lt;page&gt;&#39;</span>)
+<span style="color:#268bd2">@simple_page</span>.<span style="color:#268bd2">route</span>(<span style="color:#2aa198">&#39;/&#39;</span>, <span style="color:#268bd2">defaults</span>={<span style="color:#2aa198">&#39;page&#39;</span>: <span style="color:#2aa198">&#39;index&#39;</span>})
+<span style="color:#268bd2">@simple_page</span>.<span style="color:#268bd2">route</span>(<span style="color:#2aa198">&#39;/&lt;page&gt;&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">show</span>(<span style="color:#268bd2">page</span>):
     <span style="color:#859900">try</span>:
         <span style="color:#859900">return</span> <span style="color:#268bd2">render_template</span>(<span style="color:#2aa198">&#39;pages/$s.html&#39;</span> % <span style="color:#268bd2">page</span>)
@@ -162,8 +162,8 @@
                         <span style="color:#268bd2">static_folder</span>=<span style="color:#2aa198">&#39;static&#39;</span>)
 
 
-<span style="color:#268bd2">@simple_page.route</span>(<span style="color:#2aa198">&#39;/&#39;</span>, <span style="color:#268bd2">defaults</span>={<span style="color:#2aa198">&#39;page&#39;</span>: <span style="color:#2aa198">&#39;index&#39;</span>})
-<span style="color:#268bd2">@simple_page.route</span>(<span style="color:#2aa198">&#39;/&lt;page&gt;&#39;</span>)
+<span style="color:#268bd2">@simple_page</span>.<span style="color:#268bd2">route</span>(<span style="color:#2aa198">&#39;/&#39;</span>, <span style="color:#268bd2">defaults</span>={<span style="color:#2aa198">&#39;page&#39;</span>: <span style="color:#2aa198">&#39;index&#39;</span>})
+<span style="color:#268bd2">@simple_page</span>.<span style="color:#268bd2">route</span>(<span style="color:#2aa198">&#39;/&lt;page&gt;&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">show</span>(<span style="color:#268bd2">page</span>):
     <span style="color:#859900">try</span>:
         <span style="color:#859900">return</span> <span style="color:#268bd2">render_template</span>(<span style="color:#268bd2">current_app</span>.<span style="color:#268bd2">config</span>[<span style="color:#2aa198">&#39;INDEX_TEMPLATE&#39;</span>])
