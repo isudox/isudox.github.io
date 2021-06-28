@@ -1,15 +1,8 @@
 ---
-title: "Untitled"
+title: "理想三旬"
 date: 2021-06-20T00:01:10+08:00
+sticky: true
 ---
-
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-
 
 
 ```

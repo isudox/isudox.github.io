@@ -3,6 +3,9 @@
 # If a command fails then the deploy stops
 set -e
 
+# update all submodules firstly
+git submodule update --recursive --remote
+
 printf "\033[0;32mDeploying updates to GitHub...\033[0m\n"
 
 cd public
