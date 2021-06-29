@@ -31,10 +31,11 @@ if [[ `git status --porcelain` ]]; then
   git commit --author="isudox <isudox@gmail.com>" -m "$msg"
   git push origin master
 else
-  echo "no changes"
+  echo "public folder has no changes"
 fi
 
 cd ../themes/nova
+git checkout master
 # Commit if there're changes
 if [[ `git status --porcelain` ]]; then
   msg="commit nova theme changes $(date)"
@@ -44,12 +45,10 @@ if [[ `git status --porcelain` ]]; then
   git commit --author="isudox <isudox@gmail.com>" -m "$msg"
   git push origin master
 else
-  echo "no changes"
+  echo "theme has no changes"
 fi
 
 cd ../..
 git add --all
 git commit --author="isudox <isudox@gmail.com>" -m "commit local files and submodules changes."
 git push origin source
-
-
