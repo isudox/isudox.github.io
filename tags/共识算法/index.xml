@@ -16,5 +16,14 @@
       <description>摘要：用大白话来解释 Paxos 算法是非常简单的。 1 引入｜Introduction 由于一开始对分布式系统容错的 Paxos 算法的描述，对许多读者而言都过于极客，</description>
     </item>
     
+    <item>
+      <title>译 Time, Clocks, and the Ordering of Events in a Distributed System</title>
+      <link>https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</link>
+      <pubDate>Mon, 19 Apr 2021 14:28:46 +0800</pubDate>
+      
+      <guid>https://isudox.com/2021/04/19/time-clocks-and-the-ordering-events-in-a-distributed-system-zh/</guid>
+      <description>摘要：本文研究在分布式系统中，事件发生先后顺序的概念，并说明如何定义事件之间的偏序关系。论文给出了一种用于同步逻辑时钟系统的分布式算法，该逻</description>
+    </item>
+    
   </channel>
 </rss>

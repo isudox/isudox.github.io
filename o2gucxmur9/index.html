@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>个人简历</title>
+  
+  <meta name="description" content="个人信息 章健 邮箱：me@isudox.com 博客：https://isudox.com 教育背景： 2013 - 2015 北京理工大学 - 电子与通信工程 - 硕士 2009 -">
+  <meta name="author" content="isudox">
+  
+  <link href="https://isudox.com/style.css" rel="stylesheet">
+  <link href="https://isudox.com/custom.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
+  <link rel="icon" href="https://isudox.com/favicon.ico">
+  <meta name="generator" content="Hugo 0.84.1" />
+  
+  
+</head>
+
+<body class="single">
+  <script>
+    setTheme();
+  </script>
+  <header class="header">
+    <nav class="nav">
+      <p class="logo"><a href="https://isudox.com/">I sudo X</a></p>
+      <ul class="menu">
+        <li>
+          <a class="menu-list-link" href="/posts/">文档</a>
+          
+        </li>
+        <li>
+          <a class="menu-list-link" href="/tags/">标签</a>
+          
+        </li>
+        <li>
+          <a class="menu-list-link" href="/about/">关于</a>
+          
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">个人简历</h1>
+  </header>
+  <div class="post-content"><h2 id="个人信息">个人信息</h2>
+<ul>
+<li>章健</li>
+<li>邮箱：me@isudox.com</li>
+<li>博客：<a href="https://isudox.com">https://isudox.com</a></li>
+<li>教育背景：
+<ul>
+<li>2013 - 2015 北京理工大学 - 电子与通信工程 - 硕士</li>
+<li>2009 - 2013 中国农业大学 - 电子信息工程 - 本科</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="专业技能">专业技能</h2>
+<ul>
+<li>熟悉 Java、Spring 生态的后端开发技术栈</li>
+<li>熟悉 MySQL、Redis、Kafka、Zookeeper 等分布式系统常用中间件</li>
+<li>熟悉单元化架构，具备大型系统容灾、稳定性建设的经验</li>
+<li>了解支付业务和系统架构，熟悉账务系统的技术体系</li>
+</ul>
+<hr>
+<h2 id="工作经历">工作经历</h2>
+<h3 id="美团点评---支付事业部201703---至今">美团点评 - 支付事业部（2017/03 - 至今）</h3>
+<h4 id="账务系统基础能力建设201703---201903">账务系统基础能力建设（2017/03 - 2019/03）</h4>
+<ul>
+<li><strong>关键字</strong>：业务模型、基础记账能力、分布式事务、最终一致性</li>
+<li><strong>背景</strong>：构建完整的账务能力体系，包括基础的加减币、冻结解冻；提升系统容量支撑业务的快速发展。</li>
+<li><strong>行动</strong>：1) 完善指令编排的记账引擎，设计实现冻结、解冻和子账户业务模型，并通过冻结解冻，实现基于 TCC 的分布式事务记账能力；2) 系统重构，BASE 驱动记账最终一致性，并减少数据库事务粒度，缩短持有锁时间；3) 数据库不停机迁移扩容，提升数据库容量。</li>
+<li><strong>成果</strong>：系统日处理记账请求超 1 亿，流水明细超 2 亿，集群峰值写 QPS 5000，读 QPS 9000；数据库集群容量可支持 5 亿单/天；</li>
+</ul>
+<hr>
+<h4 id="热点账户并发性能优化201703---201903">热点账户并发性能优化（2017/03 - 2019/03）</h4>
+<ul>
+<li><strong>关键字</strong>：高并发，性能优化</li>
+<li><strong>背景</strong>：账务系统存在热点记账场景（外卖、优选商户），单账户记账 QPS &gt; 200，优化热点账户并发记账能力。</li>
+<li><strong>行动</strong>：1) 热点账户加币记账采用异步缓冲，对高并发流量削峰；减币记账缓存进队列，实时合并记账，减少 DB 锁竞争和 I/O；2) 非常规热点账户，通过 Redis 对单账户记账请求计数，发现潜在热点账户，动态调整记账策略；</li>
+<li><strong>成果</strong>：无需人工介入，系统自动发现和移除热点账户，动态调整记账策略；热点账户并发能力从 QPS 200 提升到 1000。</li>
+</ul>
+<hr>
+<h4 id="账务系统跨机房容灾201809---201903">账务系统跨机房容灾（2018/09 - 2019/03）</h4>
+<ul>
+<li><strong>关键字</strong>：数据一致性、同城容灾、稳定性、高可用</li>
+<li><strong>背景</strong>：MySQL 主从架构下，当主库机房宕机后主从切换，存在数据不一致和集群脑裂问题。在没有分布式数据库的情况下，需要在应用层实现故障转移。</li>
+<li><strong>行动</strong>：1) 运行时异构双写记账凭证（数据库、同城第三机房缓存），确保主库之外有强一致副本；2) 监听主从切换事件，对故障 DB 加入黑名单，同时读取缓存中记账凭证，冻结潜在问题账户，服务恢复可用；3) 数据检查，过滤未达终态的凭证和未完成的流水，驱动引擎修补数据，恢复全量服务。</li>
+<li><strong>成果</strong>：主库机房故障 RTO 5min，服务有损恢复；主从切换数据 0 丢失；防止 DB 集群脑裂情况。</li>
+</ul>
+<hr>
+<h4 id="聚合支付单元化架构201903---202103">聚合支付单元化架构（2019/03 - 2021/03）</h4>
+<ul>
+<li><strong>关键字</strong>：单元化架构、同城双活、异地多活、容量、容灾</li>
+<li><strong>背景</strong>：支付业务体量快速增长，同城双机房架构难以满足支付对系统容量和容灾诉求。作为核心成员加入单元化专项，在聚合支付链路落地单元化，并探索异地多活的演进。</li>
+<li><strong>行动</strong>：1) 在应用层实现对流量的单元化拆分和定向路由；2) 在存储层完成对数据库集群的 Shard 分片和基于 binlog 实现单元间的副本冗余，构建存储层统一数据访问 DAL、数据传输服务 DTS、数据正确性校验 DCG 核心能力；3）实现北京同城双单元 + 中心架构的同城双活，并在今年上半年初步实现北京-上海 4 单元架构的异地双活；4) 基于单元化技术，联合中间件实现单元隔离故障演练、蓝绿发布等创新能力。</li>
+<li><strong>成果</strong>：容量方面：摆脱机房物理容量限制，可通过逻辑单元作水平扩容，理论上无上限；容灾方面，同城双活部署下，故障 RTO 5min；在美团金服事业部首次实现单元化架构。</li>
+</ul>
+<hr>
+<h3 id="京东商城---交易平台201507---201703">京东商城 - 交易平台（2015/07 - 2017/03）</h3>
+<h4 id="创新业务项目">创新业务项目</h4>
+<p>陪伴计划（面向母婴品类的精准营销项目），京东医药城，全球购购物车，京东共读（微信端播客付费阅读）等新型、垂直业务项目</p>
+<ul>
+<li>使用 Spring 搭建后端模块，Bootstrap 开发运营管理后台；</li>
+<li>购物车项目，优化原优惠券逻辑，用责任链把耦合代码分拆，使得优惠券校验规则独立、灵活；</li>
+<li>对共读项目，优化原有的复杂跳转逻辑，改成星状网结构，统一请求的分发和跳转；</li>
+<li>实现前后端分离，降低前后端开发联调的时间成本；</li>
+</ul>
+</div>
+
+  
+</article></main>
+<footer class="footer">
+  <span>&copy; 2015 - 2021</span>
+  <span>&middot;</span>
+  <span><a href="https://isudox.com/">I sudo X</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/isudox/hugo-theme-nova/" rel="noopener" target="_blank">Nova</a></span>
+</footer>
+</body>
+
+</html>
+
