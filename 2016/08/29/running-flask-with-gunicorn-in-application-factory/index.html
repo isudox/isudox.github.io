@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -56,7 +56,7 @@
 <!-- more -->
 <h3 id="基础的-flask-应用部署">基础的 Flask 应用部署</h3>
 <p>先写一个最简单的 Flask 应用 hello：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># hello.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># hello.py</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">flask</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Flask</span>
 
 <span style="color:#268bd2">app</span> = <span style="color:#268bd2">Flask</span>(<span style="color:#268bd2">__name__</span>)
@@ -71,7 +71,7 @@
     <span style="color:#268bd2">app</span>.<span style="color:#268bd2">run</span>(<span style="color:#268bd2">host</span>=<span style="color:#2aa198">&#39;0.0.0.0&#39;</span>, <span style="color:#268bd2">port</span>=<span style="color:#2aa198;font-weight:bold">5000</span>)
 </code></pre></div><p>然后用 Python 去解释执行这段脚本即可，Flask 内置了简易的 HTTP Server 来处理请求。</p>
 <p>当然这仅仅供本地测试的运行方式，线上部署的方案，通常是采用 wsgi 程序来驱动 Flask / Django 应用。Gunicorn 是性能比较好的一个方案（有时间我会做一次 Gunicorn 与 uWsgi 的性能压测对比）。Gunicorn 的驱动 hello 应用的命令如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">gunicorn</span> -<span style="color:#268bd2">w</span> <span style="color:#2aa198;font-weight:bold">4</span> -<span style="color:#268bd2">b</span> <span style="color:#2aa198;font-weight:bold">127.0.0.1</span>:<span style="color:#2aa198;font-weight:bold">5000</span> <span style="color:#268bd2">hello</span>:<span style="color:#268bd2">app</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">gunicorn</span> -<span style="color:#268bd2">w</span> <span style="color:#2aa198;font-weight:bold">4</span> -<span style="color:#268bd2">b</span> <span style="color:#2aa198;font-weight:bold">127.0.0.1</span>:<span style="color:#2aa198;font-weight:bold">5000</span> <span style="color:#268bd2">hello</span>:<span style="color:#268bd2">app</span>
 </code></pre></div><p>Gunicorn 的常用运行参数说明：</p>
 <ul>
 <li>-w  WORKERS, &ndash;workers: worker 进程的数量，通常每个 CPU 内核运行 2-4 个 worker 进程。</li>
@@ -81,7 +81,7 @@
 <li>-n  APP_NAME, &ndash;name: 指定 Gunicorn 进程在进程查看列表里的显示名（比如 ps 和 htop 命令查看）</li>
 </ul>
 <p>真正部署到生产环境，一般不会用 Gunicorn 直接处理客户端的 HTTP 请求，而是用类似 Nginx 来做代理，将请求代理到 Gunicorn，再由 Flask 程序进行处理，返回结果。配置 Nginx 如下</p>
-<pre><code class="language-conf" data-lang="conf">server {
+<pre tabindex="0"><code class="language-conf" data-lang="conf">server {
     listen 80;
 
     server_name _;
@@ -103,7 +103,7 @@
 <h3 id="工厂模式的部署">工厂模式的部署</h3>
 <p>上面给了最简单的应用部署方案，学习练手没问题，实际开发部署就得多考虑一些问题。一个主要的问题就是多环境配置，这个在上一篇关于 Django 非最佳实践里涉及到了，但是当时的方案很挫，只是通过配置文件的替换来解决。利用工厂模式来解决这个问题是更正确合理的方法。</p>
 <p>先把上面的 hello 程序做的再复杂一点，把 Flask 的 <a href="http://flask.pocoo.org/docs/0.11/blueprints/#blueprints">Blueprints</a> 集成进来：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># blueprint.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># blueprint.py</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">flask</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Blueprint</span>, <span style="color:#268bd2">render_template</span>, <span style="color:#268bd2">abort</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">jinja2</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">TemplateNotFound</span>
 
@@ -118,7 +118,7 @@
         <span style="color:#859900">return</span> <span style="color:#268bd2">render_template</span>(<span style="color:#2aa198">&#39;pages/$s.html&#39;</span> % <span style="color:#268bd2">page</span>)
     <span style="color:#859900">except</span> <span style="color:#268bd2">TemplateNotFound</span>:
         <span style="color:#268bd2">abort</span>(<span style="color:#2aa198;font-weight:bold">404</span>)
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># hello.py</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># hello.py</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">flask</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Flask</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">blueprint</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">simple_page</span>
 
@@ -135,7 +135,7 @@
 <li>多实例。通过工厂模式，可以实现在同一个应用进程下，运行多个实例；</li>
 </ul>
 <p>创建工厂：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># manage.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># manage.py</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">flask</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Flask</span>
 
 
@@ -147,14 +147,14 @@
     <span style="color:#268bd2">app</span>.<span style="color:#268bd2">register_blueprint</span>(<span style="color:#268bd2">simple_page</span>)
 
     <span style="color:#859900">return</span> <span style="color:#268bd2">app</span>
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">manage</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">create_app</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">manage</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">create_app</span>
 
 <span style="color:#268bd2">app</span> = <span style="color:#268bd2">create_app</span>(<span style="color:#2aa198">&#39;config.py&#39;</span>)
 
 <span style="color:#859900">if</span> <span style="color:#268bd2">__name__</span> == <span style="color:#2aa198">&#39;__main__&#39;</span>:
     <span style="color:#268bd2">app</span>.<span style="color:#268bd2">run</span>(<span style="color:#268bd2">host</span>=<span style="color:#2aa198">&#39;0.0.0.0&#39;</span>, <span style="color:#268bd2">port</span>=<span style="color:#2aa198;font-weight:bold">5000</span>)
 </code></pre></div><p>根据传入的不同 config，创建不通的 app 实例。创建工厂后，有一点需要留意，就是在 Blueprints 内没法访问 app 对象实例了，因为当 Blueprints 注册时 app 对实例尚未被创建，但也有解决办法，就是通过 Flask 的 current_app：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># blueprints.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># blueprints.py</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">flask</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Blueprint</span>, <span style="color:#268bd2">render_template</span>, <span style="color:#268bd2">abort</span>, <span style="color:#268bd2">current_app</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">jinja2</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">TemplateNotFound</span>
 
@@ -171,7 +171,7 @@
         <span style="color:#268bd2">abort</span>(<span style="color:#2aa198;font-weight:bold">404</span>)
 </code></pre></div><p>在实现基本的工厂模式后，再回来对 Gunicorn 和 Nginx 进行配置。上面用的是 Server Port，接下来就改为 socket。
 Nginx conf 配置：</p>
-<pre><code class="language-conf" data-lang="conf">server {
+<pre tabindex="0"><code class="language-conf" data-lang="conf">server {
     listen 80;
 
     server_name _;
@@ -190,7 +190,7 @@ Nginx conf 配置：</p>
     }
 }
 </code></pre><p>上面的 proxy_pass 参数也可以使用 upstream 来作反向代理，作用是一样的。然后 Gunicorn 运行：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gunicorn -w <span style="color:#2aa198;font-weight:bold">4</span> -b unix:/path/to/project.sock hello:app
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gunicorn -w <span style="color:#2aa198;font-weight:bold">4</span> -b unix:/path/to/project.sock hello:app
 </code></pre></div></div>
   <footer class="post-footer">
     <ul class="post-tags">

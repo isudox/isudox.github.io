@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -122,7 +122,7 @@
 <p>We now consider what it means for such a system of clocks to be correct. We cannot base our definition of correctness on physical time, since that would require introducing clocks which keep physical time. Our definition must be based on the order in which events occur. The strongest reasonable condition is that if an event a occurs before another event b, then a should happen at an earlier time than b. We state this condition more formally as follows.<br/></br>Clock Condition. For any events a, b:</br>    if a -&gt; b then C(a) &lt; C(b).</p>
 </blockquote>
 <p>我们现在来思考该时钟系统正确性的含义。我们不能把定义的正确性建立在物理时钟之上，否则会导致引入记录物理时间的时钟。逻辑时钟的定义必须基于事件发生的顺序。最合理的条件是，如果事件 a 发生在事件 b 之前，那么 a 的发生事件应该比 b 更早。通过下面的式子更正式的进行表达该条件：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">时钟条件，对于任意事件 a、b：
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">时钟条件，对于任意事件 a、b：
             if a -&gt; b then C(a) &lt; C(b)
 </code></pre></div><blockquote>
 <p>Note that we cannot expect the converse condition to hold as well, since that would imply that any two concurrent events must occur at the same time. In Figure 1, p<sub>2</sub> and p<sub>3</sub> are both concurrent with q<sub>3</sub>, so this would mean that they both must occur at the same time as q<sub>3</sub>, which would contradict the Clock Condition because p<sub>2</sub> -&gt; p<sub>3</sub>.</p>

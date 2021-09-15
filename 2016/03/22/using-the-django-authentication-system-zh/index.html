@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -71,7 +71,7 @@ Django 认证系统提供认证和授权功能，由于两部分功能有耦合�
 <p>全面的参考请阅读<a href="https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User">完整 API 文档</a>，下文更偏业务导向。</p>
 <h3 id="创建-users">创建 users</h3>
 <p>创建 user 最直接的方式是调用内置的 <code>create_user()</code> 辅助方法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt;&gt;&gt; from django.contrib.auth.models import User
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt;&gt;&gt; from django.contrib.auth.models import User
 &gt;&gt;&gt; <span style="color:#268bd2">user</span> = User.objects.create_user(<span style="color:#2aa198">&#39;john&#39;</span>, <span style="color:#2aa198">&#39;lennon@thebeatles.com&#39;</span>, <span style="color:#2aa198">&#39;johnpassword&#39;</span>)
 
 <span style="color:#93a1a1;font-style:italic"># At this point, user is a User object that has already been saved</span>
@@ -83,7 +83,7 @@ Django 认证系统提供认证和授权功能，由于两部分功能有耦合�
 <hr>
 <h3 id="创建-superusers">创建 superusers</h3>
 <p>使用 <code>createsuperuser</code> 命令创建 superusers：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python manage.py createsuperuser --username=joe --email=joe@example.com
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python manage.py createsuperuser --username=joe --email=joe@example.com
 </code></pre></div><p>控制台会提示输入密码，输入密码后，superuser 就创建完成了。如果没有加上 <a href="https://docs.djangoproject.com/en/1.9/ref/django-admin/#cmdoption-createsuperuser--username">&ndash;username</a> 或 <a href="https://docs.djangoproject.com/en/1.9/ref/django-admin/#cmdoption-createsuperuser--email">&ndash;email</a> 选项，控制台会提示输入对应值。</p>
 <hr>
 <h3 id="修改密码">修改密码</h3>
@@ -91,7 +91,7 @@ Django 认证系统提供认证和授权功能，由于两部分功能有耦合�
 <p>要修改用户密码，有如下几种选择：
 <a href="https://docs.djangoproject.com/en/1.9/ref/django-admin/#django-admin-changepassword">manage.py changepassword <em>username</em></a> 提供了由命令行修改用户密码的方法。它会提示你必须输入两次密码以对原密码进行修改，如果两次输入一致，新密码生效。如果没有指定 user ，则控制台会尝试修改与当前系统用户名相匹配的 user 密码。</p>
 <p>也可以通过程序代码修改密码，使用函数 <a href="https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User.set_password">set_password()</a>:</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.models</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">User</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.models</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">User</span>
 <span style="color:#268bd2">u</span> = <span style="color:#268bd2">User</span>.<span style="color:#268bd2">objects</span>.<span style="color:#268bd2">get</span>(<span style="color:#268bd2">username</span>=<span style="color:#2aa198">&#39;john&#39;</span>)
 <span style="color:#268bd2">u</span>.<span style="color:#268bd2">set_password</span>(<span style="color:#2aa198">&#39;new password&#39;</span>)
 <span style="color:#268bd2">u</span>.<span style="color:#268bd2">save</span>()
@@ -102,7 +102,7 @@ Django 同时提供可能会用于用户修改自己密码的 <a href="https://d
 <h3 id="验证-users">验证 users</h3>
 <p><strong><font color="green">authenticate(**credentials)<font>[<a href="https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/#authenticate">source</a>]</strong>
 要验证给定的用户名和密码，使用 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.authenticate">authenticate()</a> 方法。它的入参形式为 keyword ，默认的设置为 <code>username</code> 和 <code>password</code>，如果验证通过，会返回一个 <code>User</code> 对象，如果验证失败，则返回 None 。例子如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">authenticate</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">authenticate</span>
 <span style="color:#268bd2">user</span> = <span style="color:#268bd2">authenticate</span>(<span style="color:#268bd2">username</span>=<span style="color:#2aa198">&#39;john&#39;</span>, <span style="color:#268bd2">password</span>=<span style="color:#2aa198">&#39;secret&#39;</span>)
 <span style="color:#859900">if</span> <span style="color:#268bd2">user</span> <span style="color:#859900">is</span> <span style="color:#859900">not</span> <span style="color:#859900;font-weight:bold">None</span>:
     <span style="color:#93a1a1;font-style:italic"># the password verified for the user</span>
@@ -128,7 +128,7 @@ Django admin site 使用的权限如下所示：</p>
 权限不仅可以针对每个对象类型设置，还可以针对具体的对象实例进行设置。通过调用 <a href="https://docs.djangoproject.com/en/1.9/ref/contrib/admin/#django.contrib.admin.ModelAdmin">ModelAdmin</a> 类提供的 <a href="https://docs.djangoproject.com/en/1.9/ref/contrib/admin/#django.contrib.admin.ModelAdmin.has_add_permission">has_add_permission()</a>、<a href="https://docs.djangoproject.com/en/1.9/ref/contrib/admin/#django.contrib.admin.ModelAdmin.has_change_permission">has_change_permission()</a>和<a href="https://docs.djangoproject.com/en/1.9/ref/contrib/admin/#django.contrib.admin.ModelAdmin.has_delete_permission">has_delete_permission()</a>方法，可以实现对同一对象的不同实体的自定义权限。
 User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>user_permissions</strong>。User 对象可以通过和其他 <a href="https://docs.djangoproject.com/en/1.9/topics/db/models/">Django model</a> 一样的方式访问和它相关的对象：</li>
 </ul>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">myuser</span>.<span style="color:#268bd2">groups</span> = [<span style="color:#268bd2">group_list</span>]
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">myuser</span>.<span style="color:#268bd2">groups</span> = [<span style="color:#268bd2">group_list</span>]
 <span style="color:#268bd2">myuser</span>.<span style="color:#268bd2">groups</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">group</span>, <span style="color:#268bd2">group</span>, ...)
 <span style="color:#268bd2">myuser</span>.<span style="color:#268bd2">groups</span>.<span style="color:#268bd2">remove</span>(<span style="color:#268bd2">group</span>, <span style="color:#268bd2">group</span>, ...)
 <span style="color:#268bd2">myuser</span>.<span style="color:#268bd2">groups</span>.<span style="color:#268bd2">clear</span>()
@@ -154,7 +154,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
 <hr>
 <h3 id="编程创建权限">编程创建权限</h3>
 <p>尽管在模型的 <strong>Meta</strong> 类里可以自定义权限，你也可以直接定义权限。比如在 <strong>myapp</strong> 的 <strong>BlogPost</strong> 模型里创建 <strong>can_publish</strong> 权限：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">myapp.models</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">BlogPost</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">myapp.models</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">BlogPost</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.models</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Permission</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.contenttypes.models</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">ContentType</span>
 
@@ -166,7 +166,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
 <hr>
 <h3 id="权限缓存">权限缓存</h3>
 <p><strong><a href="https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.backends.ModelBackend">ModelBackend</a></strong> 在首次访问 User 对象以检查权限时，缓存了它们的权限。这对于“请求-响应”循环中权限并不是在添加后立即被检查的情况是比较合适的。如果你正在添加权限，而且随即要在测试或视图里进行检查，，最简单的方法就是从数据库中重新获取 <strong>User</strong> 对象，举例如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.models</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Permission</span>, <span style="color:#268bd2">User</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.models</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Permission</span>, <span style="color:#268bd2">User</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.shortcuts</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">get_object_or_404</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">user_gains_perms</span>(<span style="color:#268bd2">request</span>, <span style="color:#268bd2">user_id</span>):
@@ -191,7 +191,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
 <p>Django 使用 <a href="https://docs.djangoproject.com/en/1.9/topics/http/sessions/">sessions</a> 和 middleware 使认证系统拦截 <strong><a href="https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest">request 对象</a></strong>。
 每个 request 请求都内置一个代表当前 user 的 <a href="https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest.user">request.user</a> 属性。如果当前 user 并未登录，该属性就会被设为 <a href="https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.AnonymousUser">AnonymousUser</a> 实例，反之则设置为 <a href="https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User">User</a> 实例。
 可以通过 <a href="https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User.is_authenticated">is_authenticated</a> 对两者进行区分：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#859900">if</span> <span style="color:#268bd2">request</span>.<span style="color:#268bd2">user</span>.<span style="color:#268bd2">is_authenticated</span>():
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#859900">if</span> <span style="color:#268bd2">request</span>.<span style="color:#268bd2">user</span>.<span style="color:#268bd2">is_authenticated</span>():
     <span style="color:#93a1a1;font-style:italic"># Do something for authenticated users.</span>
     <span style="color:#93a1a1;font-style:italic"># ...</span>
 <span style="color:#859900">else</span>:
@@ -203,7 +203,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
 使用 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.login">login()</a> 从 view 中登录用户。它接收一个 <a href="https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest">HttpRequest</a> 对象和一个 <a href="https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User">User</a> 对象。login() 方法会通过 Django 的 session 框架在当前 session 里保存该登录用户的 id。
 注意，任何在匿名会话中设置的数据都会保留在用户登入后的会话中。
 下面这个例子展示了如何使用 authenticate() 和 login() 方法。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">authenticate</span>, <span style="color:#268bd2">login</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">authenticate</span>, <span style="color:#268bd2">login</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">my_view</span>(<span style="color:#268bd2">request</span>):
     <span style="color:#268bd2">username</span> = <span style="color:#268bd2">request</span>.<span style="color:#268bd2">POST</span>[<span style="color:#2aa198">&#39;username&#39;</span>]
@@ -236,7 +236,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
 <h3 id="如何登出用户">如何登出用户</h3>
 <p>logout(request)[<a href="https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/#logout">source</a>]</p>
 <p>要登出一个已通过 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.login">django.contrib.auth.login()</a> 方法登录的用户，在 view 中调用 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.logout">django.contrib.auth.logout()</a>。logoout() 方法需要传入一个 <a href="https://docs.djangoproject.com/en/1.9/ref/request-response/#django.http.HttpRequest">HttpRequest</a> 对象，没有返回值。示例：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">logout</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">logout</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">logout_view</span>(<span style="color:#268bd2">request</span>):
     <span style="color:#268bd2">logout</span>(<span style="color:#268bd2">request</span>)
@@ -247,7 +247,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
 <h3 id="登录用户访问限制">登录用户访问限制</h3>
 <h4 id="原始的方法">原始的方法</h4>
 <p>简单的、原始的限制访问页面的方法是检查 <a href="https://docs.djangoproject.com/en/1.9/ref/contrib/auth/#django.contrib.auth.models.User.is_authenticated">request.user.is_authenticated()</a>，验证不通过的话重定向到登录页。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.conf</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">settings</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.conf</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">settings</span>
 <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.shortcuts</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">redirect</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">my_view</span>(<span style="color:#268bd2">request</span>):
@@ -255,7 +255,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
         <span style="color:#859900">return</span> <span style="color:#268bd2">redirect</span>(<span style="color:#2aa198">&#39;</span><span style="color:#2aa198">%s</span><span style="color:#2aa198">?next=</span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % (<span style="color:#268bd2">settings</span>.<span style="color:#268bd2">LOGIN_URL</span>, <span style="color:#268bd2">request</span>.<span style="color:#268bd2">path</span>))
     <span style="color:#93a1a1;font-style:italic"># ...</span>
 </code></pre></div><p>……或者显示一个错误页：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.shortcuts</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">render</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.shortcuts</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">render</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">my_view</span>(<span style="color:#268bd2">request</span>):
     <span style="color:#859900">if</span> <span style="color:#859900">not</span> <span style="color:#268bd2">request</span>.<span style="color:#268bd2">user</span>.<span style="color:#268bd2">is_authenticated</span>():
@@ -264,7 +264,7 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
 </code></pre></div><h4 id="login_required-装饰器">login_required 装饰器</h4>
 <p>login_required(redirect_field_name=&lsquo;next&rsquo;, login_url=None)[<a href="https://docs.djangoproject.com/en/1.9/_modules/django/contrib/auth/decorators/#login_required">source</a>]</p>
 <p>可以使用 <a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.decorators.login_required">login_required()</a> 装饰器作为便捷方式：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.decorators</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">login_required</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.decorators</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">login_required</span>
 
 <span style="color:#268bd2">@login_required</span>
 <span style="color:#859900">def</span> <span style="color:#268bd2">my_view</span>(<span style="color:#268bd2">request</span>):
@@ -276,13 +276,13 @@ User 对象有两个 many-to-many 字段：<strong>group</strong> 和 <strong>us
 <li>如果用户已登录，正常执行 view。view 代码可以安全的假定用户是登录状态。</li>
 </ul>
 <p>默认情况下，在用户成功认证后应该被重定向的路径存储在&quot;next&quot;参数中。如果你希望自定义参数名，<a href="https://docs.djangoproject.com/en/1.9/topics/auth/default/#django.contrib.auth.decorators.login_required">login_required()</a> 接收一个可选参数 redirect_field_name：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.decorators</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">login_required</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth.decorators</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">login_required</span>
 
 <span style="color:#268bd2">@login_required</span>(<span style="color:#268bd2">redirect_field_name</span>=<span style="color:#2aa198">&#39;my_redirect_field&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">my_view</span>(<span style="color:#268bd2">request</span>):
     ...
 </code></pre></div><p>注意，如果不指定 login_url 参数，则需要确保在 settings.LOGIN_URL 已经跟登录视图正确关联。例如，采用默认配置，在 URLConf 路由里添加以下内容：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">views</span> <span style="color:#859900">as</span> <span style="color:#268bd2">auth_views</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">django.contrib.auth</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">views</span> <span style="color:#859900">as</span> <span style="color:#268bd2">auth_views</span>
 
 <span style="color:#268bd2">url</span>(<span style="color:#2aa198">r</span><span style="color:#2aa198">&#39;^accounts/login/$&#39;</span>, <span style="color:#268bd2">auth_views</span>.<span style="color:#268bd2">login</span>),
 </code></pre></div><p><a href="https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-LOGIN_URL">settings.LOGIN_URL</a> 也接收视图函数名和 URL 命名模式。这使得你可以自由地重映射 URLconf 中的登录视图而不用更新设置。</p>

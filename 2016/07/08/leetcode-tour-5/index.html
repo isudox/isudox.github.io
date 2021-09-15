@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -61,7 +61,7 @@
 </blockquote>
 <p>题目不复杂，取两个指针分别往下遍历两个链表的每个节点，逐次指向节点的值，取其较小值，并移动该指针，另一指针不动。继续往下比较，知道其中有一个指针到达末端为止。
 循环解法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeTwoSortedLists.java v1.0
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeTwoSortedLists.java v1.0
 </span><span style="color:#93a1a1;font-style:italic">// Definition for singly-linked list.
 </span><span style="color:#93a1a1;font-style:italic">// public class ListNode {
 </span><span style="color:#93a1a1;font-style:italic">//     int val;
@@ -88,7 +88,7 @@
     }
 }
 </code></pre></div><p>递归解法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeTwoSortedLists.java v1.1
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeTwoSortedLists.java v1.1
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">mergeTwoLists</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>) {
         <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ListNode</span>(<span style="color:#268bd2">0</span>);
@@ -138,7 +138,7 @@
 <p>这题很容易想起之前做过的第 20 题 <a href="/2016/07/04/leetcode-tour-4/#Valid-Parentheses">Valid Parentheses</a>，当时利用了栈的 FILO 特性去检验括号组合的有效性。一个很直接的想法就是枚举全部的组合，然后传给 Valid Parentheses 方法去做有效性检验。但是这种方法平方级的时间复杂度太高，因为要判断所有组合。
 n + 1 对括号的组合，可以发现，其实就是将新增的一对括号和之前的 n 对括号的组合拼起来。因此这里就可以利用递归的思想。
 n 对括号组合，就需要把 n 个 <code>&quot;(&quot;</code> 和 n 个 <code>&quot;)&quot;</code> 插入进字符串中。而且从左往右，<code>&quot;(&quot;</code> 的数量一定不少于 <code>&quot;)&quot;</code> 才能使得组合有效，换句话说，就是只有在待插入的 <code>&quot;)&quot;</code>的数量大于待插入的 <code>&quot;(&quot;</code> 数量时，才需要往字符串中插入 <code>&quot;)&quot;</code>。当待插入的括号数量为零时，结束递归，将所得括号字符串添加进列表里。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// GenerateParentheses.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// GenerateParentheses.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">generateParenthesis</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">n</span>) {
         <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">list</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
@@ -190,7 +190,7 @@ n 对括号组合，就需要把 n 个 <code>&quot;(&quot;</code> 和 n 个 <cod
 例如，给定的链表为 <code>1 -&gt;2 -&gt; 3 -&gt; 4</code>，返回结果为 <code>2 -&gt; 1 -&gt; 4 -&gt; 3</code>。</p>
 </blockquote>
 <p>首先需要新建一个 ListNode 保存给定 ListNode 的头指针,这样在交换相邻节点时,该指针位置能保持固定不动。此外还需要另一个 ListNode 作为移动的指针来交换相邻节点，因此还需要创建两个临时的 ListNode，一左一右作交换。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// SwapNodesInPairs.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// SwapNodesInPairs.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ListNode</span> {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">val</span>;
@@ -234,7 +234,7 @@ n 对括号组合，就需要把 n 个 <code>&quot;(&quot;</code> 和 n 个 <cod
 <p>第 25 题 <a href="https://leetcode.com/problems/reverse-nodes-in-k-group/">Reverse Nodes in k-Group</a></p>
 <blockquote>
 </blockquote>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeReverseNodesInKGroup.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MergeReverseNodesInKGroup.java
 </span><span style="color:#93a1a1;font-style:italic"></span>
 </code></pre></div></div>
   <footer class="post-footer">

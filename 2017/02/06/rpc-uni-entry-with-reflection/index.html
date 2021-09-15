@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -56,7 +56,7 @@
 <!-- more -->
 <p>代理的思路很简单，但真的非常实用，在实际开发中，合理使用代理，能精简很多固有代码。从代理的统一入口进入，根据传入的远程服务名和方法名，自动定位到需要被远程调用的方法，再传入入参并调用该方法，就能代理过多的 Processor 调用 RPC。</p>
 <p>代理入口的代码如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Service</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;rpcEntry&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Service</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;rpcEntry&#34;</span>)
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">RpcEntry</span> {
     <span style="color:#268bd2">@Resource</span>
 	<span style="color:#859900">private</span> <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">Object</span>&gt; <span style="color:#268bd2">serviceMap</span>;  <span style="color:#93a1a1;font-style:italic">// 远程服务的 k-v 映射
@@ -88,7 +88,7 @@
     <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">null</span>;
 }
 </code></pre></div><p>上面代码中的远程服务映射可以在 Spring 中配置：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;serviceMap&#34;</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;java.util.HashMap&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;serviceMap&#34;</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;java.util.HashMap&#34;</span><span style="color:#268bd2;font-weight:bold">&gt;</span>
   <span style="color:#268bd2;font-weight:bold">&lt;constructor-arg&gt;</span>
     <span style="color:#268bd2;font-weight:bold">&lt;map&gt;</span>
       <span style="color:#268bd2;font-weight:bold">&lt;entry</span> <span style="color:#268bd2">key=</span><span style="color:#2aa198">&#34;example1&#34;</span> <span style="color:#268bd2">value-ref=</span><span style="color:#2aa198">&#34;example1ServiceImpl&#34;</span> <span style="color:#268bd2;font-weight:bold">/&gt;</span>
@@ -98,7 +98,7 @@
   <span style="color:#268bd2;font-weight:bold">&lt;/constructor-arg&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;/bean&gt;</span>
 </code></pre></div><p>有了统一的调用入口后，如果想调用 example1ServiceImpl.debug() 方法，不需要在专门的 Processor 中进行调用，只需用下面的代码进行调用：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Resource</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Resource</span>
 <span style="color:#859900">private</span> <span style="color:#268bd2">RpcEntry</span> <span style="color:#268bd2">rpcEntry</span>;
 
 <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">test</span>() {

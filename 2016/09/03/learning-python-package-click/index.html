@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -55,7 +55,7 @@
   <div class="post-content"><p><a href="https://pypi.python.org/pypi/click">Click</a> 是 Flask 的团队 pallets 开发的优秀开源项目，它为命令行工具的开发封装了大量方法，使开发者只需要专注于功能实现。恰好我最近在开发的一个小工具需要在命令行环境下操作，就写个学习笔记。</p>
 <!-- more -->
 <p>国际惯例，先来一段 &ldquo;Hello World&rdquo; 程序（假定已经安装了 Click 包）。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># hello.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># hello.py</span>
 <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">click</span>
 
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
@@ -70,7 +70,7 @@
 <span style="color:#859900">if</span> <span style="color:#268bd2">__name__</span> == <span style="color:#2aa198">&#39;__main__&#39;</span>:
     <span style="color:#268bd2">hello</span>()
 </code></pre></div><p>执行 <code>python hello.py --count=3</code>，不难猜到控制台的输出结果。除此之外，Click 还悄悄地做了其他的工作，比如帮助选项：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python hello.py --help
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python hello.py --help
 Usage: hello.py [OPTIONS]
 
   Simple program that greets NAME <span style="color:#859900">for</span> a total of COUNT times.
@@ -81,14 +81,14 @@ Options:
   --help           Show this message and exit.
 </code></pre></div><h3 id="函数秒变-cli">函数秒变 CLI</h3>
 <p>从上面的 &ldquo;Hello World&rdquo; 演示中可以看出，Click 是通过装饰器来把一个函数方法装饰成命令行接口的，这个装饰器方法就是 <code>@click.command()</code>。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">click</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">click</span>
 
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#859900">def</span> <span style="color:#268bd2">hello</span>():
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Hello World!&#39;</span>)
 </code></pre></div><p><code>@click.command()</code> 装饰器把 <code>hello()</code> 方法变成了 <code>Command</code> 对象，当它被调用时，就会执行该实例内的行为。而 <code>--help</code> 参数就是 <code>Command</code> 对象内置的参数。</p>
 <p>不同的 <code>Command</code> 实例可以关联到 <code>group</code> 中。<code>group</code> 下绑定的命令就成为了它的子命令，参考下面的代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">group</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">group</span>()
 <span style="color:#859900">def</span> <span style="color:#268bd2">cli</span>():
     <span style="color:#859900">pass</span>
 
@@ -104,7 +104,7 @@ Options:
 <span style="color:#268bd2">cli</span>.<span style="color:#268bd2">add_command</span>(<span style="color:#268bd2">dropdb</span>)
 </code></pre></div><p><code>@click.group</code> 装饰器把方法装饰为可以拥有多个子命令的 <code>Group</code> 对象。由 <code>Group.add_command()</code> 方法把 <code>Command</code> 对象关联到 <code>Group</code> 对象。
 也可以直接用 <code>@Group.command</code> 装饰方法，会自动把方法关联到该 <code>Group</code> 对象下。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">group</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">group</span>()
 <span style="color:#859900">def</span> <span style="color:#268bd2">cli</span>():
     <span style="color:#859900">pass</span>
 
@@ -116,7 +116,7 @@ Options:
 <span style="color:#859900">def</span> <span style="color:#268bd2">dropdb</span>():
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Dropped the database&#39;</span>)
 </code></pre></div><p>命令行的参数是不可或缺的，Click 支持对 <code>command</code> 方法添加自定义的参数，由 <code>option()</code> 和 <code>argument()</code> 装饰器实现。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--count&#39;</span>, <span style="color:#268bd2">default</span>=<span style="color:#2aa198;font-weight:bold">1</span>, <span style="color:#268bd2">help</span>=<span style="color:#2aa198">&#39;number of greetings&#39;</span>)
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">argument</span>(<span style="color:#2aa198">&#39;name&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">count</span>, <span style="color:#268bd2">name</span>):
@@ -124,10 +124,10 @@ Options:
         <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Hello </span><span style="color:#2aa198">%s</span><span style="color:#2aa198">!&#39;</span> % <span style="color:#268bd2">name</span>)
 </code></pre></div><h3 id="打包跨平台可执行程序">打包跨平台可执行程序</h3>
 <p>通过 Click 编写了简单的命令行方法后，还需要把 <code>.py</code> 文件转换成可以在控制台里运行的命令行程序。最简单的办法就是在文件末尾加上如下代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">if</span> <span style="color:#268bd2">__name__</span> == <span style="color:#2aa198">&#39;__main__&#39;</span>:
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">if</span> <span style="color:#268bd2">__name__</span> == <span style="color:#2aa198">&#39;__main__&#39;</span>:
     <span style="color:#268bd2">command</span>()
 </code></pre></div><p>Click 支持使用 <code>setuptools</code> 来更好的实现命令行程序打包，把源码文件打包成系统中的可执行程序，并且不限平台。一般我们会在源码根目录下创建 <code>setup.py</code> 脚本，先看一段简单的打包代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">setuptools</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">setup</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">setuptools</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">setup</span>
 
 <span style="color:#268bd2">setup</span>(
     <span style="color:#268bd2">name</span>=<span style="color:#2aa198">&#39;hello&#39;</span>,
@@ -155,62 +155,62 @@ Options:
 <p>命令行的参数名由 &ldquo;-short_name&rdquo; 和 &ldquo;&ndash;long_name&rdquo; 声明，如果参数名既没有以 &ldquo;-&rdquo; 开头，也没有以 &ldquo;&ndash;&rdquo; 开头，那么这边变量名会成为被装饰方法的内部变量，而非方法参数。</p>
 <h4 id="option-参数">Option 参数</h4>
 <p>option 最基础的用法就是简单值变量，option 接收一个变量值，下面是一段示例代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--n&#39;</span>, <span style="color:#268bd2">default</span>=<span style="color:#2aa198;font-weight:bold">1</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">dots</span>(<span style="color:#268bd2">n</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;.&#39;</span> * <span style="color:#268bd2">n</span>)
 </code></pre></div><p>如果在命令行后面跟随参数 <code>--n=2</code> 就会输出两个点，如果传参数，默认输出一个点。上面的代码中，参数类型没有显示给出，但解释器会认为是 <code>INT</code> 型，因为默认值 1 是 int 值。
 有些时候需要传入多个值，可以理解为一个 list，option 只支持固定长度的参数值，即设置后必须传入，个数由 <code>nargs</code> 确定。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--pos&#39;</span>, <span style="color:#268bd2">nargs</span>=<span style="color:#2aa198;font-weight:bold">2</span>, <span style="color:#cb4b16">type</span>=<span style="color:#cb4b16">float</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">findme</span>(<span style="color:#268bd2">pos</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;</span><span style="color:#2aa198">%s</span><span style="color:#2aa198"> / </span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">pos</span>)
 </code></pre></div><p><code>findme --pos 2.0 3.0</code> 输出结果就是 2.0 / 3.0</p>
 <p>既然可以传入 list，那么 tuple 呢？Click 也是支持的：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--item&#39;</span>, <span style="color:#cb4b16">type</span>=(<span style="color:#268bd2">unicode</span>, <span style="color:#cb4b16">int</span>))
 <span style="color:#859900">def</span> <span style="color:#268bd2">putitem</span>(<span style="color:#268bd2">item</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;name=</span><span style="color:#2aa198">%s</span><span style="color:#2aa198"> id=</span><span style="color:#2aa198">%d</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">item</span>)
 </code></pre></div><p>这样就传入了一个 tuple 变量，<code>putitem --item peter 1338</code> 得到的输出就是 name=peter id=1338
 上面没有设置 nargs，因为 nargs 会自动取 tuple 的长度值。因此上面的代码实际上等同于：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--item&#39;</span>, <span style="color:#268bd2">nargs</span>=<span style="color:#2aa198;font-weight:bold">2</span>, <span style="color:#cb4b16">type</span>=<span style="color:#268bd2">click</span>.<span style="color:#268bd2">Tuple</span>([<span style="color:#268bd2">unicode</span>, <span style="color:#cb4b16">int</span>]))
 <span style="color:#859900">def</span> <span style="color:#268bd2">putitem</span>(<span style="color:#268bd2">item</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;name=</span><span style="color:#2aa198">%s</span><span style="color:#2aa198"> id=</span><span style="color:#2aa198">%d</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">item</span>)
 </code></pre></div><p>option 还支持同一个参数多次使用，类似 <code>git commit -m aa -m bb</code> 中 <code>-m</code> 参数就传入了 2 次。option 通过 <code>multiple</code> 标识位来支持这一特性：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--message&#39;</span>, <span style="color:#2aa198">&#39;-m&#39;</span>, <span style="color:#268bd2">multiple</span>=<span style="color:#859900;font-weight:bold">True</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">commit</span>(<span style="color:#268bd2">message</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;</span><span style="color:#2aa198">\n</span><span style="color:#2aa198">&#39;</span>.<span style="color:#268bd2">join</span>(<span style="color:#268bd2">message</span>))
 </code></pre></div><p>有时候，命令行参数是固定的几个值，这时就可以用到 <code>Click.choice</code> 类型来限定传参的潜在值：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># choice</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># choice</span>
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--hash-type&#39;</span>, <span style="color:#cb4b16">type</span>=<span style="color:#268bd2">click</span>.<span style="color:#268bd2">Choice</span>([<span style="color:#2aa198">&#39;md5&#39;</span>, <span style="color:#2aa198">&#39;sha1&#39;</span>]))
 <span style="color:#859900">def</span> <span style="color:#268bd2">digest</span>(<span style="color:#268bd2">hash_type</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#268bd2">hash_type</span>)
 </code></pre></div><p>当上面的命令行程序参数 <code>--hash-type</code> 不是 md5 或 sha1，就会输出错误提示，并且在 <code>--help</code> 提示中也会对 choice 选项有显示。</p>
 <p>如果希望命令行程序能在我们错误输入或漏掉输入的情况下，友好的提示用户，就需要用到 Click 的 prompt 功能，看代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># prompt</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># prompt</span>
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--name&#39;</span>, <span style="color:#268bd2">prompt</span>=<span style="color:#859900;font-weight:bold">True</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">name</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Hello </span><span style="color:#2aa198">%s</span><span style="color:#2aa198">!&#39;</span> % <span style="color:#268bd2">name</span>)
 </code></pre></div><p>如果在执行 hello 时没有提供 &ndash;name 参数，控制台会提示用户输入该参数。也可以自定义控制台的提示输出，把 <code>prompt</code> 改为自定义内容即可。</p>
 <p>对于类似账户密码等参数的输入，就要进行隐藏显示。<code>option</code> 的 <code>hide_input</code> 和 <code>confirmation_promt</code> 标识就是用来控制密码参数的输入：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># password</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># password</span>
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--password&#39;</span>, <span style="color:#268bd2">prompt</span>=<span style="color:#859900;font-weight:bold">True</span>, <span style="color:#268bd2">hide_input</span>=<span style="color:#859900;font-weight:bold">True</span>,
               <span style="color:#268bd2">confirmation_prompt</span>=<span style="color:#859900;font-weight:bold">True</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">encrypt</span>(<span style="color:#268bd2">password</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Encrypting password to </span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">password</span>.<span style="color:#268bd2">encode</span>(<span style="color:#2aa198">&#39;rot13&#39;</span>))
 </code></pre></div><p>Click 把上面的操作进一步封装成装饰器 <code>click.password_option()</code>，因此上面的代码也可以简化成：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># password</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># password</span>
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">password_option</span>()
 <span style="color:#859900">def</span> <span style="color:#268bd2">encrypt</span>(<span style="color:#268bd2">password</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Encrypting password to </span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">password</span>.<span style="color:#268bd2">encode</span>(<span style="color:#2aa198">&#39;rot13&#39;</span>))
 </code></pre></div><p>有的参数会改变命令行程序的执行，比如 <code>node</code> 是进入 Node 控制台，而 <code>node --verion</code> 是输出 node 的版本号。Click 提供 eager 标识对参数名进行标记，拦截既定的命令行执行流程，而是调用一个回调方法，执行后直接退出。下面模拟 <code>click.version_option()</code> 的功能，实现 <code>--version</code> 参数名输出版本号：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># eager</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># eager</span>
 <span style="color:#859900">def</span> <span style="color:#268bd2">print_version</span>(<span style="color:#268bd2">ctx</span>, <span style="color:#268bd2">param</span>, <span style="color:#268bd2">value</span>):
     <span style="color:#859900">if</span> <span style="color:#859900">not</span> <span style="color:#268bd2">value</span> <span style="color:#859900">or</span> <span style="color:#268bd2">ctx</span>.<span style="color:#268bd2">resilient_parsing</span>:
         <span style="color:#859900">return</span>
@@ -223,7 +223,7 @@ Options:
 <span style="color:#859900">def</span> <span style="color:#268bd2">hello</span>():
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Hello World!&#39;</span>)
 </code></pre></div><p>对于类似删除数据库表这样的危险操作，Click 支持弹出确认提示，<code>--yes</code> 标识位置为 True 时会让用户再次确认：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># yes parameters</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># yes parameters</span>
 <span style="color:#859900">def</span> <span style="color:#268bd2">abort_if_false</span>(<span style="color:#268bd2">ctx</span>, <span style="color:#268bd2">param</span>, <span style="color:#268bd2">value</span>):
     <span style="color:#859900">if</span> <span style="color:#859900">not</span> <span style="color:#268bd2">value</span>:
         <span style="color:#268bd2">ctx</span>.<span style="color:#268bd2">abort</span>()
@@ -235,18 +235,18 @@ Options:
 <span style="color:#859900">def</span> <span style="color:#268bd2">dropdb</span>():
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Dropped all tables!&#39;</span>)
 </code></pre></div><p>测试运行下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ dropdb
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ dropdb
 Are you sure you want to drop the db? [y/N]: n
 Aborted!
 $ dropdb --yes
 Dropped all tables!
 </code></pre></div><p>同样的，Click 对次进行了封装，<code>click.confirmation_option()</code> 装饰器实现了上述功能：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">confirmation_option</span>(<span style="color:#268bd2">prompt</span>=<span style="color:#2aa198">&#39;Are you sure you want to drop the db?&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">dropdb</span>():
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;Dropped all tables!&#39;</span>)
 </code></pre></div><p>前面只讲了默认的参数前缀 <code>--</code> 和 <code>-</code>，Click 允许开发者自定义参数前缀（虽然严重不推荐）。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># other prefix</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># other prefix</span>
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;+w/-w&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">chmod</span>(<span style="color:#268bd2">w</span>):
@@ -255,7 +255,7 @@ Dropped all tables!
 <span style="color:#859900">if</span> <span style="color:#268bd2">__name__</span> == <span style="color:#2aa198">&#39;__main__&#39;</span>:
     <span style="color:#268bd2">chmod</span>()
 </code></pre></div><p>如果想要用 <code>/</code> 作为前缀，而且要像上面一样采用布尔标识，会产生冲突，因为布尔标识也是用 <code>/</code>，这种情况下可以用 <code>;</code> 代替布尔标识的 <code>/</code>：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;/debug;/no-debug&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">log</span>(<span style="color:#268bd2">debug</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;debug=</span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % <span style="color:#268bd2">debug</span>)
@@ -263,7 +263,7 @@ Dropped all tables!
 <span style="color:#859900">if</span> <span style="color:#268bd2">__name__</span> == <span style="color:#2aa198">&#39;__main__&#39;</span>:
     <span style="color:#268bd2">log</span>()
 </code></pre></div><p>既然支持 Choice，不难联想到 Range，先看代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># range</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># range</span>
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--count&#39;</span>, <span style="color:#cb4b16">type</span>=<span style="color:#268bd2">click</span>.<span style="color:#268bd2">IntRange</span>(<span style="color:#2aa198;font-weight:bold">0</span>, <span style="color:#2aa198;font-weight:bold">20</span>, <span style="color:#268bd2">clamp</span>=<span style="color:#859900;font-weight:bold">True</span>))
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">option</span>(<span style="color:#2aa198">&#39;--digit&#39;</span>, <span style="color:#cb4b16">type</span>=<span style="color:#268bd2">click</span>.<span style="color:#268bd2">IntRange</span>(<span style="color:#2aa198;font-weight:bold">0</span>, <span style="color:#2aa198;font-weight:bold">10</span>))
@@ -275,24 +275,24 @@ Dropped all tables!
 </code></pre></div><h4 id="argument-参数">Argument 参数</h4>
 <p>Argument 的作用类似 Option，但没有 Option 那么全面的功能。</p>
 <p>和 Option 一样，Argument 最基础的应用就是传递一个简单变量值：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">argument</span>(<span style="color:#2aa198">&#39;filename&#39;</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">touch</span>(<span style="color:#268bd2">filename</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#268bd2">filename</span>)
 </code></pre></div><p>命令行后跟的参数值被赋值给参数名 <code>filename</code>。</p>
 <p>另一个用的比较广泛的是可变参数，也是由 <code>nargs</code> 来确定参数个数，变量值会以 tuple 的形式传入函数：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">argument</span>(<span style="color:#2aa198">&#39;src&#39;</span>, <span style="color:#268bd2">nargs</span>=-<span style="color:#2aa198;font-weight:bold">1</span>)
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">argument</span>(<span style="color:#2aa198">&#39;dst&#39;</span>, <span style="color:#268bd2">nargs</span>=<span style="color:#2aa198;font-weight:bold">1</span>)
 <span style="color:#859900">def</span> <span style="color:#268bd2">copy</span>(<span style="color:#268bd2">src</span>, <span style="color:#268bd2">dst</span>):
     <span style="color:#859900">for</span> <span style="color:#268bd2">fn</span> <span style="color:#859900">in</span> <span style="color:#268bd2">src</span>:
         <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#2aa198">&#39;move </span><span style="color:#2aa198">%s</span><span style="color:#2aa198"> to folder </span><span style="color:#2aa198">%s</span><span style="color:#2aa198">&#39;</span> % (<span style="color:#268bd2">fn</span>, <span style="color:#268bd2">dst</span>))
 </code></pre></div><p>运行程序：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ copy foo.txt bar.txt my_folder
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ copy foo.txt bar.txt my_folder
 move foo.txt to folder my_folder
 move bar.txt to folder my_folder
 </code></pre></div><p>Click 支持通过文件名参数对文件进行操作，<code>click.File()</code> 装饰器就是处理这种操作的，尤其是在类 Unix 系统下，它支持以 <code>-</code> 符号作为标准输入/输出。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># File</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># File</span>
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">argument</span>(<span style="color:#2aa198">&#39;input&#39;</span>, <span style="color:#cb4b16">type</span>=<span style="color:#268bd2">click</span>.<span style="color:#268bd2">File</span>(<span style="color:#2aa198">&#39;rb&#39;</span>))
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">argument</span>(<span style="color:#2aa198">&#39;output&#39;</span>, <span style="color:#cb4b16">type</span>=<span style="color:#268bd2">click</span>.<span style="color:#268bd2">File</span>(<span style="color:#2aa198">&#39;wb&#39;</span>))
@@ -303,17 +303,17 @@ move bar.txt to folder my_folder
             <span style="color:#859900">break</span>
         <span style="color:#268bd2">output</span>.<span style="color:#268bd2">write</span>(<span style="color:#268bd2">chunk</span>)
 </code></pre></div><p>运行程序，先将文本写进文件，再读取</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ inout - hello.txt
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ inout - hello.txt
 hello
 ^D
 $ inout hello.txt -
 hello
 </code></pre></div><p>如果参数值只是想做为文件名而已呢，很简单，将 <code>type</code> 指定为 <code>click.Path()</code>：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@click</span>.<span style="color:#268bd2">command</span>()
 <span style="color:#268bd2">@click</span>.<span style="color:#268bd2">argument</span>(<span style="color:#2aa198">&#39;f&#39;</span>, <span style="color:#cb4b16">type</span>=<span style="color:#268bd2">click</span>.<span style="color:#268bd2">Path</span>(<span style="color:#268bd2">exists</span>=<span style="color:#859900;font-weight:bold">True</span>))
 <span style="color:#859900">def</span> <span style="color:#268bd2">touch</span>(<span style="color:#268bd2">f</span>):
     <span style="color:#268bd2">click</span>.<span style="color:#268bd2">echo</span>(<span style="color:#268bd2">click</span>.<span style="color:#268bd2">format_filename</span>(<span style="color:#268bd2">f</span>))
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ touch hello.txt
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ touch hello.txt
 hello.txt
 
 $ touch missing.txt
@@ -322,7 +322,7 @@ Usage: touch [OPTIONS] F
 Error: Invalid value <span style="color:#859900">for</span> <span style="color:#2aa198">&#34;f&#34;</span>: Path <span style="color:#2aa198">&#34;missing.txt&#34;</span> does not exist.
 </code></pre></div><h3 id="命令组">命令组</h3>
 <h3 id="仿-hexo-示例程序">仿 Hexo 示例程序</h3>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># hexo.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># hexo.py</span>
 </code></pre></div></div>
   <footer class="post-footer">
     <ul class="post-tags">

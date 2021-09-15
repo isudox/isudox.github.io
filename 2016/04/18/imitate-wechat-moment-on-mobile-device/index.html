@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -60,17 +60,17 @@
 <p>在移动端通过 HTML 页面上传图文，并不能粗暴的沿用以往 PC 端上的做法。在 PC 端，通常我们会使用百度的 <a href="http://fex.baidu.com/webuploader/">WebUploader</a> 组件，或者 <a href="https://github.com/blueimp/jQuery-File-Upload">jQuery-File-Upload</a>，再久远些还有用 Flash 做的文件上传插件，略过不表。移动端的玩法却不大一样，最主要的还是因为网络环境的差异，现在手机拍照动辄就好几兆的文件大小，如果像朋友圈发状态一次上传好几张图片，客户端不做处理的话，无论是传输时间还是流量损耗都是不能接受的。因此移动端需要在上传前默认对大体积图片进行压缩处理，后面会完整说明。</p>
 <h4 id="input-标签">input 标签</h4>
 <p>移动端上传文件仍然采用 HTML5 的 input 标签，区别于 PC 端上，移动设备除了调用文件浏览器外，还可以调用摄像头进行拍照上传，需要加入 capture 参数</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">input</span> <span style="color:#268bd2">type</span>=<span style="color:#2aa198">&#34;file&#34;</span> <span style="color:#268bd2">name</span>=<span style="color:#2aa198">&#34;file&#34;</span> <span style="color:#268bd2">accept</span>=<span style="color:#2aa198">&#34;image/*&#34;</span> <span style="color:#268bd2">capture</span>=<span style="color:#2aa198">&#34;camera&#34;</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">input</span> <span style="color:#268bd2">type</span>=<span style="color:#2aa198">&#34;file&#34;</span> <span style="color:#268bd2">name</span>=<span style="color:#2aa198">&#34;file&#34;</span> <span style="color:#268bd2">accept</span>=<span style="color:#2aa198">&#34;image/*&#34;</span> <span style="color:#268bd2">capture</span>=<span style="color:#2aa198">&#34;camera&#34;</span>&gt;
 </code></pre></div><p>但是这里存在一个坑，关于在 iOS 和 Android 系统上浏览行为的差异，我们知道 input 标签里加入 multiple 参数是可以控制多选文件的，PC 和 iOS上都支持该特性，但 Android 却不兼容，只能一次选一个文件。因为没有在 Android 上找到可靠的修补方案，我在开发中也放弃了点开浏览并多选的功能，退而求其次点选一张图片。</p>
 <p>关于 input 标签，通常产品经理是不能忍受原始的 input 标签的样式的，因为真的太简陋了。前端设计的页面静态文件里的添加按钮往往都不是 input 标签，那怎么办呢，一个比较通用的解决方案是监听自定义样式添加按钮的 DOM 事件，触发点击隐藏 input 标签，曲线救国完成任务。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#93a1a1;font-style:italic">&lt;!-- 图片添加按钮 --&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#93a1a1;font-style:italic">&lt;!-- 图片添加按钮 --&gt;</span>
 &lt;<span style="color:#268bd2;font-weight:bold">ul</span> <span style="color:#268bd2">id</span>=<span style="color:#2aa198">&#34;previewer&#34;</span> <span style="color:#268bd2">class</span>=<span style="color:#2aa198">&#34;upload-list&#34;</span>&gt;
     &lt;<span style="color:#268bd2;font-weight:bold">li</span> <span style="color:#268bd2">id</span>=<span style="color:#2aa198">&#34;select-image&#34;</span> <span style="color:#268bd2">class</span>=<span style="color:#2aa198">&#34;add-pic-btn&#34;</span>&gt;&lt;<span style="color:#268bd2;font-weight:bold">a</span> <span style="color:#268bd2">href</span>=<span style="color:#2aa198">&#34;javascript:;&#34;</span> <span style="color:#268bd2">onclick</span>=<span style="color:#2aa198">&#34;clickBrowse();&#34;</span>&gt;+&lt;/<span style="color:#268bd2;font-weight:bold">a</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">li</span>&gt;
     <span style="color:#93a1a1;font-style:italic">&lt;!-- 预览列表 --&gt;</span>
 &lt;/<span style="color:#268bd2;font-weight:bold">ul</span>&gt;
 <span style="color:#93a1a1;font-style:italic">&lt;!-- 隐藏的 input --&gt;</span>
 &lt;<span style="color:#268bd2;font-weight:bold">input</span> <span style="color:#268bd2">type</span>=<span style="color:#2aa198">&#34;file&#34;</span> <span style="color:#268bd2">id</span>=<span style="color:#2aa198">&#34;browsefile&#34;</span> <span style="color:#268bd2">name</span>=<span style="color:#2aa198">&#34;imageselect&#34;</span> <span style="color:#268bd2">style</span>=<span style="color:#2aa198">&#34;visibility: hidden&#34;</span> <span style="color:#268bd2">accept</span>=<span style="color:#2aa198">&#34;image/*&#34;</span> <span style="color:#268bd2">capture</span>=<span style="color:#2aa198">&#34;camera&#34;</span>&gt;
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">/* footprint-add.js */</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">/* footprint-add.js */</span>
 
 <span style="color:#93a1a1;font-style:italic">// 自定义图片添加按钮的click事件
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">function</span> <span style="color:#268bd2">clickBrowse</span>() {
@@ -113,7 +113,7 @@
 </ul>
 <p>对照上一节贴出来的代码，程序里调用了 File 接口获取 File 对象，并将 File 对象传递给 readFile() 方法，由 FileReader 读取 File 对象。
 参考 MDN 的权威解释，FileReader 可以异步的读取存储在用户计算机上的文件（或原始数据缓存）内容。创建 FileReader 对象的方法就是 new 一个对象出来：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">reader</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">FileReader</span>();
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">reader</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">FileReader</span>();
 </code></pre></div><p>FileReader 读取文件内容的方法有：</p>
 <ul>
 <li>abort(): 中止该读取操作。在返回时，eadyState 属性的值为 DONE</li>
@@ -131,7 +131,7 @@
 <li>onloadstart: 当读取操作将要开始之前调用</li>
 <li>onprogress: 在读取数据过程中周期性调用</li>
 </ul>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">function</span> <span style="color:#268bd2">readFile</span>(<span style="color:#268bd2">image</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">function</span> <span style="color:#268bd2">readFile</span>(<span style="color:#268bd2">image</span>) {
     <span style="color:#859900">var</span> <span style="color:#268bd2">reader</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">FileReader</span>();
     <span style="color:#268bd2">reader</span>.<span style="color:#268bd2">onloadend</span> = <span style="color:#859900">function</span> () {
         <span style="color:#859900">var</span> <span style="color:#268bd2">previewer</span> = <span style="color:#268bd2">$</span>(<span style="color:#2aa198">&#39;#previewer&#39;</span>);
@@ -151,7 +151,7 @@
 在图片文件读取到后，紧接着要做的就是调用 Canvas API 对图片进行前端压缩处理。</p>
 <h4 id="canvas">Canvas</h4>
 <p>Canvas 对图片的处理放在了 processFile() 方法中，我的做法略粗暴，对图片的高宽设定了固定的限值，只对超过高宽限值的图片做压缩处理。其实应该采取更合理的压缩策略，比如根据图片文件的大小，后期迭代时再完善吧。先把这部分的代码贴出来。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// Canvas处理
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// Canvas处理
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">function</span> <span style="color:#268bd2">processFile</span>(<span style="color:#268bd2">dataURL</span>, <span style="color:#268bd2">fileType</span>) {
     <span style="color:#859900">var</span> <span style="color:#268bd2">maxWidth</span> = <span style="color:#2aa198;font-weight:bold">800</span>, <span style="color:#268bd2">maxHeight</span> = <span style="color:#2aa198;font-weight:bold">800</span>;
     <span style="color:#859900">var</span> <span style="color:#268bd2">image</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Image</span>();
@@ -190,16 +190,16 @@
     }
 }
 </code></pre></div><p>重点看 Canvas API 部分。MDN 上有相当完善的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial">tutorial</a>。首先通过 createElement() 创建 canvas 元素，并设置 canvas 的高宽。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">canvas</span> <span style="color:#268bd2">id</span>=<span style="color:#2aa198">&#34;tutorial&#34;</span> <span style="color:#268bd2">width</span>=<span style="color:#2aa198">&#34;150&#34;</span> <span style="color:#268bd2">height</span>=<span style="color:#2aa198">&#34;150&#34;</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">canvas</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#268bd2;font-weight:bold">canvas</span> <span style="color:#268bd2">id</span>=<span style="color:#2aa198">&#34;tutorial&#34;</span> <span style="color:#268bd2">width</span>=<span style="color:#2aa198">&#34;150&#34;</span> <span style="color:#268bd2">height</span>=<span style="color:#2aa198">&#34;150&#34;</span>&gt;&lt;/<span style="color:#268bd2;font-weight:bold">canvas</span>&gt;
 </code></pre></div><p>canvas 元素创建了一个固定大小的画布，在这个上下文 context 中可以绘制和处理要展示的内容。初始的 canvas 元素是空白的，要在上面绘制内容，需要先获取它的上下文。上面的代码里通过 getContext() 方法获取 canvas 元素的上下文。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">context</span> = <span style="color:#268bd2">canvas</span>.<span style="color:#268bd2">getContext</span>(<span style="color:#2aa198">&#39;2d&#39;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">context</span> = <span style="color:#268bd2">canvas</span>.<span style="color:#268bd2">getContext</span>(<span style="color:#2aa198">&#39;2d&#39;</span>);
 </code></pre></div><p>在取得 canvas 上下文后，就能通过 drawImage() 方法将图片绘制到 canvas 元素里。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#268bd2">context</span>.<span style="color:#268bd2">drawImage</span>(<span style="color:#268bd2">image</span>, <span style="color:#268bd2">x</span>, <span style="color:#268bd2">y</span>, <span style="color:#268bd2">width</span>, <span style="color:#268bd2">height</span>);
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#268bd2">context</span>.<span style="color:#268bd2">drawImage</span>(<span style="color:#268bd2">image</span>, <span style="color:#268bd2">x</span>, <span style="color:#268bd2">y</span>, <span style="color:#268bd2">width</span>, <span style="color:#268bd2">height</span>);
 </code></pre></div><p>其中参数 image 是 image 或者 canvas 对象，x 和 y 是其在目标 canvas 里的其实坐标，width 和 height 控制 canvas 绘制时的缩放宽高。drawImage() 函数支持更多传参，具体可参考 MDN 上的文档。</p>
 <p>在 canvas 元素上绘出图像后，再调用 canvas.toDataURL() 方法，就能获取到该 canvas 对象中所包含图片编码后的 data: URL 字符串。到此，canvas 的处理流程就完成了，接下来的步骤就是将处理后的图片数据发送到后端。</p>
 <h4 id="formdata">FormData</h4>
 <p>HTML5 新增加了 <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData">FormData</a> 接口，FormData 类似 HashMap，通过 append() 方法插入键值对，模拟待提交的表单元素，FormData 相比普通 ajax 提交的优势在于，它可以异步上传二进制文件。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 发布按钮事件
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 发布按钮事件
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">function</span> <span style="color:#268bd2">submit</span>() {
     <span style="color:#859900">var</span> <span style="color:#268bd2">tag</span> = <span style="color:#268bd2">$</span>(<span style="color:#2aa198">&#39;#tag&#39;</span>).<span style="color:#268bd2">val</span>();
     <span style="color:#859900">var</span> <span style="color:#268bd2">content</span> = <span style="color:#268bd2">$</span>(<span style="color:#2aa198">&#39;#feeling&#39;</span>).<span style="color:#268bd2">val</span>();
@@ -234,7 +234,7 @@
 </code></pre></div><p>FormData 的 api 里有一需要注意的地方，我一开始也没有留心。因为产品的设计是仿 (chao) 照 (xi) 微信的，对于图文的发布限制了最多上传 9 张图片，同时支持删除待提交图片，所以需要动态的监控待提交的图片数量，FormData 有一个删除键值对的方法 formdata.delete(key)，我当时想既然有这个方法就可以即时删除待提交的图片数据，然而我错了，delete() 方法在浏览器里支持可以说很糟糕，参考 MDN 给出的兼容列表：</p>
 <p><img src="https://o70e8d1kb.qnssl.com/imitate-wechat-moment-on-mobile-device-1.png" alt=""></p>
 <p>只能另觅它途。我采取的方案比较基础，因为提交到后端的图片数据是 dataURL，即 base64 编码的一组字符串，因此可以创建两个变量，一个记录待传图片的数量，另一个变量保存图片的 base64 编码，即时处理图片的添加和删除，在提交按钮点击时将 base64 的 dataURL 数组 append 进 FormData 对象里并异步提交到后端处理。代码如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 监听图片删除按钮点击
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 监听图片删除按钮点击
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">$</span>(<span style="color:#cb4b16">document</span>).<span style="color:#268bd2">on</span>(<span style="color:#2aa198">&#39;click&#39;</span>, <span style="color:#2aa198">&#39;.remove&#39;</span>, <span style="color:#859900">function</span> (<span style="color:#268bd2">e</span>) {
     <span style="color:#859900">var</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">$</span>(<span style="color:#859900">this</span>).<span style="color:#268bd2">index</span>();
     <span style="color:#268bd2">log</span>(<span style="color:#2aa198">&#39;remove index &#39;</span> + <span style="color:#268bd2">i</span>);
@@ -248,7 +248,7 @@
 <h4 id="ios-调试兼容性">iOS 调试兼容性</h4>
 <p>前面在讲 canvas 处理时提到一个坑，再功能测试时才发现，就是经过 canvas 处理后的图片上传服务器后读取出来会发生旋转的问题。多次测试后发现，只有当调用摄像头竖拍上传时才会发生这个错误，横拍或者调用相册选图上传就正常。通常这种不知道从哪冒出来的 bug 找谷歌就行了，关键字 canvas upload image ios rotation 搜索到 stackoverflow 上有同样的<a href="http://stackoverflow.com/questions/19463126/how-to-draw-photo-with-correct-orientation-in-canvas-after-capture-photo-by-usin">问题</a>，道出了问题发生的根源，就是摄像头竖拍照片的 EXIF 的信息发生了变化。读取 EXIF 并修正照片的旋转。</p>
 <p>Github 上有一个读取照片 EXIF 信息的 <a href="https://github.com/exif-js/exif-js">exif.js</a> 库，提供了读取 API，在上面的 readFile() 方法中加入 EXIF 读取：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 读取图片
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 读取图片
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">function</span> <span style="color:#268bd2">readFile</span>(<span style="color:#268bd2">image</span>) {
     <span style="color:#93a1a1;font-style:italic">// 省略...
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">reader</span>.<span style="color:#268bd2">onloadend</span> = <span style="color:#859900">function</span> () {
@@ -291,9 +291,9 @@
 <h3 id="后端">后端</h3>
 <h4 id="接收-formdata">接收 FormData</h4>
 <p>服务器端接收客户端发送过来的 FormData 数据，最主要的工作就是将 base64 编码串提取出来并根据需要转换成所需的格式（在我的代码里转成了 byte 类型）。这部分工作很简单，需要注意的点是 base64 编码串的标准格式形如：</p>
-<pre><code>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABoYAAAJJCA
+<pre tabindex="0"><code>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABoYAAAJJCA
 </code></pre><p>需要将其头部的标识位截去，即保留 <code>&quot;,&quot;</code> 后面的编码串。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;upload&#34;</span>, <span style="color:#268bd2">method</span> = <span style="color:#268bd2">RequestMethod</span>.<span style="color:#268bd2">POST</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;upload&#34;</span>, <span style="color:#268bd2">method</span> = <span style="color:#268bd2">RequestMethod</span>.<span style="color:#268bd2">POST</span>)
 <span style="color:#268bd2">@ResponseBody</span>
 <span style="color:#859900">public</span> <span style="color:#268bd2">SimpleResponse</span> <span style="color:#268bd2">upload</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">request</span>, <span style="color:#268bd2">@RequestParam</span> <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">formData</span>) {
     <span style="color:#268bd2">SimpleResponse</span> <span style="color:#268bd2">response</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">SimpleResponse</span>();

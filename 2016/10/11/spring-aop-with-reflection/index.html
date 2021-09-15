@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -59,12 +59,12 @@
 <h3 id="写法一">写法一</h3>
 <h4 id="后端部分">后端部分</h4>
 <p>假设创建的 AOP 类为 <code>DemoAspect</code>，在 Spring 的配置文件中，将其注册到 aop 配置中：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;demoAspect&#34;</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;com.isudox.aspect.DemoAspect&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">id=</span><span style="color:#2aa198">&#34;demoAspect&#34;</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;com.isudox.aspect.DemoAspect&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;aop:aspectj-autoproxy&gt;</span>
   <span style="color:#268bd2;font-weight:bold">&lt;aop:include</span> <span style="color:#268bd2">name=</span><span style="color:#2aa198">&#34;demoAspect&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;/aop:aspectj-autoproxy&gt;</span>
 </code></pre></div><p>把流程改造相关的服务 bean 再次声明一份，修改其 id 和新流程的分组，以作为新流程所需服务的 bean（配置就省略了）。下面用 Java 的方式来声明切面和织入的方法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Aspect</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Aspect</span>
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">DemoAspect</span> {
     <span style="color:#268bd2">@Resource</span>
     <span style="color:#859900">private</span> <span style="color:#268bd2">CartService</span> <span style="color:#268bd2">cartService2</span>;
@@ -95,7 +95,7 @@
 <h4 id="前端部分">前端部分</h4>
 <p>虽然后端完成了对流程调用的拆分，但是前端是复用的同一个工程，也就是说，还需要对来自同一个页面的请求进行分离，这样才能在上面的 Java 代码中完成 <code>if-else</code> 条件。具体就是区别哪些请求是调用原有的购物流程，哪些请求是调用新的预约流程。</p>
 <p>思路很简单，先在页面模板上种下一个隐藏域作为不同业务流程的区分，如果业务是预约流程，就拦截所有来自这个页面的 Ajax 请求，修改其请求参数，然后再放行。其实就是前端的拦截器，而 jQuery 自带能拦截 Ajax 请求的神器方法—— <code>jQuery.ajaxPrefilter()</code>，参考 jQuery 的 API <a href="http://api.jquery.com/jquery.ajaxprefilter/">文档</a>。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#268bd2">$</span>.<span style="color:#268bd2">ajaxPrefilter</span>(<span style="color:#859900">function</span>(<span style="color:#268bd2">options</span>, <span style="color:#268bd2">originalOptions</span>, <span style="color:#268bd2">jqXHR</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#268bd2">$</span>.<span style="color:#268bd2">ajaxPrefilter</span>(<span style="color:#859900">function</span>(<span style="color:#268bd2">options</span>, <span style="color:#268bd2">originalOptions</span>, <span style="color:#268bd2">jqXHR</span>) {
   <span style="color:#93a1a1;font-style:italic">// Modify options, control originalOptions, store jqXHR, etc
 </span><span style="color:#93a1a1;font-style:italic"></span>});
 </code></pre></div><p><code>jQuery.ajaxPrefilter()</code> 必须传入一个 <code>handler</code> 函数，用来完成对被拦截到的 Ajax 请求的自定义。<code>handler</code> 方法内包含 3 个参数：</p>
@@ -105,7 +105,7 @@
 <li><code>jqXHR</code> 是请求的 jqXHR 对象；</li>
 </ul>
 <p>所以，前端的 Ajax 请求拦截器可以这么写：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 拦截 Ajax 请求，并修改请求参数，再放行
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// 拦截 Ajax 请求，并修改请求参数，再放行
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">$</span>.<span style="color:#268bd2">ajaxPrefilter</span>(<span style="color:#859900">function</span> (<span style="color:#268bd2">options</span>, <span style="color:#268bd2">originalOptions</span>, <span style="color:#268bd2">jqXHR</span>) {
     <span style="color:#859900">if</span> (<span style="color:#268bd2">$</span>(<span style="color:#2aa198">&#39;#hidden_type&#39;</span>).<span style="color:#268bd2">val</span>() === <span style="color:#2aa198">&#39;xyz&#39;</span>) {
         <span style="color:#268bd2">options</span>.<span style="color:#268bd2">data</span> += <span style="color:#2aa198">&#39;&amp;type=xyz&#39;</span>;

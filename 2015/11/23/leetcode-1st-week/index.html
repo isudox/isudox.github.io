@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -65,7 +65,7 @@ nums[0] + nums[1] = 2 + 7 = 9
 return [0, 1]</p>
 </blockquote>
 <p>这道题的给定条件相当完整，因此需要考虑的变态因素很少，非常常规且线性的问题，就是考察数组处理。直接给出我的解答</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// TwoSum.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// TwoSum.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">twoSum</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">len</span> = <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span>;
@@ -88,7 +88,7 @@ return [0, 1]</p>
         <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>;
     }
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># two_sum.py</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># two_sum.py</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">twoSum</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">nums</span>, <span style="color:#268bd2">target</span>):
         <span style="color:#268bd2">d</span> = {}
@@ -133,7 +133,7 @@ return [0, 1]</p>
 <p>这道题有点拗口，简单解释下题意：用链表表示非负整数，整数的每一位用倒序存储在链表的节点中，例如 342 用链表形式存储则为 2 -&gt; 4 -&gt; 3，给出两个链表表示的正整数，求两数加和的链表形式。</p>
 <p>这道题有坑！刚开始解题时并没有把各种可能的情况考虑到，提交两次都被驳回。下面我把我的解法从最开始被拒绝的草稿到最后被接受的过程完整写下来。先抛开诡异的情况，只考虑最主干的思路，把算法的骨架码出来。
 涉及到链表，其实下意识的就能联想到链式反应，这在算法里对应的就是递归。我的思路是尝试把链表递归还原成整数，然后再把求和的整数转化成链表。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">/**
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">/**
 </span><span style="color:#93a1a1;font-style:italic"> * Definition for singly-linked list.
 </span><span style="color:#93a1a1;font-style:italic"> * public class ListNode {
 </span><span style="color:#93a1a1;font-style:italic"> *     int val;
@@ -169,10 +169,10 @@ return [0, 1]</p>
     }
 }
 </code></pre></div><p>肉眼 debug 了下似乎没有问题，leetcode 的测试用例也通过了，提交代码被 OJ 否决了，问题出在哪了呢？看下面的用例</p>
-<pre><code># input
+<pre tabindex="0"><code># input
 [0], [0]
 </code></pre><p>找到出错的点了，在把数值转换为链表的方法 num2ListNode() 里发生了错误，因为传参是 0 直接返回了 null。那么就打补丁吧，在调用 num2ListNode() 前对参数进行判断，修改代码如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// AddTwoNumbers.java v1.1
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// AddTwoNumbers.java v1.1
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">addTwoNumbers</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">listNode2Num</span>(<span style="color:#268bd2">l1</span>) + <span style="color:#268bd2">listNode2Num</span>;
@@ -204,9 +204,9 @@ return [0, 1]</p>
     }
 }
 </code></pre></div><p>上面的补丁解决了当数值为 0 时的异常情况，再次提交，然后……再次悲剧地被 OJ 婉拒了。OJ 给出了如下的报错测试用例</p>
-<pre><code>[1], [9,9,9,9,9,9,9,9,9,9,9,9,9]
+<pre tabindex="0"><code>[1], [9,9,9,9,9,9,9,9,9,9,9,9,9]
 </code></pre><p>看到这个用例其实就知道代码疏漏点在什么地方，就是没有考虑到对大数的处理。当链表表示的大整数数值超过 int 型的范围时，在链表转换整数的过程中就已经发生错误了。好在 Java 处理大整数比 C/C++ 方便了很多，不需要先转换成 String 类，Java 的 Math 包里内置了 <a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html">BigInteger</a> 类，只要内存够大，就可以表示任意大整数。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// AddTwoNumbers.java v1.2
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// AddTwoNumbers.java v1.2
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">java.math.BigInteger</span>;
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">addTwoNumbers</span>(<span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l1</span>, <span style="color:#268bd2">ListNode</span> <span style="color:#268bd2">l2</span>) {
@@ -275,7 +275,7 @@ e.g.
 <li>从第一个字符开始遍历，在遍历过程中，记录当前字符出现的次数，如果字符是第一次出现，则把当前记录的子串长度加一；如果字符已经出现过，说明该字串已经出现重复字符，则终止遍历，并从上一次遍历的起始位置的下一字符，重新上述步骤；</li>
 </ul>
 <p>解法如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LongestSubstringWithoutRepeatingCharacters.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LongestSubstringWithoutRepeatingCharacters.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">lengthOfLongestSubstring</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">maxLen</span> = <span style="color:#268bd2">0</span>;
@@ -330,7 +330,7 @@ nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
 </blockquote>
 <p>这题是 Hard 难度，但题目本身并不复杂，主要是对时间复杂度有要求，因此需要细细思考下。</p>
 <p>要找两个有序数组的中位数，最直接的想法就是将两个数组合并排序，中位数自然而然就找到了。依次遍历两个有序数组，直到将其合并为一个有序数组，从而找到中位数。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MedianOfTwoSortedArrays.java v1.0
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// MedianOfTwoSortedArrays.java v1.0
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">double</span> <span style="color:#268bd2">findMedianSortedArrays</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums1</span>, <span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums2</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">m</span> = <span style="color:#268bd2">nums1</span>.<span style="color:#268bd2">length</span>, <span style="color:#268bd2">n</span> = <span style="color:#268bd2">nums2</span>.<span style="color:#268bd2">length</span>;
@@ -386,7 +386,7 @@ nums1 = [1, 2], nums2 = [3, 4] 中位数为 (2 + 3) / 2 = 2.5</p>
 <p>给出一个字符串 S，从 S 中找出其最长的回文子串。可以假定 S 的最大长度为 1000，并且存在唯一的最长回文子串。</p>
 </blockquote>
 <p>回文字符串就是正序和反序相同，也就是说回文以中心点对称，如 &ldquo;abcba&rdquo;。所以可以考虑从中心点向两侧扩展枚举，如果两侧相等，则记录下当前回文长度，并即时更新最大回文长度；否则，则移动中心点，重复枚举操作。这个思路有一个需要注意的地方，就是回文长度的奇偶，这两种枚举的处理有所不同。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LongestPalindromicSubstring.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LongestPalindromicSubstring.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">longestPalindrome</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">len</span> = <span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span>();

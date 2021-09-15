@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -61,7 +61,7 @@
 <p>图示给出了一次请求从发送到处理到接收响应的整个过程，非常标准的 M-V-C。</p>
 <h3 id="接口实现">接口实现</h3>
 <p>Spring MVC 拦截器由 <code>HandlerInterceptor</code> 实现。<code>HandlerInterceptor</code> 接口包含三个方法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">HandlerInterceptor</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">HandlerInterceptor</span> {
     <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">preHandle</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>, <span style="color:#268bd2">Object</span> <span style="color:#268bd2">handler</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span>;
 
     <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">postHandle</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>, <span style="color:#268bd2">Object</span> <span style="color:#268bd2">handler</span>, <span style="color:#268bd2">ModelAndView</span> <span style="color:#268bd2">modelAndView</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span>;
@@ -73,7 +73,7 @@
 <p><code>postHandle()</code> 只有当 <code>preHandle()</code> 返回 true 时才会执行，也就是在请求进入到 Controller 之后再执行。它可以对 <code>ModelAndView</code> 进行处理，再返回给前端进行渲染。</p>
 <p><code>afterCompletion()</code> 在请求被完整处理完成后执行，也就是在渲染视图后。</p>
 <p>拦截器的关键就是在请求处理之前将其拦截，所以最重要的方法就是 <code>preHandle()</code>，它是必须要实现的，而 <code>postHandle()</code> 和 <code>afterCompletion()</code> 的实现可以为空。Spring MVC servlet.handler 包里内置的 <code>HandlerInterceptorAdapter</code> 适配器实现 <code>HandlerInterceptor</code> 接口的 <code>preHandle()</code> 方法。通常可以直接继承该适配器。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ExampleInterceptor</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">HandlerInterceptorAdapter</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ExampleInterceptor</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">HandlerInterceptorAdapter</span> {
     <span style="color:#268bd2">@Override</span>
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">preHandle</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>, <span style="color:#268bd2">Object</span> <span style="color:#268bd2">obj</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
         <span style="color:#93a1a1;font-style:italic">// hanle the request...
@@ -88,7 +88,7 @@
 }
 </code></pre></div><h3 id="拦截配置">拦截配置</h3>
 <p>Spring MVC 配置文件通过 <code>mvc:interceptors</code> 标签声明并配置拦截器链，拦截的顺序由声明的顺序确定。其中，<code>mvc:mapping</code> 标签指定要拦截的 URL 以及忽略的 URL，支持通配符；<code>bean</code> 标签指定处理该 URL 的拦截器。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;beans</span> <span style="color:#268bd2">xmlns=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/beans&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;beans</span> <span style="color:#268bd2">xmlns=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/beans&#34;</span>
 	<span style="color:#268bd2">xmlns:xsi=</span><span style="color:#2aa198">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#268bd2">xmlns:mvc=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/mvc&#34;</span>
 	<span style="color:#268bd2">xmlns:context=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/context&#34;</span>
 	<span style="color:#268bd2">xsi:schemaLocation=</span><span style="color:#2aa198">&#34;
@@ -111,7 +111,7 @@
 
 <span style="color:#268bd2;font-weight:bold">&lt;/beans&gt;</span>
 </code></pre></div><p>或者也可以通过 Java 代码来配置拦截器：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Configuration</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Configuration</span>
 <span style="color:#268bd2">@EnableWebMvc</span>
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">WebConfig</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">WebMvcConfigurerAdapter</span> {
 
@@ -126,12 +126,12 @@
 </code></pre></div><h2 id="ajax请求">Ajax请求</h2>
 <p>对于拦截 Ajax 请求的场景，有些细节处理需要注意。拦截器通常需要获取请求来源页面的 URL，使其能在处理完成后能返回之前的页面，比如从某个页面跳转到登录页，登录后再跳转回之前浏览的页面。但如果是 Ajax 请求，比如在页面上点击一个按钮发起请求，改变局部页面元素或行为，这时候拦截器所需要的来源页 URL 被记录在请求头的 <code>referer</code> 中。</p>
 <p>首先判断一个请求是否为 Ajax。Ajax 请求的头部会带上 <code>X-Requested-With:XMLHttpRequest</code>。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isAsyncRequest</span>(<span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">request</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isAsyncRequest</span>(<span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">request</span>) {
     <span style="color:#268bd2">String</span> <span style="color:#268bd2">header</span> = <span style="color:#268bd2">request</span>.<span style="color:#268bd2">getHeader</span>(<span style="color:#2aa198">&#34;X-Requested-With&#34;</span>);
     <span style="color:#859900">return</span> <span style="color:#268bd2">header</span> != <span style="color:#859900;font-weight:bold">null</span> &amp;&amp; <span style="color:#2aa198">&#34;XMLHttpRequest&#34;</span>.<span style="color:#268bd2">equalsIgnoreCase</span>(<span style="color:#268bd2">header</span>);
 }
 </code></pre></div><p>获取 referer 信息</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">preHandle</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>, <span style="color:#268bd2">Object</span> <span style="color:#268bd2">obj</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">preHandle</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>, <span style="color:#268bd2">Object</span> <span style="color:#268bd2">obj</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
     <span style="color:#268bd2">String</span> <span style="color:#268bd2">referer</span> = <span style="color:#268bd2">req</span>.<span style="color:#268bd2">getHeader</span>(<span style="color:#2aa198">&#34;Referer&#34;</span>);
     <span style="color:#268bd2">JSONObject</span> <span style="color:#268bd2">jsonObject</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">JSONObject</span>();
     <span style="color:#268bd2">jsonObject</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;requestURI&#34;</span>, <span style="color:#268bd2">URLEncoder</span>.<span style="color:#268bd2">encode</span>(<span style="color:#268bd2">referer</span>, <span style="color:#2aa198">&#34;UTF-8&#34;</span>));

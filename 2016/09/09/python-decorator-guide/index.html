@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -56,12 +56,12 @@
 <!-- more -->
 <h3 id="管窥装饰器">管窥装饰器</h3>
 <p>下面是一个很简单的 Python 方法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
     <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;call me&#39;</span>)
 
 <span style="color:#268bd2">call</span>()
 </code></pre></div><p>很简单，这会得到 &ldquo;call me&rdquo; 的文本输出。现在增加一个时间标记，告知是什么时间呼叫的我，可以这么改：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
     <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;call me&#39;</span>)
@@ -71,7 +71,7 @@
 </code></pre></div><p>这么做有一个麻烦的地方，就是在 <code>call()</code> 方法内部做了改动。在很多场景下，我们不希望去改变方法本身的行为，因为这个方法可能在很多地方都被调用了，如果在方法内部做了修改，那么对每个调用都会产生影响，但我们只希望在某些调用时才去改变它的行为。比较常见的实用场景如用户登录拦截。</p>
 <p>不改变函数本身，那么该如何对 <code>call()</code> 加上时间标记呢？这就到装饰器大显身手的时候了。装饰器可以把被装饰的方法包裹起来，被装饰者本身的行为不会变，装饰器只是在它之外添加了额外的功能。下面这张图解释的很形象：</p>
 <p><img src="https://o70e8d1kb.qnssl.com/qxf2-gun-decorator1.jpg" alt=""></p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">call</span>():
     <span style="color:#cb4b16">print</span>(<span style="color:#2aa198">&#39;call me &#39;</span>)
@@ -88,7 +88,7 @@
 <span style="color:#268bd2">call</span> = <span style="color:#268bd2">mark_time</span>(<span style="color:#268bd2">call</span>)
 <span style="color:#268bd2">call</span>()
 </code></pre></div><p>上面就实现了简朴的装饰器，Python 内置了对装饰器的语法支持，可以更便捷的实现装饰功能，就是上面提到的 <code>@decorator</code>，这相当于是 <code>func = decorator(func)</code> 的作用。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">mark_time</span>(<span style="color:#268bd2">func</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">wrapper</span>(*<span style="color:#268bd2">args</span>, **<span style="color:#268bd2">kwargs</span>):
@@ -105,7 +105,7 @@
 <span style="color:#268bd2">call</span>()
 </code></pre></div><p>可以看出，<code>@mark_time</code> 的作用等同于 <code>call = mark_time(call)</code>，得到一个可调用的函数名。</p>
 <p>如果需要多个装饰器来实现功能，只需要按顺序对方法进行装饰，装饰的顺序是从下到上：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@f1</span>(<span style="color:#268bd2">arg</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@f1</span>(<span style="color:#268bd2">arg</span>)
 <span style="color:#268bd2">@f2</span>
 <span style="color:#859900">def</span> <span style="color:#268bd2">foo</span>():
     <span style="color:#859900">pass</span>
@@ -120,7 +120,7 @@
 <li>函数可以被定义在函数体中；</li>
 </ul>
 <p>因此，函数的返回值可以是另一个函数。手写一段示例代码来印证这一点：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">get_drink</span>(<span style="color:#268bd2">choice</span>=<span style="color:#2aa198">&#39;tea&#39;</span>):
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">get_drink</span>(<span style="color:#268bd2">choice</span>=<span style="color:#2aa198">&#39;tea&#39;</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">serve_tea</span>():
         <span style="color:#859900">return</span> <span style="color:#2aa198">&#39;Green tea&#39;</span>
 
@@ -143,13 +143,13 @@
 <h3 id="带参装饰器">带参装饰器</h3>
 <p>假设有这么个需求，在前面的 <code>call()</code> 方法之前加上主语，实现 &ldquo;{who} calls me at {time}&quot;，可以考虑给装饰器函数本身传递一个入参 {who}。
 已有的装饰器是这样的：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">call</span> = <span style="color:#268bd2">mark_time</span>(<span style="color:#268bd2">call</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">call</span> = <span style="color:#268bd2">mark_time</span>(<span style="color:#268bd2">call</span>)
 <span style="color:#268bd2">call</span>()
 </code></pre></div><p>增加入参的装饰器是这样的：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">call</span> = <span style="color:#268bd2">mark_time</span>(<span style="color:#2aa198">&#39;sudoz&#39;</span>)(<span style="color:#268bd2">call</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">call</span> = <span style="color:#268bd2">mark_time</span>(<span style="color:#2aa198">&#39;sudoz&#39;</span>)(<span style="color:#268bd2">call</span>)
 <span style="color:#268bd2">call</span>()
 </code></pre></div><p>拆开来看上面的代码：先执行 <code>mark_time('sudoz')</code> 返回一个回调函数 wrapper_1（假设是这个函数名），然后执行 <code>wrapper_1(call)</code>，得到另一个回调函数 wrapper_2，<code>call()</code> 实际上运行的是 <code>wrapper_2()</code>。这么拆解开来，就很好实现带参的装饰器方法了，就是相比不带参的装饰器外面多套一层以返回 wrapper_1：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">time</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">mark_time</span>(<span style="color:#268bd2">who</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">wrapper_1</span>(<span style="color:#268bd2">func</span>):
@@ -174,7 +174,7 @@
 <li><code>@property</code> 装饰的方法是类的属性，装饰器内部定义了 <code>getter</code> 和 <code>setter</code> 方法，这种方式和 Java 里的 <code>getXXX</code>、<code>setXXX</code> 非常相像；</li>
 </ul>
 <p>代码演示下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Demo</span>:
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Demo</span>:
     <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">name</span>, <span style="color:#268bd2">city</span>):
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_name</span> = <span style="color:#268bd2">name</span>
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_city</span> = <span style="color:#268bd2">city</span>
@@ -215,7 +215,7 @@
 </code></pre></div><p>注意上面的代码，如果被 <code>@property</code> 装饰的属性没有设置 <code>setter</code> 方法，那么该属性就是类的只读属性，不能被修改，因此上面试图修改 city 属性，抛出异常。</p>
 <h3 id="functools-进阶">functools 进阶</h3>
 <p>装饰器在执行时，有一个隐蔽的小动作可能会被忽略：它把被装饰的函数的 <code>__name__</code> 属性给置换成回调函数的属性了。测试下上面代码里被装饰后的 <code>call</code> 的 <code>__name__</code> 属性，不再是 &ldquo;call&rdquo; 而是 &ldquo;wrapper_2&rdquo;。Python 2.5 版本新增的 <code>functools.wraps()</code> 解决了这个问题，它会把被装饰方法的名称，模块复制到装饰器内。而<code>functools.wraps()</code> 本身也是一个装饰器。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">functools</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">functools</span>
 
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">foobar</span>(<span style="color:#268bd2">func</span>):

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -61,8 +61,8 @@
 <p>菜鸟入门三板斧，安装、配置和使用——</p>
 <h3 id="安装">安装</h3>
 <p>服务器端我习惯用 Debian 系统。Debian/Ubuntu 内置的 APT 源已经包含了 PostgreSQL，但版本上会稍滞后于 PostgreSQL 最新版本。如果像我一样激进的，可以把 PostgreSQL 官方维护的 APT 源加进 Debian/Ubuntu 的 APT 列表中。比如在 Debian 系统下，新建文件 <code>/etc/apt/sources.list.d/pgdg.list</code>，添加源地址和版本，再导入该源的签名。</p>
-<pre><code>deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main
-</code></pre><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+<pre tabindex="0"><code>deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt update &amp;&amp; sudo apt install postgresql postgresql-client postgresql-contrib postgresql-server-dev
 </code></pre></div><p>安装 PostgreSQL 会安装多个核心包和扩展包，常用和重要的包有：</p>
 <ul>
@@ -78,39 +78,39 @@ sudo apt update &amp;&amp; sudo apt install postgresql postgresql-client postgre
 <h4 id="创建用户角色">创建用户/角色</h4>
 <p>PostgreSQL 会自动创建名为 <code>postgres</code> 的 Linux 用户，用来操作 PostgreSQL 数据库。先修改 <code>postgres</code> 的用户密码，<code>sudo passwd postgres</code>；再切换至 <code>postgres</code> 用户，<code>su - postgres</code>，输入刚才设置的用户密码，成功切换后可以看到 <code>postgres</code> 的用户目录为 <code>/var/lib/postgresql</code>；
 执行 <code>psql</code> 命令进入 PostgreSQL 命令控制台：</p>
-<pre><code>psql (9.5.3)
+<pre tabindex="0"><code>psql (9.5.3)
 Type &quot;help&quot; for help.
 
 postgres=#
 </code></pre><p>PostgreSQL 除了创建新的 Linux 用户 <code>postgres</code>，还创建了同样名为 <code>postgres</code> 数据库用户和同名数据库。在 PostgreSQL 控制台里为数据库用户 <code>postgres</code> 创建密码，<code>\password postgres</code>。
 当然也可以为单独创建一个数据库用户，通过 <code>postgres</code> Linux 用户新建和 Linux 用户名相同的数据库用户，并设定该用户为 superuser，使其具备数据库的读写权限。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">postgres@Dev:~$ createuser --interactive
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">postgres@Dev:~$ createuser --interactive
 </code></pre></div><p>反之，如果要删除数据库用户，执行 <code>dropuser</code>。</p>
 <p>同上，再为新建的数据库用户设置密码。这样，在使用 PostgreSQL 数据库 shell 时就无需切换到 <code>postgres</code> 用户了，可以直接在当前 Linux 用户下执行一系列 PostgreSQL 的操作，如新建数据库 <code>createdb</code> 命令等。</p>
 <p>上面提到的各种用户名都快要绕晕了。梳理一遍，Linux 用户 <code>postgres</code> 和数据库用户 <code>postgres</code> 是完全同的两个概念。Linux 用户是用来连接数据库的，而数据库用户是用来完成数据库的管理任务。对 PostgreSQL 而言，数据库用户和 Linux 用户是彼此对应的，Linux 用户默认连接与其同名的数据库。例如，Linux 用户 <code>postgres</code> 执行 <code>psql</code> 默认会连接到 <code>postgres</code> 数据库用户下的 <code>postgres</code> 数据库；同样的，如果已经创建和当前 Linux 用户同名的数据库用户 <code>${USER}</code>，那么执行 <code>psql</code> 会尝试连接名为 <code>${USER}</code> 的数据库。</p>
 <h4 id="创建数据库">创建数据库</h4>
 <p>创建 PostgreSQL 数据库的操作很简单，<code>createdb mytestdb</code>；连接到指定数据库，<code>psql mytestdb</code>，就进入到 PostgreSQL 客户端控制台，大致罗列几个常用命令：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">psql (9.5.3)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">psql (9.5.3)
 Type <span style="color:#2aa198">&#34;help&#34;</span> <span style="color:#859900">for</span> help.
 
 <span style="color:#268bd2">mytestdb</span>=<span style="color:#93a1a1;font-style:italic">#</span>
 </code></pre></div><p>将数据库的所有权限赋予给数据库用户</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#859900">GRANT</span> <span style="color:#859900">ALL</span> <span style="color:#859900">ON</span> <span style="color:#268bd2">mytestdb</span>.* <span style="color:#859900">TO</span> <span style="color:#268bd2">dbuser</span>;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#859900">GRANT</span> <span style="color:#859900">ALL</span> <span style="color:#859900">ON</span> <span style="color:#268bd2">mytestdb</span>.* <span style="color:#859900">TO</span> <span style="color:#268bd2">dbuser</span>;
 </code></pre></div><p>在控制台里输入 <code>\h</code> 查看所有可使用命令的帮助文档，或者指定要查询的命令 <code>\h command</code>。</p>
 <h4 id="配置本地访问">配置本地访问</h4>
 <p>默认设置下，PostgreSQL 的数据库连接会在当前系统用户拥有该数据库权限的情况下被被认证通过。当特定系统用户在系统本地运行程序时会很实用，但如果需要更安全的配置，就要通过验证密码来访问数据库。</p>
 <p>先切换到 Linux 用户 <code>postgres</code>，修改配置文件 <code>/etc/postgresql/9.x/main/pg_hba.conf</code>，在 <code># &quot;local&quot; is for Unix domain socket connections only</code> 这行可以见到如下配置：</p>
-<pre><code># &quot;local&quot; is for Unix domain socket connections only
+<pre tabindex="0"><code># &quot;local&quot; is for Unix domain socket connections only
 local    all        all             peer
 </code></pre><p>将认证方式 <code>peer</code> 替换为 <code>md5</code>。切换回自己的系统用户，重启 PostgreSQL 服务。现在，如果想在 <code>postgres</code> 用户下，尝试用数据库用户 <code>${USER}</code> 连接测试数据库 <code>testdb</code>，就需要输入密码了。</p>
 <p>或者可以在 &ldquo;# IPv4 local connections:# IPv4 local connections:&rdquo; 处，将访问 IP 白名单从 127.0.0.1/32 改为授权所有访问</p>
-<pre><code># IPv4 local connections:
+<pre tabindex="0"><code># IPv4 local connections:
 host    all             all              0.0.0.0/0              md5
-</code></pre><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">postgres@Dev:~$ psql -U sudoz -W testdb
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">postgres@Dev:~$ psql -U sudoz -W testdb
 Password <span style="color:#859900">for</span> user sudoz:
 </code></pre></div><h4 id="配置远程访问">配置远程访问</h4>
 <p>默认配置的 PostgreSQL 会监听来自 <code>localhost</code> 的访问连接，但它不建议修改配置去监听来自公网 IP 的连接。如果需要同图形化的工具来远程访问服务器上的 PostgreSQL 数据库，就得修改配置文件 <code>/etc/postgresql/9.x/main/postgresql.conf</code>，当然，也需要切换到 <code>postgres</code> 系统用户去操作，因为这些配置文件的所属用户和组都是 <code>postgres</code> 的。修改 <code>listen_addresses = 'localhost'</code> 行，默认设置是只监听本地，把 <code>localhost</code> 替换为 <code>*</code>，或者添加指定 IP 地址，<code>localhost,my_remote_server_ip_address</code>，就可以将远程访问加入白名单中。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">listen_addresses</span> = <span style="color:#2aa198">&#39;*&#39;</span>    <span style="color:#93a1a1;font-style:italic"># what IP address(es) to listen on;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">listen_addresses</span> = <span style="color:#2aa198">&#39;*&#39;</span>    <span style="color:#93a1a1;font-style:italic"># what IP address(es) to listen on;</span>
                           <span style="color:#93a1a1;font-style:italic"># comma-separated list of addresses;</span>
                           <span style="color:#93a1a1;font-style:italic"># defaults to &#39;localhost&#39;; use &#39;*&#39; for all</span>
                           <span style="color:#93a1a1;font-style:italic"># (change requires restart)</span>
@@ -132,7 +132,7 @@ Password <span style="color:#859900">for</span> user sudoz:
 </ul>
 <h4 id="数据库操作">数据库操作</h4>
 <p>和 MySQL 支持扩展的 SQL 标准不同，PostgreSQL 严格遵循完备的 ANSI-SQL 标准，因此 PostgreSQL 的数据库操作规范且通用。下面就写几条常用的 SQL 语句。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"># 创建新表
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"># 创建新表
 <span style="color:#859900">CREATE</span> <span style="color:#859900">TABLE</span> <span style="color:#268bd2">playground</span> (
     <span style="color:#268bd2">equip_id</span> <span style="color:#cb4b16">serial</span> <span style="color:#859900">PRIMARY</span> <span style="color:#859900">KEY</span>,
     <span style="color:#859900">type</span> <span style="color:#cb4b16">varchar</span> (<span style="color:#2aa198;font-weight:bold">50</span>) <span style="color:#859900">NOT</span> <span style="color:#859900">NULL</span>,

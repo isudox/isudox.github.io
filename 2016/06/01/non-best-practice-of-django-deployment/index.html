@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -57,20 +57,20 @@
 <h3 id="一些题外话">一些题外话</h3>
 <h4 id="django-工程结构">Django 工程结构</h4>
 <p>在 Django 官方<a href="https://docs.djangoproject.com/en/1.9/intro/tutorial01/#creating-a-project">文档</a>里，新建 Django 工程用下面的命令完成：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">django-admin startproject mysite
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">django-admin startproject mysite
 </code></pre></div><p>这样创建的工程根目录下，会生成一个和项目名称同名的子目录，存放 settings.py wsgi.py 等文件。这样做肯定没问题，但是没必要，也不优雅。对此 Kenneth Reitz 的建议是，在命令的后面加一 <code>.</code> 号：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">django-admin.py start-project mysite .
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">django-admin.py start-project mysite .
 </code></pre></div><p>这样，Django 工程的配置文件就存放在根目录下了。</p>
 <h4 id="虚拟环境-virtualenv">虚拟环境 virtualenv</h4>
 <p>一般在测试服务器上，用 virtualenv 把不同版本的环境隔离开来是首选的方案。此外还有一个工具 <a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a>，来管理由 virtualenv 虚拟出来的 Python 环境，非常实用。</p>
 <p>pip 安装 virtualenvwrapper 后，需要设置几个全局环境变量。可以把下面的配置添加进 shell 的配置文件里，比如我用的 zsh，那么就是添加进 .zshrc 文件：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#cb4b16">export</span> <span style="color:#268bd2">VIRTUALENVWRAPPER_PYTHON</span>=/usr/bin/python3.4
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#cb4b16">export</span> <span style="color:#268bd2">VIRTUALENVWRAPPER_PYTHON</span>=/usr/bin/python3.4
 <span style="color:#cb4b16">export</span> <span style="color:#268bd2">WORKON_HOME</span>=<span style="color:#268bd2">$HOME</span>/.virtualenvs
 <span style="color:#cb4b16">source</span> /usr/local/bin/virtualenvwrapper.sh
 </code></pre></div><p>分别指定默认的 Python 版本和 Python 虚拟环境的目录。设置后，就可以非常方便的通过 workon 命令切换已安装的 Python 虚拟环境，而无需定向到虚拟环境的路径。</p>
 <h4 id="导出-pip-列表">导出 pip 列表</h4>
 <p>在有了 Python 虚拟环境后，还得有快速安装 pip 包的方法，pip 提供了导出 pip 列表的功能 freeze，以及快速安装工程所需 pip 包的功能 install：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">pip freeze &gt; requirements.txt
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">pip freeze &gt; requirements.txt
 pip install -r requirements.txt
 </code></pre></div><h3 id="部署">部署</h3>
 <h4 id="uwsgi--nginx">uWSGI + Nginx</h4>
@@ -79,7 +79,7 @@ pip install -r requirements.txt
 <p>the web client &lt;-&gt; the web server &lt;-&gt; the socket &lt;-&gt; uwsgi &lt;-&gt; Django</p>
 </blockquote>
 <p>先来配置对应 Django 工程的 Nginx conf</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#93a1a1;font-style:italic"># mysite_nginx.conf</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#93a1a1;font-style:italic"># mysite_nginx.conf</span>
 
 <span style="color:#93a1a1;font-style:italic"># the upstream component nginx needs to connect to</span>
 <span style="color:#268bd2">upstream django {</span>
@@ -113,11 +113,11 @@ pip install -r requirements.txt
     <span style="color:#268bd2">}</span>
 <span style="color:#268bd2">}</span>
 </code></pre></div><p>/static 和 /media 指向的路径应匹配 Django settings.py 里对应的路径参数。此外，还可能遇到一个问题，就是权限，nginx 进程的用户多半是 www-data，但我们在服务器上进行操作的用户往往是 root，因此 nginx 并没有操作 Django 工程的权限，可以把 Django 工程的用户和组改成 www-data，但更好的办法是把 www-data 用户加进 root 用户组：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo usermod -aG root www-data
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo usermod -aG root www-data
 </code></pre></div><p>指定 sock 后，就可以连接 Nginx 和 uWSGI 了，启动 uWSGI 伺服 Django 工程：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">uwsgi --http :80 --home /path/to/your/virtualenv/mysite --chdir /path/to/your/mysite -w mysite.wsgi
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">uwsgi --http :80 --home /path/to/your/virtualenv/mysite --chdir /path/to/your/mysite -w mysite.wsgi
 </code></pre></div><p>uWSGI 指定了 Django 工程所在的路径和对应的 Python 虚拟环境，并调用 Django 项目的 wsgi.py 文件。每次指定参数不便于管理和迁移，可以把上述参数写进一个 uWSGI 的站点配置文件中：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#93a1a1;font-style:italic"># freeman_uwsgi.ini file</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#93a1a1;font-style:italic"># freeman_uwsgi.ini file</span>
 <span style="color:#859900">[uwsgi]</span>
 
 <span style="color:#268bd2">project</span> = <span style="color:#2aa198">mysite</span>
@@ -145,15 +145,15 @@ pip install -r requirements.txt
 <span style="color:#93a1a1;font-style:italic"># autoreload py file</span>
 <span style="color:#268bd2">py-autoreload</span>   = <span style="color:#2aa198">3</span>
 </code></pre></div><p>uWSGI 启动时读取该 ini 文件</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">uwsgi --ini mysite_uwsgi.ini
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">uwsgi --ini mysite_uwsgi.ini
 </code></pre></div><h4 id="开启-emperor-模式">开启 emperor 模式</h4>
 <p>如果修改了 uWSGI 的站点配置文件，就必须得重启 uWSGI，这步可以由 <code>emperor</code> 模式自动完成。<code>emperor</code> 模式就是实时监控 uWSGI 的配置文件，当发现有改动时，自动重启服务。</p>
 <p>给 uWSGI 建立 <code>emperor</code> 管理的专有路径，把 Django 工程的 uWSGI 配置文件软链接到该路径下，启动 uWSGI 时，加上 `&ndash;emperor`` 参数：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data
 </code></pre></div><h3 id="多环境配置">多环境配置</h3>
 <p>同一个 Django 工程，在本地开发和在线上部署的版本可能各自有一套配置，比如 settings.py 和 requirements.txt 等。如果把这些差异化的文件加进版本控制的忽略列表里，维护起来又很麻烦，Python 模块化的思想可以很好的运用在这个问题上。</p>
 <p>本地测试和线上部署的差异化配置分离出来，放在专门的 conf 目录下，比如新建 local.py 和 product.py。</p>
-<pre><code>├── conf
+<pre tabindex="0"><code>├── conf
 │   ├── __init__.py
 |   ├── base.py
 │   ├── local.py
@@ -161,7 +161,7 @@ pip install -r requirements.txt
 │   └── test.py
 └── settings.py
 </code></pre><p>在 base.py 中保留通用的配置，其余的文件保存不同环境的差异化配置。比如 local.py</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">mysite.conf.base</span> <span style="color:#dc322f;font-weight:bold">import</span> *
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">mysite.conf.base</span> <span style="color:#dc322f;font-weight:bold">import</span> *
 
 <span style="color:#268bd2">DEBUG</span> = <span style="color:#859900;font-weight:bold">True</span>
 <span style="color:#268bd2">INSTALLED_APPS</span> += (
@@ -175,7 +175,7 @@ pip install -r requirements.txt
     }
 }
 </code></pre></div><p>而 product.py 则可能为</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">mysite.conf.base</span> <span style="color:#dc322f;font-weight:bold">import</span> *
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">mysite.conf.base</span> <span style="color:#dc322f;font-weight:bold">import</span> *
 
 <span style="color:#268bd2">DEBUG</span> = <span style="color:#859900;font-weight:bold">False</span>
 <span style="color:#268bd2">DATABASES</span> = {
@@ -188,20 +188,20 @@ pip install -r requirements.txt
 }
 </code></pre></div><p>从 local.py 或 product.py 中导入的配置会覆盖 base.py 中已存在的对应配置，所以也可以把默认的配置写在 base.py 中。
 在根目录下的 settings.py 中增加根据当前环境导入对应配置的逻辑：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">platform</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">platform</span>
 
 <span style="color:#859900">if</span> <span style="color:#268bd2">platform</span>.<span style="color:#268bd2">node</span>() == <span style="color:#2aa198">&#34;localhost&#34;</span>:
     <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">conf.local</span> <span style="color:#dc322f;font-weight:bold">import</span> *
 <span style="color:#859900">else</span>:
     <span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">conf.product</span> <span style="color:#dc322f;font-weight:bold">import</span> *
 </code></pre></div><p>pip 依赖也可以差异化分离，建立 requirements 路径，</p>
-<pre><code>requirements
+<pre tabindex="0"><code>requirements
 ├── base.txt
 ├── __init__.py
 ├── local.txt
 └── product.txt
 </code></pre><p>如果 local.txt 想在 base.txt 的基础上新增若干 pip 包，可以像下面这样处理：</p>
-<pre><code>-r base.txt
+<pre tabindex="0"><code>-r base.txt
 django-debug-toolbar==1.3
 </code></pre><p>总体上说，Django 应用的单机部署工作到这儿就进行的差不多了。后续有新的改进再补充进来。</p>
 </div>

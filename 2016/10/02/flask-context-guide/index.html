@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -93,14 +93,14 @@
 <li>Request Context: 是客户端发起 HTTP 请求时，Flask 对象为 HTTP 请求对象所创建的 Context；</li>
 </ul>
 <p>这些 Context 定义在 Flask 源码（v0.11）的 <code>global.py</code> 中，截取部分源码如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">werkzeug.local</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">LocalStack</span>, <span style="color:#268bd2">LocalProxy</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">werkzeug.local</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">LocalStack</span>, <span style="color:#268bd2">LocalProxy</span>
 
 <span style="color:#268bd2">_request_ctx_stack</span> = <span style="color:#268bd2">LocalStack</span>()
 <span style="color:#268bd2">_app_ctx_stack</span> = <span style="color:#268bd2">LocalStack</span>()
 </code></pre></div><p><code>_request_ctx_stack</code> 和 <code>_app_ctx_stack</code> 分别是 Flask 保存 request context 和 application context 的全局栈，由 Werkzeug 库的 <code>LocalStack</code> 和 <code>LocalProxy</code> 创建实例。</p>
 <h4 id="localstack-和-localproxy">LocalStack 和 LocalProxy</h4>
 <p>在认识 LocalStack 之前，先来了解 <code>local.py</code> 中的 Local 类，Local 类内由 <code>__slots__</code> 确定了唯二两个属性：<code>__storage__</code> 和 <code>__ident_func__</code>，其中，<code>__ident_func__</code> 属性是获取当前线程标识符的方法调用，<code>__storage__</code> 属性是字典，其 key 就是当前线程的标识符。参看源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># werkzeug.local.Local</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># werkzeug.local.Local</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">Local</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#268bd2">__slots__</span> = (<span style="color:#2aa198">&#39;__storage__&#39;</span>, <span style="color:#2aa198">&#39;__ident_func__&#39;</span>)
 
@@ -122,7 +122,7 @@
         <span style="color:#859900">except</span> <span style="color:#268bd2">KeyError</span>:
             <span style="color:#268bd2">storage</span>[<span style="color:#268bd2">ident</span>] = {<span style="color:#268bd2">name</span>: <span style="color:#268bd2">value</span>}
 </code></pre></div><p>LocalStack 类内置的 <code>_local</code> 是 Local 类的实例，总体作用和 Local 类似。不同之处在于，LocalStack &ldquo;自作主张&quot;的在 <code>__storage__</code> 的 value 内维护一个名为 &ldquo;stack&rdquo; 的栈， 可以通过 <code>push</code>、<code>pop</code> 和 <code>top</code> 将对象入栈、出栈和取得栈顶元素。源码如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># werkzeug.local.LocalStack</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># werkzeug.local.LocalStack</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">LocalStack</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>):
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">_local</span> = <span style="color:#268bd2">Local</span>()
@@ -151,7 +151,7 @@
         <span style="color:#859900">except</span> (<span style="color:#268bd2">AttributeError</span>, <span style="color:#268bd2">IndexError</span>):
             <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">None</span>
 </code></pre></div><p>LocalStack 的使用非常简单，简单的示例如下:</p>
-<pre><code>&gt;&gt;&gt; ls = LocalStack()
+<pre tabindex="0"><code>&gt;&gt;&gt; ls = LocalStack()
 &gt;&gt;&gt; ls.push(42)
 &gt;&gt;&gt; ls.top
 42
@@ -163,7 +163,7 @@
 &gt;&gt;&gt; ls.top
 42
 </code></pre><p>LocalProxy 类是 werkzeug local 的代理，LocalProxy 类的构造函数必须传入一个可调用的参数（方法），通过调用得到的结果就是 LocalStack 实例化的栈的栈顶元素。<code>__local</code> 就是被代理的对象，对 LocalProxy 对象的操作都会作用于实际被代理的对象上。参考源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># werkzeug.local.LocalProxy</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># werkzeug.local.LocalProxy</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">LocalProxy</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#268bd2">__slots__</span> = (<span style="color:#2aa198">&#39;__local&#39;</span>, <span style="color:#2aa198">&#39;__dict__&#39;</span>, <span style="color:#2aa198">&#39;__name__&#39;</span>)
 
@@ -185,7 +185,7 @@
         <span style="color:#859900">return</span> <span style="color:#cb4b16">getattr</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">_get_current_object</span>(), <span style="color:#268bd2">name</span>)
 </code></pre></div><h4 id="request-和-session">request 和 session</h4>
 <p>Flask 对 <code>request</code> 的定义如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">_lookup_req_object</span>(<span style="color:#268bd2">name</span>):
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">_lookup_req_object</span>(<span style="color:#268bd2">name</span>):
     <span style="color:#268bd2">top</span> = <span style="color:#268bd2">_request_ctx_stack</span>.<span style="color:#268bd2">top</span>
     <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
         <span style="color:#859900">raise</span> <span style="color:#268bd2">RuntimeError</span>(<span style="color:#268bd2">_request_ctx_err_msg</span>)
@@ -194,7 +194,7 @@
 </code></pre></div><p>由偏函数 <code>partial()</code> 将属性名 &ldquo;request&rdquo; 传入 <code>_lookup_req_object()</code> 得到可调用的方法，该方法的执行结果就是 LocalProxy 代理的 <code>_request_ctx_stack</code> 栈顶元素 <code>RequestContext</code> 实例。</p>
 <p><code>RequestContext</code> 包含了 Request 的所有相关信息，它在请求开始时被创建并被推入到 <code>_request_ctx_stack</code> 栈中，在请求结束后出栈。
 参考源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.RequestContext</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.RequestContext</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">RequestContext</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">app</span>, <span style="color:#268bd2">environ</span>, <span style="color:#268bd2">request</span>=<span style="color:#859900;font-weight:bold">None</span>):
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">app</span> = <span style="color:#268bd2">app</span>
@@ -220,7 +220,7 @@
         <span style="color:#2aa198">&#34;&#34;&#34;省略&#34;&#34;&#34;</span>
 </code></pre></div><p>这里需要留意 <code>push()</code> 方法，它首先会找出 <code>_app_ctx_stack</code> 栈顶元素 <code>AppContext</code>，如果栈顶元素为空，或者当前 app 不是栈顶 Context 所属的 app（AppContext 对应所属的 Flask app，这种情况存在于 Flask 应用包含多个 app 时），则将当前的 <code>AppContext</code> 入栈到当前 app 的 <code>_app_ctx_stack</code> 中，之后再将 <code>RequestContext</code> 入栈到 <code>_request_ctx_stack</code> 栈中。这就完成了 Request Context 和 Application Context 的关联。</p>
 <p>RequestContext 中 <code>session</code> 初始化为 <code>None</code>，当 RequestContext 入栈时，<code>session</code> 被赋值：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.RequestContext</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.RequestContext</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">RequestContext</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#2aa198">&#34;&#34;&#34;部分省略&#34;&#34;&#34;</span>
     <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">app</span>, <span style="color:#268bd2">environ</span>, <span style="color:#268bd2">request</span>=<span style="color:#859900;font-weight:bold">None</span>):
@@ -232,13 +232,13 @@
             <span style="color:#268bd2">self</span>.<span style="color:#268bd2">session</span> = <span style="color:#268bd2">self</span>.<span style="color:#268bd2">app</span>.<span style="color:#268bd2">make_null_session</span>()
 </code></pre></div><p><code>app.open_session()</code> 方法会通过 Flask app 从 <code>SecureCookieSessionInterface</code> 实例中打开或创建 session。</p>
 <p>正因为 <code>request</code> 和 <code>session</code> 都是 RequestContext 的属性，所以是由如下方式从 Flask app 中获取：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.globals</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.globals</span>
 <span style="color:#268bd2">request</span> = <span style="color:#268bd2">LocalProxy</span>(<span style="color:#268bd2">partial</span>(<span style="color:#268bd2">_lookup_req_object</span>, <span style="color:#2aa198">&#39;request&#39;</span>))
 <span style="color:#268bd2">session</span> = <span style="color:#268bd2">LocalProxy</span>(<span style="color:#268bd2">partial</span>(<span style="color:#268bd2">_lookup_req_object</span>, <span style="color:#2aa198">&#39;session&#39;</span>))
 </code></pre></div><p>偏函数 <code>partial</code> 把属性名传入可调用的 <code>_lookup_req_object</code> 方法中，分别得到当前 Flask app 的 RequestContext 实例中的 <code>request</code> 和 <code>session</code>。</p>
 <h4 id="current_app-和-g">current_app 和 g</h4>
 <p>继续看 <code>flask.local</code> 中对 <code>current_app</code> 的定义：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">_find_app</span>():
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">_find_app</span>():
     <span style="color:#268bd2">top</span> = <span style="color:#268bd2">_app_ctx_stack</span>.<span style="color:#268bd2">top</span>
     <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
         <span style="color:#859900">raise</span> <span style="color:#268bd2">RuntimeError</span>(<span style="color:#268bd2">_app_ctx_err_msg</span>)
@@ -246,18 +246,18 @@
 
 <span style="color:#268bd2">current_app</span> = <span style="color:#268bd2">LocalProxy</span>(<span style="color:#268bd2">_find_app</span>)
 </code></pre></div><p><code>current_app</code> 是通过 LocalProxy 获取代理的 application request 的栈顶对象。先对它做一个试验：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">flask</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Flask</span>, <span style="color:#268bd2">current_app</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">flask</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">Flask</span>, <span style="color:#268bd2">current_app</span>
 
 <span style="color:#268bd2">app</span> = <span style="color:#268bd2">Flask</span>(<span style="color:#268bd2">__name__</span>)
 <span style="color:#cb4b16">print</span>(<span style="color:#268bd2">current_app</span>.<span style="color:#268bd2">name</span>)
 </code></pre></div><p>运行后会抛出 &ldquo;RuntimeError: Working outside of application context.&rdquo; 的异常，这是因为在创建 Flask App 时，<code>AppContext</code> 还没有压入到 <code>_app_ctx_stack</code> 栈内，栈顶没有元素，所以需要先做入栈操作：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">app_ctx</span> = <span style="color:#268bd2">app</span>.<span style="color:#268bd2">app_context</span>()  <span style="color:#93a1a1;font-style:italic"># 手动创建 AppContext</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">app_ctx</span> = <span style="color:#268bd2">app</span>.<span style="color:#268bd2">app_context</span>()  <span style="color:#93a1a1;font-style:italic"># 手动创建 AppContext</span>
 <span style="color:#268bd2">app_ctx</span>.<span style="color:#268bd2">push</span>()  <span style="color:#93a1a1;font-style:italic"># 把 AppContext 入栈到 _app_ctx_stack</span>
 <span style="color:#cb4b16">print</span>(<span style="color:#268bd2">current_app</span>.<span style="color:#268bd2">name</span>)
 <span style="color:#268bd2">app_ctx</span>.<span style="color:#268bd2">pop</span>()  <span style="color:#93a1a1;font-style:italic"># 从 _app_ctx_stack 出栈</span>
 </code></pre></div><p>但实际开发中，我们并没有人为的去对 <code>_app_ctx_stack</code> 进行入栈出栈操作，那么栈内元素是什么时候入栈的呢？其实之前在分析 RequestContext 时已经涉及到了，因为当请求到达 Flask 应用时，会自动将 Request Context 推入到 <code>_request_ctx_stack</code>，因为 Request Context 必须是和 Application Context 关联，即必须在后者的生命周期内，因此如果 <code>_app_ctx_stack</code> 为空，会隐式的把 AppContext 入栈。</p>
 <p>再看 <code>g</code> 的定义：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.globals</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.globals</span>
 <span style="color:#859900">def</span> <span style="color:#268bd2">_lookup_app_object</span>(<span style="color:#268bd2">name</span>):
     <span style="color:#268bd2">top</span> = <span style="color:#268bd2">_app_ctx_stack</span>.<span style="color:#268bd2">top</span>
     <span style="color:#859900">if</span> <span style="color:#268bd2">top</span> <span style="color:#859900">is</span> <span style="color:#859900;font-weight:bold">None</span>:
@@ -265,18 +265,18 @@
     <span style="color:#859900">return</span> <span style="color:#cb4b16">getattr</span>(<span style="color:#268bd2">top</span>, <span style="color:#268bd2">name</span>)
 <span style="color:#268bd2">g</span> = <span style="color:#268bd2">LocalProxy</span>(<span style="color:#268bd2">partial</span>(<span style="color:#268bd2">_lookup_app_object</span>, <span style="color:#2aa198">&#39;g&#39;</span>))
 </code></pre></div><p><code>g</code> 其实就是通过 LocalProxy 代理得到 <code>_app_ctx_stack</code> 栈顶元素 AppContext 内属性为 &ldquo;g&rdquo; 的对象。从 <code>flask.ctx</code> 中回溯对属性 &ldquo;g&rdquo; 的定义：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.AppContext</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.AppContext</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">AppContext</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">app</span>):
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">g</span> = <span style="color:#268bd2">app</span>.<span style="color:#268bd2">app_ctx_globals_class</span>()
 </code></pre></div><p>属性 &ldquo;g&rdquo; 是由 Flask app 调用 <code>app_ctx_globals_class()</code> 赋值，继续回溯源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.app.Flask</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.app.Flask</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">Flask</span>(<span style="color:#268bd2">_PackageBoundObject</span>):
     <span style="color:#268bd2">app_ctx_globals_class</span> = <span style="color:#268bd2">_AppCtxGlobals</span>
 </code></pre></div><p><code>_AppCtxGlobals</code> 是字典集合，保存了 <code>flask.g</code> 的信息。</p>
 <p>这里需要插播一条贴士，在 Flask 0.9 里，<code>flask.g</code> 是通过 <code>request_globals_class</code> 获取，而从 0.10 开始，改为 <code>app_ctx_globals_class</code>，因为 <code>flask.g</code> 变成了 Application Context。</p>
 <p>另外，在 RequestContext 中，还拥有 <code>flask.g</code> 的 getter 和 setter：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.RequestContext</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># flask.ctx.RequestContext</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">RequestContext</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">_get_g</span>(<span style="color:#268bd2">self</span>):
         <span style="color:#859900">return</span> <span style="color:#268bd2">_app_ctx_stack</span>.<span style="color:#268bd2">top</span>.<span style="color:#268bd2">g</span>

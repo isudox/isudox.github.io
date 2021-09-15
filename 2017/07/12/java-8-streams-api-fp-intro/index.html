@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -58,7 +58,7 @@
 <blockquote>
 <p>给定的一个整型数组，将其中每个元素变为它的平方。</p>
 </blockquote>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">square</span>(<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">nums</span>) {
         <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
         <span style="color:#859900">for</span> (<span style="color:#268bd2">Integer</span> <span style="color:#268bd2">n</span> : <span style="color:#268bd2">nums</span>) {
@@ -67,15 +67,15 @@
         <span style="color:#859900">return</span> <span style="color:#268bd2">res</span>;
     }
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">square</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">nums</span>):
         <span style="color:#859900">return</span> [<span style="color:#268bd2">i</span> ** <span style="color:#2aa198;font-weight:bold">2</span> <span style="color:#859900">for</span> <span style="color:#268bd2">i</span> <span style="color:#859900">in</span> <span style="color:#268bd2">nums</span>]
 </code></pre></div><p>上面两个实现都是对这个问题最直接的解法，遍历数组中每个元素，同时计算其平方。对于 Python 的算法，如果了解过 lambda 表达式的话，还可以想出下面这种写法──</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">square</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">nums</span>):
         <span style="color:#859900">return</span> <span style="color:#cb4b16">list</span>(<span style="color:#cb4b16">map</span>(<span style="color:#859900">lambda</span> <span style="color:#268bd2">x</span>: <span style="color:#268bd2">x</span> ** <span style="color:#2aa198;font-weight:bold">2</span>, <span style="color:#268bd2">nums</span>))
 </code></pre></div><p>而对于 Java，在 Java 8 以前是没办法像 Python 等脚本语言一样去处理的，但 Java 8 引入了 Stream API，使得 Java 也有了流式处理和 Lambda 表达式。因此，Java 解法可以这样写──</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">private</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">func</span>(<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">nums</span>) {
         <span style="color:#859900">return</span> <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">stream</span>().<span style="color:#268bd2">map</span>(<span style="color:#268bd2">n</span> -&gt; <span style="color:#268bd2">n</span> * <span style="color:#268bd2">n</span>).<span style="color:#268bd2">collect</span>(<span style="color:#268bd2">Collectors</span>.<span style="color:#268bd2">toList</span>());
     }
@@ -83,19 +83,19 @@
 </code></pre></div><p>使用 Stream API 一个直观的变化是，Java 代码更简洁了。</p>
 <h1 id="lambda-表达式">Lambda 表达式</h1>
 <p>很多脚本语言都支持 Lambda 表达式，比如 JavaScript ES6 引入的箭头函数：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">a</span> = [ <span style="color:#2aa198">&#34;Hydrogen&#34;</span>, <span style="color:#2aa198">&#34;Helium&#34;</span>, <span style="color:#2aa198">&#34;Lithium&#34;</span>, <span style="color:#2aa198">&#34;Beryl­lium&#34;</span> ];
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">a</span> = [ <span style="color:#2aa198">&#34;Hydrogen&#34;</span>, <span style="color:#2aa198">&#34;Helium&#34;</span>, <span style="color:#2aa198">&#34;Lithium&#34;</span>, <span style="color:#2aa198">&#34;Beryl­lium&#34;</span> ];
 
 <span style="color:#859900">var</span> <span style="color:#268bd2">a2</span> = <span style="color:#268bd2">a</span>.<span style="color:#268bd2">map</span>(<span style="color:#859900">function</span>(<span style="color:#268bd2">s</span>){ <span style="color:#859900">return</span> <span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span> });
 
 <span style="color:#859900">var</span> <span style="color:#268bd2">a3</span> = <span style="color:#268bd2">a</span>.<span style="color:#268bd2">map</span>( <span style="color:#268bd2">s</span> =&gt; <span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span> );  <span style="color:#93a1a1;font-style:italic">// [ 8, 6, 7, 9 ]
 </span></code></pre></div><p>又比如上面 Python 代码里的 lambda 关键字</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">lambda</span> <span style="color:#268bd2">x</span>: <span style="color:#268bd2">x</span> ** <span style="color:#2aa198;font-weight:bold">2</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">lambda</span> <span style="color:#268bd2">x</span>: <span style="color:#268bd2">x</span> ** <span style="color:#2aa198;font-weight:bold">2</span>
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">f</span>(<span style="color:#268bd2">x</span>):
     <span style="color:#859900">return</span> <span style="color:#268bd2">x</span> ** <span style="color:#2aa198;font-weight:bold">2</span>
 </code></pre></div><h2 id="语法">语法</h2>
 <p>在 Java 8 以前，如果想将行为传入方法中，往往是选择匿名类的方式。当匿名类的实现本身很简单，比如只有一个方法的接口，这种情况下匿名类的语法显得啰嗦、不清晰。Java 8 的 Lambda 表达式优化了匿名类里模板式的代码，其写法就是</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">( [<span style="color:#268bd2">param</span>,] [<span style="color:#268bd2">param</span>,] ... ) -&gt; <span style="color:#268bd2">expression</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">( [<span style="color:#268bd2">param</span>,] [<span style="color:#268bd2">param</span>,] ... ) -&gt; <span style="color:#268bd2">expression</span>
 ( [<span style="color:#268bd2">param</span>,] [<span style="color:#268bd2">param</span>,] ... ) -&gt; { <span style="color:#268bd2">statements</span>; }
 </code></pre></div><p><img src="https://o70e8d1kb.qnssl.com/lambda_sample.png" alt=""></p>
 <p>它包含三部分：</p>
@@ -117,14 +117,14 @@
 <strong>函数式接口</strong>是只定义一个抽象方法的接口。Java API 提供了很多函数式接口，如常用的 <code>Runnable</code>、<code>Comparator</code>、<code>Predicator</code> 等（类似 <code>Comparator</code> 有两个抽象方法，但 <code>equals()</code> 方法在元类中有实现，因此函数式接口的实例会默认实现它），并给函数式接口加上了 <code>@FunctionalInterface</code> 注解。当开发者需要编写自定义的函数式接口时，可以使用 <code>@FunctionalInterface</code> 注解，如果代码不符合函数式接口的原则，则在编译期就会抛出错误。</p>
 <p>函数式接口定义的抽象方法，可以理解为一个动作，比如 <code>Runnable</code> 的 <code>run()</code> 方法，定义了运行线程这个动作。而 Lambda 表达式实际上就是通过内联的形式为为函数式接口的抽象方法提供了具体实现，并把整个表达式作为函数式接口具体实现的实例。</p>
 <p>参照数学里的函数 <code>y = f(x)</code>，函数式接口抽象方法可以抽取出这样一个函数描述符，比如前面提到的比较苹果的重量，就是 (Apple, Apple) -&gt; int，即接收两个 Apple 变量作为参数，返回 int 结果的函数。而 Lambda 表达式的函数描述符必然是和函数式接口抽象方法是一致的（也包括泛型）。比如下面的例子──</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">proc</span>(<span style="color:#268bd2">Runnable</span> <span style="color:#268bd2">r</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">proc</span>(<span style="color:#268bd2">Runnable</span> <span style="color:#268bd2">r</span>) {
     <span style="color:#268bd2">r</span>.<span style="color:#268bd2">run</span>();
 }
 <span style="color:#268bd2">proc</span>(() -&gt; <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;Hello World!&#34;</span>));
 </code></pre></div><p>其中的 Lambda 表达式的函数描述符是 <code>() -&gt; void</code>，和 <code>Runnable</code> 接口中的 <code>run()</code> 方法的函数描述符是相同的，因此它可以作为 <code>Runnable</code> 行为参数，传递到 <code>proc()</code> 方法中。</p>
 <h2 id="方法引用">方法引用</h2>
 <p>对于仅是调用特定方法的 Lambda 表达式，Java 8 提供了<strong>方法引用</strong>简化了 Lambda 表达式。方法引用可以直接访问类或者实例的方法，使得现有的方法定义可以重复使用，并像 Lambda 一样传递它们，而且在可读性上更进一步。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">list</span>.<span style="color:#268bd2">sort</span>((<span style="color:#268bd2">Apple</span> <span style="color:#268bd2">a1</span>, <span style="color:#268bd2">Apple</span> <span style="color:#268bd2">a2</span>) -&gt; <span style="color:#268bd2">a1</span>.<span style="color:#268bd2">getWeight</span>().<span style="color:#268bd2">compareTo</span>(<span style="color:#268bd2">a2</span>.<span style="color:#268bd2">getWeight</span>()));
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">list</span>.<span style="color:#268bd2">sort</span>((<span style="color:#268bd2">Apple</span> <span style="color:#268bd2">a1</span>, <span style="color:#268bd2">Apple</span> <span style="color:#268bd2">a2</span>) -&gt; <span style="color:#268bd2">a1</span>.<span style="color:#268bd2">getWeight</span>().<span style="color:#268bd2">compareTo</span>(<span style="color:#268bd2">a2</span>.<span style="color:#268bd2">getWeight</span>()));
 
 <span style="color:#268bd2">list</span>.<span style="color:#268bd2">sort</span>(<span style="color:#268bd2">comparing</span>(<span style="color:#268bd2">Apple</span>::<span style="color:#268bd2">getWeight</span>));
 </code></pre></div><p>目标引用和目标方法由分隔符 <code>::</code> 分隔，例如上面的代码中，就是引用了 Apple 类中定义的 <code>getWeight()</code> 方法。方法引用是引用而非调用，所以方法名后是没有括号的。下面是 Lambda 及其等效方法引用的例子。</p>
@@ -140,7 +140,7 @@
 <h2 id="使用场景">使用场景</h2>
 <h3 id="取代匿名类">取代匿名类</h3>
 <p>如果在当前方法中新起一个线程去执行一个任务，通常的做法是通过实现 Runnable 的匿名类，它至少是需要 6 行代码，而其中具体行为代码只有 1 行，其他都是模板代码；而 Lambda 表达式来实现，只需要一行代码。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">new</span> <span style="color:#268bd2">Thread</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">Runnable</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">new</span> <span style="color:#268bd2">Thread</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">Runnable</span>() {
     <span style="color:#268bd2">@Override</span>
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">run</span>() {
         <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;Before Java8, too much code for too little to do&#34;</span>);
@@ -149,7 +149,7 @@
 
 <span style="color:#859900">new</span> <span style="color:#268bd2">Thread</span>(() -&gt; <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;In Java8, Lambda expression rocks !!&#34;</span>)).<span style="color:#268bd2">start</span>();
 </code></pre></div><p>再举一个经常使用的栗子，对 Comparator 匿名类的使用和 Lambda 表达式的改进。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Collections</span>.<span style="color:#268bd2">sort</span>(<span style="color:#268bd2">persons</span>, <span style="color:#859900">new</span> <span style="color:#268bd2">Comparator</span>&lt;<span style="color:#268bd2">Person</span>&gt;() {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Collections</span>.<span style="color:#268bd2">sort</span>(<span style="color:#268bd2">persons</span>, <span style="color:#859900">new</span> <span style="color:#268bd2">Comparator</span>&lt;<span style="color:#268bd2">Person</span>&gt;() {
     <span style="color:#268bd2">@Override</span>
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">compare</span>(<span style="color:#268bd2">Person</span> <span style="color:#268bd2">o1</span>, <span style="color:#268bd2">Person</span> <span style="color:#268bd2">o2</span>) {
         <span style="color:#859900">return</span> <span style="color:#268bd2">o1</span>.<span style="color:#268bd2">getAge</span>().<span style="color:#268bd2">compareTo</span>(<span style="color:#268bd2">o2</span>.<span style="color:#268bd2">getAge</span>());
@@ -159,7 +159,7 @@
 <span style="color:#268bd2">Collections</span>.<span style="color:#268bd2">sort</span>(<span style="color:#268bd2">persons</span>, (<span style="color:#268bd2">o1</span>, <span style="color:#268bd2">o2</span>) -&gt; <span style="color:#268bd2">o1</span>.<span style="color:#268bd2">getAge</span>().<span style="color:#268bd2">compareTo</span>(<span style="color:#268bd2">o2</span>.<span style="color:#268bd2">getAge</span>()));
 </code></pre></div><h3 id="对集合迭代">对集合迭代</h3>
 <p>Stream API 和 Lambda 表达式的引入对 Java 集合的操作产生了很大影响（尤其是 Stream API）</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">func1</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">func1</span>() {
     <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">list</span> = <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">asList</span>(<span style="color:#2aa198">&#34;Java&#34;</span>, <span style="color:#2aa198">&#34;Python&#34;</span>, <span style="color:#2aa198">&#34;Scala&#34;</span>, <span style="color:#2aa198">&#34;Haskell&#34;</span>, <span style="color:#2aa198">&#34;Smalltalk&#34;</span>);
     <span style="color:#859900">for</span> (<span style="color:#268bd2">String</span> <span style="color:#268bd2">e</span> : <span style="color:#268bd2">list</span>) {
         <span style="color:#859900">if</span> (<span style="color:#268bd2">e</span>.<span style="color:#268bd2">length</span>() &gt; <span style="color:#268bd2">5</span>) {
@@ -190,7 +190,7 @@
 <li>内部迭代：和集合的外部迭代不同，流的迭代操作是在内部完成的。</li>
 </ul>
 <p>先来看下 Java 7 和 Java 8 实现同一个功能的两种写法。有一组 Person 信息，要从中筛选出所有成年人的名字，并按年龄排序：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Java 7
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Java 7
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">getAdultNamesInJava7</span>(<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Person</span>&gt; <span style="color:#268bd2">persons</span>) {
     <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Person</span>&gt; <span style="color:#268bd2">adults</span> = <span style="color:#268bd2">Lists</span>.<span style="color:#268bd2">newArrayList</span>();
     <span style="color:#859900">for</span> (<span style="color:#268bd2">Person</span> <span style="color:#268bd2">p</span> : <span style="color:#268bd2">persons</span>) {
@@ -234,12 +234,12 @@
 </ul>
 <h2 id="stream-和-collection">Stream 和 Collection</h2>
 <p>在使用 Java Collection 接口时，是开发者去实现迭代逻辑，比如 for-each 遍历：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">adultName</span> = <span style="color:#268bd2">Lists</span>.<span style="color:#268bd2">newArrayList</span>();
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">adultName</span> = <span style="color:#268bd2">Lists</span>.<span style="color:#268bd2">newArrayList</span>();
 <span style="color:#859900">for</span> (<span style="color:#268bd2">Person</span> <span style="color:#268bd2">p</span> : <span style="color:#268bd2">adults</span>) {
     <span style="color:#268bd2">adultName</span>.<span style="color:#268bd2">add</span>(<span style="color:#268bd2">p</span>.<span style="color:#268bd2">getName</span>());
 }
 </code></pre></div><p>for-each 显式迭代，并执行逻辑。而 Stream 是通过内部逻辑自行完成了迭代，只需要开发者提供声明性的语句告诉 Stream 该做什么：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">adultName</span> = <span style="color:#268bd2">adults</span>.<span style="color:#268bd2">stream</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">adultName</span> = <span style="color:#268bd2">adults</span>.<span style="color:#268bd2">stream</span>()
                                .<span style="color:#268bd2">map</span>(<span style="color:#268bd2">Person</span>::<span style="color:#268bd2">getName</span>)
                                .<span style="color:#268bd2">collect</span>(<span style="color:#268bd2">toList</span>());
 </code></pre></div><p>Stream API 内置了很多数据处理操作来实现复杂的查询处理，这些强大的 API 使迭代逻辑隐藏进了 Stream 内部。这是 Stream 和 Collection 显著的区别。</p>
@@ -258,28 +258,28 @@
 <p>下表列出了常用的中间操作和终端操作。其中中间操作有状态有无之分，区别在于中间操作在元素上执行时是否需要知道其他任何元素。比如 <code>filter</code> 只需要关注当前元素是否符合筛选条件，<code>sorted</code> 则需要关注其他元素才能获得正确的顺序。</p>
 <p><img src="https://o70e8d1kb.qnssl.com/java8_operations.png" alt=""></p>
 <h3 id="筛选">筛选</h3>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">nums</span> = <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">asList</span>(<span style="color:#268bd2">1</span>, <span style="color:#268bd2">2</span>, <span style="color:#268bd2">3</span>, <span style="color:#268bd2">4</span>, <span style="color:#268bd2">5</span>);
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">nums</span> = <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">asList</span>(<span style="color:#268bd2">1</span>, <span style="color:#268bd2">2</span>, <span style="color:#268bd2">3</span>, <span style="color:#268bd2">4</span>, <span style="color:#268bd2">5</span>);
 <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">stream</span>().<span style="color:#268bd2">fitler</span>(<span style="color:#268bd2">n</span> -&gt; <span style="color:#268bd2">n</span> % <span style="color:#268bd2">2</span> == <span style="color:#268bd2">0</span>)
              .<span style="color:#268bd2">distinct</span>()
              .<span style="color:#268bd2">forEach</span>(<span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>::<span style="color:#268bd2">println</span>);
 </code></pre></div><p><code>filter</code> 方法接受函数描述符为 T -&gt; boolean 的行为参数作为谓词，通过该行为参数来返回符合条件的元素的流。配合 <code>distinct</code> 筛选元素唯一的流，<code>limit</code> 方法则是截断流，<code>skip</code> 方法是跳过元素。</p>
 <h3 id="映射">映射</h3>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">names</span> = <span style="color:#268bd2">adults</span>.<span style="color:#268bd2">stream</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">names</span> = <span style="color:#268bd2">adults</span>.<span style="color:#268bd2">stream</span>()
         .<span style="color:#268bd2">map</span>(<span style="color:#268bd2">Person</span>::<span style="color:#268bd2">getName</span>)
         .<span style="color:#268bd2">collect</span>(<span style="color:#268bd2">toList</span>());
 </code></pre></div><p><code>map</code> 方法接受函数描述符为 T -&gt; R 的 <code>Function</code> 实例作为行为参数，该行为参数会作用到流里的每个元素上，并映射成 R 类型的新元素。</p>
 <h3 id="查找和匹配">查找和匹配</h3>
 <p>Stream API 提供了 <code>allMatch</code>、<code>anyMatch</code>、<code>noneMatch</code>、<code>findFirst</code> 和 <code>findAny</code> 来实现对元素序列查找匹配的查询。<code>*Match</code> 方法接受返回布尔值的行为参数，查找结果为布尔值。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">if</span> (<span style="color:#268bd2">persons</span>.<span style="color:#268bd2">stream</span>().<span style="color:#268bd2">anyMatch</span>(<span style="color:#268bd2">Person</span>::<span style="color:#268bd2">isAdult</span>)) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">if</span> (<span style="color:#268bd2">persons</span>.<span style="color:#268bd2">stream</span>().<span style="color:#268bd2">anyMatch</span>(<span style="color:#268bd2">Person</span>::<span style="color:#268bd2">isAdult</span>)) {
     <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;This person is an adult.&#34;</span>);
 }
 </code></pre></div><p><code>find*</code> 方法可能从流中查找到复合条件的元素，也可能查找不到，它返回 <code>Optional</code>，<code>Optional&lt;T&gt;</code> 是一个容器类，用来盛装存在或者不存在的值。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Optional</span>&lt;<span style="color:#268bd2">Person</span>&gt; <span style="color:#268bd2">adult</span> = <span style="color:#268bd2">persons</span>.<span style="color:#268bd2">stream</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Optional</span>&lt;<span style="color:#268bd2">Person</span>&gt; <span style="color:#268bd2">adult</span> = <span style="color:#268bd2">persons</span>.<span style="color:#268bd2">stream</span>()
                                 .<span style="color:#268bd2">filter</span>(<span style="color:#268bd2">Person</span>::<span style="color:#268bd2">isAdult</span>)
                                 .<span style="color:#268bd2">findAny</span>();
 </code></pre></div><h3 id="optional">Optional</h3>
 <p><code>Optional</code> 可以让开发者避免 <code>NullPointerException</code> 的尴尬。在很多代码里，我们为了避免 NPE，会用防御性的检查 null 引用，如果一个对象的结构比较复杂，需要处理的属性嵌套比较深，null 检查会一层套一层……</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">if</span> (<span style="color:#268bd2">person</span> != <span style="color:#859900;font-weight:bold">null</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">if</span> (<span style="color:#268bd2">person</span> != <span style="color:#859900;font-weight:bold">null</span>) {
     <span style="color:#268bd2">Car</span> <span style="color:#268bd2">car</span> = <span style="color:#268bd2">person</span>.<span style="color:#268bd2">getCar</span>();
     <span style="color:#859900">if</span> (<span style="color:#268bd2">car</span> != <span style="color:#859900;font-weight:bold">null</span>) {
         <span style="color:#93a1a1;font-style:italic">// ...
@@ -287,7 +287,7 @@
 }
 </code></pre></div><p>任何一个可能为 null 的属性，都有检查的必要，这样的代码很强壮，但也很难看。<code>Optional</code> 的使用方式是，当变量可能存在也可能不存在时，就不应该声明为具体的类型，而是应该直接将其声明为 Optional<Object> 类型。
 当这个变量实际存在时，Optional<Object> 会返回其值，当这个变量不存在时，则是返回 Optional.empty()，可以把它理解为 null，但它是真实有效的对象，不会产生 NPE。参考下面的实例：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Person</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Person</span> {
     <span style="color:#859900">private</span> <span style="color:#268bd2">Optional</span>&lt;<span style="color:#268bd2">Car</span>&gt; <span style="color:#268bd2">car</span>;
     <span style="color:#859900">public</span> <span style="color:#268bd2">Optional</span>&lt;<span style="color:#268bd2">Car</span>&gt; <span style="color:#268bd2">getCar</span>() {
         <span style="color:#859900">return</span> <span style="color:#268bd2">car</span>;
@@ -306,16 +306,16 @@
     }
 }
 </code></pre></div><p>对于既有的代码，比如从 Map&lt;String, Object&gt; 中获取 value，随时可能会得到 null，使用 <code>Optional</code> 封装 value，就可以避免 if-else 代码块。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Optional</span>&lt;<span style="color:#268bd2">Object</span>&gt; <span style="color:#268bd2">value</span> = <span style="color:#268bd2">Optional</span>.<span style="color:#268bd2">ofNullable</span>(<span style="color:#268bd2">map</span>.<span style="color:#268bd2">get</span>(<span style="color:#2aa198">&#34;key&#34;</span>));
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Optional</span>&lt;<span style="color:#268bd2">Object</span>&gt; <span style="color:#268bd2">value</span> = <span style="color:#268bd2">Optional</span>.<span style="color:#268bd2">ofNullable</span>(<span style="color:#268bd2">map</span>.<span style="color:#268bd2">get</span>(<span style="color:#2aa198">&#34;key&#34;</span>));
 </code></pre></div><p>对代码中潜在值为 null 的对象，都可以通过 <code>Optional.ofNullable</code> 将其安全的转换为 Optional 对象。</p>
 <p>对于执行方法过程中可能发生失败而捕获异常的 try-catch 代码块，也可以通过 Optional 让执行失败的方法返回 Optional 对象。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">try</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">try</span> {
     <span style="color:#859900">return</span> <span style="color:#268bd2">Optional</span>.<span style="color:#268bd2">of</span>(<span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">parseInt</span>(<span style="color:#268bd2">str</span>));
 } <span style="color:#859900">catch</span>(<span style="color:#268bd2">NumberFormatException</span> <span style="color:#268bd2">e</span>) {
     <span style="color:#859900">return</span> <span style="color:#268bd2">Optional</span>.<span style="color:#268bd2">empty</span>();
 }
 </code></pre></div><p>结合 Java 8 和 Optional 可以让代码更加简洁可读，而且 Optional 是在编译期就处理了 null 问题，避免问题留到运行时发现和解决。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Optional</span>.<span style="color:#268bd2">ofNullable</span>(<span style="color:#268bd2">text</span>).<span style="color:#268bd2">ifPresent</span>(<span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>::<span style="color:#268bd2">println</span>);
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Optional</span>.<span style="color:#268bd2">ofNullable</span>(<span style="color:#268bd2">text</span>).<span style="color:#268bd2">ifPresent</span>(<span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>::<span style="color:#268bd2">println</span>);
 
 <span style="color:#859900">if</span> (<span style="color:#268bd2">test</span> != <span style="color:#859900;font-weight:bold">null</span>) {
     <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">print</span>(<span style="color:#268bd2">test</span>);
@@ -326,7 +326,7 @@
 <span style="color:#859900">return</span> <span style="color:#268bd2">text</span> != <span style="color:#859900;font-weight:bold">null</span> ? <span style="color:#268bd2">text</span>.<span style="color:#268bd2">length</span>() : -<span style="color:#268bd2">1</span>;
 </code></pre></div><h3 id="归约">归约</h3>
 <p><code>reduce</code> 方法可以把流中的元素组合起来，给定一个初始值，然后依次对流中各个元素进行组合。例如元素求和、求均值、求 max/min 值等，实际上都是 <code>reduce</code> 操作。对于没有给定初始值的 <code>reduce</code> 操作，因为可能没有足够的元素，因此是返回 Optional 对象。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">numbers</span>.<span style="color:#268bd2">stream</span>().<span style="color:#268bd2">reduce</span>(<span style="color:#268bd2">0</span>, (<span style="color:#268bd2">a</span>, <span style="color:#268bd2">b</span>) -&gt; <span style="color:#268bd2">a</span> + <span style="color:#268bd2">b</span>);
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">numbers</span>.<span style="color:#268bd2">stream</span>().<span style="color:#268bd2">reduce</span>(<span style="color:#268bd2">0</span>, (<span style="color:#268bd2">a</span>, <span style="color:#268bd2">b</span>) -&gt; <span style="color:#268bd2">a</span> + <span style="color:#268bd2">b</span>);
 
 <span style="color:#268bd2">numbers</span>.<span style="color:#268bd2">stream</span>().<span style="color:#268bd2">reduce</span>(<span style="color:#268bd2">0</span>, (<span style="color:#268bd2">a</span>, <span style="color:#268bd2">b</span>) -&gt; <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">max</span>(<span style="color:#268bd2">a</span>, <span style="color:#268bd2">b</span>));
 
@@ -335,13 +335,13 @@
 </code></pre></div><h3 id="生成流">生成流</h3>
 <p>上面已经提到的方法中，都是从对集合调用 <code>stream</code> 方法得到流。还可以从值序列、数组、文件来创建流。
 <code>Stream.of()</code> 方法可以显式的创建一个流：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Stream</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">stream</span> = <span style="color:#268bd2">Stream</span>.<span style="color:#268bd2">of</span>(<span style="color:#2aa198">&#34;Java 8 &#34;</span>, <span style="color:#2aa198">&#34;Lambdas &#34;</span>, <span style="color:#2aa198">&#34;In &#34;</span>, <span style="color:#2aa198">&#34;Action&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">Stream</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">stream</span> = <span style="color:#268bd2">Stream</span>.<span style="color:#268bd2">of</span>(<span style="color:#2aa198">&#34;Java 8 &#34;</span>, <span style="color:#2aa198">&#34;Lambdas &#34;</span>, <span style="color:#2aa198">&#34;In &#34;</span>, <span style="color:#2aa198">&#34;Action&#34;</span>);
 <span style="color:#268bd2">stream</span>.<span style="color:#268bd2">map</span>(<span style="color:#268bd2">String</span>::<span style="color:#268bd2">toUpperCase</span>).<span style="color:#268bd2">forEach</span>(<span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>::<span style="color:#268bd2">println</span>);
 </code></pre></div><p>实际上，<code>Stream.of</code> 本身是调用了 <code>Arrays.stream</code> 方法创建流，也就是可以用过数组创建流：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">numbers</span> = {<span style="color:#268bd2">1</span>, <span style="color:#268bd2">2</span>, <span style="color:#268bd2">3</span>, <span style="color:#268bd2">4</span>, <span style="color:#268bd2">5</span>};
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">numbers</span> = {<span style="color:#268bd2">1</span>, <span style="color:#268bd2">2</span>, <span style="color:#268bd2">3</span>, <span style="color:#268bd2">4</span>, <span style="color:#268bd2">5</span>};
 <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">stream</span>(<span style="color:#268bd2">numbers</span>).<span style="color:#268bd2">sum</span>();
 </code></pre></div><p>对于文件操作，<code>java.nio.file.Files</code> 内置很多静态方法都会返回流。比如 <code>Files.lines</code> 方法将文件的各行转换成 String 流。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 查询文件中出现了多少个不同的单词
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 查询文件中出现了多少个不同的单词
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">try</span> {
     <span style="color:#268bd2">Files</span>.<span style="color:#268bd2">lines</span>(<span style="color:#268bd2">Paths</span>.<span style="color:#268bd2">get</span>(<span style="color:#2aa198">&#34;data.txt&#34;</span>), <span style="color:#268bd2">Charset</span>.<span style="color:#268bd2">defaultCharset</span>())
                                  .<span style="color:#268bd2">flatMap</span>(<span style="color:#268bd2">line</span> -&gt; <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">stream</span>(<span style="color:#268bd2">line</span>.<span style="color:#268bd2">split</span>(<span style="color:#2aa198">&#34; &#34;</span>)))
@@ -350,7 +350,7 @@
 }
 </code></pre></div><p>还有一些场景里的流，在数学概念上是无限的，比如质数、勾股数对、斐波拿契数列等。它们不像从集合、文件创建流那样有固定的大小，Stream API 提供了 <code>iterate</code> 和 <code>generate</code> 方法来生成无限流。</p>
 <p><code>iterate</code> 方法接受一个初始值和 Lambda 表达式，Lambda 表达式是作用在初始值和每次作用后的结果值上的一个函数，可以理解为 f(x)、 f(f(x))&hellip;比如创建一个偶数流：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 偶数列
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 偶数列
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">Stream</span>.<span style="color:#268bd2">iterate</span>(<span style="color:#268bd2">0</span>, <span style="color:#268bd2">n</span> -&gt; <span style="color:#268bd2">n</span> + <span style="color:#268bd2">2</span>)
       .<span style="color:#268bd2">limit</span>(<span style="color:#268bd2">10</span>)
       .<span style="color:#268bd2">forEach</span>(<span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>::<span style="color:#268bd2">println</span>);
@@ -360,7 +360,7 @@
                 .<span style="color:#268bd2">limit</span>(<span style="color:#268bd2">10</span>)
                 .<span style="color:#268bd2">forEach</span>(<span style="color:#268bd2">t</span> -&gt; <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">t</span>[<span style="color:#268bd2">0</span>]));
 </code></pre></div><p><code>generate</code> 方法接受函数式接口 <code>Supplier</code> 实例作为参数，由 <code>Supplier.get</code> 方法生成新的值。比如创建一个随机数流</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 随机数列
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 随机数列
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">Random</span> <span style="color:#268bd2">r</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Random</span>();
 <span style="color:#268bd2">Stream</span>.<span style="color:#268bd2">generate</span>(<span style="color:#268bd2">r</span>::<span style="color:#268bd2">nextInt</span>)
         .<span style="color:#268bd2">limit</span>(<span style="color:#268bd2">5</span>)
@@ -382,7 +382,7 @@
 <p>Stream API 相比传统的写法，除了在灵活性和可读性上的提升，还可以在对集合执行流水线操作时，充分利用多核性能，而不用去人为的去拆分数据，分配多线程，还要避免可能的对同一个资源的竞争。<code>parallelStream</code> 方法可以把数据源转化为并行流，或者调用 <code>Stream.parallel</code> 方法也可以创建并行流。反过来，并行流可以通过 <code>Stream.sequential</code> 方法转化为顺序流。</p>
 <p>引入 JMH 对 Stream 和 Collection 进行基准测试。
 对集合采用传统的迭代写法，和用 Stream API 的写法，在</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@BenchmarkMode</span>(<span style="color:#268bd2">Mode</span>.<span style="color:#268bd2">AverageTime</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@BenchmarkMode</span>(<span style="color:#268bd2">Mode</span>.<span style="color:#268bd2">AverageTime</span>)
 <span style="color:#268bd2">@OutputTimeUnit</span>(<span style="color:#268bd2">TimeUnit</span>.<span style="color:#268bd2">MILLISECONDS</span>)
 <span style="color:#268bd2">@State</span>(<span style="color:#268bd2">Scope</span>.<span style="color:#268bd2">Benchmark</span>)
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Benchmarks</span> {
@@ -434,7 +434,7 @@
         <span style="color:#859900">new</span> <span style="color:#268bd2">Runner</span>(<span style="color:#268bd2">options</span>).<span style="color:#268bd2">run</span>();
     }
 }
-</code></pre></div><pre><code># Run complete. Total time: 00:00:48
+</code></pre></div><pre tabindex="0"><code># Run complete. Total time: 00:00:48
 
 Benchmark           Mode  Cnt   Score    Error  Units
 Benchmarks.loop     avgt    5  19.292 ± 13.102  ms/op

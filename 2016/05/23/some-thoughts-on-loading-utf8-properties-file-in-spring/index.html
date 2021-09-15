@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -60,9 +60,9 @@
 <p>&hellip; the input/output stream is encoded in ISO 8859-1 character encoding. Characters that cannot be directly represented in this encoding can be written using Unicode escapes as defined in section 3.3 of The Java™ Language Specification; only a single &lsquo;u&rsquo; character is allowed in an escape sequence. The native2ascii tool can be used to convert property files to and from other character encodings.</p>
 </blockquote>
 <p>Java 的 I/O 流是由 ISO 8859-1 编码的，如果要让 Java I/O 读写 ISO 8859-1 标准以外的字符，就需要把这些字符用 Unicode 编码。也就是转码成上述的 <code>&quot;\uXXXX&quot;</code> 形式。JDK 提供了转码工具 <code>../bin/native2ascii</code>。比如项目里需要配置包含中文的属性值，就只能把中文内容转码成 Unicode 编码。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">native2ascii –encoding UTF-8 foo_utf8.properties foo.properties
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">native2ascii –encoding UTF-8 foo_utf8.properties foo.properties
 </code></pre></div><p>上面的 foo_utf8.properties 是由 UTF-8 编码保存的配置文件，foo.properties 是将非 ISO 8859-1 字符转码为 Unicode 后的配置文件，也就是提供给 Spring 解析的配置文件。</p>
-<pre><code>// foo_utf8.properties
+<pre tabindex="0"><code>// foo_utf8.properties
 city=北京
 company=京东
 
@@ -72,7 +72,7 @@ company=\u4eac\u4e1c
 </code></pre><h3 id="java-读取-utf-8">Java 读取 UTF-8</h3>
 <p>虽然明白了这其中的蹊跷，但是包含中文的配置文件一定得转码吗，仔细阅读 Properties Class 的源码后，还是有更优雅的解决方案，原来 Sun 公司都已经帮我们设计好了。
 Properties 类调用 load() 方法加载配置文件：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Properties Class source code
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Properties Class source code
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#dc322f;font-weight:bold">package</span> <span style="color:#268bd2">java.util</span>;
 
 <span style="color:#859900">public</span> <span style="color:#859900">synchronized</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">load</span>(<span style="color:#268bd2">Reader</span> <span style="color:#268bd2">reader</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">IOException</span> {
@@ -191,7 +191,7 @@ Properties 类调用 load() 方法加载配置文件：</p>
 }
 </code></pre></div><p>我从 Properties Class 的源码里抄录了加载配置文件的关键代码。不难读懂代码的含义，简单说明下，load() 方法是通过调用 load0() 方法来按行读取配置文件，并装配成 key - value 的键值对，在 load0() 内部调用了 loadConvert() 方法，用来将 Unicode 字符转换成原始的格式。其中，load() 方法被重载实现，可以传入 Reader 参数，或者 InputStream 参数。</p>
 <p>这里就涉及到Java I/O 里 Reader/Writer 和 InputStream/OutputStream 的差异了，Reader 类用于读取文本数据（char、String 流），InputStream 类则用于读取二进制数据（byte 流）。Reader 类可以指定 Charset 参数来设置编码格式，如 UTF-8 等。因此只需要指定 Reader 对象的 charset，就可以无痛解析带中文的配置文件了，只是有一点要指出， FileReader 的构造函数是假定使用的编码格式是正确的（即默认的ISO 8859-1），不支持指定文件编码格式，因此还是需要借助 InputStream 类。示例代码如下，很简单：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ReadUTF8Props.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ReadUTF8Props.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">Properties</span> <span style="color:#268bd2">properties</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Properties</span>();
 <span style="color:#268bd2">InputStream</span> <span style="color:#268bd2">inputStream</span> = <span style="color:#268bd2">getClass</span>().<span style="color:#268bd2">getClassLoader</span>().<span style="color:#268bd2">getResourceAsStream</span>(<span style="color:#2aa198">&#34;foo_utf8.properties&#34;</span>);
 <span style="color:#859900">try</span> {

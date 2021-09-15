@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -79,14 +79,14 @@
 <li>织入 Weaving：把切面应用到目标对象并创建新的代理对象的过程。切面在指定的连接点被织入到目标对象中。织入可以在对象生命周期的编译期、类加载期、运行期完成。Spring AOP 因为采用动态代理，所以是在<strong>运行期</strong>完成织入。</li>
 </ul>
 <h3 id="代码演示">代码演示</h3>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Component</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Component</span>
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">PrinterServiceImpl</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">PrinterService</span> {
 
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">run</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">message</span>) {
         <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;Your message: &#34;</span> + <span style="color:#268bd2">message</span>);
     }
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 日志切面
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 日志切面
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@Aspect</span>
 <span style="color:#268bd2">@Component</span>
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">LogAspect</span> {
@@ -96,7 +96,7 @@
         <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;Job completed time: &#34;</span> + <span style="color:#859900">new</span> <span style="color:#268bd2">Date</span>());
     }
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 事物切面
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 事物切面
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@Aspect</span>
 <span style="color:#268bd2">@Component</span>
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">TransactionAspect</span> {
@@ -109,12 +109,12 @@
         <span style="color:#859900">return</span> <span style="color:#268bd2">result</span>;
     }
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#93a1a1;font-style:italic">&lt;!-- spring-aop-config.xml --&gt;</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#93a1a1;font-style:italic">&lt;!-- spring-aop-config.xml --&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;bean</span> <span style="color:#268bd2">class=</span><span style="color:#2aa198">&#34;org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
 
 <span style="color:#268bd2;font-weight:bold">&lt;context:component-scan</span> <span style="color:#268bd2">base-package=</span><span style="color:#2aa198">&#34;com.isudox&#34;</span><span style="color:#268bd2;font-weight:bold">/&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;aop:aspectj-autoproxy/&gt;</span>
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Main 方法
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Main 方法
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">App</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
         <span style="color:#268bd2">ApplicationContext</span> <span style="color:#268bd2">ctx</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ClassPathXmlApplicationContext</span>(<span style="color:#2aa198">&#34;spring-aop-config.xml&#34;</span>);
@@ -148,13 +148,13 @@
 <p>根据代理类的生成时期，可以分为静态代理和动态代理，静态代理是在编译期生成代理类的 <code>.class</code> 文件，动态代理是在运行时通过反射动态生成代理类。</p>
 <h3 id="静态代理">静态代理</h3>
 <p>参考 UML 图，我们可以用 Java 写一个简单的静态代理：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Manager 接口
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Manager 接口
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">Manager</span> {
 
     <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handle</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">param</span>);
 
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 具体的 Manager 实现
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 具体的 Manager 实现
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">DepartmentManager</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Manager</span> {
 
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handle</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">param</span>) {
@@ -162,7 +162,7 @@
     }
     
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Manger 代理类
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// Manger 代理类
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ManagerProxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Manager</span> {
 
     <span style="color:#859900">private</span> <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">manager</span>;
@@ -176,7 +176,7 @@
     }
 
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 静态代理测试
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 静态代理测试
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ManagerProxyTest</span> {
 
     <span style="color:#268bd2">@Test</span>
@@ -189,7 +189,7 @@
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#93a1a1;font-style:italic">// Today Plan: Monthly Review
 </span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><p>上面的例子演示了代理模式的一个基本实现，不过有人可能会产生疑问，如果只是简单地让 Department Manager 去做一件事，为什么要费劲创建一个代理类去完成，这不是舍近求远吗？前面讲到了，代理模式的目的是为了控制对目标对象的引用，也就是说，如果对目标对象的需求有所变动，遵循开闭原则不应该直接修改目标对象的代码，通过代理类就能不侵入的实现。以上面的代码为例，如果 Department Manager 需要在制定今日任务前输出 Manger 的职位，在制定任务后输出日期，在代理模式下，只需要对 Proxy 略微做修改即可改变真实对象引用的行为。修改后的代码如下──</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ManagerProxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Manager</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ManagerProxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Manager</span> {
 
     <span style="color:#859900">private</span> <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">manager</span>;
 
@@ -231,7 +231,7 @@
 <li><code>java.lang.reflect.InvocationHandler</code>：调用处理器，是一个接口，执行真实对象的方法时，会出发调用处理器的方法，动态生成的代理类需要完成的具体任务由调用处理器的实现来处理；</li>
 </ul>
 <p><code>Proxy.newProxyInstance()</code> 第一个参数是加载该代理类到 JVM 的类加载器；第二个参数是代理类需要实现的接口；第三个参数是调用处理器的实现。方法源码精简如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">newProxyInstance</span>(<span style="color:#268bd2">ClassLoader</span> <span style="color:#268bd2">loader</span>,
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">newProxyInstance</span>(<span style="color:#268bd2">ClassLoader</span> <span style="color:#268bd2">loader</span>,
                                       <span style="color:#268bd2">Class</span>&lt;?&gt;[] <span style="color:#268bd2">interfaces</span>,
                                       <span style="color:#268bd2">InvocationHandler</span> <span style="color:#268bd2">h</span>) {
     
@@ -243,9 +243,9 @@
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900">return</span> <span style="color:#268bd2">cons</span>.<span style="color:#268bd2">newInstance</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">Object</span>[]{<span style="color:#268bd2">h</span>});
 }
 </code></pre></div><p><code>InvocationHandler</code> 中只有一个 <code>invoke()</code> 方法，第一个参数是代理类实例；第二个参数是被调用的方法；第三个参数是被调用方法的入参──</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">invoke</span>(<span style="color:#268bd2">Object</span> <span style="color:#268bd2">proxy</span>, <span style="color:#268bd2">Method</span> <span style="color:#268bd2">method</span>, <span style="color:#268bd2">Object</span>[] <span style="color:#268bd2">args</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Throwable</span>;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">invoke</span>(<span style="color:#268bd2">Object</span> <span style="color:#268bd2">proxy</span>, <span style="color:#268bd2">Method</span> <span style="color:#268bd2">method</span>, <span style="color:#268bd2">Object</span>[] <span style="color:#268bd2">args</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Throwable</span>;
 </code></pre></div><p>实现一个动态代理的简单例子：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 动态代理类
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 动态代理类
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">JdkDynamicProxyy</span> {
 
     <span style="color:#859900">private</span> <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">manager</span>;
@@ -279,7 +279,7 @@
     }
 
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 动态代理测试
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 动态代理测试
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">JdkDynamicProxyTest</span> {
     <span style="color:#268bd2">@Test</span>
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">getProxyInstant</span>() <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
@@ -304,7 +304,7 @@
 <p>CGLIB 包下有 <code>MethodInterceptor</code> 接口，起到拦截方法调用的作用。CGLIB 动态代理类需要实现该接口，重写 <code>intercept()</code> 方法，把被调用的方法和入参传入给真实对象。</p>
 <p>还用到 CGLIB 包下的 <code>Enhancer</code> 类，通过 <code>setSuperclass()</code> 设置父类，通过 <code>setCallback()</code> 设置回调方法，类似 <code>Proxy</code> 的 <code>invoke()</code> 方法。</p>
 <p>参考下面的示例代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// CGLIB 动态代理类
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// CGLIB 动态代理类
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">CglibDynamicProxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">MethodInterceptor</span> {
 
     <span style="color:#859900">private</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">target</span>;
@@ -339,7 +339,7 @@
     }
     
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 测试
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 测试
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">CglibDynamicProxyTest</span> {
     <span style="color:#268bd2">@Test</span>
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">intercept</span>() <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
@@ -378,18 +378,18 @@ Spring AOP can also use CGLIB proxies. This is necessary to proxy classes rather
 <p>还是参考本文开头的 Spring AOP 示例代码，在执行 <code>run()</code> 方法处加断点 debug，可以看到 <code>PrinterService</code> 实例是代理对象实例：</p>
 <p><img src="https://o70e8d1kb.qnssl.com/spring-aop-breakpoint.jpeg" alt=""></p>
 <p>因为目标对象实现了接口，Spring AOP 使用了内部封装的 <code>JdkDynamicAopProxy</code> 类实现动态代理，底层还是 JDK 动态代理。来看下它的源码──</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">JdkDynamicAopProxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">AopProxy</span>, <span style="color:#268bd2">InvocationHandler</span>, <span style="color:#268bd2">Serializable</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">JdkDynamicAopProxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">AopProxy</span>, <span style="color:#268bd2">InvocationHandler</span>, <span style="color:#268bd2">Serializable</span> {
     ...
 }
 </code></pre></div><p><code>Serializable</code> 无需赘述了，先来看 <code>AopProxy</code>：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">AopProxy</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">AopProxy</span> {
     <span style="color:#93a1a1;font-style:italic">// 通过 AopProxy 默认的类加载器获取新的代理对象
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">Object</span> <span style="color:#268bd2">getProxy</span>();
     <span style="color:#93a1a1;font-style:italic">// 通过指定的类加载获取新的代理对象
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">Object</span> <span style="color:#268bd2">getProxy</span>(<span style="color:#268bd2">ClassLoader</span> <span style="color:#268bd2">classLoader</span>);
 }
 </code></pre></div><p>再来看 <code>JdkDynamicAopProxy</code> 对 <code>AopProxy</code> 的实现：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Override</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Override</span>
 <span style="color:#859900">public</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">getProxy</span>() {
     <span style="color:#859900">return</span> <span style="color:#268bd2">getProxy</span>(<span style="color:#268bd2">ClassUtils</span>.<span style="color:#268bd2">getDefaultClassLoader</span>());
 }
@@ -408,11 +408,11 @@ Spring AOP can also use CGLIB proxies. This is necessary to proxy classes rather
 <p><code>JdkDynamicAopProxy</code> 中对 <code>InvocationHandler.invoke()</code> 的实现本质上和前面的实例代码也是一样的。</p>
 <h3 id="cglibaopproxy">CglibAopProxy</h3>
 <p>从源码中还能看到，在 Spring AOP 中，<code>AopProxy</code> 还有一个实现，就是 <code>CglibAopProxy</code>，这个类封装了 CGLIB 创建动态代理的实现。其定义如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">CglibAopProxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">AopProxy</span>, <span style="color:#268bd2">Serializable</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">class</span> <span style="color:#cb4b16">CglibAopProxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">AopProxy</span>, <span style="color:#268bd2">Serializable</span> {
     ...
 }
 </code></pre></div><p>奇怪的是，这似乎和之前自己实现的 <code>CglibDynamicProxy</code> 不一样，它没有实现 CGLIB 的 <code>MethodInterceptor</code>。这里有一点需要注意，代理类实例实际上是由 <code>Enhancer.create()</code> 生成的，而在构建 <code>Enhancer</code> 实例时，需要通过 <code>Enhancer.setCallback()</code> 设置回调方法，这个回调方法是 <code>MethodInterceptor</code> 的具体实现。所以只需要将回调方法实现 <code>MethodInterceptor</code> 即可。具体看源码是怎么做的：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Override</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Override</span>
 <span style="color:#859900">public</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">getProxy</span>(<span style="color:#268bd2">ClassLoader</span> <span style="color:#268bd2">classLoader</span>) {
     <span style="color:#93a1a1;font-style:italic">// 配置 CGLIB Enhancer
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">Enhancer</span> <span style="color:#268bd2">enhancer</span> = <span style="color:#268bd2">createEnhancer</span>();
@@ -437,7 +437,7 @@ Spring AOP can also use CGLIB proxies. This is necessary to proxy classes rather
             <span style="color:#268bd2">enhancer</span>.<span style="color:#268bd2">create</span>());
 }
 </code></pre></div><p>从源码中可以发现，<code>CglibDynamicProxy</code> 是通过调用 <code>getCallbacks()</code> 来获取回调方法的，再看它的代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">private</span> <span style="color:#268bd2">Callback</span>[] <span style="color:#268bd2">getCallbacks</span>(<span style="color:#268bd2">Class</span>&lt;?&gt; <span style="color:#268bd2">rootClass</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">private</span> <span style="color:#268bd2">Callback</span>[] <span style="color:#268bd2">getCallbacks</span>(<span style="color:#268bd2">Class</span>&lt;?&gt; <span style="color:#268bd2">rootClass</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
     ...
     <span style="color:#93a1a1;font-style:italic">// Choose an &#34;aop&#34; interceptor (used for AOP calls).
 </span><span style="color:#93a1a1;font-style:italic"></span>	<span style="color:#268bd2">Callback</span> <span style="color:#268bd2">aopInterceptor</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">DynamicAdvisedInterceptor</span>(<span style="color:#859900">this</span>.<span style="color:#268bd2">advised</span>);
@@ -457,7 +457,7 @@ Spring AOP can also use CGLIB proxies. This is necessary to proxy classes rather
 A: 因为 Java 是单继承的，每个代理类都继承了 Proxy 类，因此不能对类创建代理类，只能对接口实现类。</p>
 <p>Q: JDK 如何确保对代理对象方法的调用都会经过调用处理器 <code>InvocationHandler.invoke()</code> 方法？
 A: JDK 在创建动态代理类时，内部的过程可以简单理解为下面的过程，所以只要是对代理类方法的调用，都会经过 <code>invoke()</code> 处理。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">$Proxy1</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">Proxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Subject</span>{
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">$Proxy1</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">Proxy</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Subject</span>{
     <span style="color:#859900">private</span> <span style="color:#268bd2">InvocationHandler</span> <span style="color:#268bd2">h</span>;
     <span style="color:#859900">private</span> <span style="color:#268bd2">$Proxy1</span>() {}
     <span style="color:#859900">public</span> <span style="color:#268bd2">$Proxy1</span>(<span style="color:#268bd2">InvocationHandler</span> <span style="color:#268bd2">h</span>) {

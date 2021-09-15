@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -100,11 +100,11 @@
 <p>Feature 分支通常只存在于开发者的 repo 中，而不会在中心库 origin repo 中。</p>
 <center>**创建 Feature 分支**</center>
 <p>要创建一个新的 Feature 分支，从 <code>develop</code> 分支上派生：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout -b myfeature develop
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout -b myfeature develop
 Switched to a new branch <span style="color:#2aa198">&#34;myfeature&#34;</span>
 </code></pre></div><center>**已完成的 feature 合并回 develop**</center>
 <p>已开发完成的 features 应该被合并至 <code>develop</code> 分支上，将 features 添加到即将发 release 的代码版本中。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout develop
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout develop
 Switched to branch <span style="color:#2aa198">&#39;develop&#39;</span>
 $ git merge --no-ff myfeature
 Updating ea1b82a..05e9557
@@ -125,7 +125,7 @@ $ git push origin develop
 <p>正是在 Release 分支的开始时，而不是之前，即将到来的 release 才被分配版本号。直到那时，<code>develop</code> 分支才反映了 next release 的改动，但直到 release 分支开始前，next release 是 0.3 版还是 1.0 版并不确定。对 release 版本的决定是在 release 分支开始时，并由项目的版本号规则来拟定。</p>
 <center>**创建 release 分支**</center>
 <p>Release 分支是由 <code>develop</code> 分支派生而来。例如，当前的生产版本是 1.15，且即将有一个大迭代。<code>develop</code> 分支的状态已经为 next release 做好准备，我们也已经决定好即将到来的版本是 1.2。因此我们从当前的 <code>develop</code> 分支上派生并命名该 <code>release</code> 分支为新的版本号：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout -b release-1.2 develop
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout -b release-1.2 develop
 Switched to a new branch <span style="color:#2aa198">&#34;release-1.2&#34;</span>
 $ ./bump-version.sh 1.2
 Files modified successfully, version bumped to 1.2.
@@ -137,7 +137,7 @@ $ git commit -a -m <span style="color:#2aa198">&#34;Bumped version number to 1.2
 <center>**完成 release 分支**</center>
 <p>当 release 分支的开发状态到了真正可以发布的时候，就需要采取一些行动了。首先， release 分支得 merge 到 <code>master</code> 分支（记住，<code>master</code> 上的每个 commit 都是一个新的 release）。然后，提交到 <code>master</code> 上的 commit 必须被标记上 Tag，以便将来参考该历史版本。最后，release 分支上的改动还需要 merge 回 <code>develop</code> 分支，以便将来的 release 也能包含这些 bug fixes。</p>
 <p>开始的两步操作：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout master
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout master
 Switched to branch <span style="color:#2aa198">&#39;master&#39;</span>
 $ git merge --no-ff release-1.2
 Merge made by recursive.
@@ -145,14 +145,14 @@ Merge made by recursive.
 $ git tag -a 1.2
 </code></pre></div><p>到此，release 已经完成，并且标记了 Tag。（你可能还想使用 <code>-s</code> 或 <code>-u</code> 参数来对 Tag 进行加密）</p>
 <p>为了让 release 分支上的改动能保留下来，继续将改动 merge 回 <code>develop</code> 分支，Git 操作如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout develop
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout develop
 Switched to branch <span style="color:#2aa198">&#39;develop&#39;</span>
 $ git merge --no-ff release-1.2
 Merge made by recursive.
 (Summary of changes)
 </code></pre></div><p>这些操作可能会导致代码冲突，尝试解决冲突后再提交。
 现在，我们已经彻底完成工作并且 release 分支已经可以被移除了：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch -d release-1.2
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch -d release-1.2
 Deleted branch release-1.2 (was ff452fe).
 </code></pre></div><h3 id="hotfix-分支">Hotfix 分支</h3>
 <img align="right" src="https://o70e8d1kb.qnssl.com/hotfix-branches@2x.png" width="316">
@@ -163,7 +163,7 @@ Deleted branch release-1.2 (was ff452fe).
 <p>实质上，在 <code>develop</code> 分支上开发的人员可以继续，另一边，其他人员则可以快速的进行生产版本的修复工作。</p>
 <center>**创建 release 分支**</center>
 <p>Hotfix 分支从 <code>master</code> 派生。比如，当前线上运行的生产版本是 1.2 版，遇到严重 bug，但是 <code>develop</code> 分支上的版本还不到稳定版，就可以派生 hotfix 分支来修复线上发现的 bug：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout -b hotfix-1.2.1 master
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout -b hotfix-1.2.1 master
 Switched to a new branch <span style="color:#2aa198">&#34;hotfix-1.2.1&#34;</span>
 $ ./bump-version.sh 1.2.1
 Files modified successfully, version bumped to 1.2.1.
@@ -172,27 +172,27 @@ $ git commit -a -m <span style="color:#2aa198">&#34;Bumped version number to 1.2
 <span style="color:#2aa198;font-weight:bold">1</span> files changed, <span style="color:#2aa198;font-weight:bold">1</span> insertions(+), <span style="color:#2aa198;font-weight:bold">1</span> deletions(-)
 </code></pre></div><p>别忘了在派生新分支后 bump 了版本号。
 然后，修复 bug 并提交上去：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git commit -m <span style="color:#2aa198">&#34;Fixed severe production problem&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git commit -m <span style="color:#2aa198">&#34;Fixed severe production problem&#34;</span>
 [hotfix-1.2.1 abbe5d6] Fixed severe production problem
 <span style="color:#2aa198;font-weight:bold">5</span> files changed, <span style="color:#2aa198;font-weight:bold">32</span> insertions(+), <span style="color:#2aa198;font-weight:bold">17</span> deletions(-)
 </code></pre></div><center>**完成 release 分支**</center>
 <p>当 bug 修复完成，修复代码需要合并到 <code>master</code> 分支上，同时还得 merge 到 <code>develop</code> 分支，以保证下一个 release 版本不会出现此 bug。这和 release 分支的结束过程是非常类似的。</p>
 <p>首先，<code>master</code> 分支合并修复代码，然后为新的 release 标记 Tag：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout master
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout master
 Switched to branch <span style="color:#2aa198">&#39;master&#39;</span>
 $ git merge --no-ff hotfix-1.2.1
 Merge made by recursive.
 (Summary of changes)
 $ git tag -a 1.2.1
 </code></pre></div><p>然后，轮到 <code>develop</code> 分支合并修复代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout develop
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout develop
 Switched to branch <span style="color:#2aa198">&#39;develop&#39;</span>
 $ git merge --no-ff hotfix-1.2.1
 Merge made by recursive.
 (Summary of changes)
 </code></pre></div><p>有一个例外的原则是，如果当前有一个 release 分支存在，那么 hotfix 分支上的改动需要 merge 到 release 分支，而不是 <code>develop</code> 分支。当 release 分支结束时，merge 到 release 分支上的修复代码最终还是会 merge 到 <code>develop</code> 上。</p>
 <p>最后，移除已经完成历史使命的分支：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch -d hotfix-1.2.1
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch -d hotfix-1.2.1
 Deleted branch hotfix-1.2.1 (was abbe5d6).
 </code></pre></div><h2 id="总结">总结</h2>
 <p>这个分支模型虽然没什么令人耳目一新的东西，不过文章一开始给出的那张大图已经呈现了它对我们项目的裨益。它构造了一个优雅的模型，易于理解，并允许团队成员对分支的派生和发布有共同的认识。</p>

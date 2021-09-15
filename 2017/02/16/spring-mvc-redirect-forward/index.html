@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -59,7 +59,7 @@
 <p>Controller 视图方法间的跳转，无非就是带参跳转和不带参跳转。常用的方法有通过 String 映射 RequestMapping 实现重定向，或者通过 <code>ModelAndView</code> 对象，又或者是 <code>RedirectView</code> 对象，下面逐一说明。</p>
 <h3 id="string-重定向">String 重定向</h3>
 <p>是 return 映射到另一个 Controller 方法的字符串。如果有请求参数，就拼接在 RequestMapping 映射的字符串后面。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回字符串映射的方式
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回字符串映射的方式
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;hello&#34;</span>)
 <span style="color:#859900">public</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>) {
     <span style="color:#268bd2">doSomething</span>();
@@ -68,7 +68,7 @@
 </span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><h3 id="modelandview-重定向">ModelAndView 重定向</h3>
 <p>另一种方法是通过返回 <code>ModelAndView</code> 对象来实现跳转。类似的，如果有请求参数，也可以通过类似 GET 参数拼接的方式：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回 ModelAndView 对象
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回 ModelAndView 对象
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;hello&#34;</span>)
 <span style="color:#859900">public</span> <span style="color:#268bd2">ModelAndView</span> <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">req</span>, <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">resp</span>) {
     <span style="color:#268bd2">doSomething</span>();
@@ -77,7 +77,7 @@
 </span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><h3 id="redirectview-重定向">RedirectView 重定向</h3>
 <p>还有一种方法是通过返回 <code>RedirectView</code> 对象实现跳转，该方法和上面的不同之处在于，<code>RedirectView</code> 对象不需要设置 redirect 前缀：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回 RedirectView 对象
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 返回 RedirectView 对象
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;hello&#34;</span>)
 <span style="color:#859900">public</span> <span style="color:#268bd2">RedirectView</span> <span style="color:#268bd2">hello</span>() {
     <span style="color:#268bd2">doSomething</span>();
@@ -86,7 +86,7 @@
 </span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><h2 id="带参跳转">带参跳转</h2>
 <p>在做方法跳转时，如果要把参数带给下一个方法，像上面代码里通过拼接 URL 参数的方法有时候并不实用。因为参数不一定都是是字符串，而且浏览器对 URL 的长度是有限制的。<code>RedirectAttributes</code> 对象可以用来保存请求重定向时的参数。利用 <code>RedirectAttributes</code> 改写上面的代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;/&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@RequestMapping</span>(<span style="color:#2aa198">&#34;/&#34;</span>)
 <span style="color:#859900">public</span> <span style="color:#268bd2">RedirectView</span> <span style="color:#268bd2">hello</span>(<span style="color:#268bd2">RedirectAttributes</span> <span style="color:#268bd2">attrs</span>) {
     <span style="color:#268bd2">attrs</span>.<span style="color:#268bd2">addAttribute</span>(<span style="color:#2aa198">&#34;message&#34;</span>, <span style="color:#2aa198">&#34;hello&#34;</span>);    
     <span style="color:#268bd2">attrs</span>.<span style="color:#268bd2">addFlashAttribute</span>(<span style="color:#2aa198">&#34;username&#34;</span>, <span style="color:#2aa198">&#34;sudoz&#34;</span>);
@@ -107,7 +107,7 @@
 <li><code>addFlashAttribute()</code> 方法会把 Key-Value 暂存在 session 中，在跳转到目标方法后，即完成任务，会从 session 中删掉；</li>
 </ul>
 <p>用 <code>curl</code> 命令来测试：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -i http://localhost:8080/
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -i http://localhost:8080/
 
 HTTP/1.1 <span style="color:#2aa198;font-weight:bold">302</span> 
 Set-Cookie: <span style="color:#268bd2">JSESSIONID</span>=D1CC5E15FA8EF9474C4CED7D4F660E66;<span style="color:#268bd2">path</span>=/;HttpOnly
@@ -124,7 +124,7 @@ Date: Thu, <span style="color:#2aa198;font-weight:bold">16</span> Feb <span styl
 </ul>
 <h2 id="spring-boot-测试">Spring Boot 测试</h2>
 <p>为了更清晰的比较各种方法，我把 Spring Boot 的测试代码贴出来。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Controller</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Controller</span>
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HomeController</span> {
     <span style="color:#268bd2">@Value</span>(<span style="color:#2aa198">&#34;sudoz&#34;</span>)
     <span style="color:#859900">private</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">username</span>;
@@ -164,7 +164,7 @@ Date: Thu, <span style="color:#2aa198;font-weight:bold">16</span> Feb <span styl
     }
 }
 </code></pre></div><h2 id="分析源码">分析源码</h2>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">UrlBasedViewResolver</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractCachingViewResolver</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Ordered</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">UrlBasedViewResolver</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractCachingViewResolver</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">Ordered</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">REDIRECT_URL_PREFIX</span> = <span style="color:#2aa198">&#34;redirect:&#34;</span>;
     <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">FORWARD_URL_PREFIX</span> = <span style="color:#2aa198">&#34;forward:&#34;</span>;
 

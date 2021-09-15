@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -56,10 +56,10 @@
 <!-- more -->
 <h4 id="字符串比较">字符串比较</h4>
 <p>字符串几乎是 Java 语言里使用频率最高的类型了，尽管程序的各个角落都在使用字符串，但未必对它有完整、正确的认识。创建字符串变量通常有下面两种途径：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;hello,world!&#34;</span>; <span style="color:#93a1a1;font-style:italic">// 通过字面值
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;hello,world!&#34;</span>; <span style="color:#93a1a1;font-style:italic">// 通过字面值
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#268bd2">String</span> <span style="color:#268bd2">s2</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;hello,world!&#34;</span>); <span style="color:#93a1a1;font-style:italic">// 通过 new 关键字
 </span></code></pre></div><p>字符串 s1 和 s2 看起来似乎是一样的，那真的一样吗，上代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Debug</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Debug</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
         <span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;hello,world!&#34;</span>;
         <span style="color:#268bd2">String</span> <span style="color:#268bd2">s2</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;hello,world!&#34;</span>);
@@ -79,7 +79,7 @@
 <p>下图展示了堆区和栈区存储内容的差异，图片来自 vikashazrati.files.wordpress.com
 <img src="https://o70e8d1kb.qnssl.com/stacknheap.png" alt=""></p>
 <p>用接近系统底层的 C++ 语言程序简单演示下堆区和栈区分配内存的示例</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#93a1a1;font-style:italic">// example.cpp
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#93a1a1;font-style:italic">// example.cpp
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">foo</span>()
 {
     <span style="color:#859900;font-weight:bold">char</span> *<span style="color:#268bd2">pBuffer</span>; <span style="color:#93a1a1;font-style:italic">// 没有分配空间，除了指针本身，它被分配在了栈区
@@ -94,7 +94,7 @@
 </span><span style="color:#93a1a1;font-style:italic"></span>} <span style="color:#93a1a1;font-style:italic">// 如果没有执行 delete[] pBuffer，就会发生内存泄漏;
 </span></code></pre></div><p>通过字面值和 <code>new</code> 关键字创建字符串对象引用 s1、s2 和字符串 &ldquo;hello,world!&rdquo; 分别都存储在内存什么地方，一个个分析。
 字符串 &ldquo;hello,world!&rdquo; 在堆区申请空间存储，因为字符串是常量具有不可变性，它被存储在堆区的一块名叫 &ldquo;String Constant Pool&rdquo; 的字符串常量池中，字符串常量池中的字符串只存在一份，即如果常量池中已存在 &ldquo;hello,world!&quot;，那么 s1 不会在常量池中申请新的空间，而是直接把引用指向已存在的字符串内存地址。另外，s1 是字符串 &ldquo;hello,world!&rdquo; 的引用，存储在栈区。前面讲到，由关键字 <code>new</code> 创建的对象被分配在了堆区，但和字面值赋值不同的是，<code>new</code> 出来的对象不只是在分配在堆区的字符串常量池，在 <code>new</code> 一个新的 String 对象时，首先会在堆区创建该 String 对象，并让栈区的对象引用指向它，然后在常量池中查询是否已存在相同内容的字符串，如果有，就将堆区的空间和常量池中的空间通过 <code>String.inter()</code> 关联起来，如果没有，则在常量池中申请空间存放该字符串对象，再做关联。参考下面的代码和实例图。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;abc&#34;</span>; 
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;abc&#34;</span>; 
 <span style="color:#268bd2">String</span> <span style="color:#268bd2">s2</span> = <span style="color:#2aa198">&#34;xyz&#34;</span>;
 <span style="color:#268bd2">String</span> <span style="color:#268bd2">s3</span> = <span style="color:#2aa198">&#34;123&#34;</span>;
 <span style="color:#268bd2">String</span> <span style="color:#268bd2">s4</span> = <span style="color:#2aa198">&#34;A&#34;</span>;
@@ -106,7 +106,7 @@
 </code></pre></div><p><img src="https://o70e8d1kb.qnssl.com/String-Constant-Pool.png" alt=""></p>
 <h4 id="测试结果">测试结果</h4>
 <p>梳理了那么多理论，还是要用实践来印证。测试下面的代码，看看结果如何——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">TestString</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">TestString</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
         <span style="color:#93a1a1;font-style:italic">// 由字面值创建字符串
 </span><span style="color:#93a1a1;font-style:italic"></span>        <span style="color:#268bd2">String</span> <span style="color:#268bd2">s1</span> = <span style="color:#2aa198">&#34;hello,world!&#34;</span>;

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -70,7 +70,7 @@
 <p>ArrayList 是 List 里使用度非常高的一个实现。Doc 里有这么几个关键的说明：可动态扩容，允许插入 <code>null</code>，非同步。</p>
 <p>ArrayList 实例有一个容量（capacity），就是它所能存储的元素数量，默认是 10。当元素不断被添加进 ArrayList 后，它的 size 域接近 capacity 时，capacity 会自动增加。</p>
 <p>先来了解 ArrayList 的自动扩容机制。自动扩容是在执行 <code>add</code> 或 <code>addAll</code> 方法是触发的，这两个方法里会调用 <code>ensureCapacityInternal()</code> 方法来增大 capacity，看源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">add</span>(<span style="color:#268bd2">E</span> <span style="color:#268bd2">e</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">add</span>(<span style="color:#268bd2">E</span> <span style="color:#268bd2">e</span>) {
     <span style="color:#268bd2">ensureCapacityInternal</span>(<span style="color:#268bd2">size</span> + <span style="color:#268bd2">1</span>);  <span style="color:#93a1a1;font-style:italic">// Increments modCount!!
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">elementData</span>[<span style="color:#268bd2">size</span>++] = <span style="color:#268bd2">e</span>;
     <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">true</span>;
@@ -104,7 +104,7 @@
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">elementData</span> = <span style="color:#268bd2">Arrays</span>.<span style="color:#268bd2">copyOf</span>(<span style="color:#268bd2">elementData</span>, <span style="color:#268bd2">newCapacity</span>);
 }
 </code></pre></div><p>只有当新增元素后的 size 超过当前的容量时，才会触发扩容。扩容的操作由 <code>grow()</code> 通过 <code>Arrays.copyOf()</code> 完成。自动扩容省去了程序员操心 ArrayList 溢出问题，但也带来一个弊端，就是当需要添加大量元素，会频繁触发自动扩容，JDK 提供了 <code>ensureCapacity()</code> 方法手动的预先设置 capacity 去避免这种情况。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">ensureCapacity</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">minCapacity</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">ensureCapacity</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">minCapacity</span>) {
     <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">minExpand</span> = (<span style="color:#268bd2">elementData</span> != <span style="color:#268bd2">DEFAULTCAPACITY_EMPTY_ELEMENTDATA</span>)
         <span style="color:#93a1a1;font-style:italic">// any size if not default element table
 </span><span style="color:#93a1a1;font-style:italic"></span>        ? <span style="color:#268bd2">0</span>
@@ -127,7 +127,7 @@
 </blockquote>
 <p>LinkedList 是一个双向链表实现，对 LinkedList 内元素的索引都需要从它的头部或尾部遍历。因此 LinkedList 不能像 ArrayList 和 Vector 那样根据元素索引位置进行随机访问，只能通过 LinkedList 里逐个 Node 依次向下（上）迭代进行查找，访问效率相比会差一点。</p>
 <p>LinkedList 内元素是以 <code>Node&lt;E&gt;</code> 结构存储，Node 包含真实的存储元素 item，前一 Node 的引用 prev，后一 Node 的引用 next：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Node</span>&lt;<span style="color:#268bd2">E</span>&gt; {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Node</span>&lt;<span style="color:#268bd2">E</span>&gt; {
     <span style="color:#268bd2">E</span> <span style="color:#268bd2">item</span>;
     <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">E</span>&gt; <span style="color:#268bd2">next</span>;
     <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">E</span>&gt; <span style="color:#268bd2">prev</span>;
@@ -139,7 +139,7 @@
     }
 }
 </code></pre></div><p>双向链表的结构使得数据的插入删除变得非常简单高效：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">add</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">index</span>, <span style="color:#268bd2">E</span> <span style="color:#268bd2">element</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">add</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">index</span>, <span style="color:#268bd2">E</span> <span style="color:#268bd2">element</span>) {
     <span style="color:#268bd2">checkPositionIndex</span>(<span style="color:#268bd2">index</span>);
 
     <span style="color:#859900">if</span> (<span style="color:#268bd2">index</span> == <span style="color:#268bd2">size</span>)
@@ -171,7 +171,7 @@
 <p>This class implements the Set interface, backed by a hash table (actually a HashMap instance). It makes no guarantees as to the iteration order of the set; in particular, it does not guarantee that the order will remain constant over time. This class permits the null element.</p>
 </blockquote>
 <p>凡是和 Hash 相关的都是查询效率很高的集合类型，HashSet 也是。HashSet 内部持有一个 HashMap 域来作为元素的实际存储，也就是说，HashSet 根据元素的 HashCode 来确定顺序，因此 HashSet 无法保证元素的存储顺序和插入顺序一致，甚至都不能保证顺序一直保持不变。参考 OpenJDK 里的源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HashSet</span>&lt;<span style="color:#268bd2">E</span>&gt; <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractSet</span>&lt;<span style="color:#268bd2">E</span>&gt; <span style="color:#859900">implements</span> <span style="color:#268bd2">Set</span>&lt;<span style="color:#268bd2">E</span>&gt;, <span style="color:#268bd2">Cloneable</span>, <span style="color:#268bd2">Serializable</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HashSet</span>&lt;<span style="color:#268bd2">E</span>&gt; <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractSet</span>&lt;<span style="color:#268bd2">E</span>&gt; <span style="color:#859900">implements</span> <span style="color:#268bd2">Set</span>&lt;<span style="color:#268bd2">E</span>&gt;, <span style="color:#268bd2">Cloneable</span>, <span style="color:#268bd2">Serializable</span> {
     <span style="color:#859900">private</span> <span style="color:#859900">transient</span> <span style="color:#268bd2">HashMap</span>&lt;<span style="color:#268bd2">E</span>, <span style="color:#268bd2">Object</span>&gt; <span style="color:#268bd2">map</span>;
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isEmpty</span>() {
         <span style="color:#859900">return</span> <span style="color:#859900">this</span>.<span style="color:#268bd2">map</span>.<span style="color:#268bd2">isEmpty</span>();

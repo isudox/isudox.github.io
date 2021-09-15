@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -68,13 +68,13 @@
 但是空项目什么效果都看不到，所以接下来就往里面填充内容，实现一个简单的 Web 应用。</p>
 <h2 id="集成基础-web-组件">集成基础 Web 组件</h2>
 <p>上面的项目采用 gradle 作为项目构建工具，所以依赖组件是配置在 <code>build.gradle</code> 文件中。gradle 和 maven 用法相似，选用 gradle 的好处很多，简洁是很重要的一点，参考下面的示例：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;dependencies&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;dependencies&gt;</span>
     <span style="color:#268bd2;font-weight:bold">&lt;dependency&gt;</span>
         <span style="color:#268bd2;font-weight:bold">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#268bd2;font-weight:bold">&lt;/groupId&gt;</span>
         <span style="color:#268bd2;font-weight:bold">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#268bd2;font-weight:bold">&lt;/artifactId&gt;</span>
     <span style="color:#268bd2;font-weight:bold">&lt;/dependency&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;/dependencies&gt;</span>
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-gradle" data-lang="gradle"><span style="color:#268bd2">dependencies</span> {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-gradle" data-lang="gradle"><span style="color:#268bd2">dependencies</span> {
     <span style="color:#268bd2">compile</span>(<span style="color:#2aa198">&#39;org.springframework.boot:spring-boot-starter-web&#39;</span>)
 }
 </code></pre></div><p>向 <code>build.gradle</code> 中添加 SpringMVC</p>

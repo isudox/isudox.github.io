@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -59,7 +59,7 @@
 </blockquote>
 <h3 id="引入">引入</h3>
 <p>为了便于切入话题，先写一段最简单的 HashMap 样例代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HashMapTest</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HashMapTest</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
         <span style="color:#268bd2">HashMap</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">map</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">HashMap</span>&lt;&gt;();
         <span style="color:#268bd2">map</span>.<span style="color:#268bd2">put</span>(<span style="color:#2aa198">&#34;China&#34;</span>, <span style="color:#2aa198">&#34;Beijing&#34;</span>);
@@ -74,7 +74,7 @@
 </code></pre></div><p>在 <code>for</code> 循环处进入断点，查看变量，IntelliJ IDEA 中显示如下：
 <img src="https://o70e8d1kb.qnssl.com/hashmap-breakpoint.png" alt=""></p>
 <p>变量 <code>map</code> 包含 <code>table</code> 属性和 <code>entrySet</code> 属性。其中，<code>table</code> 属性是一个长度为 16 的 <code>Map.Entry</code> 数组；<code>entrySet</code> 属性是一个元素类型为 <code>Map.Entry</code> 的 <code>Set</code> 对象。打开 JDK 8 的 <code>java.util.HashMap</code> 源码，对其属性一探究竟。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HashMap</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractMap</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">HashMap</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractMap</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;
     <span style="color:#859900">implements</span> <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt;, <span style="color:#268bd2">Cloneable</span>, <span style="color:#268bd2">Serializable</span> {
 
     <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">DEFAULT_INITIAL_CAPACITY</span> = <span style="color:#268bd2">1</span> &lt;&lt; <span style="color:#268bd2">4</span>; <span style="color:#93a1a1;font-style:italic">// aka 16
@@ -125,7 +125,7 @@
 <p>这样还是不够明白，下面接着说 HashMap 里的数据结构。</p>
 <h3 id="hashmap-中的数据结构">HashMap 中的数据结构</h3>
 <p>首先来看 <code>table</code> 属性所存储的 Node 链表：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// HashMap.Node
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// HashMap.Node
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">static</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#859900">implements</span> <span style="color:#268bd2">Map</span>.<span style="color:#268bd2">Entry</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; {
     <span style="color:#859900">final</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">hash</span>;
     <span style="color:#859900">final</span> <span style="color:#268bd2">K</span> <span style="color:#268bd2">key</span>;
@@ -169,7 +169,7 @@
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Hash_table_5_0_1_1_1_1_1_LL.svg" alt=""></p>
 <h3 id="put--get">put() / get()</h3>
 <p>HashMap 最主要的操作就是 <code>put()</code> 和 <code>get()</code>，先来看 <code>put()</code> 方法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">put</span>(<span style="color:#268bd2">K</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">V</span> <span style="color:#268bd2">value</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">put</span>(<span style="color:#268bd2">K</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">V</span> <span style="color:#268bd2">value</span>) {
     <span style="color:#859900">return</span> <span style="color:#268bd2">putVal</span>(<span style="color:#268bd2">hash</span>(<span style="color:#268bd2">key</span>), <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span>, <span style="color:#859900;font-weight:bold">false</span>, <span style="color:#859900;font-weight:bold">true</span>);
 }
 
@@ -232,7 +232,7 @@
 <li>如果节点已存在，就将节点的 value 替换为入参 value，并返回原 value 值。</li>
 </ul>
 <p>再看 <code>get()</code> 方法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">get</span>(<span style="color:#268bd2">Object</span> <span style="color:#268bd2">key</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#268bd2">V</span> <span style="color:#268bd2">get</span>(<span style="color:#268bd2">Object</span> <span style="color:#268bd2">key</span>) {
     <span style="color:#268bd2">Node</span>&lt;<span style="color:#268bd2">K</span>,<span style="color:#268bd2">V</span>&gt; <span style="color:#268bd2">e</span>;
     <span style="color:#859900">return</span> (<span style="color:#268bd2">e</span> = <span style="color:#268bd2">getNode</span>(<span style="color:#268bd2">hash</span>(<span style="color:#268bd2">key</span>), <span style="color:#268bd2">key</span>)) == <span style="color:#859900;font-weight:bold">null</span> ? <span style="color:#859900;font-weight:bold">null</span> : <span style="color:#268bd2">e</span>.<span style="color:#268bd2">value</span>;
 }

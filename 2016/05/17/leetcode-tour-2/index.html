@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -58,11 +58,11 @@
 <p>第 6 题 <a href="https://leetcode.com/problems/zigzag-conversion/">ZigZag Conversion</a></p>
 <blockquote>
 <p>字符串 <code>&quot;PAYPALISHIRING&quot;</code> 是由如下排列的字符串通过 ZigZag 形式读取所得。</p>
-<pre><code></code></pre></blockquote>
+<pre tabindex="0"><code></code></pre></blockquote>
 <p>P   A   H   N
 A P L S I I G
 Y   I   R</p>
-<pre><code>&gt; 如果按行读取则为 `&quot;PAHNAPLSIIGYIR&quot;`
+<pre tabindex="0"><code>&gt; 如果按行读取则为 `&quot;PAHNAPLSIIGYIR&quot;`
 &gt; 请编写代码将给定行数的 zigzag 形式字符串转换为行形式的字符串：
 &gt; ```
 string convert(string text, int nRows);
@@ -70,7 +70,7 @@ string convert(string text, int nRows);
 <p>比如 <code>convert(&quot;PAYPALISHIRING&quot;, 3)</code> 得到 <code>&quot;PAHNAPLSIIGYIR&quot;</code></p>
 </blockquote>
 <p>这道 ZigZag 题很好玩，让我想起小时候做过的奥数题。从 ZigZag 型字符串中找规律，可以看到第一行和最后一行很容易挑出来，因为其字符的步进是固定的，即 2*(nRows-1)。然而中间的行的规律就不那么规则了，其步进间距是跳跃的，如果继续按 2*(nRows-1) 步进查找的话，会漏掉步进间距小于该值的字符。但是仔细观察除掉首行和末行的 ZigZag 排列字符串，可以发现它仍然是 ZigZag 字符串，只不过行数再减小，与之相应的步进间距也在变化，但始终符合 2*(nRows-1) 的规律。找到这个特性后，在步进查找时把中间行组成的 ZigZag 字符串的步进间距也作查询，就不会漏掉了。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ZigZagConversion.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ZigZagConversion.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">convert</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">numRows</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">len</span> = <span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span>();
@@ -123,7 +123,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
 <li>入参肯定是在 int 范围内，但翻转后得到的数字就不一定了。所以要考虑到溢出的情况，比如 1999999999 -&gt; 9999999991；</li>
 </ul>
 <p>假定如果翻转后的结果超出范围，则返回 0。先单细胞的思考下，不考虑优化，简单粗暴的先把问题解开。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ReverseInteger.java v1.0
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ReverseInteger.java v1.0
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">reverse</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">x</span>) {
         <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isNeg</span> = <span style="color:#859900;font-weight:bold">false</span>;
@@ -147,7 +147,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
     }
 }
 </code></pre></div><p>自测了几个用例后自信满满的提交了代码，LeetCode 抛出了运行时错误，出现错误的用例为 <code>-2147483648</code>，然后我就发现了自己愚蠢的错误：不止是在翻转结束时会发生溢出，在负数转正数的时候也会发生，当且仅当入参为 <code>-2147483648</code> 时！打个补丁吧，这方法真是太蠢了！</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ReverseInteger.java v1.1
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ReverseInteger.java v1.1
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">reverse</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">x</span>) {
         <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isNeg</span> = <span style="color:#859900;font-weight:bold">false</span>;
@@ -214,7 +214,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
 <li>弱字符串转换结果超出了整型数值范围，则取整型数的边界值，比如 &ldquo;-999999999&rdquo; 转换结果是 -2147483648</li>
 </ol>
 <p>再充分考虑到可能情况后，递归调用可以简化处理步骤，下面是我的解法，多说一句，LeetCode 上这道题的描述实在是太简略了，不少特殊情况的处理规则都是我提交代码试错的出来的，比如上面罗列出来的规则 3, 4 和 5。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">myAtoi</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">str</span>) {
         <span style="color:#859900">if</span> (<span style="color:#268bd2">str</span> == <span style="color:#859900;font-weight:bold">null</span> || <span style="color:#268bd2">Objects</span>.<span style="color:#268bd2">equals</span>(<span style="color:#268bd2">str</span>, <span style="color:#2aa198">&#34;&#34;</span>))
             <span style="color:#859900">return</span> <span style="color:#268bd2">0</span>;
@@ -287,7 +287,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
 </blockquote>
 <p>题目不难，无非就是判断该整数是否是轴对称，因为负整数有符号，所以不是回文数。因此主流程只需要对正整数的情况进行处理。
 那么现在的问题就简化成，如何判断一个正整数是否轴对称。如果把正整数转换为字符串，通过栈 FILO 的特性翻转字符串肯定是可以判断其是否对称，但是这样做的话，申请了额外的存储空间。那如果直接翻转正整数呢，会存在两种特殊情况，一是超出整型数的范围，二是末位是 0 的数。但实际上，这两种情况都无需考虑，这里有一个关于假设的小伎俩：假定整数是回文数，那么翻转该整数得到的数就是相同的整数，就必然不存在超出整型数范围或末位为 0 的情况；反之，如果不是回文，那翻转过来的结果无论是溢出整型范围还是位数减少，都和原整数不相同，也就不是回文。所以这道题可以直接通过除十取余的方法来解决。Java 代码如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// PalindromeNumber.java v1.0
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// PalindromeNumber.java v1.0
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isPalindrome</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">x</span>) {
         <span style="color:#859900">if</span> (<span style="color:#268bd2">x</span> &lt; <span style="color:#268bd2">0</span>) <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">false</span>;
@@ -321,7 +321,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
 </tbody>
 </table>
 <p>但这种耍小聪明的方法并不优雅，因为它没有直接处理上面提到的两种特殊情况。校验是否轴对称，其实本质上就是校验首位数和末位数是否相等，那么可以依次比较整数的首位和末位，如果校验通过，则将整数去掉首位和末位，再次比较。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// PalindromeNumber.java v1.1
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// PalindromeNumber.java v1.1
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isPalindrome</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">x</span>) {
         <span style="color:#859900">if</span> (<span style="color:#268bd2">x</span> &lt; <span style="color:#268bd2">0</span>) <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">false</span>;
@@ -362,7 +362,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// PalindromeNumber.java v1.2
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// PalindromeNumber.java v1.2
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isPalindrome</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">x</span>) {
 <span style="color:#859900">if</span> (<span style="color:#268bd2">x</span> &lt; <span style="color:#268bd2">0</span>) <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">false</span>;
@@ -407,7 +407,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
 </table>
 <p>哎，越来越慢，讲道理，还是把整数转换为字符串去处理是最简单的……</p>
 <p>所以，用 Python 来做的话，代码简直不能更简洁，因为 Python 直接支持翻转</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># palindrome_number.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># palindrome_number.py</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">isPalindrome</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">x</span>):
         <span style="color:#2aa198">&#34;&#34;&#34;
@@ -444,7 +444,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
 <p>实现正则表达式，使得支持 <code>'.'</code> 和 <code>'*'</code> 符。其中，<code>'.'</code> 匹配任意单个字符，<code>'*'</code> 匹配该符号前之前的零个或任意多个字符。</p>
 </blockquote>
 <p>这道题难道不是很简单吗，就算是用笨重的 Java 写，一行代码也能解决，你看——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// RegularExpressionMatching.java v1.0
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// RegularExpressionMatching.java v1.0
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isMatch</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>, <span style="color:#268bd2">String</span> <span style="color:#268bd2">p</span>) {
         <span style="color:#859900">return</span> <span style="color:#268bd2">java</span>.<span style="color:#268bd2">util</span>.<span style="color:#268bd2">regex</span>.<span style="color:#268bd2">Pattern</span>.<span style="color:#268bd2">compile</span>(<span style="color:#268bd2">p</span>).<span style="color:#268bd2">matcher</span>(<span style="color:#268bd2">s</span>).<span style="color:#268bd2">matches</span>();
@@ -457,7 +457,7 @@ x = 123，返回 321；x = -123，返回 -321；</p>
 <li>正则式 p 仅包含 <code>'*'</code> 符，记录 <code>'*'</code> 符前面的字符（<code>'*'</code> 符不会在首位），这里有一点需要注意，当 <code>'*'</code> 符在第二位时，可能会匹配 0 个它之前的字符，所以还得判断正则式第三位开始的子串正则式的匹配情况；当 <code>'*'</code> 符不在第二位时，就按部就班的从第一个字符开始依次比较；</li>
 <li>正则式 p 同时包含 <code>'.'</code> 和 <code>'*'</code> 符，复杂度最高，同时考虑情况 2 和 3；</li>
 </ul>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// RegularExpressionMatching.java v1.1
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// RegularExpressionMatching.java v1.1
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isMatch</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>, <span style="color:#268bd2">String</span> <span style="color:#268bd2">p</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">lenS</span> = <span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span>(), <span style="color:#268bd2">lenP</span> = <span style="color:#268bd2">p</span>.<span style="color:#268bd2">length</span>();

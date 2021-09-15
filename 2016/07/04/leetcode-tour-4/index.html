@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -61,7 +61,7 @@
 举例：数组 S = { -1 2 1 -4 }，目标值 target = 1。最接近目标值的求和结果为 (-1 + 2 + 1 = 2)</p>
 </blockquote>
 <p>这题是第 15 题的延伸。沿用前一题的思路，先对数组进行排序，取 a(i) + a(i+k) + a(n) 求和，如果结果和目标值一致，则直接将求和结果返回；如果结果大于目标值，则表明需要减小下标 n 的值，逐次减小，每次比较当前求和结果与目标值的差值和前一次求和比较的差值，取绝对值较小的保留，同时保留当前的求和结果；如果结果小于目标值，则需要增大下标 (i+k)。Java 代码如下</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ThreeSumClosest.java v1.0
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ThreeSumClosest.java v1.0
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">threeSumClosest</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">MAX_VALUE</span>;
@@ -106,7 +106,7 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ThreeSumClosest.java v1.1
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ThreeSumClosest.java v1.1
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">threeSumClosest</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">MAX_VALUE</span>;
@@ -156,7 +156,7 @@
 </tbody>
 </table>
 <p>Python 代码</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># 3sum_closest.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># 3sum_closest.py</span>
 <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>(<span style="color:#cb4b16">object</span>):
     <span style="color:#859900">def</span> <span style="color:#268bd2">threeSumClosest</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">nums</span>, <span style="color:#268bd2">target</span>):
         <span style="color:#2aa198">&#34;&#34;&#34;
@@ -214,7 +214,7 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png" alt=""></p>
 </blockquote>
 <p>抽象的看这道题，其实就是排列组合。键盘上 &ldquo;23&rdquo; 按钮可能的输出结果就是 &ldquo;abc&rdquo; 和 &ldquo;def&rdquo; 两个字符串中字符的所有组合情况。从每个数字所代表的字符串中选取一个，并和下一个数字所代表的字符串中字符组合，逐个拼接，很显然，可以通过递归处理，递归深度为数字键的个数。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LetterCombinationsOfaPhoneNumber.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// LetterCombinationsOfaPhoneNumber.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#268bd2">String</span>[] <span style="color:#268bd2">keymap</span> = {<span style="color:#2aa198">&#34;abc&#34;</span>, <span style="color:#2aa198">&#34;def&#34;</span>, <span style="color:#2aa198">&#34;ghi&#34;</span>, <span style="color:#2aa198">&#34;jkl&#34;</span>, <span style="color:#2aa198">&#34;mno&#34;</span>, <span style="color:#2aa198">&#34;pqrs&#34;</span>, <span style="color:#2aa198">&#34;tuv&#34;</span>, <span style="color:#2aa198">&#34;wxyz&#34;</span>};
 
@@ -259,7 +259,7 @@
 如 S = [ 1, 0, -1, 0, -2, 2 ] target = 0，则结果为 [ [-1,  0, 0, 1], [-2, -1, 1, 2], [-2,  0, 0, 2] ]</p>
 </blockquote>
 <p>LeetCode 第 15 题 <a href="/2016/06/15/leetcode-tour-3/#3Sum">3Sum</a> 已经给出了数组中取 3 个数求和为零，本题为 4 个数求和为目标值。可以直接借用 3Sum 的算法，先选取数组中一个数，把剩下的数组元素和所需要的差值传递给 3Sum 方法，如果 3Sum 返回了有效结果，则把当前选取的数分别插入 3Sum 的结果中。代码如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// FourSum.java v1.0
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// FourSum.java v1.0
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">fourSum</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>, <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">target</span>) {
         <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">Integer</span>&gt;&gt; <span style="color:#268bd2">res</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;&gt;();
@@ -336,7 +336,7 @@
 假定 n 是有效的。</p>
 </blockquote>
 <p>普通链表是单向，假如是正向的移除第 n 个节点，很好做，但是反向的移除就需要动下脑筋。最直接的办法就是先遍历链表求其长度，减去 n 就是正向的节点位置，然后再做依次顺序遍历，找到要移除的节点。这种方法需要两次遍历。还有一种略微机智的方法，只需要做一次遍历，先让早起步的头指针移动 n 次，再让另一个慢起步的头指针开始移动，这样等早起步头指针到达最后一个节点的时候，后一个指针正好到达要移除的节点。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// RemoveNthNodeFromEndOfList.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// RemoveNthNodeFromEndOfList.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#93a1a1;font-style:italic">/**
 </span><span style="color:#93a1a1;font-style:italic"> * Definition for singly-linked list.
 </span><span style="color:#93a1a1;font-style:italic"> * public class ListNode {
@@ -384,7 +384,7 @@
 有效的字符串必须是闭合的，如 <code>&quot;()&quot;</code> <code>{[()]}</code> 和 <code>&quot;()[]{}&quot;</code> 是有效的，而 <code>&quot;(]&quot;</code> 和 <code>&quot;([)]&quot;</code> 是无效的。</p>
 </blockquote>
 <p>从有效字符串的形式 <code>&quot;()&quot;</code> <code>{[()]}</code> 和 <code>&quot;()[]{}&quot;</code> 中可以看出，这很像是四则运算的中缀表达式。而四则运算的中缀表达式可以通过栈这种数据结构来存储。因为左半括号必定再其对应右半括号的前面，所以遍历到当前字符为左半括号时，将其入栈。遍历到右半括号时，将栈顶字符出栈，比较是否匹配。直到栈元素为空。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ValidParentheses.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// ValidParentheses.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">isValid</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">s</span>) {
         <span style="color:#859900;font-weight:bold">char</span>[] <span style="color:#268bd2">stack</span> = <span style="color:#859900">new</span> <span style="color:#859900;font-weight:bold">char</span>[<span style="color:#268bd2">s</span>.<span style="color:#268bd2">length</span>()];

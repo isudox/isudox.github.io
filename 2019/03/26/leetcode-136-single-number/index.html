@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -63,23 +63,23 @@
 <p>Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?</p>
 </blockquote>
 <p>Example 1:</p>
-<pre><code>Input: [2,2,1]
+<pre tabindex="0"><code>Input: [2,2,1]
 Output: 1
 </code></pre><p>Example 2:</p>
-<pre><code>Input: [4,1,2,1,2]
+<pre tabindex="0"><code>Input: [4,1,2,1,2]
 Output: 4
 </code></pre><h2 id="solution">Solution</h2>
 <p>Actually it&rsquo;s quite simple to solve, but we should make clear that it requires <code>O(N)</code> complexity and no extra memory usage. So we need to find out the single one during several iterations.
 As is well-known,</p>
-<pre><code>a XOR a = 0
+<pre tabindex="0"><code>a XOR a = 0
 0 XOR a = a
 </code></pre><p>So all the duplicate numbers will be calculated to <code>0</code> after looping xor, and the result of the iteration of xor must be the single number value.
 Here is the sample code:</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>:
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Solution</span>:
     <span style="color:#859900">def</span> <span style="color:#268bd2">single_number</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">nums</span>: <span style="color:#268bd2">List</span>[<span style="color:#cb4b16">int</span>]) -&gt; <span style="color:#cb4b16">int</span>:
         <span style="color:#93a1a1;font-style:italic"># xor each sibling num</span>
         <span style="color:#859900">return</span> <span style="color:#268bd2">reduce</span>(<span style="color:#859900">lambda</span> <span style="color:#268bd2">a</span>, <span style="color:#268bd2">b</span>: <span style="color:#268bd2">a</span> ^ <span style="color:#268bd2">b</span>, <span style="color:#268bd2">nums</span>)
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">SingleNumber</span> {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">SingleNumber</span> {
 
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">singleNumber</span>(<span style="color:#859900;font-weight:bold">int</span>[] <span style="color:#268bd2">nums</span>) {
         <span style="color:#859900">for</span> (<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">i</span> = <span style="color:#268bd2">1</span>; <span style="color:#268bd2">i</span> &lt; <span style="color:#268bd2">nums</span>.<span style="color:#268bd2">length</span>; <span style="color:#268bd2">i</span>++) {
@@ -93,7 +93,7 @@ Here is the sample code:</p>
 Space complexity is <code>O(1)</code>;</p>
 <hr>
 <p><a href="https://github.com/isudox/leetcode-solution/blob/master/docs/136.single-number.md">GitHub Link</a></p>
-<pre><code>Forgive my poor English, I just wanna improve my writing skill.
+<pre tabindex="0"><code>Forgive my poor English, I just wanna improve my writing skill.
 So if I make some stupid mistakes in writing, forget about them.
 Let's focus on the code :)
 </code></pre></div>

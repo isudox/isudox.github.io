@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -56,7 +56,7 @@
 <!-- more -->
 <p>这种问题当然不会难到我，解决的办法就是让安装 AUR 的程序能通过一把梯子翻过高墙，毕竟梯子是掌握正确上网姿势的必备条件。</p>
 <p>就以上面提到的 <a href="https://aur.archlinux.org/packages/atom-editor/">atom-editor</a> 的安装为例，通常 AUR 维护的包都会包含一个记录安装信息和安装命令的脚本文件 PKGBUILD，比如 atom-editor 包的 PKGBUILD 文件内容为</p>
-<pre><code># Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt;
+<pre tabindex="0"><code># Maintainer: Sebastian Jug &lt;seb@stianj.ug&gt;
 # Contributor: John Reese &lt;jreese@noswap.com&gt;
 # Upstream URL: https://github.com/atom/atom
 #
@@ -113,9 +113,9 @@ package() {
 }
 </code></pre><p>脚本内容很清晰，注明了软件包的说明，下载路径，依赖/冲突关系和安装命令。很显然，安装失败的原因就是因为国内网络无法连接上 atom 的安装包下载地址 <a href="https://github.com/atom/atom/archive/v1.7.3.tar.gz">https://github.com/atom/atom/archive/v1.7.3.tar.gz</a>。
 AUR 包的安装需要在包目录下执行</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">makepkg -sri
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">makepkg -sri
 </code></pre></div><p>因此得修改 makepkg 的配置，使得 makepkg 在调用下载程序时能通过 Proxy 翻过防火墙的阻碍。makepkg 的配置文件位于 <code>/etc/makepkg.conf</code>，找到 DLAGENT 字段</p>
-<pre><code>#-- The download utilities that makepkg should use to acquire sources
+<pre tabindex="0"><code>#-- The download utilities that makepkg should use to acquire sources
 #  Format: 'protocol::agent'
 DLAGENTS=('ftp::/usr/bin/curl -fC - --ftp-pasv --retry 3 --retry-delay 3 -o %o %u'
           'http::/usr/bin/curl -fLC - --retry 3 --retry-delay 3 -o %o %u'
@@ -123,7 +123,7 @@ DLAGENTS=('ftp::/usr/bin/curl -fC - --ftp-pasv --retry 3 --retry-delay 3 -o %o %
           'rsync::/usr/bin/rsync --no-motd -z %u %o'
           'scp::/usr/bin/scp -C %u %o')
 </code></pre><p>DLAGENT 顾名思义就是 Download Agent 的意思，这个字段指定了不同网络协议的下载工具和下载参数，默认是调用 curl 下载。现在只需要让 curl 通过 Proxy 而非直连的方式去下载 PKGBUILD 里设置的软件包即可。查看 curl 命令的参数用法</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -h | grep socks
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -h | grep socks
      --socks4 HOST[:PORT]  SOCKS4 proxy on given host + port
      --socks4a HOST[:PORT]  SOCKS4a proxy on given host + port
      --socks5 HOST[:PORT]  SOCKS5 proxy on given host + port

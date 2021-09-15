@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -58,7 +58,7 @@ StringBuffer variables may be declared as StringBuilder.</p>
 <!-- more -->
 <h4 id="charsequence">CharSequence</h4>
 <p>首先，String、StringBuilder 和 StringBuffer 都是实现的 CharSequence 接口。下面是 CharSequence 的源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#dc322f;font-weight:bold">package</span> <span style="color:#268bd2">java.lang</span>;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#dc322f;font-weight:bold">package</span> <span style="color:#268bd2">java.lang</span>;
 
 <span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">CharSequence</span> {
 
@@ -74,7 +74,7 @@ StringBuffer variables may be declared as StringBuilder.</p>
 </code></pre></div><p>CharSequence 抽象了 char 序列，提供了求序列长度的方法 length()，获取指定位置字符的方法 charAt()，截取子序列的方法 subSequence() 和转换为 String 型的方法 toString()。实际运用中，我们很少直接用等到 CharSequence，因为它的实现 String、StringBuffer 和 StringBuilder 满足绝大多数使用场景。</p>
 <h4 id="string">String</h4>
 <p>先看 JDK 里的源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#dc322f;font-weight:bold">package</span> <span style="color:#268bd2">java.lang</span>;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#dc322f;font-weight:bold">package</span> <span style="color:#268bd2">java.lang</span>;
 
 <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">String</span>
     <span style="color:#859900">implements</span> <span style="color:#268bd2">java</span>.<span style="color:#268bd2">io</span>.<span style="color:#268bd2">Serializable</span>, <span style="color:#268bd2">Comparable</span>&lt;<span style="color:#268bd2">String</span>&gt;, <span style="color:#268bd2">CharSequence</span> {
@@ -84,14 +84,14 @@ StringBuffer variables may be declared as StringBuilder.</p>
     <span style="color:#93a1a1;font-style:italic">/** Cache the hash code for the string */</span>
     <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">hash</span>; <span style="color:#93a1a1;font-style:italic">// Default to 0
 </span></code></pre></div><p>String 具有 immutable 特性，即不可变，一旦创建后就无法再被更改。String 变量被存储在内存的常量字符串池中。因为不可变对象都是线程安全的，所以 String 也是线程安全的。对 String 变量进行拼接、截取等操作后，原有的字符串对象保持不变，操作后得到的结果返回给新的 String 对象。值相同的 String 对象共享同一段内存池区域，即引用同一块内存地址。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
     <span style="color:#268bd2">String</span> <span style="color:#268bd2">nameA</span> = <span style="color:#2aa198">&#34;zhangsan&#34;</span>;
     <span style="color:#268bd2">String</span> <span style="color:#268bd2">nameB</span> = <span style="color:#2aa198">&#34;lisi&#34;</span>;
     <span style="color:#268bd2">String</span> <span style="color:#268bd2">nameC</span> = <span style="color:#2aa198">&#34;lisi&#34;</span>;
     <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#268bd2">nameB</span> == <span style="color:#268bd2">nameC</span>); <span style="color:#93a1a1;font-style:italic">// true
 </span><span style="color:#93a1a1;font-style:italic"></span>}
 </code></pre></div><p>但如果是通过 new 创建的 String 对象被分配在 heap 中，即使值一样，所引用的内存空间也是不同的。这里涉及到操作符 <code>==</code> 和方法 <code>equals()</code> 的区别，直接用代码说话：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
     <span style="color:#268bd2">String</span> <span style="color:#268bd2">a</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;hello world&#34;</span>);
     <span style="color:#268bd2">String</span> <span style="color:#268bd2">b</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">String</span>(<span style="color:#2aa198">&#34;hello world&#34;</span>);
     <span style="color:#268bd2">String</span> <span style="color:#268bd2">c</span> = <span style="color:#2aa198">&#34;hello world&#34;</span>;
@@ -104,14 +104,14 @@ StringBuffer variables may be declared as StringBuilder.</p>
 <p>关于上面的涉及到的 String 对象在内存中的分配，我在后边的一篇<a href="/2016/06/22/memory-model-of-string-in-java/">博客</a>中做了更新。</p>
 <h4 id="stringbuilder-和-stringbuffer">StringBuilder 和 StringBuffer</h4>
 <p>StringBuilder 和 StringBuffer 比较类似，就放在一起比较。二者都是继承了类 AbstractStringBuilder，和 String 不同，它们都是 mutable 的，随时可以改变值。StringBuffer 拥有和 StringBuilder 部分相同的方法，下面截取了 JDK 的源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">StringBuffer</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractStringBuilder</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"> <span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">StringBuffer</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractStringBuilder</span>
         <span style="color:#859900">implements</span> <span style="color:#268bd2">java</span>.<span style="color:#268bd2">io</span>.<span style="color:#268bd2">Serializable</span>, <span style="color:#268bd2">CharSequence</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">synchronized</span> <span style="color:#268bd2">StringBuffer</span> <span style="color:#268bd2">insert</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">offset</span>, <span style="color:#859900;font-weight:bold">char</span> <span style="color:#268bd2">c</span>) {
         <span style="color:#859900">super</span>.<span style="color:#268bd2">insert</span>(<span style="color:#268bd2">offset</span>, <span style="color:#268bd2">c</span>);
         <span style="color:#859900">return</span> <span style="color:#859900">this</span>;
     }
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">StringBuilder</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractStringBuilder</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">final</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">StringBuilder</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">AbstractStringBuilder</span>
         <span style="color:#859900">implements</span> <span style="color:#268bd2">java</span>.<span style="color:#268bd2">io</span>.<span style="color:#268bd2">Serializable</span>, <span style="color:#268bd2">CharSequence</span> {
     <span style="color:#859900">public</span> <span style="color:#268bd2">StringBuilder</span> <span style="color:#268bd2">insert</span>(<span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">offset</span>, <span style="color:#859900;font-weight:bold">char</span> <span style="color:#268bd2">c</span>) {
         <span style="color:#859900">super</span>.<span style="color:#268bd2">insert</span>(<span style="color:#268bd2">offset</span>, <span style="color:#268bd2">c</span>);

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -65,7 +65,7 @@
 <img src="https://o70e8d1kb.qnssl.com/Chain_of_responsibility__-2x.png" alt=""></p>
 <p>客户端的请求从责任链的根节点开始，依次往下执行，如果当前节点能胜任处理工作，则完成任务，否则将请求往下传递，直到到达能处理该请求的节点。下面编写一段简单的 Java 示例代码：</p>
 <p>先来一段又臭又长的代码，举个栗子</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">BullshitCode</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">BullshitCode</span> {
     <span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
         <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">cmd</span> = <span style="color:#268bd2">Integer</span>.<span style="color:#268bd2">parseInt</span>(<span style="color:#268bd2">args</span>[<span style="color:#268bd2">0</span>]);
         <span style="color:#859900">switch</span> (<span style="color:#268bd2">cmd</span>) {
@@ -89,7 +89,7 @@
 </code></pre></div><p>上面的代码没有什么实际意义，只是一种很具有代表性的写法，通过一长串的 <code>if-else</code> 逻辑去处理业务，导致所有可能的处理缓解都堆积杂糅在一块，设想一下如果新增了业务需求，是不是再往里面插一个 <code>if-else</code> 了事？总是用这种方式去写代码会让程序越来越臃肿，难以维护和扩展，尤其是当你接手别人的代码发现以百行计的 <code>if-else</code> 语句块时，你一定会一脸懵逼看不下去，沃泽法克什么鬼？！
 <img src="https://o70e8d1kb.qnssl.com/confused-face.png" alt=""></p>
 <p>升职加薪对码农而言，就像是马儿眼前的草，给不给草啊，难道又要马儿跑又要马儿不吃草，互联网公司好像还真这么想……说多了就是两行泪，上头的 Boss 和 HR 们层层把关，不是想加就能加。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 管理层抽象类
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 管理层抽象类
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">abstract</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Manager</span> {
     <span style="color:#859900">protected</span> <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">successor</span>;
 
@@ -103,7 +103,7 @@
     
     <span style="color:#859900">public</span> <span style="color:#859900">abstract</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">PromotionRequest</span> <span style="color:#268bd2">request</span>);
 }
-</code></pre></div><div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 抠门的管理人员
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// 抠门的管理人员
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">LittleBoss</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">Manager</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">handleRequest</span>(<span style="color:#268bd2">PromotionRequest</span> <span style="color:#268bd2">request</span>) {
         <span style="color:#859900">if</span> (<span style="color:#268bd2">request</span>.<span style="color:#268bd2">getRise</span> &lt;= <span style="color:#268bd2">1000</span>) {
@@ -134,7 +134,7 @@
     }
 }
 </code></pre></div><p>见过小中大领导后，我要提加薪申请了，看招！</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">static</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">main</span>(<span style="color:#268bd2">String</span>[] <span style="color:#268bd2">args</span>) {
     <span style="color:#268bd2">PromotionRequest</span> <span style="color:#268bd2">request</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">PromotionRequest</span>(<span style="color:#268bd2">5000</span>);
     <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">LittleManager</span> <span style="color:#268bd2">zhangsan</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">LittleManager</span>();
     <span style="color:#268bd2">Manager</span> <span style="color:#268bd2">MiddleManager</span> <span style="color:#268bd2">lisi</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">LittleManager</span>();
@@ -150,14 +150,14 @@
 <p>前面提到了京东陪伴计划对优惠券部分的业务的处理，比如客户端的优惠券展示，不同用户看到的可领优惠券是不同的，另外，后台配置的优惠券也是差异化的。因此优惠券的展示可能涉及到的维度有：业务类型，用户 ID，宝贝档案信息，券卡类型，用户等级，展示期，有效期，风控级别等，而且要有可扩展性，保不定哪天就要增加新维度。同样，优惠券的发放领取也涉及到类似的条件筛查。那重构前的代码是怎么处理的呢，其实就跟上一小节给出的那段又臭又长的代码一个样，就是不断的通过 <code>if-else</code> 去判断条件，如果符合了就予以展示或发放，不符合就舍去，这就是过程编程不好的地方，代码冗余，可重用性差，难以扩展。</p>
 <p>不难发现，上面的优惠券场景是适用于责任链模式的，因为优惠券展示/发放所涉及到的各个筛查条件都可以作为责任链上的节点，只是在这里，不能做原教旨主义者，需要对教科书上的责任链模式略作改动，在配置用于优惠券展示/发放的责任链后，优惠券信息经过责任链的处理时，当前的责任节点必须对请求进行处理，而不是原始的责任链模式中提到的只有一个节点作为处理者。换个说法，每张可能的优惠券从责任链的起始节点开始被筛查，如果结果是真则往下一节点继续筛查，否则中断筛查，抛弃该潜在优惠券。</p>
 <p>责任链节点对象，内有优惠券筛查处理器接口方法</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">CheckChainNode</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">interface</span> <span style="color:#cb4b16">CheckChainNode</span> {
     <span style="color:#93a1a1;font-style:italic">/**
 </span><span style="color:#93a1a1;font-style:italic">    * 通用检查处理器
 </span><span style="color:#93a1a1;font-style:italic">    */</span>
     <span style="color:#268bd2">BizResult</span> <span style="color:#268bd2">checkHandler</span>(<span style="color:#268bd2">BizParameter</span> <span style="color:#268bd2">param</span>);
 }
 </code></pre></div><p>责任链对象</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">CheckChain</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">CheckChain</span> {
     <span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#268bd2">Logger</span> <span style="color:#268bd2">logger</span> = <span style="color:#268bd2">LoggerFactory</span>.<span style="color:#268bd2">getLogger</span>(<span style="color:#268bd2">CheckChain</span>.<span style="color:#268bd2">class</span>);
     <span style="color:#859900">private</span> <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">CheckChainNode</span>&gt; <span style="color:#268bd2">checkList</span>;
 
@@ -198,7 +198,7 @@
     }
 }
 </code></pre></div><p>责任链节点的多种实现，分别对应不同的筛查条件</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Service</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;timeCheckHandlerNode&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Service</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;timeCheckHandlerNode&#34;</span>)
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">TimeCheckHandlerNode</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">CheckChainNode</span> {
     <span style="color:#268bd2">@Override</span>
     <span style="color:#859900">public</span> <span style="color:#268bd2">BizResult</span> <span style="color:#268bd2">checkHandler</span>(<span style="color:#268bd2">BizParameter</span> <span style="color:#268bd2">param</span>) {
@@ -229,7 +229,7 @@
 <span style="color:#268bd2">@Service</span>(<span style="color:#268bd2">value</span> = <span style="color:#2aa198">&#34;stockCheckHandlerNode&#34;</span>)
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">StockCheckHandlerNode</span> <span style="color:#859900">implements</span> <span style="color:#268bd2">CheckChainNode</span> {}
 </code></pre></div><p>Spring 配置优惠券筛查的责任链，注入检查链对象</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#93a1a1;font-style:italic">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#93a1a1;font-style:italic">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;beans</span> <span style="color:#268bd2">xmlns=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/beans&#34;</span>
        <span style="color:#268bd2">xmlns:xsi=</span><span style="color:#2aa198">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
        <span style="color:#268bd2">xsi:schemaLocation=</span><span style="color:#2aa198">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&#34;</span>

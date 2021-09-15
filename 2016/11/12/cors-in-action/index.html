@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -57,7 +57,7 @@
 <p>这次联调采用前后端分离的方式，后端由 Spring MVC 提供数据接口，前端通过异步的方式做数据渲染，和以往不同的是，由于前端开发全部交给深圳的凹凸实验室，所以静态文件都跑在独立的一个域名上，就是京东的通天塔项目。因此所有来自前端的请求都成了跨域请求。</p>
 <p>JSONP 确实是通过一种巧妙的伎俩解决了跨域请求被浏览器拒绝的问题，但是它并不能解决 POST 跨域，联调的接口是跨域上传头像，采用 POST 发送 FormData 对象的方式。所以由服务端 CORS 来处理。</p>
 <p>对于服务端，Spring MVC 设置 CORS 很简单，如果 springframework 版本是 4.2 及以上，Spring MVC 可以直接由注解 <code>@CrossOrigin</code> 对标记的控制器方法设置 CORS。例如下面的示例代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@CrossOrigin</span>(<span style="color:#268bd2">origins</span> = <span style="color:#2aa198">&#34;http://localhost:9000&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@CrossOrigin</span>(<span style="color:#268bd2">origins</span> = <span style="color:#2aa198">&#34;http://localhost:9000&#34;</span>)
 <span style="color:#268bd2">@GetMapping</span>(<span style="color:#2aa198">&#34;/greeting&#34;</span>)
 <span style="color:#859900">public</span> <span style="color:#268bd2">Greeting</span> <span style="color:#268bd2">greeting</span>(<span style="color:#268bd2">@RequestParam</span>(<span style="color:#268bd2">required</span>=<span style="color:#859900;font-weight:bold">false</span>, <span style="color:#268bd2">defaultValue</span>=<span style="color:#2aa198">&#34;World&#34;</span>) <span style="color:#268bd2">String</span> <span style="color:#268bd2">name</span>) {
     <span style="color:#268bd2">System</span>.<span style="color:#268bd2">out</span>.<span style="color:#268bd2">println</span>(<span style="color:#2aa198">&#34;==== in greeting ====&#34;</span>);
@@ -65,16 +65,16 @@
 }
 </code></pre></div><p><code>@CrossOrigin</code> 注解可以通过设置 <code>origins</code>、<code>methods</code>、<code>maxAge</code>、<code>allowHeaders</code>、<code>allowCredentials</code> 等参数来确定 CORS 接受跨域的来源域，请求类型，请求头等。如果 origins 设置为星号，则对所有来源域的请求都允许跨域，methods 设置为 POST 就只允许请求类型为 POST 的跨域请求。</p>
 <p>前端正常发送异步请求，类似如下代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">formData</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">FormData</span>();
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">formData</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">FormData</span>();
 <span style="color:#268bd2">formData</span>.<span style="color:#268bd2">append</span>(<span style="color:#2aa198">&#39;avatar&#39;</span>, <span style="color:#2aa198">&#39;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX/TQBcNTh/AAAAAXRSTlPM0jRW/QAAAApJREFUeJxjYgAAAAYAAzY3fKgAAAAASUVORK5CYII=&#39;</span>);
 <span style="color:#859900">var</span> <span style="color:#268bd2">req</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">XMLHttpRequest</span>();
 <span style="color:#268bd2">req</span>.<span style="color:#268bd2">open</span>(<span style="color:#2aa198">&#39;POST&#39;</span>, <span style="color:#2aa198">&#39;//xxx.jd.com/xxx/xxx&#39;</span>);
 <span style="color:#268bd2">req</span>.<span style="color:#268bd2">send</span>(<span style="color:#268bd2">fromData</span>);
 </code></pre></div><p>但是结果并不如人意，返回码 302，请求被强制跳转京东的统一登录，这就是一个问题点，因为上传头像要求登录状态，所以浏览器请求时必须带上本地的 cookies，如果是 JSONP 的方式，它默认会传递 cookies。所以需要将 XMLHttpRequest 的凭证信息标识位设为 true：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">req</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">XMLHttpRequest</span>();
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">var</span> <span style="color:#268bd2">req</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">XMLHttpRequest</span>();
 <span style="color:#268bd2">req</span>.<span style="color:#268bd2">withCredentials</span> = <span style="color:#859900;font-weight:bold">true</span>;
 </code></pre></div><p>这里有一点需要留意，如果请求带上了 cookies 那么服务端 CORS 的 origins 不能是 <code>*</code> 号，必须明确指定允许的来源 origin。再次联调测试，跨域还是失败了，看服务端日志发现，请求根本没有进入到 Controller 层，在登录拦截器里就被拒绝了。这是另外一个问题，因为 Spring MVC 设置了 interceptors，符合规则的请求都会被 interceptor 拦截，要么排除该跨域请求，但这是不可取，因为必须是登录用户才能进行的操作。所以需要在拦截器的 <code>preHandle()</code> 方法里进行处理，把来源域的加入到响应头的 <code>Access-Control-Allow-Origin</code> 字段中，同时设置 <code>Access-Control-Allow-Headers</code>：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">LoginInterceptor</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">HandlerInterceptorAdapter</span>{
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">LoginInterceptor</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">HandlerInterceptorAdapter</span>{
 	<span style="color:#93a1a1;font-style:italic">// before the actual handler will be executed
 </span><span style="color:#93a1a1;font-style:italic"></span>	<span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">preHandle</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">request</span>,
 		<span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">response</span>, <span style="color:#268bd2">Object</span> <span style="color:#268bd2">handler</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
@@ -89,7 +89,7 @@
 <p>XMLHttpRequest cannot load <a href="http://xxxp.jd.com/xxx/xxx">http://xxxp.jd.com/xxx/xxx</a>. Credentials flag is &lsquo;true&rsquo;, but the &lsquo;Access-Control-Allow-Credentials&rsquo; header is &lsquo;&rsquo;. It must be &lsquo;true&rsquo; to allow credentials. Origin &lsquo;<a href="http://h5.m.jd.com">http://h5.m.jd.com</a>&rsquo; is therefore not allowed access.</p>
 </blockquote>
 <p>这是第三个问题，POST 请求是标记了凭证信息标识位，但是服务端回传的响应头的 <code>Access-Control-Allow-Credentials</code> 字段却是空，而不是 <code>true</code>，解决办法显而易见了，设置 <code>HttpServletResponse</code> 响应字段为 <code>true</code> 即可：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">preHandle</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">request</span>,
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">boolean</span> <span style="color:#268bd2">preHandle</span>(<span style="color:#268bd2">HttpServletRequest</span> <span style="color:#268bd2">request</span>,
     <span style="color:#268bd2">HttpServletResponse</span> <span style="color:#268bd2">response</span>, <span style="color:#268bd2">Object</span> <span style="color:#268bd2">handler</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
         <span style="color:#268bd2">response</span>.<span style="color:#268bd2">addHeader</span>(<span style="color:#2aa198">&#34;Access-Control-Allow-Credentials&#34;</span>, <span style="color:#2aa198">&#34;true&#34;</span>);        
         <span style="color:#859900">return</span> <span style="color:#859900;font-weight:bold">true</span>;

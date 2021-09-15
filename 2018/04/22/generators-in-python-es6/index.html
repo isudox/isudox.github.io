@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -62,7 +62,7 @@
 <p>还有一个和 <code>generator</code> 紧密相关的概念是 <code>iterator</code>，简单的描述二者的关系就是──<code>generator</code> 实现的目的是生成一个 <code>iterator</code>，它是 <code>iterable</code> 的，也就是说是可以循环遍历的。</p>
 <h2 id="es6">ES6</h2>
 <p>JavaScript ES6 的 <code>generator</code> 和普通函数相比，最明显的不同在于它的关键字包含星号 <code>*</code> 和 <code>yield</code>，比如 MDN 文档上的代码示例：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">function</span>* <span style="color:#268bd2">generator</span>(<span style="color:#268bd2">i</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">function</span>* <span style="color:#268bd2">generator</span>(<span style="color:#268bd2">i</span>) {
   <span style="color:#859900">yield</span> <span style="color:#268bd2">i</span>;
   <span style="color:#859900">yield</span> <span style="color:#268bd2">i</span> + <span style="color:#2aa198;font-weight:bold">10</span>;
 }
@@ -83,13 +83,13 @@
 </ol>
 <p>可以预料的，如果第三次调用 <code>gen.next().value</code> 得到的会是 <code>undefined</code>，因为这个 <code>generator</code> 在第二次调用时已经结束了所有断点完成了“生成”的任务。</p>
 <p>注意到 <code>next()</code> 方法，它返回的是一个包含两个属性的 JSON 对象：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
   <span style="color:#268bd2">value</span>: <span style="color:#268bd2">object</span>,
   <span style="color:#268bd2">done</span>: <span style="color:#859900">boolean</span>
 }
 </code></pre></div><p>value 即 <code>generator</code> 创建的 <code>iterator</code> 里的元素，done 则表示该 <code>iterator</code> 是否结束。</p>
 <p>再来看 <code>generator</code> 的经典场景，生成 Fibonacci 数列。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// generator pattern
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// generator pattern
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">function</span>* <span style="color:#268bd2">genFib</span>(<span style="color:#268bd2">n</span>) {
   <span style="color:#859900">yield</span> <span style="color:#268bd2">a</span> = <span style="color:#2aa198;font-weight:bold">0</span>
   <span style="color:#268bd2">b</span> = <span style="color:#2aa198;font-weight:bold">1</span>
@@ -108,7 +108,7 @@
 }
 </code></pre></div><p>由之前的过程分析，这个 Fibonacci 数列生成过程就非常好理解了。
 换个写法，如果是普通的循环迭代生成 Fibonacci 数列，一般就是类似下面代码的形式。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// loop pattern
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#93a1a1;font-style:italic">// loop pattern
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">function</span> <span style="color:#268bd2">genFib</span>(<span style="color:#268bd2">n</span>) {
   <span style="color:#859900">let</span> <span style="color:#268bd2">a</span> = <span style="color:#2aa198;font-weight:bold">0</span>
   <span style="color:#859900">let</span> <span style="color:#268bd2">b</span> = <span style="color:#2aa198;font-weight:bold">1</span>
@@ -125,7 +125,7 @@
 </code></pre></div><p>乍一看两者似乎只是写法上的不同，实际运行速度因为样本数量级太小也比较不出差异。但仔细观察，就不难发现，第二种循环迭代的写法会把结果全部存储在内存中，只有当它完全生成后，才会返回；而第一种生成器的写法，每次只会生成一个元素并立刻返回。当数量 n 很大时，<code>generator</code> 的资源和性能收益就很可观了。</p>
 <p>JavaScript 就像一匹脱缰的野马，语法实在是太灵活了，有好多写法会让程序员觉得怪异，就比如 <code>yield*</code> 的用法，这个表达式其实是用来将一个 <code>generator</code> 委托给另一个 <code>generator</code>，笑 cry……</p>
 <p>比如前面的例子里，<code>generator</code> 是赋给一个普通变量，而 <code>yield* [[expression]]</code> 则是将右侧表达式的 <code>generator</code> 的每个元素都做一次 <code>yield</code>。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">function</span>* <span style="color:#268bd2">gen1</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#859900">function</span>* <span style="color:#268bd2">gen1</span>() {
   <span style="color:#859900">yield</span> <span style="color:#2aa198;font-weight:bold">1</span>;
   <span style="color:#859900">yield</span> <span style="color:#2aa198;font-weight:bold">2</span>;
   <span style="color:#859900">yield</span> <span style="color:#2aa198;font-weight:bold">3</span>;
@@ -142,7 +142,7 @@
 <p>理解了 JavaScript ES6 里的 <code>generator</code>，对 redux-saga 状态管理的理解就比较轻松了，后面有时间了再写关于 redux-saga 的内容。</p>
 <h2 id="python">Python</h2>
 <p>Python 中的 <code>generator</code> 和 JavaScript 的实现基本是相同的。还是用 Fibonacci 举例。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">gen_fib</span>(<span style="color:#268bd2">n</span>):
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">gen_fib</span>(<span style="color:#268bd2">n</span>):
     <span style="color:#859900">yield</span> <span style="color:#2aa198;font-weight:bold">0</span>
     <span style="color:#268bd2">a</span>, <span style="color:#268bd2">b</span> = <span style="color:#2aa198;font-weight:bold">0</span>, <span style="color:#2aa198;font-weight:bold">1</span>
 
@@ -156,7 +156,7 @@
 </code></pre></div><p>Python 版本只是增加了 <code>yield</code> 关键字，并没有在函数声明的地方设计 <code>*</code> 来表征 <code>generator</code>。
 之前的博客<a href="/2016/10/26/python-generator-guide/">理解 Python 生成器</a> 写的很浅，这里试着从 Magic Method 着手更深入的写写。</p>
 <p>Python 内置了一些由双下划线包裹、被称为 Magic Method 的特殊方法，像常用的 <code>__init__</code>，<code>__new__</code>，<code>__str__</code>。这些 Magic Method 设计的初衷是为了描述对象的内在行为，而无需外部显性调用。比如我们声明一个对象，并编写它的 <code>__init__</code> 方法：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Book</span>:
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">class</span> <span style="color:#cb4b16">Book</span>:
 
     <span style="color:#859900">def</span> <span style="color:#268bd2">__init__</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">name</span>, <span style="color:#268bd2">author</span>):
         <span style="color:#268bd2">self</span>.<span style="color:#268bd2">name</span> = <span style="color:#268bd2">name</span>

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -77,7 +77,7 @@
 <ol>
 <li>client 向 server 发起握手请求，会先发送一个表明协议和方法的消息，格式如下：</li>
 </ol>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">+----+----------+----------+
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">+----+----------+----------+
 |VER | NMETHODS | METHODS  |
 +----+----------+----------+
 | 1  |    1     | 1 to 255 |
@@ -96,20 +96,20 @@
 <ol start="2">
 <li>server 接收到 client 的连接请求后，会选择一个 method，返回给 client 一个 method-selection 消息，格式如下：</li>
 </ol>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">+----+--------+
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">+----+--------+
 |VER | METHOD |
 +----+--------+
 | 1  |   1    |
 +----+--------+
 </code></pre></div><p>同样的，VER 表示协议版本，METHOD 表示选定的方法，1 字节，各枚举值含义如下：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">X&#39;00&#39; NO AUTHENTICATION REQUIRED
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">X&#39;00&#39; NO AUTHENTICATION REQUIRED
 X&#39;01&#39; GSSAPI
 X&#39;02&#39; USERNAME/PASSWORD
 X&#39;03&#39; to X&#39;7F&#39; IANA ASSIGNED
 X&#39;80&#39; to X&#39;FE&#39; RESERVED FOR PRIVATE METHODS
 X&#39;FF&#39; NO ACCEPTABLE METHODS
 </code></pre></div><p>在上面这个请求-响应过程，数据包可能类似下面的情况——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">                    VER     NMETHODS    METHODS
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">                    VER     NMETHODS    METHODS
 client -&gt; server:   X&#39;05&#39;   X&#39;01&#39;       X&#39;00&#39;
                     VER     METHOD
 server -&gt; client:   X&#39;05&#39;   X&#39;00&#39;
@@ -126,7 +126,7 @@ server -&gt; client:   X&#39;05&#39;   X&#39;FF&#39;
 </code></pre></div><ol start="3">
 <li>完成 method-dependent 的握手后，client 和 server 开始建立连接。client 再向 server 发起请求，格式如下：</li>
 </ol>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">+----+-----+-------+------+----------+----------+
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">+----+-----+-------+------+----------+----------+
 |VER | CMD |  RSV  | ATYP | DST.ADDR | DST.PORT |
 +----+-----+-------+------+----------+----------+
 | 1  |  1  | X&#39;00&#39; |  1   | Variable |    2     |
@@ -176,7 +176,7 @@ server -&gt; client:   X&#39;05&#39;   X&#39;FF&#39;
 <ol start="4">
 <li>server 收到上面的请求后，向 client 发送 reply 消息，reply 的结构如下：</li>
 </ol>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">+----+-----+-------+------+----------+----------+
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">+----+-----+-------+------+----------+----------+
 |VER | REP |  RSV  | ATYP | BND.ADDR | BND.PORT |
 +----+-----+-------+------+----------+----------+
 | 1  |  1  | X&#39;00&#39; |  1   | Variable |    2     |
@@ -191,7 +191,7 @@ server -&gt; client:   X&#39;05&#39;   X&#39;FF&#39;
 </li>
 </ul>
 <p>这个阶段，client 和 server 之间的请求-响应可能是如下情形，以访问 127.0.0.1:8080 为例：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">                    VER     CMD     RSV     ATYP    DST.ADDR                    DST.PORT
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">                    VER     CMD     RSV     ATYP    DST.ADDR                    DST.PORT
 client -&gt; server:   X&#39;05&#39;   X&#39;01&#39;   X&#39;00&#39;   X&#39;01&#39;   X&#39;7F&#39; X&#39;00&#39; X&#39;00&#39; X&#39;01&#39;     X&#39;1F&#39; X&#39;90&#39;
                     VER     REP     RSV     ATYP    BND.ADDR                    BND.PORT
 server -&gt; client:   X&#39;05&#39;   X&#39;00&#39;   X&#39;00&#39;   X&#39;01&#39;   X&#39;00&#39; X&#39;00&#39; X&#39;00&#39; X&#39;00&#39;     X&#39;10&#39; X&#39;10&#39;
@@ -236,12 +236,12 @@ server -&gt; client:   X&#39;05&#39;   X&#39;00&#39;   X&#39;00&#39;   X&#39;01&
 <li><strong>加轮密钥</strong></li>
 </ul>
 <p>这个操作相对简单，其依据的原理是 X ⊕ X = 0，X ⊕ 0 = X。加密过程中，每轮的输入与轮子密钥异或一次；因此，解密时再异或上该轮的轮子密钥即可恢复。即：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">encrypt: input ⊕ round_key = output, decrypt: output ⊕ round_key = input
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">encrypt: input ⊕ round_key = output, decrypt: output ⊕ round_key = input
 （input ⊕ round_key ⊕ round_key = input ⊕ 0 = input）
 </code></pre></div><h1 id="socks5-proxy-的简陋实现">socks5 proxy 的简陋实现</h1>
 <p>这里没有用 AES 加密，二是最简单的码表映射。</p>
 <p>按 socks 协议，本地的 socks server 的处理逻辑如下（远端的 socks server 类似，加解密顺序有区别）：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">handle</span>(<span style="color:#268bd2">self</span>):
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">def</span> <span style="color:#268bd2">handle</span>(<span style="color:#268bd2">self</span>):
     <span style="color:#93a1a1;font-style:italic"># 初始化本地 socks server</span>
     <span style="color:#268bd2">sock</span> = <span style="color:#268bd2">self</span>.<span style="color:#268bd2">connection</span>
     <span style="color:#268bd2">sock</span>.<span style="color:#268bd2">recv</span>(<span style="color:#2aa198;font-weight:bold">262</span>)
@@ -294,7 +294,7 @@ server -&gt; client:   X&#39;05&#39;   X&#39;00&#39;   X&#39;00&#39;   X&#39;01&
 </li>
 </ul>
 <p>参考下面的示例——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">encrypt_table</span> = <span style="color:#2aa198">&#39;&#39;</span>.<span style="color:#268bd2">join</span>(<span style="color:#268bd2">utils</span>.<span style="color:#268bd2">init_table</span>(<span style="color:#268bd2">KEY</span>))
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">encrypt_table</span> = <span style="color:#2aa198">&#39;&#39;</span>.<span style="color:#268bd2">join</span>(<span style="color:#268bd2">utils</span>.<span style="color:#268bd2">init_table</span>(<span style="color:#268bd2">KEY</span>))
 <span style="color:#268bd2">decrypt_table</span> = <span style="color:#268bd2">string</span>.<span style="color:#268bd2">maketrans</span>(<span style="color:#268bd2">encrypt_table</span>, <span style="color:#268bd2">string</span>.<span style="color:#268bd2">maketrans</span>(<span style="color:#2aa198">&#39;&#39;</span>, <span style="color:#2aa198">&#39;&#39;</span>))
 
 <span style="color:#859900">def</span> <span style="color:#268bd2">handle_tcp</span>(<span style="color:#268bd2">self</span>, <span style="color:#268bd2">sock</span>, <span style="color:#268bd2">remote</span>):

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -68,12 +68,12 @@
 <h3 id="travis-关联-github">Travis 关联 GitHub</h3>
 <p>首先要让 Travis 监听 GitHub 的更新，打开 Travis，选择要监听的 GitHub 仓库，选中后记得勾选 &ldquo;Build only if .travis.yml is present&rdquo; 和 &ldquo;Build pushes&rdquo; 两个选项。</p>
 <p>Travis 要有更改 GitHub 仓库的权限，因此还要到 GitHub 那为 Travis 设置权限 key。打开上面所关联的 GitHub 仓库的 Settings，在 Deploy keys 选项中，为 Travis 添加 SSH key。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># 生成 ssh key 私钥公钥对，无需 passphrase</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#93a1a1;font-style:italic"># 生成 ssh key 私钥公钥对，无需 passphrase</span>
 ssh-keygen -t rsa -C <span style="color:#2aa198">&#34;your_email@example.com&#34;</span>
 </code></pre></div><p>然后讲 SSH 公钥 <code>id_rsa.pub</code> 粘贴到 Deploy key 中，如下图示——</p>
 <p><img src="https://o70e8d1kb.qnssl.com/deploy-key.png" alt="deploy-key"></p>
 <p>接下来就是将 SSH 私钥赋给 Travis，参考下面的操作：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">travis encrypt-file ~/.ssh/id_rsa --add
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">travis encrypt-file ~/.ssh/id_rsa --add
 </code></pre></div><p>Travis 命令行工具会根据私钥自动匹配到对应的 GitHub 仓库，控制台会得到类似如下回显——</p>
 <blockquote>
 <p>Detected repository as isudox/isudox.github.io, is this correct? |yes|
@@ -87,34 +87,34 @@ Commit all changes to your .travis.yml.</p>
 <p>对 Travis 添加私钥后，就能在 Travis 网站上看到新增的环境变量配置，如下图示——</p>
 <p><img src="https://o70e8d1kb.qnssl.com/travis-env-var.png" alt="travis-environment-variables"></p>
 <p>上面的操作会对私钥再次加密，并在当前路径下生成加密文件 <code>id_rsa.enc</code>，同时在当前路径下的 <code>.travis.yml</code> 配置中添加一条解密命令——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl aes-256-cbc -K <span style="color:#268bd2">$encrypted_xxx_key</span> -iv <span style="color:#268bd2">$encrypted_xxx_iv</span> -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl aes-256-cbc -K <span style="color:#268bd2">$encrypted_xxx_key</span> -iv <span style="color:#268bd2">$encrypted_xxx_iv</span> -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
 </code></pre></div><p>然后对加密文件解密，存放在 <code>~/.ssh/</code> 下，并配置 <code>~/.ssh/config</code> 指定要使用的私钥文件，这些操作和普通的 SSH 操作是一致的，很易懂。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Set the permission of the key</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Set the permission of the key</span>
 chmod <span style="color:#2aa198;font-weight:bold">600</span> ~/.ssh/id_rsa
 <span style="color:#93a1a1;font-style:italic"># Start SSH agent</span>
 <span style="color:#cb4b16">eval</span> <span style="color:#859900">$(</span>ssh-agent<span style="color:#859900">)</span>
 <span style="color:#93a1a1;font-style:italic"># Add the private key to the system</span>
 ssh-add ~/.ssh/id_rsa
 </code></pre></div><p>下面是 <code>~/.ssh/config</code> 的参考——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Host github.com
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">Host github.com
   HostName github.com
   User git
   StrictHostKeyChecking no
   IdentityFile ~/.ssh/id_rsa
   IdentitiesOnly yes
 </code></pre></div><p>Push 到 GitHub 前还得对 Git 的全局参数进行配置，例如 username 和 email 信息——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Set Git config</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Set Git config</span>
 git config --global user.name <span style="color:#2aa198">&#39;sudoz&#39;</span>
 git config --global user.email <span style="color:#2aa198">&#39;me@isudox.com&#39;</span>
 </code></pre></div><p>剩下的工作就都是 Hexo 的操作了，安装依赖，构建静态文件，部署静态站点——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Install Hexo</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic"># Install Hexo</span>
 npm install hexo-cli -g
 npm install
 
 hexo generate
 hexo deploy
 </code></pre></div><h3 id="travisyml-配置">travis.yml 配置</h3>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#268bd2;font-weight:bold">language</span>: <span style="color:#2aa198">node_js</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#268bd2;font-weight:bold">language</span>: <span style="color:#2aa198">node_js</span>
 
 <span style="color:#268bd2;font-weight:bold">node_js</span>:
   - <span style="color:#2aa198">&#39;6&#39;</span>
@@ -139,7 +139,7 @@ hexo deploy
   <span style="color:#268bd2;font-weight:bold">on</span>:
     <span style="color:#268bd2;font-weight:bold">branch</span>: <span style="color:#2aa198">source</span>
 </code></pre></div><p>Travis deploy script 参考如下——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic">#!/bin/bash
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#93a1a1;font-style:italic">#!/bin/bash
 </span><span style="color:#93a1a1;font-style:italic"></span>
 <span style="color:#93a1a1;font-style:italic"># Decrypt the private key</span>
 openssl aes-256-cbc -K <span style="color:#268bd2">$encrypted_xxx_key</span> -iv <span style="color:#268bd2">$encrypted_xxx_iv</span> -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
@@ -166,7 +166,7 @@ npm run deploy
 <h3 id="vps-定时更新静态站内容">VPS 定时更新静态站内容</h3>
 <p>Travis CI 完成集成工作后，VPS 就能从 GitHub 上拉取更新了。之前我的方案是在 VPS 上也搭建一个 Git Repo，本地将改动同时 commit 到 GitHub 和 VPS 上的 Repo，触发 VPS Git Repo 的 Hook 事件，将更新拉取并复制静态站全部内容到 Nginx 站点路径下。这次改版不打算沿用之前的方案了，虽然这种 Hook 触发事件很及时高效。我打算使用 Linux 自带的 Crontab 定时任务功能。</p>
 <p>Crontab 的使用很简单，将可执行的脚本或命令通过 <code>crontab -e</code> 写入系统用户的定时任务中即可。我设置的是每小时执行一次 <code>git pull</code> 操作。写法如下：</p>
-<pre><code># m h  dom mon dow   command
+<pre tabindex="0"><code># m h  dom mon dow   command
 0 * * * * su -s /bin/sh root -c 'cd /usr/share/nginx/html/isudox.github.io &amp;&amp; /usr/bin/git pull -q origin master'
 </code></pre><p>如果不确定命令行是否生效，可以在控制台里执行下上面的 shell 脚本。</p>
 </div>

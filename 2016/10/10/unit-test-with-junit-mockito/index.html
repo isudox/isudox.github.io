@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -61,9 +61,9 @@
 <p>PS: 虽然 <a href="http://junit.org/junit5/">JUnit5</a> 已经发布，但目前使用最多的还是 JUnit4，所以本文仍然基于 JUnit4。</p>
 </blockquote>
 <p>利用 Maven 初始化一个简单的 Java 应用：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mvn archetype:generate -DgroupId=com.isudox -DartifactId=test-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=<span style="color:#cb4b16">false</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mvn archetype:generate -DgroupId=com.isudox -DartifactId=test-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=<span style="color:#cb4b16">false</span>
 </code></pre></div><p>Maven 会自动创建好类文件和测试类，路径如下：</p>
-<pre><code>test-demo
+<pre tabindex="0"><code>test-demo
 ├── pom.xml       ---- pom 依赖配置文件
 └── src           ---- 源码路径
     ├── main      ---- 类文件
@@ -77,7 +77,7 @@
                 └── isudox
                     └── AppTest.java
 </code></pre><p>在 pom.xml 中引入 JUnit4，</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;dependencies&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;dependencies&gt;</span>
     <span style="color:#93a1a1;font-style:italic">&lt;!-- junit4 --&gt;</span>
     <span style="color:#268bd2;font-weight:bold">&lt;dependency&gt;</span>
         <span style="color:#268bd2;font-weight:bold">&lt;groupId&gt;</span>junit<span style="color:#268bd2;font-weight:bold">&lt;/groupId&gt;</span>
@@ -87,7 +87,7 @@
     <span style="color:#268bd2;font-weight:bold">&lt;/dependency&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;/dependencies&gt;</span>
 </code></pre></div><p>引入 JUnit 依赖后，就能在测试类中，通过 JUnit 提供的注解和静态方法，对接口进行测试了。先编写一个简单的待测试类 Calculator.java</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// App.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// App.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Calculator</span> {
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">evaluate</span>(<span style="color:#268bd2">String</span> <span style="color:#268bd2">expression</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
         <span style="color:#859900">if</span> (<span style="color:#268bd2">expression</span> == <span style="color:#859900;font-weight:bold">null</span>)
@@ -99,7 +99,7 @@
     }
 }
 </code></pre></div><p>然后在 src/test/ 路径下创建同样的包，将测试类命名为 CalculatorTest.java，如果是用 IntelliJ IDEA，可以直接在待测试类下通过快捷键 Ctrl+Shift+T 生成对应的测试类——</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// CalculatorTest.java
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#93a1a1;font-style:italic">// CalculatorTest.java
 </span><span style="color:#93a1a1;font-style:italic"></span><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">org.junit.Test</span>;
 <span style="color:#dc322f;font-weight:bold">import static</span> <span style="color:#268bd2">org.junit.Assert.*</span>;
 
@@ -120,7 +120,7 @@
 <li><code>@Ignore</code> 注解的作用是使被标记方法暂时不执行。</li>
 </ul>
 <p>参考下面这段代码的运行：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">org.junit.*</span>;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">org.junit.*</span>;
 <span style="color:#dc322f;font-weight:bold">import static</span> <span style="color:#268bd2">org.junit.Assert.*</span>;
 
 <span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">CalculatorTest</span> {
@@ -170,7 +170,7 @@
 
 }
 </code></pre></div><p>测试结果如下，从输出结果可以印证不同注解对执行顺序的影响：</p>
-<pre><code>BeforeClass
+<pre tabindex="0"><code>BeforeClass
 Constructor
 Before
 Test idiot
@@ -182,7 +182,7 @@ After
 AfterClass
 </code></pre><p>另外，每个测试方法执行时都会实例化一次测试类，JUnit 这样处理的原因是保证每个测试方法彼此独立互不干扰。</p>
 <p>对于 <code>@Test</code> 注解标记的方法，<code>@Test</code> 支持两个参数的设置：<code>timeout</code> 和 <code>expected</code>。前者是设置待测方法的执行超时时间，后者是设置对待测方法期望的抛出异常。修改 <code>evaluate</code> 测试方法的注解：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Test</span>(<span style="color:#268bd2">timeout</span> = <span style="color:#268bd2">100</span>, <span style="color:#268bd2">expected</span> = <span style="color:#268bd2">Exception</span>.<span style="color:#268bd2">class</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Test</span>(<span style="color:#268bd2">timeout</span> = <span style="color:#268bd2">100</span>, <span style="color:#268bd2">expected</span> = <span style="color:#268bd2">Exception</span>.<span style="color:#268bd2">class</span>)
 <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">evaluate</span>() <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
     <span style="color:#268bd2">Calculator</span> <span style="color:#268bd2">calculator</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Calculator</span>();
     <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">sum</span> = <span style="color:#268bd2">calculator</span>.<span style="color:#268bd2">evaluate</span>(<span style="color:#859900;font-weight:bold">null</span>);
@@ -196,14 +196,14 @@ AfterClass
 <p><img src="https://o70e8d1kb.qnssl.com/mockito.webp" alt=""></p>
 <p>首先在 pom.xml 中导入 mockito 依赖，</p>
 <p>pom.xml 依赖中添加 Mockito：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;dependency&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2;font-weight:bold">&lt;dependency&gt;</span>
     <span style="color:#268bd2;font-weight:bold">&lt;groupId&gt;</span>org.mockito<span style="color:#268bd2;font-weight:bold">&lt;/groupId&gt;</span>
     <span style="color:#268bd2;font-weight:bold">&lt;artifactId&gt;</span>mockito-core<span style="color:#268bd2;font-weight:bold">&lt;/artifactId&gt;</span>
     <span style="color:#268bd2;font-weight:bold">&lt;version&gt;</span>2.2.0<span style="color:#268bd2;font-weight:bold">&lt;/version&gt;</span>
     <span style="color:#268bd2;font-weight:bold">&lt;scope&gt;</span>test<span style="color:#268bd2;font-weight:bold">&lt;/scope&gt;</span>
 <span style="color:#268bd2;font-weight:bold">&lt;/dependency&gt;</span>
 </code></pre></div><p>再静态导入 <code>org.mockito.Mockito.*;</code> 里的静态方法，这样就能在测试方法进行对象的 Mock。Mockito 支持通过静态方法 <code>mock()</code> 来 Mock 对象，或者通过 <code>@Mock</code> 注解，来创建 Mock 对象，但必须将其实例化。先演示下如何 Mock 对象：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#dc322f;font-weight:bold">import static</span> <span style="color:#268bd2">org.mockito.Mockito.*</span>;
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#dc322f;font-weight:bold">import static</span> <span style="color:#268bd2">org.mockito.Mockito.*</span>;
 
 <span style="color:#268bd2">@Test</span>
 <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">mockIterator</span>() {
@@ -216,7 +216,7 @@ AfterClass
 <p>同理，也可以 Mock 网络请求，比如 <code>HttpServletRequest</code> 里的参数，也可以通过上面的方式来设定被 Mock 的源对象的表现行为。</p>
 <p>对于 <code>when()</code> 不定条件，Mockito 定义了 <code>any()</code>、 <code>anyInt()</code>、<code>anyString()</code>、<code>anySet()</code> 等方法来匹配指定类型的不定输入，<code>anyInt()</code> 匹配 int 参数，<code>anyString()</code> 匹配 String 参数, <code>any()</code> 匹配 任意类型的参数。如果需要匹配自定义的类型，可以通过 <code>any(CustomedClass.class)</code> 来配置。</p>
 <p><code>thenReturn()</code> 返回的是一个确定值，这在模拟可见的行为时是没问题的，但有时候，我们需要得到一个复杂的不定输出的行为，比如返回一个回调方法，或者返回一个类实例，Mockito 可以通过 <code>thenAnswer()</code> 来实现。参考 StackOverflow 上的这篇问答 <a href="http://stackoverflow.com/questions/36615330/mockito-thenanswer-vs-thenreturn">Mockito : thenAnswer Vs thenReturn</a>。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#268bd2">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#268bd2">@Test</span>
 <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">count</span>() <span style="color:#859900">throws</span> <span style="color:#268bd2">Exception</span> {
     <span style="color:#268bd2">Duplicator</span> <span style="color:#268bd2">counter</span> = <span style="color:#268bd2">mock</span>(<span style="color:#268bd2">Counter</span>.<span style="color:#268bd2">class</span>);
     <span style="color:#268bd2">Answer</span>&lt;<span style="color:#268bd2">Integer</span>&gt; <span style="color:#268bd2">answer</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">Answer</span>&lt;<span style="color:#268bd2">Integer</span>&gt;() {
@@ -235,7 +235,7 @@ AfterClass
 <li><code>callRealMethod()</code> 接口返回实际的调用方法；</li>
 </ul>
 <p>上面的例子已经说明了 Mockito 能跟踪被 Mock 对象所有的方法调用和它们的入参。除了对方法调用结果是否正确的测试，有时还需要验证一些方法的行为，比如验证方法被调用的次数，验证方法的入参等，Mockito 通过 <code>verify()</code> 方法实现这些场景的测试需求。这被称为“行为测试”。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Test</span>
 <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">testVerify</span>() {
     <span style="color:#268bd2">Duplicator</span> <span style="color:#268bd2">mock</span> = <span style="color:#268bd2">mock</span>(<span style="color:#268bd2">Duplicator</span>.<span style="color:#268bd2">class</span>);
     <span style="color:#268bd2">when</span>(<span style="color:#268bd2">mock</span>.<span style="color:#268bd2">getUniqueId</span>()).<span style="color:#268bd2">thenReturn</span>(<span style="color:#268bd2">43</span>);
@@ -253,7 +253,7 @@ AfterClass
 }
 </code></pre></div><p><code>verify()</code> 内的条件设置简洁明了，第一个参数是 mock 对象，第二个参数可选，作为状语描述，从方法的名称上就能知道具体的用法，不多赘述了。</p>
 <p>Mockito 支持通过 <code>@Spy</code> 注解或 <code>spy()</code> 方法包裹实际对象，除非明确指定对象，否则都会调用包裹后的对象。这种方式实现了对实际对象的部分自定义修改。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Test</span>
 <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">testSpy</span>() {
     <span style="color:#268bd2">List</span>&lt;<span style="color:#268bd2">String</span>&gt; <span style="color:#268bd2">spyList</span> = <span style="color:#268bd2">spy</span>(<span style="color:#859900">new</span> <span style="color:#268bd2">ArrayList</span>&lt;<span style="color:#268bd2">String</span>&gt;());
 
@@ -263,7 +263,7 @@ AfterClass
     <span style="color:#268bd2">assertEquals</span>(<span style="color:#268bd2">100</span>, <span style="color:#268bd2">spyList</span>.<span style="color:#268bd2">size</span>());
 }
 </code></pre></div><p>上面的测试代码中，<code>spy()</code> 修改了 <code>ArrayList</code> 对象的 <code>size()</code>。但是如果只是在执行某个操作是返回一个期望值，用之前的 <code>mock()</code> 也能实现，<code>spy()</code> 存在的理由是什么，看下面的代码能解释二者之间的差异：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#268bd2">@Test</span>
 <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">differMockSpy</span>() {
     <span style="color:#268bd2">List</span> <span style="color:#268bd2">mock</span> = <span style="color:#268bd2">mock</span>(<span style="color:#268bd2">ArrayList</span>.<span style="color:#268bd2">class</span>);
     <span style="color:#268bd2">mock</span>.<span style="color:#268bd2">add</span>(<span style="color:#2aa198">&#34;one&#34;</span>);
@@ -283,7 +283,7 @@ AfterClass
 <li><strong>Field injection</strong>：同样首先根据域的类型（如果类型匹配则忽略变量名），如果有多个匹配项，则选择 mock 名和域名相同的变量进行注入。</li>
 </ul>
 <p>参考下面的样例代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ArticleManagerTest</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">SampleBaseTestCase</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ArticleManagerTest</span> <span style="color:#859900">extends</span> <span style="color:#268bd2">SampleBaseTestCase</span> {
     <span style="color:#268bd2">@Mock</span>
     <span style="color:#859900">private</span> <span style="color:#268bd2">ArticleCalculator</span> <span style="color:#268bd2">calculator</span>;
     <span style="color:#268bd2">@Mock</span>(<span style="color:#268bd2">name</span> = <span style="color:#2aa198">&#34;database&#34;</span>)
@@ -309,13 +309,13 @@ AfterClass
 }
 </code></pre></div><p>上面代码中，<code>@InjectMocks</code> 注解会把 mock 出来的 <code>dbMock</code> 和 <code>calculator</code> 注入进 <code>manager</code> 中。<code>ArticleManager</code> 可以只有一个有参构造函数，或者只有无参构造器，或者都有。需要注意的是，Mockito 无法实例化 inner class、local class、abstract class 和 interface。</p>
 <p>对需要注入的域，Constructor injection 会发生在下面的代码中：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ArticleManager</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ArticleManager</span> {
     <span style="color:#268bd2">ArticleManager</span>(<span style="color:#268bd2">ArticleCalculator</span> <span style="color:#268bd2">calculator</span>, <span style="color:#268bd2">ArticleDatabase</span> <span style="color:#268bd2">database</span>) {
         <span style="color:#93a1a1;font-style:italic">// parameterized constructor
 </span><span style="color:#93a1a1;font-style:italic"></span>    }
 }
 </code></pre></div><p>Property setter injection 在下面的代码中完成：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ArticleManager</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ArticleManager</span> {
     <span style="color:#93a1a1;font-style:italic">// no-arg constructor
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">ArticleManager</span>() {  }
 
@@ -326,7 +326,7 @@ AfterClass
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">setCalculator</span>(<span style="color:#268bd2">ArticleCalculator</span> <span style="color:#268bd2">calculator</span>) { }
 }
 </code></pre></div><p>Field injection：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ArticleManager</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">ArticleManager</span> {
     <span style="color:#859900">private</span> <span style="color:#268bd2">ArticleDatabase</span> <span style="color:#268bd2">database</span>;
     <span style="color:#859900">private</span> <span style="color:#268bd2">ArticleCalculator</span> <span style="color:#268bd2">calculator</span>;
 }

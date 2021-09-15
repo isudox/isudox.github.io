@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -67,7 +67,7 @@
 <p>发生 FGC 首先想到的是老年代使用空间超限，下图是 FGC 发生时，老年代的使用情况监控：</p>
 <p><img src="/images/689270419.png" alt=""></p>
 <p>可以看到，在 FGC 时老年代使用率并不高，处在正常水平，远远没有到达触发 FGC 的阈值。loader 模块的 jvm 主要参数有：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-Xmx4g
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-Xmx4g
 -Xms4g
 -XX:NewRatio=2
 -XX:SurvivorRatio=8
@@ -126,7 +126,7 @@
 </ol>
 <h2 id="代码分析">代码分析</h2>
 <p>下面是 loader 模块中，动态解析 groovy 脚本的代码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">if</span> (<span style="color:#268bd2">StringUtils</span>.<span style="color:#268bd2">isNotEmpty</span>(<span style="color:#268bd2">cleanRule</span>)) {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">if</span> (<span style="color:#268bd2">StringUtils</span>.<span style="color:#268bd2">isNotEmpty</span>(<span style="color:#268bd2">cleanRule</span>)) {
     <span style="color:#268bd2">dataCleanService</span>.<span style="color:#268bd2">clean</span>(<span style="color:#268bd2">rows</span>, <span style="color:#859900">new</span> <span style="color:#268bd2">CleanRule</span>() {
         <span style="color:#268bd2">@Override</span>
         <span style="color:#859900">public</span> <span style="color:#268bd2">Boolean</span> <span style="color:#268bd2">apply</span>(<span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">Object</span>&gt; <span style="color:#268bd2">stringObjectMap</span>) {
@@ -144,7 +144,7 @@
     });
 }
 </code></pre></div><p>这里创建了 GroovyShell，并执行脚本。进入 <code>evaluate()</code> 方法看源码：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">protected</span> <span style="color:#859900">synchronized</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">generateScriptName</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">protected</span> <span style="color:#859900">synchronized</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">generateScriptName</span>() {
     <span style="color:#859900">return</span> <span style="color:#2aa198">&#34;Script&#34;</span> + (++<span style="color:#268bd2">counter</span>) + <span style="color:#2aa198">&#34;.groovy&#34;</span>; <span style="color:#93a1a1;font-style:italic">// 此处就是 Script1 的由来
 </span><span style="color:#93a1a1;font-style:italic"></span>}
 <span style="color:#859900">public</span> <span style="color:#268bd2">Object</span> <span style="color:#268bd2">evaluate</span>(<span style="color:#859900">final</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">scriptText</span>) <span style="color:#859900">throws</span> <span style="color:#268bd2">CompilationFailedException</span> {
@@ -220,7 +220,7 @@
 <p>注意到，每次执行 <code>evaluate</code> 方法时，都会创建一个新的 <code>ClassCollector</code> 实例来对脚本进行编译，这个过程中，在 <code>createCollector</code> 方法中，创建了 <code>InnerLoader</code> 类加载器。这也是为什么从上面的 heap 分析中，观察到大量通过 <code>GroovyClassLoader$InnerLoader</code> 加载的同名类 <code>Script1.class</code>。正是因为 <code>InnerLoader</code> 类加载器的存在，可以运行时创建 Groovy 脚本的多个类。</p>
 <h1 id="场景复现和修复">场景复现和修复</h1>
 <p>通过源码基本定位根因，实现一个 demo 简单复现下故障场景。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">MetaLeak</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">MetaLeak</span> {
 
     <span style="color:#859900">public</span> <span style="color:#859900;font-weight:bold">void</span> <span style="color:#268bd2">loop</span>() {
         <span style="color:#268bd2">String</span> <span style="color:#268bd2">rule</span> = <span style="color:#2aa198">&#34;[\&#34;hello\&#34;,\&#34;world\&#34;].contains(text)&#34;</span>;
@@ -252,7 +252,7 @@
 <p><img src="/images/689463877.png" alt=""></p>
 <p>高频出现 Metadata 被爆导致的 FGC，另外 Last ditch collection 是由于上一次 FGC 没有将 metaspace 区清理出足够空间。</p>
 <p>因此，修复思路是规避掉频繁解析规则，即已经解析过的规则，直接复用 Script 实例，不再动态编译加载。</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">MetaSafe</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">MetaSafe</span> {
 
     <span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#268bd2">Map</span>&lt;<span style="color:#268bd2">String</span>, <span style="color:#268bd2">Script</span>&gt; <span style="color:#268bd2">store</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">ConcurrentHashMap</span>&lt;&gt;();
     <span style="color:#859900">private</span> <span style="color:#859900">static</span> <span style="color:#859900">final</span> <span style="color:#268bd2">GroovyShell</span> <span style="color:#268bd2">SHELL</span> = <span style="color:#859900">new</span> <span style="color:#268bd2">GroovyShell</span>();

@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -71,7 +71,7 @@
 <p>Thrift IDL 支持 binary 类型，它是未编码字节序列，是 string 类型的特殊形式。binary 类型提高了和 Java 的互操作性，Thrift 计划在某个时候将其提升为基础类型。</p>
 <h2 id="结构体">结构体</h2>
 <p>Thrift 结构体定义了公共对象，基本等同于面向对象语言中的类，但没有继承特性。一个结构体有一组强类型的字段，每个字段都有唯一名称标识符。Thrift 接口文件中的结构体类型，编译后会转换成一个类，类的属性就是结构体中的各个类型字段，而类的方法就是对这些类型字段进行处理的相关函数。结构体类型的关键字是 <code>struct</code>，参考下面的 IDL 代码：</p>
-<pre><code class="language-idl" data-lang="idl">struct Student {
+<pre tabindex="0"><code class="language-idl" data-lang="idl">struct Student {
     1: i32 id;
     2: string name;
     3: i32 age;
@@ -79,7 +79,7 @@
     5: i32 grade;
 }
 </code></pre><p>对应的，Thrift 编译后生成下面的 Student 类：</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Student</span> {
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#859900">public</span> <span style="color:#859900">class</span> <span style="color:#cb4b16">Student</span> {
     <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">id</span>;
     <span style="color:#859900">private</span> <span style="color:#268bd2">String</span> <span style="color:#268bd2">name</span>;
     <span style="color:#859900">private</span> <span style="color:#859900;font-weight:bold">int</span> <span style="color:#268bd2">age</span>;
@@ -96,7 +96,7 @@
 <p>容器元素可能是任意 Thrift 类型。</p>
 <h2 id="异常">异常</h2>
 <p>Thrift 异常和结构体形式上类似，只是关键字是 exception，由指定语言的原生异常类派生，Java 的话，就是 <code>java.lang.Exception</code>。参考下面的 IDL 声明代码：</p>
-<pre><code class="language-idl" data-lang="idl">exception RequestException {
+<pre tabindex="0"><code class="language-idl" data-lang="idl">exception RequestException {
     1: i32 code;
     2: string message;
 }
@@ -104,7 +104,7 @@
 <p>Thrift 中的服务定义类似 OOP 语言中的接口（或纯虚函数）。Thrift 编译后，会创建客户端和服务端相应的函数和方法。服务中定义的每个方法都是具有返回类型的。另外，对于 void 方法，可以额外的加上 oneway 关键字，使得方法在执行时不会等待返回结果，直接异步处理。</p>
 <h2 id="枚举">枚举</h2>
 <p>Thrift 的枚举和 C/C++ 类似，由 <code>enum</code> 关键字声明：</p>
-<pre><code class="language-idl" data-lang="idl">enum UserType {
+<pre tabindex="0"><code class="language-idl" data-lang="idl">enum UserType {
     VALID,
     INVALID,
     FROZEN
@@ -112,11 +112,11 @@
 </code></pre><p>当 IDL 未对枚举赋值时，枚举型的第一个元素默认赋值为 0，并逐个递增。</p>
 <h2 id="类型定义">类型定义</h2>
 <p>Thrift 通过关键字 <code>typedef</code> 对类型名进行自定义：</p>
-<pre><code class="language-idl" data-lang="idl">typedef i32 MyInt
+<pre tabindex="0"><code class="language-idl" data-lang="idl">typedef i32 MyInt
 typedef string Str
 </code></pre><h2 id="引入">引入</h2>
 <p>Thrift 支持 <code>include</code> 关键字引入其他 thrift 文件，从而引入外部 thrift 文件中声明的类型。</p>
-<pre><code class="language-idl" data-lang="idl">include &quot;test.thrift&quot;
+<pre tabindex="0"><code class="language-idl" data-lang="idl">include &quot;test.thrift&quot;
 
 service MyService extends test.FacebookService{
 }

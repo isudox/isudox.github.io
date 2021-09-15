@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.84.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   
   
 </head>
@@ -61,35 +61,35 @@
 </blockquote>
 <p>阿里大鱼短信开发包的源码并不复杂，来来去去无非一些 request，response 和 string 的处理，底层都是在阿里服务端 api 里实现的，短信包只是提供 api 调用、处理功能，因此迁移工作倒也不是很令人拙计。下面就把我填的坑一一道来（难免有遗忘和疏漏，见谅）——</p>
 <h4 id="一号坑">一号坑</h4>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># 如果parameters是字典类</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># 如果parameters是字典类</span>
 <span style="color:#268bd2">keys</span> = <span style="color:#268bd2">parameters</span>.<span style="color:#268bd2">keys</span>()
 </code></pre></div><p>不出所料的话，控制台会输出
 <code>&gt;&gt;&gt;TypeError: 'dict_keys' object does not support indexing</code>
 这是一大坑，在 Python 3.x 里，<code>dict.keys()</code>, <code>dict.values()</code> 和 <code>dict.items()</code> 是返回一个 <code>dict_keys</code> 对象（dict_keys 不支持 indexing），而不是 Python 2.x 那样返回一个 <code>list</code>。因此最简单的迁移方法就是显式调用 <code>list()</code> 处理，</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># 如果parameters是字典类</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># 如果parameters是字典类</span>
 <span style="color:#268bd2">keys</span> = <span style="color:#cb4b16">list</span>(<span style="color:#268bd2">parameters</span>.<span style="color:#268bd2">keys</span>())
 </code></pre></div><p>但实际上，这种处理办法并不是最优解，可参考 <a href="http://blog.labix.org/2008/06/27/watch-out-for-listdictkeys-in-python-3">Watch out for list(dict.keys()) in Python 3</a></p>
 <h4 id="二号坑">二号坑</h4>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">sign</span> = <span style="color:#268bd2">hashlib</span>.<span style="color:#268bd2">md5</span>(<span style="color:#268bd2">parameters</span>).<span style="color:#268bd2">hexdigest</span>().<span style="color:#268bd2">upper</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">sign</span> = <span style="color:#268bd2">hashlib</span>.<span style="color:#268bd2">md5</span>(<span style="color:#268bd2">parameters</span>).<span style="color:#268bd2">hexdigest</span>().<span style="color:#268bd2">upper</span>()
 </code></pre></div><p>哈哈，控制台会报如下错
 <code>&gt;&gt;&gt;Python hashlib problem “TypeError: Unicode-objects must be encoded before hashing”</code>
 言简意赅，debug 信息已经给出了解决方案，上述代码中的 parameters 参数必须先 encoded 后才能 hash。So easy!</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">sign</span> = <span style="color:#268bd2">hashlib</span>.<span style="color:#268bd2">md5</span>(<span style="color:#268bd2">parameters</span>.<span style="color:#268bd2">encode</span>(<span style="color:#2aa198">&#39;utf8&#39;</span>)).<span style="color:#268bd2">hexdigest</span>().<span style="color:#268bd2">upper</span>()
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">sign</span> = <span style="color:#268bd2">hashlib</span>.<span style="color:#268bd2">md5</span>(<span style="color:#268bd2">parameters</span>.<span style="color:#268bd2">encode</span>(<span style="color:#2aa198">&#39;utf8&#39;</span>)).<span style="color:#268bd2">hexdigest</span>().<span style="color:#268bd2">upper</span>()
 </code></pre></div><p>utf-8 转码后就没问题了，一个赛艇！</p>
 <h4 id="三号坑">三号坑</h4>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">if</span> (<span style="color:#cb4b16">isinstance</span>(<span style="color:#268bd2">pstr</span>, <span style="color:#cb4b16">str</span>)):
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">if</span> (<span style="color:#cb4b16">isinstance</span>(<span style="color:#268bd2">pstr</span>, <span style="color:#cb4b16">str</span>)):
     <span style="color:#859900">return</span> <span style="color:#268bd2">pstr</span>
 <span style="color:#859900">elif</span> (<span style="color:#cb4b16">isinstance</span>(<span style="color:#268bd2">pstr</span>, <span style="color:#268bd2">unicode</span>)):
     <span style="color:#859900">return</span> <span style="color:#268bd2">pstr</span>.<span style="color:#268bd2">encode</span>(<span style="color:#2aa198">&#39;utf-8&#39;</span>)
 </code></pre></div><p>运行后的错误信息：
 <code>&gt;&gt;&gt;NameError: global name 'unicode' is not defined</code>
 Python 3.x 把 <code>unicode</code> 类型改名为 <code>str</code>，而原来 Python 2.x 下的 <code>str</code> 类型被 <code>bytes</code> 替代。所以解决办法就是按 Python 3.x 的定义来</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">if</span> (<span style="color:#cb4b16">isinstance</span>(<span style="color:#268bd2">pstr</span>, <span style="color:#cb4b16">bytes</span>)):
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">if</span> (<span style="color:#cb4b16">isinstance</span>(<span style="color:#268bd2">pstr</span>, <span style="color:#cb4b16">bytes</span>)):
     <span style="color:#859900">return</span> <span style="color:#268bd2">pstr</span>
 <span style="color:#859900">elif</span> (<span style="color:#cb4b16">isinstance</span>(<span style="color:#268bd2">pstr</span>, <span style="color:#cb4b16">str</span>)):
     <span style="color:#859900">return</span> <span style="color:#268bd2">pstr</span>.<span style="color:#268bd2">encode</span>(<span style="color:#2aa198">&#39;utf-8&#39;</span>)
 </code></pre></div><h4 id="四号坑">四号坑</h4>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">connection</span> = <span style="color:#268bd2">httplib</span>.<span style="color:#268bd2">HTTPConnection</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">__domain</span>, <span style="color:#268bd2">self</span>.<span style="color:#268bd2">__port</span>, <span style="color:#859900;font-weight:bold">False</span>, <span style="color:#268bd2">timeout</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">connection</span> = <span style="color:#268bd2">httplib</span>.<span style="color:#268bd2">HTTPConnection</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">__domain</span>, <span style="color:#268bd2">self</span>.<span style="color:#268bd2">__port</span>, <span style="color:#859900;font-weight:bold">False</span>, <span style="color:#268bd2">timeout</span>)
 </code></pre></div><p>这里需要注意的地方有两处，Python 2.x 的 httplib 包的 import 路径为
 <code>import httplib</code>
 在 Python 3.x 里的 import 路径则是：
@@ -100,26 +100,26 @@ Python 2.x 中该接口为
 其中，strict 默认为 False，而 Python 3.x 里该接口则修改成
 <code>httplib.HTTPConnection(self, host, port=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, source_address=None）</code>
 很显然，阿里源码里的传参是按照 Python 2.x 的写法，对照 Python 3.x 接口改过来便是</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">connection</span> = <span style="color:#268bd2">httplib</span>.<span style="color:#268bd2">HTTPConnection</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">__domain</span>, <span style="color:#268bd2">self</span>.<span style="color:#268bd2">__port</span>, <span style="color:#268bd2">timeout</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">connection</span> = <span style="color:#268bd2">httplib</span>.<span style="color:#268bd2">HTTPConnection</span>(<span style="color:#268bd2">self</span>.<span style="color:#268bd2">__domain</span>, <span style="color:#268bd2">self</span>.<span style="color:#268bd2">__port</span>, <span style="color:#268bd2">timeout</span>)
 </code></pre></div><h4 id="五号坑">五号坑</h4>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">P_TIMESTAMP</span>: <span style="color:#cb4b16">str</span>(<span style="color:#268bd2">long</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>() * <span style="color:#2aa198;font-weight:bold">1000</span>))
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">P_TIMESTAMP</span>: <span style="color:#cb4b16">str</span>(<span style="color:#268bd2">long</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>() * <span style="color:#2aa198;font-weight:bold">1000</span>))
 </code></pre></div><p><code>&gt;&gt;&gt;NameError: name 'long' is not defined</code>
 Python 3.x 已经将 Python 2.x 中的 <code>int</code> 和 <code>long</code> 型合并为 <code>int</code>，因此在 Python 3.x 下，已经不存在 <code>long</code> 类型了。修改成<code>int()</code>即可</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">P_TIMESTAMP</span>: <span style="color:#cb4b16">str</span>(<span style="color:#cb4b16">int</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>() * <span style="color:#2aa198;font-weight:bold">1000</span>))
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">P_TIMESTAMP</span>: <span style="color:#cb4b16">str</span>(<span style="color:#cb4b16">int</span>(<span style="color:#268bd2">time</span>.<span style="color:#268bd2">time</span>() * <span style="color:#2aa198;font-weight:bold">1000</span>))
 </code></pre></div><h4 id="六号坑">六号坑</h4>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">urllib</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">urlencode</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">urllib</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">urlencode</span>
 <span style="color:#268bd2">body</span> = <span style="color:#268bd2">urllib</span>.<span style="color:#268bd2">urlencode</span>(<span style="color:#268bd2">application_parameter</span>)
 </code></pre></div><p>Python 3.x 把 Python 2.x 下 <code>urlencode()</code> 函数转移到了 <code>urllib.parse</code> 里。修改为</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">urllib.parse</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">urlencode</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#dc322f;font-weight:bold">from</span> <span style="color:#268bd2">urllib.parse</span> <span style="color:#dc322f;font-weight:bold">import</span> <span style="color:#268bd2">urlencode</span>
 <span style="color:#268bd2">body</span> = <span style="color:#268bd2">urllib</span>.<span style="color:#268bd2">parse</span>.<span style="color:#268bd2">urlencode</span>(<span style="color:#268bd2">application_parameter</span>)
 </code></pre></div><h4 id="七号坑">七号坑</h4>
-<pre><code>result = response.read()
+<pre tabindex="0"><code>result = response.read()
 jsonobj = json.loads(result)
 </code></pre><p>Python 3.x 里 JSON 只接收 unicode，因此 result 需要转码为 unicode</p>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">result</span> = <span style="color:#268bd2">response</span>.<span style="color:#268bd2">read</span>().<span style="color:#268bd2">decode</span>(<span style="color:#2aa198">&#39;utf-8&#39;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">result</span> = <span style="color:#268bd2">response</span>.<span style="color:#268bd2">read</span>().<span style="color:#268bd2">decode</span>(<span style="color:#2aa198">&#39;utf-8&#39;</span>)
 <span style="color:#268bd2">jsonobj</span> = <span style="color:#268bd2">json</span>.<span style="color:#268bd2">loads</span>(<span style="color:#268bd2">result</span>)
 </code></pre></div><h4 id="八号坑">八号坑</h4>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">for</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span> <span style="color:#859900">in</span> <span style="color:#268bd2">application_parameter</span>.<span style="color:#268bd2">iteritems</span>():
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">for</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span> <span style="color:#859900">in</span> <span style="color:#268bd2">application_parameter</span>.<span style="color:#268bd2">iteritems</span>():
     <span style="color:#859900">pass</span>
 </code></pre></div><p>控制台报错：
 <code>&gt;&gt;&gt;AttributeError: 'dict' object has no attribute 'iteritems'</code>
@@ -129,11 +129,11 @@ jsonobj = json.loads(result)
 <p>Remove dict.iteritems(), dict.iterkeys(), and dict.itervalues().
 Instead: use dict.items(), dict.keys(), and dict.values() respectively.</p>
 </blockquote>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">for</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span> <span style="color:#859900">in</span> <span style="color:#268bd2">application_parameter</span>.<span style="color:#268bd2">items</span>():
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#859900">for</span> <span style="color:#268bd2">key</span>, <span style="color:#268bd2">value</span> <span style="color:#859900">in</span> <span style="color:#268bd2">application_parameter</span>.<span style="color:#268bd2">items</span>():
     <span style="color:#859900">pass</span>
 </code></pre></div><p>Done!</p>
 <h4 id="python-3x-版本的-basepy">Python 3.x 版本的 base.py</h4>
-<div class="highlight"><pre style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># base.py</span>
+<div class="highlight"><pre tabindex="0" style="color:#586e75;background-color:#eee8d5;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#93a1a1;font-style:italic"># base.py</span>
 <span style="color:#93a1a1;font-style:italic"># -*- coding: utf-8 -*-</span>
 <span style="color:#2aa198">&#34;&#34;&#34;
 </span><span style="color:#2aa198">Created on 2012-7-3
