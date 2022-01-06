@@ -16,7 +16,7 @@
   
   <link rel="apple-touch-icon" href="https://isudox.com/apple-touch-icon.png">
   <link rel="icon" href="https://isudox.com/favicon.ico">
-  <meta name="generator" content="Hugo 0.88.1" />
+  <meta name="generator" content="Hugo 0.91.2" />
   
   
 </head>
@@ -98,7 +98,7 @@ yarn add webpack@2.1.0-beta.20 -D
 <span style="color:#268bd2">module</span>.<span style="color:#268bd2">exports</span> = {
   <span style="color:#268bd2">entry</span>: <span style="color:#2aa198">&#39;./path/to/my/entry/file.js&#39;</span>,
   <span style="color:#268bd2">output</span>: {
-    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">path</span>.<span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
+    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">path</span>.<span style="color:#268bd2">resolve</span>(<span style="color:#268bd2">__dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
     <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;my-first-webpack.bundle.js&#39;</span>
   }
 };
@@ -110,7 +110,7 @@ yarn add webpack@2.1.0-beta.20 -D
   },
   <span style="color:#268bd2">output</span>: {
     <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;[name].js&#39;</span>,
-    <span style="color:#268bd2">path</span>: <span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span> + <span style="color:#2aa198">&#39;/build&#39;</span>
+    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">__dirname</span> + <span style="color:#2aa198">&#39;/build&#39;</span>
   }
 }
 </code></pre></div><p>对于 <code>output.path</code> 属性，必须设为绝对路径，占位符 <code>[hash]</code> 会被编译后文件的 hash 值替换：</p>
@@ -129,7 +129,7 @@ yarn add webpack@2.1.0-beta.20 -D
 <span style="color:#859900">const</span> <span style="color:#268bd2">config</span> = {
   <span style="color:#268bd2">entry</span>: <span style="color:#2aa198">&#39;./path/to/my/entry/file.js&#39;</span>,
   <span style="color:#268bd2">output</span>: {
-    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">path</span>.<span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),  <span style="color:#93a1a1;font-style:italic">// bundle 文件的绝对路径
+    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">path</span>.<span style="color:#268bd2">resolve</span>(<span style="color:#268bd2">__dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),  <span style="color:#93a1a1;font-style:italic">// bundle 文件的绝对路径
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">publicPath</span>: <span style="color:#2aa198">&#34;/dist/&#34;</span>,  <span style="color:#93a1a1;font-style:italic">// 网站运行时的访问路径
 </span><span style="color:#93a1a1;font-style:italic"></span>    <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;my-first-webpack.bundle.js&#39;</span>  <span style="color:#93a1a1;font-style:italic">// bundle 的文件名
 </span><span style="color:#93a1a1;font-style:italic"></span>  },
@@ -268,13 +268,13 @@ yarn add react@15.3.0 react-dom@15.3.0
     <span style="color:#268bd2">filename</span>: <span style="color:#2aa198">&#39;bundle.js&#39;</span>,
     <span style="color:#93a1a1;font-style:italic">// the output bundle
 </span><span style="color:#93a1a1;font-style:italic"></span>
-    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
+    <span style="color:#268bd2">path</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#268bd2">__dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
 
     <span style="color:#268bd2">publicPath</span>: <span style="color:#2aa198">&#39;/&#39;</span>
     <span style="color:#93a1a1;font-style:italic">// necessary for HMR to know where to load the hot update chunks
 </span><span style="color:#93a1a1;font-style:italic"></span>  },
 
-  <span style="color:#268bd2">context</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;src&#39;</span>),
+  <span style="color:#268bd2">context</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#268bd2">__dirname</span>, <span style="color:#2aa198">&#39;src&#39;</span>),
 
   <span style="color:#268bd2">devtool</span>: <span style="color:#2aa198">&#39;inline-source-map&#39;</span>,
 
@@ -282,7 +282,7 @@ yarn add react@15.3.0 react-dom@15.3.0
     <span style="color:#268bd2">hot</span>: <span style="color:#859900;font-weight:bold">true</span>,
     <span style="color:#93a1a1;font-style:italic">// enable HMR on the server
 </span><span style="color:#93a1a1;font-style:italic"></span>
-    <span style="color:#268bd2">contentBase</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#2aa198;font-weight:bold">__</span><span style="color:#268bd2">dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
+    <span style="color:#268bd2">contentBase</span>: <span style="color:#268bd2">resolve</span>(<span style="color:#268bd2">__dirname</span>, <span style="color:#2aa198">&#39;dist&#39;</span>),
     <span style="color:#93a1a1;font-style:italic">// match the output path
 </span><span style="color:#93a1a1;font-style:italic"></span>
     <span style="color:#268bd2">publicPath</span>: <span style="color:#2aa198">&#39;/&#39;</span>
@@ -404,7 +404,7 @@ yarn add react@15.3.0 react-dom@15.3.0
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </article></main>
 <footer class="footer">
-  <span>&copy; 2015 - 2021</span>
+  <span>&copy; 2015 - 2022</span>
   <span>&middot;</span>
   <span><a href="https://isudox.com/">I sudo X</a></span>
   <span>&middot;</span>
